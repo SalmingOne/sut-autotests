@@ -13,5 +13,5 @@ class CreateProjectDrawerLocators:
     PROJECT_BEGIN_DATA_FIELD = (By.XPATH, '//label[text()="Дата начала"]//following::input[1]')
     PROJECT_RECOURSE_FIELD = (By.XPATH, '//div[@name="resources"]//following::input[1]')
 
-    #CHOSE_RECOURSE = (By.XPATH, '//p[text()="Александр Морозов"]')
+    CHOSE_RECOURSE = (By.XPATH, '//p[text()="АДМИНИСТРАТОР АДМИНИСТРАТОР"]')
     SUBMIT_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')

@@ -10,6 +10,8 @@ class TestCreateProject:
         create_project_drawer_page = CreateProjectDrawerPage(driver)
         time.sleep(3)
         create_project_drawer_page.go_to_create_project_drawer_from_menu()
+        create_project_drawer_page.create_project()
+
 
 
 
