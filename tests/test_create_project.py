@@ -1,7 +1,7 @@
 import time
 
 from pages.create_project_drawer_page import CreateProjectDrawerPage
-from pages.project_cart_page import ProjectCardPage
+from pages.project_card_page import ProjectCardPage
 from tests import conftest
 
 
@@ -15,6 +15,7 @@ class TestCreateProject:
 
         project_card_page = ProjectCardPage(driver)
         project_card_page.go_to_description_tab()
+        project_card_page.get_project_description()
         time.sleep(3)
 
 

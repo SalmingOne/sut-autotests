@@ -27,7 +27,7 @@ class CreateProjectDrawerPage(BasePage):
         project_data = '01.10.2023'
         self.element_is_visible(self.locators.PROJECT_BEGIN_DATA_FIELD).send_keys(project_data)
 
-        project_worker = 'АДМИНИСТРАТОР АДМИНИСТРАТОР'
+        project_worker = 'Администратор Администратор'
         self.element_is_visible(self.locators.PROJECT_MANAGER_FIELD).send_keys(project_worker)
         self.element_is_visible(self.locators.CHOSE_ADMIN).click()
         self.element_is_visible(self.locators.PROJECT_RECOURSE_FIELD).send_keys(project_worker)
