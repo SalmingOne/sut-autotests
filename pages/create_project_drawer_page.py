@@ -13,7 +13,6 @@ class CreateProjectDrawerPage(BasePage):
         self.action_move_to_element(self.element_is_visible(self.locators.TAB_PROJECTS))
         self.element_is_visible(self.locators.TAB_CREATE_PROJECT).click()
 
-
     def create_project(self):
         project_name = 'AutoTestProject'
         self.element_is_visible(self.locators.PROJECT_NAME_FIELD).send_keys(project_name)
@@ -36,6 +35,6 @@ class CreateProjectDrawerPage(BasePage):
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
 
         output_text = self.element_is_visible(self.locators.CHECK_CREATE_PROJECT).text
-        #print(output_text)
+        # print(output_text)
         assert output_text == 'Команда', "Не отображается вкладка Команда карточки только что добавленного проекта"
         return project_name, project_code, project_data, project_worker
