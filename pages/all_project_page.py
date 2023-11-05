@@ -14,6 +14,12 @@ class AllProjectPage(BasePage):
         print(check_name_at_all)
         return check_name_at_all
 
+    def delete_project(self):
+        self.element_is_visible(self.locators.PROJECT_ACTION_BUTTON).click()
+        self.element_is_visible(self.locators.PROJECT_DELETE_BUTTON).click()
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+
+
 
 
 
