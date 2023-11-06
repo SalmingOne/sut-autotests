@@ -1,9 +1,5 @@
-import time
-
 from selenium.webdriver import Keys
-
 from data.data import PROJECT_NAME, USER_NAME, PROJECT_CODE
-
 from locators.create_project_drawer_locators import CreateProjectDrawerLocators
 from pages.base_page import BasePage
 

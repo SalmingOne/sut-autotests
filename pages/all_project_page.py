@@ -11,19 +11,20 @@ class AllProjectPage(BasePage):
         self.action_move_to_element(self.element_is_visible(self.locators.TAB_PROJECTS))
         self.element_is_visible(self.locators.TAB_ALL_PROJECTS).click()
 
+    def go_to_draft_project_page(self):
+        self.element_is_visible(self.locators.STATUS_FILTER_BUTTON).click()
+
     def check_project_name_at_all(self):
         check_name_at_all = self.element_is_present(self.locators.CHECK_NAME_PROJECT).text
         print(check_name_at_all)
         return check_name_at_all
+
+    def get_project_status_at_all(self):
+        project_status_at_all = self.element_is_present(self.locators.PROJECT_STATUS_TEXT).text
+        return project_status_at_all
 
     def delete_project(self):
         self.element_is_visible(self.locators.PROJECT_ACTION_BUTTON).click()
         self.element_is_visible(self.locators.PROJECT_DELETE_BUTTON).click()
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
         time.sleep(1)
-
-
-
-
-
-

@@ -1,10 +1,9 @@
 import pytest
-
 from pages.authorization_page import AuthorizationPage
 from tests.conftest import IN_URL
 
 
-@pytest.mark.smoke_test
+#@pytest.mark.smoke_test
 class TestAuthorization:
     # id-16  4.1 Авторизация в системе
     def test_correct_authorization(self, driver):
