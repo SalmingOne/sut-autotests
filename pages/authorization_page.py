@@ -1,6 +1,3 @@
-import time
-import selenium
-from selenium.webdriver.common.by import By
 
 from locators.authorization_locators import AuthorizationPageLocators
 from pages.base_page import BasePage

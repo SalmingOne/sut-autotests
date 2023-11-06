@@ -1,3 +1,5 @@
+import time
+
 from locators.all_project_page_locators import AllProjectPageLocators
 from pages.base_page import BasePage
 
@@ -18,6 +20,7 @@ class AllProjectPage(BasePage):
         self.element_is_visible(self.locators.PROJECT_ACTION_BUTTON).click()
         self.element_is_visible(self.locators.PROJECT_DELETE_BUTTON).click()
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+        time.sleep(1)
 
 
 

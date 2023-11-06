@@ -1,5 +1,7 @@
 from selenium.webdriver.common.by import By
 
+from data import data
+
 
 class AllProjectPageLocators:
     TAB_PROJECTS = (By.CSS_SELECTOR, "div[id='projects']")
@@ -9,11 +11,13 @@ class AllProjectPageLocators:
     ALL_PROJECT_NAMES_AND_CODS = (
         By.XPATH, '//div[contains(@class, "ag-center-cols-container")]//div[@class="MuiBox-root css-0"]')
     CHECK_NAME_PROJECT = (
-        By.XPATH, '//div[text()="AutoTestProject"]')  # вынести название проекта в отдельную переменную
+        By.XPATH, f'//div[text()="{data.PROJECT_NAME}"]')  # вынести название проекта в отдельную переменную
 
     SUBMIT_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
 
     PROJECT_ACTION_BUTTON = (
-        By.XPATH, '//div[text()="AutoTestProject"]//ancestor::div[contains(@class,"ag-row-odd ag-row")]//button')
+        By.XPATH, f'//div[text()="{data.PROJECT_NAME}"]//ancestor::div[contains(@class,"ag-row-odd ag-row")]//button')
 
     PROJECT_DELETE_BUTTON = (By.XPATH, '//span[text()="Удалить"]')
+
+

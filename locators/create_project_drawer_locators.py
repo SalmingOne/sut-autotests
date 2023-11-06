@@ -1,5 +1,5 @@
 from selenium.webdriver.common.by import By
-
+from data import data
 
 class CreateProjectDrawerLocators:
 
@@ -13,8 +13,10 @@ class CreateProjectDrawerLocators:
     PROJECT_BEGIN_DATA_FIELD = (By.XPATH, '//label[text()="Дата начала"]//following::input[1]')
     PROJECT_RECOURSE_FIELD = (By.XPATH, '//div[@name="resources"]//following::input[1]')
     PROJECT_MANAGER_FIELD = (By.XPATH, '//div[@name="projectManagers"]//child::input[1]')
+    REASON_CHECKBOX = (By.XPATH, '//span[text()="Обязательно указание причины списания трудозатрат"]')
+    DRAFT_CHECKBOX = (By.XPATH, '//span[text()="Черновик"]')
 
-    CHOSE_ADMIN = (By.XPATH, '//p[text()="Администратор Администратор"]')
+    CHOSE_ADMIN = (By.XPATH, f'//p[text()="{data.USER_NAME}"]')
     SUBMIT_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
 
     CHECK_CREATE_PROJECT = (By.XPATH, '//h6[text()="Команда"]')
