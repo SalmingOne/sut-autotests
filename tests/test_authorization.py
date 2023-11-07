@@ -1,6 +1,5 @@
-import pytest
 from pages.authorization_page import AuthorizationPage
-from tests.conftest import IN_URL
+from conftest import IN_URL
 
 
 #@pytest.mark.smoke_test
