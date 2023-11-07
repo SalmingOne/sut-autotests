@@ -7,7 +7,6 @@ from pages.authorization_page import AuthorizationPage
 IN_URL = 'http://10.7.2.3:33829/'
 
 
-
 @pytest.fixture(scope='function')
 def driver():
     driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
