@@ -4,7 +4,7 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from pages.authorization_page import AuthorizationPage
 
-IN_URL = 'http://10.7.2.3:38221/'
+IN_URL = 'http://10.7.2.3:33829/'
 
 
 
