@@ -28,6 +28,7 @@ class LaborCostPageLocators:
 
 
     SUBMIT_BUTTON = (By.XPATH, '//button[text()="Подтвердить"]')
+    WHET_DAY_BUTTON = (By.XPATH, '//button[contains(@class, " MuiButton-disableElevation MuiButtonBase-root onboarding__show-today css-1mttzxf")]')
 
 
 

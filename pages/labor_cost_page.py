@@ -52,3 +52,20 @@ class LaborCostPage(BasePage):
         self.input_time(self.locators.FIRST_DAY_BY_PROJECT, first_day_time)
         self.input_time(self.locators.LAST_28_DAY_BY_PROJECT, last_day_time)
         self.element_is_visible(self.locators.SAVE_BUTTON).click()
+
+        self.element_is_visible(self.locators.PREVIOUS_PERIOD_BUTTON).click()
+        self.input_time(self.locators.LAST_28_DAY_BY_PROJECT, previous_last_day_time)
+        self.element_is_visible(self.locators.SAVE_BUTTON).click()
+        self.element_is_visible(self.locators.WHET_DAY_BUTTON).click()
+
+        self.element_is_visible(self.locators.NEXT_PERIOD_BUTTON).click()
+        self.input_time(self.locators.FIRST_DAY_BY_PROJECT, next_first_day_time)
+        self.element_is_visible(self.locators.SAVE_BUTTON).click()
+        self.element_is_visible(self.locators.WHET_DAY_BUTTON).click()
+
+        sum_in_month = first_day_time + last_day_time
+
+        return sum_in_month
+
+
+

@@ -10,6 +10,7 @@ class TestPivotPage:
         create_project_drawer_page = CreateProjectDrawerPage(driver)
         create_project_drawer_page.go_to_create_project_drawer_from_menu()
         create_project_drawer_page.create_project('no')
-        #
+        # Заполняем таблицу трудозатрат
         labor_cost_page = LaborCostPage(driver)
         labor_cost_page.go_to_labor_cost_page()
+        sum_in_month = labor_cost_page.input_work_by_month()
