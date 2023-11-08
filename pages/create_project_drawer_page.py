@@ -7,11 +7,13 @@ from pages.base_page import BasePage
 class CreateProjectDrawerPage(BasePage):
     locators = CreateProjectDrawerLocators()
 
+    # Переход на дровер создания проекта
     def go_to_create_project_drawer_from_menu(self):
         self.action_move_to_element(self.element_is_visible(self.locators.TAB_PROJECTS))
         self.element_is_visible(self.locators.TAB_CREATE_PROJECT).click()
 
-    def create_project(self, checbox):
+    # Создание проекта
+    def create_project(self, checkbox):
         project_name = PROJECT_NAME
         self.element_is_visible(self.locators.PROJECT_NAME_FIELD).send_keys(project_name)
 
@@ -21,15 +23,15 @@ class CreateProjectDrawerPage(BasePage):
         self.element_is_visible(self.locators.PROJECT_BEGIN_DATA_FIELD).send_keys(Keys.CONTROL + 'a')
         self.element_is_visible(self.locators.PROJECT_BEGIN_DATA_FIELD).send_keys(Keys.BACK_SPACE)
 
-        project_data = '01.10.2023'
+        project_data = '01.10.2022'
         self.element_is_visible(self.locators.PROJECT_BEGIN_DATA_FIELD).send_keys(project_data)
-
-        if checbox == "reason":
+        # выбор вариантов чекбокса (черновик, обязательное указание причины списания)
+        if checkbox == "reason":
             self.element_is_visible(self.locators.REASON_CHECKBOX).click()
-        if checbox == "draft":
+        if checkbox == "draft":
             self.element_is_visible(self.locators.DRAFT_CHECKBOX).click()
-        if checbox == "no":
-            print('no checboxes')
+        if checkbox == "no":
+            print('no checkboxes')
 
         project_worker = USER_NAME
         self.element_is_visible(self.locators.PROJECT_MANAGER_FIELD).send_keys(project_worker)

@@ -6,6 +6,7 @@ from pages.base_page import BasePage
 class AuthorizationPage(BasePage):
     locators = AuthorizationPageLocators()
 
+    #Авторизация в системе
     def authorization(self, login, password):
         self.element_is_visible(self.locators.LOGIN_FIELD).send_keys(login)
         self.element_is_visible(self.locators.PASSWORD_FIELD).send_keys(password)

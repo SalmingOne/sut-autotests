@@ -6,7 +6,7 @@ from data.data import PROJECT_CODE, PROJECT_NAME
 
 
 class LaborCostPageLocators:
-    # Пекреход на страницу трудозатрат
+    # Переход на страницу трудозатрат
     TAB_ACTIVITY = (By.CSS_SELECTOR, 'div[id="activity"]')
     TAB_LABOR_COST_TABLE = (By.CSS_SELECTOR, 'a[href="/"]')
     # Проверка, что код проенкта есть на странице
