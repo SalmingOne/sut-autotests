@@ -9,28 +9,30 @@ class LaborCostPageLocators:
     # Переход на страницу трудозатрат
     TAB_ACTIVITY = (By.CSS_SELECTOR, 'div[id="activity"]')
     TAB_LABOR_COST_TABLE = (By.CSS_SELECTOR, 'a[href="/"]')
-    # Проверка, что код проенкта есть на странице
+    # Проверка, что код проекта есть на странице
     CHECK_CODE_PROJECT = (By.XPATH, f'//a[text()="{PROJECT_CODE}"]')
     # Дни в привязке к проекту
     ALL_DAYS_BY_PROJECT = (
-    By.XPATH, f'//div[@aria-label="{PROJECT_NAME}"]//ancestor::div[@class="MuiBox-root css-j7qwjs"]//div//input')
+        By.XPATH, f'//div[@aria-label="{PROJECT_NAME}"]//ancestor::div[@class="MuiBox-root css-j7qwjs"]//div//input')
     RANDOM_DAYS_BY_PROJECT = (
         By.XPATH,
         f'//div[@aria-label="{PROJECT_NAME}"]//ancestor::div[@class="MuiBox-root css-j7qwjs"]//div[{random.randint(2, 29)}]//input')
-    FIRST_DAY_BY_PROJECT = (By.XPATH, f'//div[@aria-label="{PROJECT_NAME}"]//ancestor::div[@class="MuiBox-root css-j7qwjs"]//div[2]//input')
+    FIRST_DAY_BY_PROJECT = (
+        By.XPATH, f'//div[@aria-label="{PROJECT_NAME}"]//ancestor::div[@class="MuiBox-root css-j7qwjs"]//div[2]//input')
     LAST_28_DAY_BY_PROJECT = (
-    By.XPATH, f'//div[@aria-label="{PROJECT_NAME}"]//ancestor::div[@class="MuiBox-root css-j7qwjs"]//div[29]//input')
+        By.XPATH,
+        f'//div[@aria-label="{PROJECT_NAME}"]//ancestor::div[@class="MuiBox-root css-j7qwjs"]//div[29]//input')
 
     SAVE_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
 
-    PREVIOUS_PERIOD_BUTTON = (By.CSS_SELECTOR, 'button[class="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorPrimary MuiIconButton-sizeMedium css-18wlvvu"]')
+    PREVIOUS_PERIOD_BUTTON = (By.CSS_SELECTOR,
+                              'button[class="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorPrimary '
+                              'MuiIconButton-sizeMedium css-18wlvvu"]')
     NEXT_PERIOD_BUTTON = (By.XPATH, '//button[contains(@class,"onboarding__next-quarter")]')
 
-
     SUBMIT_BUTTON = (By.XPATH, '//button[text()="Подтвердить"]')
-    WHET_DAY_BUTTON = (By.XPATH, '//button[contains(@class, " MuiButton-disableElevation MuiButtonBase-root onboarding__show-today css-1mttzxf")]')
-
-
+    THIS_DAY_BUTTON = (By.XPATH,
+                       '//button[contains(@class, " MuiButton-disableElevation MuiButtonBase-root onboarding__show-today css-1mttzxf")]')
 
     # Проверка что в аллерте есть поле для указания причины списания
     CHECK_LABOR_REASON_FIELD = (By.XPATH, '//label[text()="Причина"]')

@@ -23,12 +23,16 @@ class PivotTabPage(BasePage):
         if period == "week":
             self.element_is_visible(self.locators.WEEK_PERIOD_SELECT).click()
 
-    def get_row_id(self):
-        row_id = self.element_is_visible(self.locators.GET_ROW_ID).get_attribute("row-id")
-        return row_id
+    def get_row_id(self, tab):
+        if tab == "project":
+            row_id = self.element_is_visible(self.locators.GET_ROW_ID).get_attribute("row-id")
+            return row_id
+        if tab == "user":
+            row_id = self.element_is_visible(self.locators.GET_ROW_ID_ON_USER).get_attribute("row-id")
+            return row_id
 
-    def get_sum_reason(self, period):
-        row_id = self.get_row_id()
+    def get_sum_reason_on_project(self, period):
+        row_id = self.get_row_id("project")
         if period == "month":
             PERIOD_SUM = (By.XPATH, f'//div[@row-id="{row_id}"]//div[@aria-colindex="8"]/p')
             a = self.element_is_visible(PERIOD_SUM).text
@@ -39,3 +43,22 @@ class PivotTabPage(BasePage):
             a = self.element_is_visible(PERIOD_SUM).text
             print(a)
             return a
+
+    def get_sum_reason_on_user(self, period):
+        row_id = self.get_row_id("user")
+        if period == "month":
+            PERIOD_SUM = (By.XPATH, f'//div[@row-id="{row_id}"]//div[@col-id="workdaysHoursSum"]/p')
+            a = self.element_is_visible(PERIOD_SUM).text
+            print(a)
+            return a
+        if period == "week":
+            PERIOD_SUM = (By.XPATH, f'//div[@row-id="{row_id}"]//div[@col-id="workdaysHoursSum"]/p')
+            a = self.element_is_visible(PERIOD_SUM).text
+            print(a)
+            return a
+
+    def go_to_by_user_tab(self):
+        self.element_is_visible(self.locators.BY_USER_BUTTON).click()
+
+    def open_project_list(self):
+        self.element_is_visible(self.locators.OPEN_PROJECT_LIST).click()

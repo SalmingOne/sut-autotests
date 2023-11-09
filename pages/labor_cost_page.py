@@ -63,17 +63,35 @@ class LaborCostPage(BasePage):
         self.element_is_visible(self.locators.PREVIOUS_PERIOD_BUTTON).click()
         self.input_time(self.locators.LAST_28_DAY_BY_PROJECT, previous_last_day_time)
         self.element_is_visible(self.locators.SAVE_BUTTON).click()
-        self.element_is_visible(self.locators.WHET_DAY_BUTTON).click()
+        self.element_is_visible(self.locators.THIS_DAY_BUTTON).click()
 
         self.element_is_visible(self.locators.NEXT_PERIOD_BUTTON).click()
         self.input_time(self.locators.FIRST_DAY_BY_PROJECT, next_first_day_time)
         self.element_is_visible(self.locators.SAVE_BUTTON).click()
-        self.element_is_visible(self.locators.WHET_DAY_BUTTON).click()
+        self.element_is_visible(self.locators.THIS_DAY_BUTTON).click()
 
         sum_in_month = first_day_time + last_day_time
 
         return sum_in_month
 
+    def clear_month_work(self):
+        all_day_list = self.elements_are_present(self.locators.ALL_DAYS_BY_PROJECT)
+        for day in all_day_list:
+            day.click()
+            day.send_keys(Keys.BACK_SPACE)
+            day.send_keys(Keys.BACK_SPACE)
+
+    def three_mont_clear(self):
+        self.clear_month_work()
+        self.element_is_visible(self.locators.SAVE_BUTTON).click()
+        self.element_is_visible(self.locators.PREVIOUS_PERIOD_BUTTON).click()
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+        self.clear_month_work()
+        self.element_is_visible(self.locators.SAVE_BUTTON).click()
+        self.element_is_visible(self.locators.THIS_DAY_BUTTON).click()
+        self.element_is_visible(self.locators.NEXT_PERIOD_BUTTON).click()
+        self.clear_month_work()
+        self.element_is_visible(self.locators.SAVE_BUTTON).click()
 
 
 

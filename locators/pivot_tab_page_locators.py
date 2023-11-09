@@ -1,6 +1,6 @@
 from selenium.webdriver.common.by import By
 
-from data.data import PROJECT_NAME
+from data.data import PROJECT_NAME, USER_NAME
 
 
 class PivotTabPageLocators:
@@ -14,9 +14,13 @@ class PivotTabPageLocators:
     MONTH_PERIOD_SELECT = (By.CSS_SELECTOR, 'li[data-value="month"]')
     #
     GET_ROW_ID = (By.XPATH, f'//h6[text()="{PROJECT_NAME}"]//ancestor::div[@row-id]')
+    GET_ROW_ID_ON_USER = (By.XPATH, f'//p[text()="{PROJECT_NAME}"]//ancestor::div[@row-id]')
 
     TEST_1 = (By.XPATH, '//div[@row-id="row-group-383"]//div[@col-id="workdaysHoursSum"]')
 
     HORIZONTAL_SCROLL = (By.CSS_SELECTOR, 'div[class="ag-body-horizontal-scroll-viewport"]')
     RIGHT_SCROLL = (By.CSS_SELECTOR, 'div[class="ag-horizontal-right-spacer ag-scroller-corner"]')
+
+    BY_USER_BUTTON = (By.XPATH, '//button[text()="По пользователям"]')
+    OPEN_PROJECT_LIST = (By.XPATH, f'//h6[@aria-label="{USER_NAME}"]//ancestor::span[1]//preceding::span[2]')
 
