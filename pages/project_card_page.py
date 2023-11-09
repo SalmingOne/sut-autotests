@@ -1,3 +1,5 @@
+import allure
+
 from locators.project_card_locators import ProjectCardLocators
 from pages.base_page import BasePage
 
@@ -6,15 +8,18 @@ class ProjectCardPage(BasePage):
     locators = ProjectCardLocators()
 
     # Переход на вкладку описание проекта
+    @allure.title("Переход на вкладку описание проекта")
     def go_to_description_tab(self):
         self.element_is_visible(self.locators.DESCRIPTION_TAB).click()
 
     # Получаем имя автора проекта
+    @allure.title("Получаем имя автора проекта")
     def get_project_autor_name(self):
         output_autor_name = self.element_is_visible(self.locators.AUTOR_NAME).text
         return output_autor_name
 
-    # Получаем значения полей вкладки описание проекта проекта
+    # Получаем значения полей вкладки описание проекта
+    @allure.title("Получаем значения полей вкладки описание проекта")
     def get_project_description(self):
         output_project_name = self.element_is_visible(self.locators.NAME_FIELD).get_attribute("defaultValue")
         output_project_code = self.element_is_visible(self.locators.CODE_FIELD).get_attribute("defaultValue")
