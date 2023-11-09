@@ -17,9 +17,9 @@ class LaborCostPageLocators:
     RANDOM_DAYS_BY_PROJECT = (
         By.XPATH,
         f'//div[@aria-label="{PROJECT_NAME}"]//ancestor::div[@class="MuiBox-root css-j7qwjs"]//div[{random.randint(2, 29)}]//input')
-    FIRST_DAY_BY_PROJECT = (By.XPATH, f'//div[@aria-label="{PROJECT_NAME}"]//ancestor::div[@class="MuiBox-root css-j7qwjs"]//div[2]//input")')
+    FIRST_DAY_BY_PROJECT = (By.XPATH, f'//div[@aria-label="{PROJECT_NAME}"]//ancestor::div[@class="MuiBox-root css-j7qwjs"]//div[2]//input')
     LAST_28_DAY_BY_PROJECT = (
-    By.XPATH, f'//div[@aria-label="{PROJECT_NAME}"]//ancestor::div[@class="MuiBox-root css-j7qwjs"]//div[29]//input")')
+    By.XPATH, f'//div[@aria-label="{PROJECT_NAME}"]//ancestor::div[@class="MuiBox-root css-j7qwjs"]//div[29]//input')
 
     SAVE_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
 
