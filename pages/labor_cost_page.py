@@ -74,6 +74,8 @@ class LaborCostPage(BasePage):
 
         return sum_in_month
 
+    # Очищаем все дни за месяц
+    @allure.title("Очищаем все дни за месяц")
     def clear_month_work(self):
         all_day_list = self.elements_are_present(self.locators.ALL_DAYS_BY_PROJECT)
         for day in all_day_list:
@@ -81,6 +83,8 @@ class LaborCostPage(BasePage):
             day.send_keys(Keys.BACK_SPACE)
             day.send_keys(Keys.BACK_SPACE)
 
+    # Очищаем все дни за текущий, предидущий и следующи месяц
+    @allure.title("Очищаем все дни за текущий, предидущий и следующи месяц")
     def three_mont_clear(self):
         self.clear_month_work()
         self.element_is_visible(self.locators.SAVE_BUTTON).click()
