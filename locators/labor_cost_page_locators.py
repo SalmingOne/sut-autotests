@@ -22,6 +22,9 @@ class LaborCostPageLocators:
     LAST_28_DAY_BY_PROJECT = (
         By.XPATH,
         f'//div[@aria-label="{PROJECT_NAME}"]//ancestor::div[@class="MuiBox-root css-j7qwjs"]//div[29]//input')
+    LAST_7_DAY_BY_PROJECT = (
+        By.XPATH,
+        f'//div[@aria-label="{PROJECT_NAME}"]//ancestor::div[@class="MuiBox-root css-j7qwjs"]//div[8]//input')
 
     SAVE_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
 
@@ -38,3 +41,8 @@ class LaborCostPageLocators:
     CHECK_LABOR_REASON_FIELD = (By.XPATH, '//label[text()="Причина"]')
     # Кнопка сброса аллерта
     BREAK_LABOR_REASON_WINDOW = (By.XPATH, '//div[@aria-label="Заполните все обязательные поля"]//following::button')
+
+    # Выбор периода на странице
+    PERIOD_SELECT_BUTTON = (By.XPATH, '//div[contains(@class, "onboaring__period-select")]')
+    WEEK_PERIOD_SELECT = (By.CSS_SELECTOR, 'li[data-value="week"]')
+    MONTH_PERIOD_SELECT = (By.CSS_SELECTOR, 'li[data-value="month"]')

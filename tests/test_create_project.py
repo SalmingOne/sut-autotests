@@ -64,6 +64,7 @@ class TestCreateProject:
         # Берем имя поректа с старници все проекты
         all_project_page = AllProjectPage(driver)
         all_project_page.go_to_all_project_page()
+        all_project_page.see_all_status_project()
 
         check_name_at_all = all_project_page.check_project_name_at_all()
         assert project_name == check_name_at_all, "имя созданного проекта отсутствует на странице все проекты"

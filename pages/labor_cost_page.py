@@ -1,7 +1,7 @@
 import time
 
 import allure
-from selenium.common import TimeoutException
+from selenium.common import TimeoutException, ElementNotInteractableException, ElementClickInterceptedException
 from selenium.webdriver import Keys
 
 from locators.labor_cost_page_locators import LaborCostPageLocators
@@ -56,18 +56,26 @@ class LaborCostPage(BasePage):
         last_day_time = 8
         previous_last_day_time = 6
         next_first_day_time = 3
+
+        self.element_is_visible(self.locators.THIS_DAY_BUTTON).click()
         self.input_time(self.locators.FIRST_DAY_BY_PROJECT, first_day_time)
+
         self.input_time(self.locators.LAST_28_DAY_BY_PROJECT, last_day_time)
         self.element_is_visible(self.locators.SAVE_BUTTON).click()
 
         self.element_is_visible(self.locators.PREVIOUS_PERIOD_BUTTON).click()
+
         self.input_time(self.locators.LAST_28_DAY_BY_PROJECT, previous_last_day_time)
         self.element_is_visible(self.locators.SAVE_BUTTON).click()
         self.element_is_visible(self.locators.THIS_DAY_BUTTON).click()
 
         self.element_is_visible(self.locators.NEXT_PERIOD_BUTTON).click()
         self.input_time(self.locators.FIRST_DAY_BY_PROJECT, next_first_day_time)
-        self.element_is_visible(self.locators.SAVE_BUTTON).click()
+        time.sleep(3)
+        try:
+            self.element_is_visible(self.locators.SAVE_BUTTON).click()
+        except ElementClickInterceptedException:
+            print(1)
         self.element_is_visible(self.locators.THIS_DAY_BUTTON).click()
 
         sum_in_month = first_day_time + last_day_time
@@ -80,22 +88,68 @@ class LaborCostPage(BasePage):
         all_day_list = self.elements_are_present(self.locators.ALL_DAYS_BY_PROJECT)
         for day in all_day_list:
             day.click()
-            day.send_keys(Keys.BACK_SPACE)
-            day.send_keys(Keys.BACK_SPACE)
+            try:
+                day.send_keys(Keys.BACK_SPACE)
+                day.send_keys(Keys.BACK_SPACE)
+            except ElementNotInteractableException:
+                print(2)
 
     # Очищаем все дни за текущий, предидущий и следующи месяц
     @allure.title("Очищаем все дни за текущий, предидущий и следующи месяц")
     def three_mont_clear(self):
         self.clear_month_work()
-        self.element_is_visible(self.locators.SAVE_BUTTON).click()
+        try:
+            self.element_is_visible(self.locators.SAVE_BUTTON).click()
+        except ElementClickInterceptedException:
+            print(1)
         self.element_is_visible(self.locators.PREVIOUS_PERIOD_BUTTON).click()
-        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+        #self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
         self.clear_month_work()
-        self.element_is_visible(self.locators.SAVE_BUTTON).click()
+        try:
+            self.element_is_visible(self.locators.SAVE_BUTTON).click()
+        except ElementClickInterceptedException:
+            print(1)
         self.element_is_visible(self.locators.THIS_DAY_BUTTON).click()
         self.element_is_visible(self.locators.NEXT_PERIOD_BUTTON).click()
         self.clear_month_work()
+        try:
+            self.element_is_visible(self.locators.SAVE_BUTTON).click()
+        except ElementClickInterceptedException:
+            print(1)
+
+
+
+    # Списываем трудозатраты за первый и последний день недели
+    @allure.title("Списываем трудозатраты за первый и последний день недели")
+    def input_work_by_week(self):
+        first_day_time = 7
+        last_day_time = 11
+        previous_last_day_time = 8
+        next_first_day_time = 2
+        self.input_time(self.locators.FIRST_DAY_BY_PROJECT, first_day_time)
+        self.input_time(self.locators.LAST_7_DAY_BY_PROJECT, last_day_time)
         self.element_is_visible(self.locators.SAVE_BUTTON).click()
 
+        self.element_is_visible(self.locators.PREVIOUS_PERIOD_BUTTON).click()
+        self.input_time(self.locators.LAST_7_DAY_BY_PROJECT, previous_last_day_time)
+        self.element_is_visible(self.locators.SAVE_BUTTON).click()
+        self.element_is_visible(self.locators.THIS_DAY_BUTTON).click()
 
+        self.element_is_visible(self.locators.NEXT_PERIOD_BUTTON).click()
+        self.input_time(self.locators.FIRST_DAY_BY_PROJECT, next_first_day_time)
+        self.element_is_visible(self.locators.SAVE_BUTTON).click()
+        self.element_is_visible(self.locators.THIS_DAY_BUTTON).click()
 
+        sum_in_week = first_day_time + last_day_time
+
+        return sum_in_week
+
+# Выбираем отображаемый период
+    @allure.title("Выбираем отображаемый период")
+    def choose_period(self, period):
+        time.sleep(1)
+        self.element_is_visible(self.locators.PERIOD_SELECT_BUTTON).click()
+        if period == "month":
+            self.element_is_visible(self.locators.MONTH_PERIOD_SELECT).click()
+        if period == "week":
+            self.element_is_visible(self.locators.WEEK_PERIOD_SELECT).click()

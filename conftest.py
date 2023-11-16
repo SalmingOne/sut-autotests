@@ -2,9 +2,11 @@ import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
+
+from data.data import LOGIN, PASSWORD
 from pages.authorization_page import AuthorizationPage
 
-IN_URL = 'http://10.7.2.3:33829/'
+IN_URL = 'http://10.7.2.3:35917/'
 
 
 @pytest.fixture(scope='function')
@@ -19,5 +21,5 @@ def driver():
 def login(driver):
     authorization_page = AuthorizationPage(driver, IN_URL)
     authorization_page.open()
-    authorization_page.authorization('admin', 'password')
+    authorization_page.authorization(LOGIN, PASSWORD)
     return login
