@@ -9,13 +9,13 @@ class CreateProjectDrawerPage(BasePage):
     locators = CreateProjectDrawerLocators()
 
     # Переход на дровер создания проекта
-    @allure.title("Переход на дровер создания проекта")
+    @allure.step("Переход на дровер создания проекта")
     def go_to_create_project_drawer_from_menu(self):
         self.action_move_to_element(self.element_is_visible(self.locators.TAB_PROJECTS))
         self.element_is_visible(self.locators.TAB_CREATE_PROJECT).click()
 
     # Создание проекта
-    @allure.title("Создание проекта")
+    @allure.step("Создание проекта")
     def create_project(self, checkbox):
         project_name = PROJECT_NAME
         self.element_is_visible(self.locators.PROJECT_NAME_FIELD).send_keys(project_name)

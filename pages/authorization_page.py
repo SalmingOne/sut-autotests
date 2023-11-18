@@ -1,5 +1,4 @@
 import allure
-
 from locators.authorization_locators import AuthorizationPageLocators
 from pages.base_page import BasePage
 

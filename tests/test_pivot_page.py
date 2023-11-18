@@ -1,3 +1,4 @@
+import allure
 import pytest
 
 from conftest import project
@@ -6,6 +7,7 @@ from pages.pivot_tab_page import PivotTabPage
 
 
 @pytest.mark.usefixtures('project')
+@allure.suite("Сводная таблица")
 class TestPivotPage:
 
     # id-3103 3.2.2.1 Проверка правильности подсчета трудозатрат за месяц при отображении "Сводной таблицы" "За
@@ -13,6 +15,7 @@ class TestPivotPage:
 
     # id-3104 3.2.2.1 Проверка правильности подсчета трудозатрат за месяц при отображении "Сводной таблицы" "За
     # месяц-по неделям".
+    @allure.title("id-3104 3.2.2.1 Проверка правильности подсчета трудозатрат за месяц при отображении Сводной таблицы За месяц-по неделям")
     def test_correct_month_summ_on_pivot_for_month_by_week(self, login, driver):
         # Заполняем таблицу трудозатрат
         labor_cost_page = LaborCostPage(driver)
@@ -35,6 +38,7 @@ class TestPivotPage:
 
     # id-3105 3.2.2.1 Проверка правильности подсчета трудозатрат за неделю при отображении "Сводной таблицы" "За
     # неделю".
+    @allure.title("id-3105 3.2.2.1 Проверка правильности подсчета трудозатрат за неделю при отображении Сводной таблицы За неделю")
     def test_correct_week_summ_on_pivot_for_week(self, login, driver):
         # Заполняем таблицу трудозатрат
         labor_cost_page = LaborCostPage(driver)

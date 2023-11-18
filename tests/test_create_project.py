@@ -72,7 +72,6 @@ class TestCreateProject:
         all_project_page.delete_project()
 
     # id-1469 1.1.1 Добавление нового проекта с обязательным указанием причины списания
-
     @allure.title("id-1469 1.1.1 Добавление нового проекта с обязательным указанием причины списания")
     def test_create_project_reason(self, login, driver):
         # Создаем прект
