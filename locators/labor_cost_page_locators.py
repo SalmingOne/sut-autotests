@@ -45,3 +45,5 @@ class LaborCostPageLocators:
     MONTH_PERIOD_SELECT = (By.CSS_SELECTOR, 'li[data-value="month"]')
     # Локатор для определения количества дней в месяце
     ALL_DAY_NUMBER = (By.XPATH, '//h6[contains(@class, "MuiTypography-root ")]')
+    # Датапикер с выбором месяца
+    MONTH_DATEPICKER = (By.XPATH, '//h6[contains(@class, "MuiTypography-root MuiTypography-subtitle2 css-1mh2yc1")]')

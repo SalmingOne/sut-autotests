@@ -60,3 +60,30 @@ class TestPivotPage:
         labor_cost_page.go_to_labor_cost_page()
         labor_cost_page.choose_period("week")
         labor_cost_page.three_mont_clear()
+
+    # id-3106 3.2.2.1 Проверка правильности подсчета трудозатрат за год при отображении "Сводной таблицы" "За год"
+    @allure.title("id-3106 3.2.2.1 Проверка правильности подсчета трудозатрат за год при отображении Сводной таблицы За год")
+    def test_correct_summ_on_pivot_for_year(self, login, driver):
+        # Заполняем таблицу трудозатрат
+        labor_cost_page = LaborCostPage(driver)
+        labor_cost_page.go_to_labor_cost_page()
+        #labor_cost_page.choose_period("month")
+        sum_in_year = labor_cost_page.input_work_by_year()
+        print(sum_in_year)
+        # Берем сумму на сводной таблице проектов за неделю
+        #pivot_tab_page = PivotTabPage(driver)
+        #pivot_tab_page.go_to_pivot_page()
+        #pivot_tab_page.choose_period("week")
+        #sum_on_project = pivot_tab_page.get_sum_reason_on_project("week")
+        #assert str(sum_in_week) == sum_on_project
+        # Берем сумму на сводной таблице пользователей за месяц по неделям
+        #pivot_tab_page.go_to_by_user_tab()
+        #pivot_tab_page.open_project_list()
+        #sum_on_user = pivot_tab_page.get_sum_reason_on_user("week")
+        #assert str(sum_in_week) == sum_on_user
+        #labor_cost_page.go_to_labor_cost_page()
+        #labor_cost_page.choose_period("week")
+        #labor_cost_page.three_mont_clear()
+        labor_cost_page.go_to_labor_cost_page()
+        #labor_cost_page.choose_period("month")
+        labor_cost_page.clear_work_by_year()

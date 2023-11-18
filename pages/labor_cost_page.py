@@ -23,7 +23,7 @@ class LaborCostPage(BasePage):
     @allure.step("Проверка, что код проекта есть на странице")
     def check_project_code_at_labor(self):
         check_code_at_labor = self.element_is_present(self.locators.CHECK_CODE_PROJECT).text
-        #print(check_code_at_labor)
+        # print(check_code_at_labor)
         return check_code_at_labor
 
     # Проверка что кода проекта нет на странице
@@ -31,7 +31,7 @@ class LaborCostPage(BasePage):
     def check_no_project_code_at_labor(self):
         try:
             check_code_at_labor = self.element_is_present(self.locators.CHECK_CODE_PROJECT).text
-            #print(check_code_at_labor)
+            # print(check_code_at_labor)
             return check_code_at_labor
         except TimeoutException:
             return "no element on page"
@@ -168,3 +168,71 @@ class LaborCostPage(BasePage):
             self.element_is_visible(self.locators.MONTH_PERIOD_SELECT).click()
         if period == "week":
             self.element_is_visible(self.locators.WEEK_PERIOD_SELECT).click()
+
+    # Выбираем месяц в датапикере
+    @allure.step("Выбираем месяц в датапикере")
+    def choose_month_picker(self, month_name):  # имя месяца указывать точно как на экране(с точкой)
+        self.element_is_visible(self.locators.MONTH_DATEPICKER).click()
+        month = month_name
+        month_locator = (By.XPATH, f'//button[text()="{month}"]')
+        self.element_is_visible(month_locator).click()
+
+    # Списываем трудозатраты за первый и последний день года
+    @allure.step("Списываем трудозатраты за первый и последний день года")
+    def input_work_by_year(self):
+        first_day_time = 10
+        last_day_time = 12
+        previous_last_day_time = 9
+        next_first_day_time = 4
+        # Заполняем первый день года
+        self.choose_month_picker('янв.')
+        self.input_time(self.locators.FIRST_DAY_BY_PROJECT, first_day_time)
+        self.element_is_visible(self.locators.SAVE_BUTTON).click()
+        # Заполняем последний день предыдущего года
+        self.element_is_visible(self.locators.PREVIOUS_PERIOD_BUTTON).click()
+        last_day_number = self.get_number_last_month_day() + 1
+        last_day_locator = (
+            By.XPATH,
+            f'//div[@aria-label="{PROJECT_NAME}"]//ancestor::div[@class="MuiBox-root css-j7qwjs"]//div[{last_day_number}]//input')
+        self.input_time(last_day_locator, previous_last_day_time)
+        self.element_is_visible(self.locators.SAVE_BUTTON).click()
+        self.element_is_visible(self.locators.THIS_DAY_BUTTON).click()
+        # Заполняем последний день текущего года
+        self.choose_month_picker('дек.')
+        last_day_number = self.get_number_last_month_day() + 1
+        last_day_locator = (
+            By.XPATH,
+            f'//div[@aria-label="{PROJECT_NAME}"]//ancestor::div[@class="MuiBox-root css-j7qwjs"]//div[{last_day_number}]//input')
+        self.input_time(last_day_locator, last_day_time)
+        self.element_is_visible(self.locators.SAVE_BUTTON).click()
+        time.sleep(3)
+        # Заполняем первый день следующего года
+        self.element_is_visible(self.locators.NEXT_PERIOD_BUTTON).click()
+        self.input_time(self.locators.FIRST_DAY_BY_PROJECT, next_first_day_time)
+        self.element_is_visible(self.locators.SAVE_BUTTON).click()
+
+        self.element_is_visible(self.locators.THIS_DAY_BUTTON).click()
+        sum_in_year = first_day_time + last_day_time
+        return sum_in_year
+
+    def clear_work_by_year(self):
+        self.choose_month_picker('янв.')
+        self.clear_month_work()
+        self.element_is_visible(self.locators.SAVE_BUTTON).click()
+
+        self.element_is_visible(self.locators.PREVIOUS_PERIOD_BUTTON).click()
+        self.clear_month_work()
+        self.element_is_visible(self.locators.FIRST_DAY_BY_PROJECT).click()
+        self.element_is_visible(self.locators.SAVE_BUTTON).click()
+        self.element_is_visible(self.locators.THIS_DAY_BUTTON).click()
+
+        self.choose_month_picker('дек.')
+        self.clear_month_work()
+        self.element_is_visible(self.locators.FIRST_DAY_BY_PROJECT).click()
+        self.element_is_visible(self.locators.SAVE_BUTTON).click()
+
+        self.element_is_visible(self.locators.NEXT_PERIOD_BUTTON).click()
+        self.clear_month_work()
+        self.element_is_visible(self.locators.SAVE_BUTTON).click()
+        self.element_is_visible(self.locators.THIS_DAY_BUTTON).click()
+
