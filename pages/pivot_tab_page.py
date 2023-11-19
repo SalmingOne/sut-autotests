@@ -27,6 +27,8 @@ class PivotTabPage(BasePage):
             self.element_is_visible(self.locators.MONTH_BY_DAY_PERIOD_SELECT).click()
         if period == "week":
             self.element_is_visible(self.locators.WEEK_PERIOD_SELECT).click()
+        if period == "year":
+            self.element_is_visible(self.locators.YEAR_PERIOD_SELECT).click()
 
     # Берем id строки нужного проекта для дальнейшего поиска
     @allure.step("Берем id строки нужного проекта для дальнейшего поиска ")
@@ -52,21 +54,22 @@ class PivotTabPage(BasePage):
             a = self.element_is_visible(PERIOD_SUM).text
             print(a)
             return a
+        if period == "year":
+            PERIOD_SUM = (By.XPATH, f'//div[@row-id="{row_id}"]//div[@aria-colindex="15"]//p')
+            a = self.element_is_visible(PERIOD_SUM).text
+            print(a)
+            return a
 
     # Берем сумму списаных часов за период по пользователю
     @allure.step("Берем сумму списаных часов за период по пользователю")
-    def get_sum_reason_on_user(self, period):
+    def get_sum_reason_on_user(self):
         row_id = self.get_row_id("user")
-        if period == "month":
-            PERIOD_SUM = (By.XPATH, f'//div[@row-id="{row_id}"]//div[@col-id="workdaysHoursSum"]/p')
-            a = self.element_is_visible(PERIOD_SUM).text
-            print(a)
-            return a
-        if period == "week":
-            PERIOD_SUM = (By.XPATH, f'//div[@row-id="{row_id}"]//div[@col-id="workdaysHoursSum"]/p')
-            a = self.element_is_visible(PERIOD_SUM).text
-            print(a)
-            return a
+        PERIOD_SUM = (By.XPATH, f'//div[@row-id="{row_id}"]//div[@col-id="workdaysHoursSum"]/p')
+        a = self.element_is_visible(PERIOD_SUM).text
+        print(a)
+        return a
+
+
 
     # Переходим на отображение таблицы по пользователю
     @allure.step("Переходим на отображение таблицы по пользователю")
