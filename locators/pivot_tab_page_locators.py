@@ -13,7 +13,7 @@ class PivotTabPageLocators:
     MONTH_BY_DAY_PERIOD_SELECT = (By.CSS_SELECTOR, 'li[data-value="monthByDay"]')
     MONTH_PERIOD_SELECT = (By.CSS_SELECTOR, 'li[data-value="month"]')
     YEAR_PERIOD_SELECT = (By.CSS_SELECTOR, 'li[data-value="year"]')
-    # Берем номер строки по имени обьекта
+    # Берем номер строки по имени объекта
     GET_ROW_ID = (By.XPATH, f'//h6[text()="{PROJECT_NAME}"]//ancestor::div[@row-id]')
     GET_ROW_ID_ON_USER = (By.XPATH, f'//p[text()="{PROJECT_NAME}"]//ancestor::div[@row-id]')
     # Скроллер при отображении месяца по дням

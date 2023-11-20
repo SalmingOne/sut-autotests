@@ -23,7 +23,6 @@ class LaborCostPage(BasePage):
     @allure.step("Проверка, что код проекта есть на странице")
     def check_project_code_at_labor(self):
         check_code_at_labor = self.element_is_present(self.locators.CHECK_CODE_PROJECT).text
-        # print(check_code_at_labor)
         return check_code_at_labor
 
     # Проверка что кода проекта нет на странице
@@ -31,7 +30,6 @@ class LaborCostPage(BasePage):
     def check_no_project_code_at_labor(self):
         try:
             check_code_at_labor = self.element_is_present(self.locators.CHECK_CODE_PROJECT).text
-            # print(check_code_at_labor)
             return check_code_at_labor
         except TimeoutException:
             return "no element on page"
@@ -57,14 +55,11 @@ class LaborCostPage(BasePage):
         all_day_list = self.elements_are_visible(self.locators.ALL_DAY_NUMBER)
         numbers = []
         for day in all_day_list:
-            day_number = day.text
-            numbers.append(day_number)
-        # print(numbers)
-        # print(len(numbers)-5)
+            numbers.append(day.text)
         return len(numbers) - 5
 
-    # Списываем трудозатраты за первый и последний (28) день месяца
-    @allure.step("Списываем трудозатраты за первый и последний (28) день месяца")
+    # Списываем трудозатраты за первый и последний день месяца
+    @allure.step("Списываем трудозатраты за первый и последний день месяца")
     def input_work_by_month(self):
         first_day_time = 5
         last_day_time = 8
@@ -78,7 +73,7 @@ class LaborCostPage(BasePage):
             f'//div[@aria-label="{PROJECT_NAME}"]//ancestor::div[@class="MuiBox-root css-j7qwjs"]//div[{last_day_number}]//input')
         self.input_time(last_day_locator, last_day_time)
         self.element_is_visible(self.locators.SAVE_BUTTON).click()
-        # Переходим на предыдущий месяц и запоняем его
+        # Переходим на предыдущий месяц и заполняем его
         self.element_is_visible(self.locators.PREVIOUS_PERIOD_BUTTON).click()
         last_day_number = self.get_number_last_month_day() + 1
         last_day_locator = (
@@ -86,7 +81,7 @@ class LaborCostPage(BasePage):
             f'//div[@aria-label="{PROJECT_NAME}"]//ancestor::div[@class="MuiBox-root css-j7qwjs"]//div[{last_day_number}]//input')
         self.input_time(last_day_locator, previous_last_day_time)
         self.element_is_visible(self.locators.SAVE_BUTTON).click()
-        # Переходим на текущий а потом следующий месяц и запоняем его
+        # Переходим на текущий, а потом следующий месяц и заполняем его
         self.element_is_visible(self.locators.THIS_DAY_BUTTON).click()
         self.element_is_visible(self.locators.NEXT_PERIOD_BUTTON).click()
         self.input_time(self.locators.FIRST_DAY_BY_PROJECT, next_first_day_time)
@@ -96,8 +91,7 @@ class LaborCostPage(BasePage):
             pass
         self.element_is_visible(self.locators.THIS_DAY_BUTTON).click()
 
-        sum_in_month = first_day_time + last_day_time
-        return sum_in_month
+        return first_day_time + last_day_time
 
     # Очищаем все дни за месяц
     @allure.step("Очищаем все дни за месяц")
@@ -111,8 +105,8 @@ class LaborCostPage(BasePage):
             except ElementNotInteractableException:
                 pass
 
-    # Очищаем все дни за текущий, предидущий и следующи месяц
-    @allure.step("Очищаем все дни за текущий, предидущий и следующи месяц")
+    # Очищаем все дни за текущий, предыдущий и следующий месяц
+    @allure.step("Очищаем все дни за текущий, предыдущий и следующий месяц")
     def three_mont_clear(self):
         self.clear_month_work()
         try:
@@ -120,7 +114,6 @@ class LaborCostPage(BasePage):
         except ElementClickInterceptedException:
             pass
         self.element_is_visible(self.locators.PREVIOUS_PERIOD_BUTTON).click()
-        # self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
         self.clear_month_work()
         try:
             self.element_is_visible(self.locators.SAVE_BUTTON).click()
@@ -156,8 +149,7 @@ class LaborCostPage(BasePage):
         self.element_is_visible(self.locators.SAVE_BUTTON).click()
         self.element_is_visible(self.locators.THIS_DAY_BUTTON).click()
 
-        sum_in_week = first_day_time + last_day_time
-        return sum_in_week
+        return first_day_time + last_day_time
 
     # Выбираем отображаемый период
     @allure.step("Выбираем отображаемый период")
@@ -166,7 +158,7 @@ class LaborCostPage(BasePage):
         self.element_is_visible(self.locators.PERIOD_SELECT_BUTTON).click()
         if period == "month":
             self.element_is_visible(self.locators.MONTH_PERIOD_SELECT).click()
-        if period == "week":
+        elif period == "week":
             self.element_is_visible(self.locators.WEEK_PERIOD_SELECT).click()
 
     # Выбираем месяц в датапикере
@@ -205,16 +197,16 @@ class LaborCostPage(BasePage):
             f'//div[@aria-label="{PROJECT_NAME}"]//ancestor::div[@class="MuiBox-root css-j7qwjs"]//div[{last_day_number}]//input')
         self.input_time(last_day_locator, last_day_time)
         self.element_is_visible(self.locators.SAVE_BUTTON).click()
-        time.sleep(3)
         # Заполняем первый день следующего года
         self.element_is_visible(self.locators.NEXT_PERIOD_BUTTON).click()
         self.input_time(self.locators.FIRST_DAY_BY_PROJECT, next_first_day_time)
         self.element_is_visible(self.locators.SAVE_BUTTON).click()
 
         self.element_is_visible(self.locators.THIS_DAY_BUTTON).click()
-        sum_in_year = first_day_time + last_day_time
-        return sum_in_year
+        return first_day_time + last_day_time
 
+    # Удаляем списания за первые и последние месяцы года
+    @allure.step("Удаляем списания за первые и последние месяцы года")
     def clear_work_by_year(self):
         self.choose_month_picker('янв.')
         self.clear_month_work()
@@ -235,4 +227,3 @@ class LaborCostPage(BasePage):
         self.clear_month_work()
         self.element_is_visible(self.locators.SAVE_BUTTON).click()
         self.element_is_visible(self.locators.THIS_DAY_BUTTON).click()
-

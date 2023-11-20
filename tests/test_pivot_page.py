@@ -21,7 +21,6 @@ class TestPivotPage:
         labor_cost_page = LaborCostPage(driver)
         labor_cost_page.go_to_labor_cost_page()
         sum_in_month = labor_cost_page.input_work_by_month()
-        # print(sum_in_month)
         # Берем сумму на сводной таблице проектов за месяц по неделям
         pivot_tab_page = PivotTabPage(driver)
         pivot_tab_page.go_to_pivot_page()
@@ -45,7 +44,6 @@ class TestPivotPage:
         labor_cost_page.go_to_labor_cost_page()
         labor_cost_page.choose_period("week")
         sum_in_week = labor_cost_page.input_work_by_week()
-        # print(sum_in_week)
         # Берем сумму на сводной таблице проектов за неделю
         pivot_tab_page = PivotTabPage(driver)
         pivot_tab_page.go_to_pivot_page()
@@ -68,7 +66,6 @@ class TestPivotPage:
         labor_cost_page = LaborCostPage(driver)
         labor_cost_page.go_to_labor_cost_page()
         sum_in_year = labor_cost_page.input_work_by_year()
-        print(sum_in_year)
         # Берем сумму на сводной таблице проектов за неделю
         pivot_tab_page = PivotTabPage(driver)
         pivot_tab_page.go_to_pivot_page()

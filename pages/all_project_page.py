@@ -33,9 +33,9 @@ class AllProjectPage(BasePage):
         self.element_is_visible(self.locators.PROJECT_ACTION_BUTTON).click()
         self.element_is_visible(self.locators.PROJECT_DELETE_BUTTON).click()
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
-        time.sleep(1)#Если не поставить явное ожидание драйвер закроется раньше чем удалится проект
+        time.sleep(1)  # Если не поставить явное ожидание драйвер закроется раньше чем удалится проект
 
-    # Включаем фильтр проект во всех стаусах
+    # Включаем фильтр проект во всех статусах
     @allure.step("Включаем фильтр проект во всех стаусах")
     def see_all_status_project(self):
         self.element_is_visible(self.locators.STATUS_FILTER_BUTTON).click()
