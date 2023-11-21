@@ -61,10 +61,10 @@ class LaborCostPage(BasePage):
     # Списываем трудозатраты за первый и последний день месяца
     @allure.step("Списываем трудозатраты за первый и последний день месяца")
     def input_work_by_month(self):
-        first_day_time = 5
-        last_day_time = 8
-        previous_last_day_time = 6
-        next_first_day_time = 3
+        first_day_time = 5  # Первый день текущего периода
+        last_day_time = 8  # Первый день текущего периода
+        previous_last_day_time = 6  # Первый день предыдущего периода
+        next_first_day_time = 3  # Первый день следующего периода
         # Заполняем текущий месяц
         self.input_time(self.locators.FIRST_DAY_BY_PROJECT, first_day_time)
         last_day_number = self.get_number_last_month_day() + 1

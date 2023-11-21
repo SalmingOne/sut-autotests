@@ -38,7 +38,7 @@ class BasePage:
         return wait(self.driver, timeout).until(EC.invisibility_of_element(locator))
 
     @allure.step("по элементу можно кликнуть")
-    def element_is_clicable(self, locator, timeout=5):
+    def element_is_clickable(self, locator, timeout=5):
         return wait(self.driver, timeout).until(EC.element_to_be_clickable(locator))
 
     @allure.step("перейти к элементу")

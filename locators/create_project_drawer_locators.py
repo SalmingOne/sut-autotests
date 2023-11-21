@@ -3,7 +3,7 @@ from data import data
 
 
 class CreateProjectDrawerLocators:
-    # Переходим на вкладку создания пректа и все проекты
+    # Переходим на вкладку создания проекта и все проекты
     TAB_PROJECTS = (By.CSS_SELECTOR, "div[id='projects']")
     TAB_CREATE_PROJECT = (By.CSS_SELECTOR, 'a[href="/admin/projects?displayOnlyMyProjects=false&create=true"]')
     TAB_ALL_PROJECTS = (By.CSS_SELECTOR, 'a[href="/admin/projects?displayOnlyMyProjects=false&create=false"]')

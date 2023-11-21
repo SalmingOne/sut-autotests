@@ -31,9 +31,9 @@ class CreateProjectDrawerPage(BasePage):
         # выбор вариантов чекбокса (черновик, обязательное указание причины списания)
         if checkbox == "reason":
             self.element_is_visible(self.locators.REASON_CHECKBOX).click()
-        if checkbox == "draft":
+        elif checkbox == "draft":
             self.element_is_visible(self.locators.DRAFT_CHECKBOX).click()
-        if checkbox == "no":
+        elif checkbox == "no":
             print('no checkboxes')
 
         project_worker = USER_NAME
