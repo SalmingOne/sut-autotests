@@ -29,8 +29,7 @@ class LaborCostPage(BasePage):
     @allure.step("Проверка что кода проекта нет на странице")
     def check_no_project_code_at_labor(self):
         try:
-            check_code_at_labor = self.element_is_present(self.locators.CHECK_CODE_PROJECT).text
-            return check_code_at_labor
+            return self.element_is_present(self.locators.CHECK_CODE_PROJECT).text
         except TimeoutException:
             return "no element on page"
 
