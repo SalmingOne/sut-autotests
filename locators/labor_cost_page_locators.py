@@ -28,9 +28,7 @@ class LaborCostPageLocators:
 
     SAVE_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
 
-    PREVIOUS_PERIOD_BUTTON = (By.CSS_SELECTOR,
-                              'button[class="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorPrimary '
-                              'MuiIconButton-sizeMedium css-18wlvvu"]')
+    PREVIOUS_PERIOD_BUTTON = (By.CSS_SELECTOR, 'svg[data-testid="ChevronLeftIcon"]')
     NEXT_PERIOD_BUTTON = (By.XPATH, '//button[contains(@class,"onboarding__next-quarter")]')
 
     SUBMIT_BUTTON = (By.XPATH, '//button[text()="Подтвердить"]')
