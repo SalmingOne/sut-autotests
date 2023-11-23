@@ -8,7 +8,7 @@ class PivotTabPageLocators:
     ANALYTIC_MENU_BUTTON = (By.XPATH, '//button[text()="Аналитика"]')
     PIVOT_TAB_BUTTON = (By.CSS_SELECTOR, 'a[href="/pivot-table/project"]')
     # Выбор периода отображения
-    PERIOD_SELECT_BUTTON = (By.CSS_SELECTOR, 'div[class="MuiInput-root MuiInputBase-root MuiInputBase-colorPrimary onboaring__period-select css-ftxbrz"]')
+    PERIOD_SELECT_BUTTON = (By.XPATH, '//div[contains(@class, "onboaring__period-select")]')
     WEEK_PERIOD_SELECT = (By.CSS_SELECTOR, 'li[data-value="week"]')
     MONTH_BY_DAY_PERIOD_SELECT = (By.CSS_SELECTOR, 'li[data-value="monthByDay"]')
     MONTH_PERIOD_SELECT = (By.CSS_SELECTOR, 'li[data-value="month"]')
