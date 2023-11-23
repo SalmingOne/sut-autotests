@@ -10,7 +10,7 @@ from pages.all_project_page import AllProjectPage
 from pages.authorization_page import AuthorizationPage
 from pages.create_project_drawer_page import CreateProjectDrawerPage
 
-IN_URL = 'http://10.7.2.3:34236/'
+IN_URL = 'http://10.7.2.3:37988/'
 
 
 @pytest.fixture(scope='function')
