@@ -78,3 +78,8 @@ class PivotTabPage(BasePage):
     @allure.step("Открываем список проектов пользователя")
     def open_project_list(self):
         self.element_is_visible(self.locators.OPEN_PROJECT_LIST).click()
+
+    # Открываем дровер фильтрации (отображение)
+    @allure.step("Открываем дровер фильтрации (отображение)")
+    def open_filter(self):
+        self.element_is_visible(self.locators.FILTER_BUTTON).click()

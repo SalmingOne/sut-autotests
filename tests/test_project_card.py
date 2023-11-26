@@ -17,6 +17,7 @@ class TestProjectCard:
         project_card_page.go_to_redact_team()
         member_before_redact = project_card_page.get_first_team_member_on_redact()
         project_card_page.change_first_team_member()
+        time.sleep(1)  # Без этого ожидания иногда не успевает прогрузиться проектная роль
         member_after_redact = project_card_page.get_first_team_member()
         assert input_member == member_before_redact, "Роль, ресурс и ставка изменились при нажатии кнопки редактирования"
         assert input_member != member_after_redact, "Роль, ресурс или ставка не изменились после редактирования"
