@@ -20,8 +20,7 @@ class CreateLocalUserDrawerPage(BasePage):
         names_list = self.elements_are_visible(self.locators.INPUT_NAME_FIELDS)
         data = []
         for name in names_list:
-            field_name = name.get_attribute("name")
-            data.append(field_name)
+            data.append(name.get_attribute("name"))
         assert data == ['username', 'secondName', 'name', 'thirdName'], ("Отсутствуют поля с именем на вкладке личные "
                                                                          "данные")
 
@@ -31,8 +30,7 @@ class CreateLocalUserDrawerPage(BasePage):
         names_list = self.elements_are_visible(self.locators.INPUT_PLACEHOLDER_FIELDS)
         data = []
         for name in names_list:
-            field_name = name.get_attribute("placeholder")
-            data.append(field_name)
+            data.append(name.get_attribute("placeholder"))
         assert data == ['ДД.MM.ГГГГ', 'Начните вводить пол', 'ДД.MM.ГГГГ',
                         'Начните вводить проектную роль', 'Начните вводить системную роль',
                         'Начните вводить подразделение', 'Начните вводить должность',
@@ -76,8 +74,7 @@ class CreateLocalUserDrawerPage(BasePage):
         names_list = self.elements_are_visible(self.locators.INPUT_NAME_FIELDS)
         data = []
         for name in names_list:
-            field_name = name.get_attribute("name")
-            data.append(field_name)
+            data.append(name.get_attribute("name"))
         assert data == ['phone', 'email'], "Некоторые поля на вкладке контакты отсутствуют"
 
     # Есть кнопка удаления проекта
