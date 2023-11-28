@@ -1,5 +1,3 @@
-import time
-
 import allure
 
 from pages.all_project_page import AllProjectPage

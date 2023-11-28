@@ -23,5 +23,5 @@ class PivotTabPageLocators:
     BY_USER_BUTTON = (By.XPATH, '//button[text()="По пользователям"]')
     OPEN_PROJECT_LIST = (By.XPATH, f'//h6[@aria-label="{USER_NAME}"]//ancestor::span[1]//preceding::span[2]')
     # Кнопка фильтрации
-    FILTER_BUTTON = (By.XPATH, '//button[contains(@class, " MuiButton-textSizeSmall MuiButton-disableElevation")]')
+    FILTER_BUTTON = (By.XPATH, '//button[contains(@class, "MuiButton-textSizeSmall MuiButton-disableElevation")]')
 

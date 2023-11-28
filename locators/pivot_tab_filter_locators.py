@@ -3,8 +3,8 @@ from selenium.webdriver.common.by import By
 
 class PivotTabFilterPageLocators:
     # Выбранные чек-боксы и радио-кнопки
-    CHECKED_ELEMENTS = (By.XPATH, '//span[contains(@class, " Mui-checked")]')
-    CHECKED_ELEMENTS_TEXT = (By.XPATH, '//span[contains(@class, " Mui-checked")]//following::p[1]')
+    CHECKED_ELEMENTS = (By.XPATH, '//span[contains(@class, "Mui-checked")]')
+    CHECKED_ELEMENTS_TEXT = (By.XPATH, '//span[contains(@class, "Mui-checked")]//following::p[1]')
     # Чек-боксы и радио-кнопки
     ALL_CHECKBOXES_AND_RADIOBUTTON = (By.XPATH, '//span[contains(@class, "MuiButtonBase-root")]')
     MEMBER_RADIOBUTTON = (By.XPATH, '//p[text()="Участник"]')
