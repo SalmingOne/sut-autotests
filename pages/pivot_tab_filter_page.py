@@ -21,15 +21,10 @@ class PivotTabFilterPage(BasePage):
     @allure.step("Выбираем случайные чек-боксы и радиокнопки")
     def click_random_checkbox(self):
         item_list = self.elements_are_visible(self.locators.ALL_CHECKBOXES_AND_RADIOBUTTON)
-        count = 5
-        while count != 0:
+        for i in range(1, 6):
             item = item_list[random.randint(1, 11)]
-            if count > 0:
-                self.go_to_element(item)
-                item.click()
-                count -= 1
-            else:
-                break
+            self.go_to_element(item)
+            item.click()
 
     # Нажимаем кнопку сбросить все
     @allure.step("Нажимаем кнопку сбросить все")
