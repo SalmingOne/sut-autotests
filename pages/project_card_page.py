@@ -1,4 +1,3 @@
-import time
 
 import allure
 from selenium.common import StaleElementReferenceException
