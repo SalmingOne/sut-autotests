@@ -1,4 +1,3 @@
-
 import allure
 from selenium.common import StaleElementReferenceException
 
