@@ -226,3 +226,26 @@ class LaborCostPage(BasePage):
         self.clear_month_work()
         self.element_is_visible(self.locators.SAVE_BUTTON).click()
         self.element_is_visible(self.locators.THIS_DAY_BUTTON).click()
+
+    # Проверяем цвет поля при списании трудозатрат
+    @allure.step("Проверяем цвет поля при списании трудозатрат")
+    def check_change_color_on_labor_cost_field(self):
+        first_day_time = 14
+
+        self.input_time(self.locators.FIRST_DAY_BY_PROJECT, first_day_time)
+        color_before_save = self.element_is_visible(self.locators.FIRST_DAY_BY_PROJECT_COLOR).value_of_css_property(
+            'background-color')
+        reason_in_field = self.element_is_visible(self.locators.FIRST_DAY_BY_PROJECT).get_attribute('placeholder')
+        self.element_is_visible(self.locators.SAVE_BUTTON).click()
+        time.sleep(1)  # Без этого ожидания не успевает прогрузиться белый цвет
+        color_after_save = self.element_is_visible(self.locators.FIRST_DAY_BY_PROJECT_COLOR).value_of_css_property(
+            'background-color')
+        self.element_is_visible(self.locators.FIRST_DAY_BY_PROJECT).click()
+        self.element_is_visible(self.locators.FIRST_DAY_BY_PROJECT).send_keys(Keys.BACK_SPACE)
+        self.element_is_visible(self.locators.FIRST_DAY_BY_PROJECT).send_keys(Keys.BACK_SPACE)
+        self.element_is_visible(self.locators.FIRST_DAY_BY_PROJECT).send_keys(Keys.RETURN)
+        self.element_is_visible(self.locators.SAVE_BUTTON).click()
+        time.sleep(1)  # Без этого ожидания не успевают сохраниться изменения и не удаляется проект
+        assert color_before_save == 'rgba(255, 251, 233, 1)'
+        assert color_after_save == 'rgba(0, 0, 0, 0)'
+        assert reason_in_field == str(first_day_time)
