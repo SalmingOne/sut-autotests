@@ -8,12 +8,18 @@ from pages.base_page import BasePage
 class PivotTabFilterPage(BasePage):
     locators = PivotTabFilterPageLocators()
 
-    # Берем имена с выбранных чек-боксов и радио-кнопок
-    @allure.step("Берем имена с выбранных чек-боксов и радио-кнопок")
-    def get_checked_element_text(self):
-        checked_element_list = self.elements_are_visible(self.locators.CHECKED_ELEMENTS_TEXT)
+    # Берем текст с разных элементов
+    @allure.step("Берем текст с разных элементов")
+    def get_element_text(self, element):
+        if element == 'checked':
+            element_list = self.elements_are_visible(self.locators.CHECKED_ELEMENTS_TEXT)
+        elif element == 'all':
+            element_list = self.elements_are_visible(self.locators.ALL_CHECKBOXES_AND_RADIOBUTTON_TEXT)
+        elif element == 'dropdown':
+            element_list = self.elements_are_visible(self.locators.ELEMENTS_DROPDOWN_TEXT)
         data = []
-        for element in checked_element_list:
+        for element in element_list:
+            self.go_to_element(element)
             data.append(element.text)
         return data
 
@@ -30,3 +36,14 @@ class PivotTabFilterPage(BasePage):
     @allure.step("Нажимаем кнопку сбросить все")
     def click_reset_button(self):
         self.element_is_visible(self.locators.RESET_ALL_BUTTON).click()
+
+    # Раскрываем дропдаун филиалов
+    @allure.step("Раскрываем дропдаун филиалов")
+    def open_filial_dropdown(self):
+        self.element_is_visible(self.locators.OPEN_FILIAL_DROPDOWN).click()
+
+    # Раскрываем дропдаун интеграций
+    @allure.step("Раскрываем дропдаун интеграций")
+    def open_integration_dropdown(self):
+        self.element_is_visible(self.locators.INTEGRATION_CHECKBOX).click()
+        self.element_is_visible(self.locators.OPEN_INTEGRATION_DROPDOWN).click()
