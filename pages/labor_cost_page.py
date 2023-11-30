@@ -51,11 +51,12 @@ class LaborCostPage(BasePage):
     # Узнаем сколько дней в конкретном месяце, что бы потом вставить значение в последний день
     @allure.step("Узнаем сколько дней в конкретном месяце, что бы потом вставить значение в последний день")
     def get_number_last_month_day(self):
-        all_day_list = self.elements_are_visible(self.locators.ALL_DAY_NUMBER)
+        all_day_list = self.elements_are_present(self.locators.ADD_OVERTIME_WORK_BUTTON)
         numbers = []
         for day in all_day_list:
             numbers.append(day.text)
-        return len(numbers) - 5
+        print(len(numbers))
+        return len(numbers)
 
     # Списываем трудозатраты за первый и последний день месяца
     @allure.step("Списываем трудозатраты за первый и последний день месяца")
@@ -253,3 +254,29 @@ class LaborCostPage(BasePage):
         assert color_after_save == 'rgba(0, 0, 0, 0)', "После сохранения списания цвет не белый"
         assert reason_in_field == str(first_day_time), "Количество часов списания не равно введенному значению"
         assert reason_in_field_after_save == str(first_day_time), "Списание не сохранено"
+
+    def check_title(self):
+        title_text = self.element_is_visible(self.locators.TITLE_PAGE).text
+        assert title_text == "Трудозатраты", "Заголовок страницы не Трудозатраты"
+
+    def check_period_select(self):
+        self.element_is_visible(self.locators.PERIOD_SELECT_BUTTON).click()
+        menu_title_list = self.elements_are_visible(self.locators.PERIOD_MENU_ITEM)
+        data = []
+        for title in menu_title_list:
+            data.append(title.text)
+        self.action_esc()
+        assert data == ['Месяц (по дням)', 'Неделя'], "Не все периоды отображены для выбора"
+
+    def check_add_to_project_button(self):
+        add_project = self.element_is_visible(self.locators.ADD_TO_PROJECT_BUTTON).text
+        assert add_project == 'ПРОЕКТ', "Нет кнопки добавления себя на проект"
+
+    def check_filter(self):
+        self.element_is_visible(self.locators.FILTER_BUTTON).click()
+        filter_elements_list = self.elements_are_visible(self.locators.ELEMENTS_ON_FILTER)
+        data = []
+        for element in filter_elements_list:
+            data.append(element.text)
+        self.action_esc()
+        assert data == ['Код проекта', 'Название проекта', 'Отображать неактивные проекты', 'Отображать причины отклонения']

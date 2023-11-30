@@ -47,3 +47,10 @@ class LaborCostPageLocators:
     ALL_DAY_NUMBER = (By.XPATH, '//h6[contains(@class, "MuiTypography-root ")]')
     # Датапикер с выбором месяца
     MONTH_DATEPICKER = (By.XPATH, '//h6[contains(@class, "MuiTypography-root MuiTypography-subtitle2 css-1mh2yc1")]')
+
+    TITLE_PAGE = (By.XPATH, '//h6[contains(@class,"MuiTypography-root MuiTypography-subtitle1")]')
+    PERIOD_MENU_ITEM = (By.XPATH, '//li[contains(@class,"onboarding__period-menu-item")]')
+    ADD_TO_PROJECT_BUTTON = (By.CSS_SELECTOR, 'button[aria-label="Добавление на новый проект"]')
+    ADD_OVERTIME_WORK_BUTTON = (By.CSS_SELECTOR, 'button[aria-label="Нажмите, чтобы добавить отпуск или переработку"]')
+    FILTER_BUTTON = (By.XPATH, '//button[contains(@class, "MuiButton-textSizeSmall MuiButton-disableElevation")]')
+    ELEMENTS_ON_FILTER = (By.XPATH, '//span[contains(@class, "MuiTypography-body1")]')

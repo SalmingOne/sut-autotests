@@ -1,5 +1,5 @@
 import allure
-from selenium.webdriver import ActionChains
+from selenium.webdriver import ActionChains, Keys
 from selenium.webdriver.support.ui import WebDriverWait as wait
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -73,4 +73,10 @@ class BasePage:
     def action_move_to_element(self, element):
         action = ActionChains(self.driver)
         action.move_to_element(element)
+        action.perform()
+
+    @allure.step("нажатие ESC")
+    def action_esc(self):
+        action = ActionChains(self.driver)
+        action.send_keys(Keys.ESCAPE)
         action.perform()
