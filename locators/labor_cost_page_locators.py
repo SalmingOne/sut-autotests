@@ -45,3 +45,7 @@ class LaborCostPageLocators:
     ALL_DAY_NUMBER = (By.XPATH, '//h6[contains(@class, "MuiTypography-root ")]')
     # Датапикер с выбором месяца
     MONTH_DATEPICKER = (By.XPATH, '//h6[contains(@class, "MuiTypography-root MuiTypography-subtitle2 css-1mh2yc1")]')
+    # Поле ввода часов для окна с обязательным указанием причин трудозатрат
+    INPUT_HOUR_FIELD = (By.CSS_SELECTOR, 'input[name="hours"]')
+    # Кнопка "Сохранить" в окне с обязательным указанием причин трудозатрат
+    SAVE_WINDOW_BUTTON = (By.XPATH, "//form/div/div/div/button[contains(text(),'Сохранить')]")
