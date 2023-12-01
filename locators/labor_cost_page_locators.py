@@ -19,6 +19,8 @@ class LaborCostPageLocators:
         f'//div[@aria-label="{PROJECT_NAME}"]//ancestor::div[@class="MuiBox-root css-j7qwjs"]//div[{random.randint(2, 29)}]//input')
     FIRST_DAY_BY_PROJECT = (
         By.XPATH, f'//div[@aria-label="{PROJECT_NAME}"]//ancestor::div[@class="MuiBox-root css-j7qwjs"]//div[2]//input')
+    FIRST_DAY_BY_PROJECT_COLOR = (
+        By.XPATH, f'//div[@aria-label="{PROJECT_NAME}"]//ancestor::div[@class="MuiBox-root css-j7qwjs"]//div[2]//input//parent::div')
     LAST_28_DAY_BY_PROJECT = (
         By.XPATH,
         f'//div[@aria-label="{PROJECT_NAME}"]//ancestor::div[@class="MuiBox-root css-j7qwjs"]//div[29]//input')
