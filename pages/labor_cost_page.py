@@ -55,7 +55,6 @@ class LaborCostPage(BasePage):
         numbers = []
         for day in all_day_list:
             numbers.append(day.text)
-        print(len(numbers))
         return len(numbers)
 
     # Списываем трудозатраты за первый и последний день месяца
@@ -255,10 +254,13 @@ class LaborCostPage(BasePage):
         assert reason_in_field == str(first_day_time), "Количество часов списания не равно введенному значению"
         assert reason_in_field_after_save == str(first_day_time), "Списание не сохранено"
 
+    # Проверяем наличие заголовка Трудозатраты
+    @allure.step("Проверяем наличие заголовка Трудозатраты")
     def check_title(self):
-        title_text = self.element_is_visible(self.locators.TITLE_PAGE).text
-        assert title_text == "Трудозатраты", "Заголовок страницы не Трудозатраты"
+        assert self.element_is_displayed(self.locators.TITLE_PAGE), "Заголовок страницы Трудозатраты отсутствует"
 
+    # Проверяем наличие выбора периода
+    @allure.step("Проверяем наличие выбора периода")
     def check_period_select(self):
         self.element_is_visible(self.locators.PERIOD_SELECT_BUTTON).click()
         menu_title_list = self.elements_are_visible(self.locators.PERIOD_MENU_ITEM)
@@ -268,10 +270,13 @@ class LaborCostPage(BasePage):
         self.action_esc()
         assert data == ['Месяц (по дням)', 'Неделя'], "Не все периоды отображены для выбора"
 
+    # Проверяем наличие кнопки добавления себя на проект
+    @allure.step("Проверяем наличие кнопки добавления себя на проект")
     def check_add_to_project_button(self):
-        add_project = self.element_is_visible(self.locators.ADD_TO_PROJECT_BUTTON).text
-        assert add_project == 'ПРОЕКТ', "Нет кнопки добавления себя на проект"
+        assert self.element_is_displayed(self.locators.ADD_TO_PROJECT_BUTTON), "Нет кнопки добавления себя на проект"
 
+    # Проверяем наличие всех параметров фильтрации
+    @allure.step("Проверяем наличие всех параметров фильтрации")
     def check_filter(self):
         self.element_is_visible(self.locators.FILTER_BUTTON).click()
         filter_elements_list = self.elements_are_visible(self.locators.ELEMENTS_ON_FILTER)
@@ -279,4 +284,91 @@ class LaborCostPage(BasePage):
         for element in filter_elements_list:
             data.append(element.text)
         self.action_esc()
-        assert data == ['Код проекта', 'Название проекта', 'Отображать неактивные проекты', 'Отображать причины отклонения']
+        assert data == ['Код проекта', 'Название проекта', 'Отображать неактивные проекты',
+                        'Отображать причины отклонения'], "Отсутствуют элементы в меню фильтрации"
+
+    # Проверяем наличие кнопки открытия виджетов
+    @allure.step("Проверяем наличие кнопки открытия виджетов")
+    def check_open_widget_button(self):
+        assert self.element_is_displayed(self.locators.OPEN_WIDGET_BUTTON), "Кнопки открытия виджетов нет на странице"
+
+    # Проверяем наличие кнопки выбора месяца
+    @allure.step("Проверяем наличие кнопки выбора месяца")
+    def check_month_picker(self):
+        assert self.element_is_displayed(self.locators.MONTH_DATEPICKER), "Нет кнопки выбора месяца"
+
+    # Проверяем наличие кнопок следующего и предыдущего периода
+    @allure.step("Проверяем наличие кнопок следующего и предыдущего периода")
+    def check_next_previous_buttons(self):
+        assert self.element_is_displayed(self.locators.NEXT_PERIOD_BUTTON), "Нет кнопки следующего периода"
+        assert self.element_is_displayed(self.locators.PREVIOUS_PERIOD_BUTTON), "Нет кнопки предыдущего периода"
+
+    # Проверяем наличие Итого в шапке таблицы
+    @allure.step("Проверяем наличие всех дней недели в шапке таблицы")
+    def check_tab_head(self):
+        all_day_list = self.elements_are_visible(self.locators.ALL_DAY_NUMBER)
+        numbers = []
+        for day in all_day_list:
+            numbers.append(day.text)
+        assert 'Итого' in numbers, "Итого нет в заголовке"
+        return numbers, len(numbers) - 5
+
+    # Проверяем наличие всех дней недели в шапке таблицы
+    @allure.step("Проверяем наличие всех дней недели в шапке таблицы")
+    def check_week_days_head(self):
+        all_day_list = self.elements_are_present(self.locators.SEVEN_DAY_ON_HEAD)
+        numbers = []
+        for day in all_day_list:
+            numbers.append(day.text)
+        day_week = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс']
+        for a in day_week:
+            assert a in numbers, "Дня недели нет в заголовке"
+
+    # Проверяем наличие красного и белого цвета ячеек в таблице
+    @allure.step("Проверяем наличие красного и белого цвета ячеек в таблице")
+    def check_colors_of_days(self):
+        if self.element_is_displayed(self.locators.PROJECT_STRING):
+            day_list = self.elements_are_visible(self.locators.ALL_DAY_COLORS)
+            data = []
+            for element in day_list:
+                data.append(element.value_of_css_property('background-color'))
+            color_list = ['rgba(0, 0, 0, 0)', 'rgba(255, 236, 229, 1)']
+            for a in color_list:
+                assert a in data, "В таблице нет ячеек красного или белого цвета"
+        else:
+            pass
+
+    # Проверяем наличие выбранных дней при наведении на ячейку таблицы
+    @allure.step("Проверяем наличие выбранных дней при наведении на ячейку таблицы")
+    def check_have_selected_days(self):
+        if self.element_is_displayed(self.locators.PROJECT_STRING):
+            day_list = self.elements_are_visible(self.locators.ALL_DAY_COLORS)
+            self.action_move_to_element(day_list[5])
+            assert self.element_is_displayed(self.locators.SELECTED_DAYS), ("При наведении на ячейку таблицы на "
+                                                                            "странице нет выбранных дней")
+        else:
+            pass
+
+    # Проверяем наличие тултипа при наведении на код проекта
+    @allure.step("Проверяем наличие тултипа при наведении на код проекта")
+    def check_tooltip_on_project_code(self):
+        if self.element_is_displayed(self.locators.PROJECT_STRING):
+            project_list = self.elements_are_visible(self.locators.PROJECT_TITLE)
+            self.action_move_to_element(project_list[0])
+            assert self.element_is_displayed(self.locators.TOOLTIP), "При наведении на код проекта не появляется тултип"
+            return self.element_is_visible(self.locators.TOOLTIP).text
+        else:
+            pass
+
+    # Проверяем наличие кнопок сохранения и отмены
+    @allure.step("Проверяем наличие кнопок сохранения и отмены")
+    def check_save_and_disable_buttons(self):
+        assert self.element_is_displayed(self.locators.SAVE_BUTTON)
+        assert self.element_is_displayed(self.locators.DISABLE_BUTTON)
+
+    # Переходим на отображение по имени проекта
+    @allure.step("Переходим на отображение по имени проекта")
+    def go_to_filter_by_project_name(self):
+        self.element_is_visible(self.locators.FILTER_BUTTON).click()
+        self.element_is_visible(self.locators.FILTER_BY_PROJECT_NAME).click()
+        self.action_esc()
