@@ -4,11 +4,12 @@ from configuration.config_provider import ConfigProvider
 
 config = ConfigProvider()
 
+
+# Класс методов API авторизации\\аутентификации
 class AuthApi:
-    """ Класс методов API авторизации\аутентификации"""
 
     @allure.step("Авторизация")
-    def auth(self) -> None:
+    def auth(self):
 
         response = requests.post(
             url=config.get_auth_url(),
@@ -17,5 +18,5 @@ class AuthApi:
         if response.status_code == 200:
             config.set_token(response.json()["accessToken"])
         else:
-            assert False, 'Авторизация не удалась, статус код: ' + str(response.status_code)
-
+            assert False, 'Авторизация не удалась, статус код: ' + \
+                          str(response.status_code)

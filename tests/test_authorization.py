@@ -1,5 +1,5 @@
 import allure
-
+import pytest
 from data.data import LOGIN, PASSWORD
 from pages.authorization_page import AuthorizationPage
 from conftest import IN_URL
@@ -23,3 +23,14 @@ class TestAuthorization:
         authorization_page.open()
         authorization_page.authorization("ADMin", PASSWORD)
         authorization_page.check_authorization()
+
+
+class TestA:
+
+    @pytest.mark.labor_reason("True")
+    @pytest.mark.attach_files("True")
+    @pytest.mark.project_status("ARCHIVED")
+    def test_1(self, f_create_temp_project):
+        code = 1
+        test = f_create_temp_project
+        assert test == 0

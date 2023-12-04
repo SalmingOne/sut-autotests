@@ -17,9 +17,12 @@ from api_methods.project import ProjectApi
 IN_URL = 'http://10.7.2.3:42995/'
 config = ConfigProvider()
 
+
 @pytest.fixture(scope='function')
 def driver():
-    driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+    driver = webdriver.Chrome(
+        service=ChromeService(
+            ChromeDriverManager().install()))
     driver.maximize_window()
     yield driver
     driver.quit()
@@ -43,24 +46,27 @@ def project(login, driver):
     all_project_page.go_to_all_project_page()
     all_project_page.delete_project()
 
+
 @pytest.fixture
 def f_auth() -> dict:
 
     response = requests.post(
-    url=config.get_auth_url(),
-    json={"login" : "admin", "password" : "password"}
+        url=config.get_auth_url(),
+        json=config.get_admin_creds()
     )
-        
-    return {"Access" : "Bearer " + response.json()["accessToken"]}
+
+    return {"Access": "Bearer " + response.json()["accessToken"]}
+
 
 @pytest.fixture
-def f_create_temp_project() -> Response:
+def f_create_temp_project(request) -> Response:
     """ Создаёт временный проект удаляемый по окнчанию теста """
 
-
     project_api = ProjectApi()
-    response = project_api.create_project()
-    
+    response = project_api.create_project(
+        status=request.node.get_closest_marker("project_status").args[0],
+        laborReasons=bool(request.node.get_closest_marker("labor_reson")),
+        mandatoryAttachFiles=bool(request.node.get_closest_marker("atach_files")))
     yield response
 
     project_api.delete_project(response.json()["id"])
