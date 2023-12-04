@@ -1,5 +1,6 @@
 import allure
-from selenium.webdriver import ActionChains
+from selenium.common import TimeoutException
+from selenium.webdriver import ActionChains, Keys
 from selenium.webdriver.support.ui import WebDriverWait as wait
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -74,3 +75,17 @@ class BasePage:
         action = ActionChains(self.driver)
         action.move_to_element(element)
         action.perform()
+
+    @allure.step("нажатие ESC")
+    def action_esc(self):
+        action = ActionChains(self.driver)
+        action.send_keys(Keys.ESCAPE)
+        action.perform()
+
+    @allure.step("элемент отображён")
+    def element_is_displayed(self, locator, timeout=5):
+        try:
+            wait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
+            return True
+        except TimeoutException:
+            return False
