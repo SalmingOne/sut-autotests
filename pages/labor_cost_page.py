@@ -372,3 +372,30 @@ class LaborCostPage(BasePage):
         self.element_is_visible(self.locators.FILTER_BUTTON).click()
         self.element_is_visible(self.locators.FILTER_BY_PROJECT_NAME).click()
         self.action_esc()
+
+    # Открываем модальное окно указания причины списания
+    @allure.step("Открываем модальное окно указания причины списания")
+    def open_reason_window(self):
+        self.element_is_visible(self.locators.RANDOM_DAYS_BY_PROJECT).click()
+
+    # Проверяем наличие заголовка на модальном окне указания причины списания
+    @allure.step("Проверяем наличие заголовка на модальном окне указания причины списания")
+    def check_title_reason_window(self):
+        assert self.element_is_displayed(self.locators.TITLE_MODAL_REASON_WINDOW)
+
+    # Проверяем наличие полей на модальном окне указания причины списания
+    @allure.step("Проверяем наличие полей на модальном окне указания причины списания")
+    def check_fields_reason_window(self):
+        assert self.element_is_displayed(self.locators.INPUT_REASON_TIME_FIELD)
+        assert self.element_is_displayed(self.locators.INPUT_REASON_DESCRIPTION_FIELD)
+
+    # Проверяем наличие кнопок на модальном окне указания причины списания
+    @allure.step("Проверяем наличие кнопок на модальном окне указания причины списания")
+    def check_buttons_reason_window(self):
+        assert self.element_is_displayed(self.locators.SAVE_LABOR_REASON_WINDOW_BUTTON)
+        assert self.element_is_displayed(self.locators.BREAK_LABOR_REASON_WINDOW)
+
+    # Закрываем модальное окно указания причины списания
+    @allure.step("Закрываем модальное окно указания причины списания")
+    def close_reason_window(self):
+        self.element_is_visible(self.locators.BREAK_LABOR_REASON_WINDOW).click()

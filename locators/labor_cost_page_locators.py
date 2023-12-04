@@ -26,20 +26,17 @@ class LaborCostPageLocators:
         By.XPATH,
         f'//div[@aria-label="{PROJECT_NAME}"]//ancestor::div[@class="MuiBox-root css-j7qwjs"]//div[8]//input')
     PROJECT_STRING = (By.CSS_SELECTOR, 'div[class="MuiBox-root css-j7qwjs"]')
-    #
+    # Локаторы для проверки цветов ячеек
     FIRST_DAY_BY_PROJECT_COLOR = (
         By.XPATH,
         f'//div[@aria-label="{PROJECT_NAME}"]//ancestor::div[@class="MuiBox-root css-j7qwjs"]//div[2]//input//parent::div')
     ALL_DAY_COLORS = (By.XPATH, '//div[@class="MuiBox-root css-j7qwjs"]//div//input//parent::div')
-    #
+    # Кнопки подтверждения и отмены
     SAVE_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
     SUBMIT_BUTTON = (By.XPATH, '//button[text()="Подтвердить"]')
     DISABLE_BUTTON = (By.XPATH, '//button[text()="Отменить"]')
-
     # Проверка что в аллерте есть поле для указания причины списания
     CHECK_LABOR_REASON_FIELD = (By.XPATH, '//label[text()="Причина"]')
-    # Кнопка сброса аллерта
-    BREAK_LABOR_REASON_WINDOW = (By.XPATH, '//div[@aria-label="Заполните все обязательные поля"]//following::button')
     # Выбор периода на странице
     PERIOD_SELECT_BUTTON = (By.XPATH, '//div[contains(@class, "onboaring__period-select")]')
     WEEK_PERIOD_SELECT = (By.CSS_SELECTOR, 'li[data-value="week"]')
@@ -72,3 +69,10 @@ class LaborCostPageLocators:
     PROJECT_TITLE = (By.XPATH, '//a[contains(@class, "MuiTypography-subtitle2")]')
     # Тултип
     TOOLTIP = (By.XPATH, '//div[contains(@class, "MuiTooltip-tooltipPlacementTop")]')
+    # Модальное окно обязательного списания
+    TITLE_MODAL_REASON_WINDOW = (By.XPATH, '//h6[contains(text(), "Списание")]')
+    INPUT_REASON_TIME_FIELD = (By.XPATH, '//input[contains(@class, "MuiOutlinedInput-input MuiInputBase-input")]')
+    INPUT_REASON_DESCRIPTION_FIELD = (By.CSS_SELECTOR, 'textarea[name="reason"]')
+    # Кнопки сохранения и сброса модального окна обязательного списания
+    BREAK_LABOR_REASON_WINDOW = (By.XPATH, '//div[contains(@class, "MuiPaper-elevation24")]//button[contains(@class, "MuiButton-outlinedSecondary")]')
+    SAVE_LABOR_REASON_WINDOW_BUTTON = (By.XPATH, '//div[contains(@class, "MuiPaper-elevation24")]//button[contains(@class, "onboarding__save-button")]')
