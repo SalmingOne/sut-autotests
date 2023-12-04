@@ -13,7 +13,6 @@ from pages.create_project_drawer_page import CreateProjectDrawerPage
 IN_URL = 'http://10.7.2.3:42995/'
 
 
-
 @pytest.fixture(scope='function')
 def driver():
     driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
