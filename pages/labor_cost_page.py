@@ -49,9 +49,9 @@ class LaborCostPage(BasePage):
         self.element_is_visible(element).send_keys(Keys.RETURN)
 
     @allure.step("Ввод значения часов трудозатрат в модальном окне при обязательном указании причин трудозатрат")
-    def click_onto_cell(self, element):
+    def input_hours_into_form(self, element, hours):
         self.element_is_visible(element).click()
-        self.element_is_visible(self.locators.INPUT_HOUR_FIELD)
+        self.element_is_visible(self.locators.INPUT_HOUR_FIELD).send_keys(hours)
 
     # Узнаем сколько дней в конкретном месяце, что бы потом вставить значение в последний день
     @allure.step("Узнаем сколько дней в конкретном месяце, что бы потом вставить значение в последний день")

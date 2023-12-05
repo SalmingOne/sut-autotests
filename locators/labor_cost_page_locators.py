@@ -49,3 +49,6 @@ class LaborCostPageLocators:
     INPUT_HOUR_FIELD = (By.CSS_SELECTOR, 'input[name="hours"]')
     # Кнопка "Сохранить" в окне с обязательным указанием причин трудозатрат
     SAVE_WINDOW_BUTTON = (By.XPATH, "//form/div/div/div/button[contains(text(),'Сохранить')]")
+
+    def get_random_day_by_project(self, project_name: str ):
+        return  (By.XPATH, f'//div[@aria-label="{project_name}"]//ancestor::div[@class="MuiBox-root css-j7qwjs"]//div[{random.randint(2, 29)}]//input')
