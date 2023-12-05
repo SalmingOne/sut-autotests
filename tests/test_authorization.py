@@ -3,7 +3,7 @@ import pytest
 from data.data import LOGIN, PASSWORD
 from pages.authorization_page import AuthorizationPage
 from conftest import IN_URL
-
+from api_methods.project import ProjectApi
 
 # @pytest.mark.smoke_test
 @allure.suite("Страница авторизации")
@@ -29,8 +29,8 @@ class TestA:
 
     @pytest.mark.labor_reason("True")
     @pytest.mark.attach_files("True")
-    @pytest.mark.project_status("ARCHIVED")
+    @pytest.mark.project_status("ACTIVE")
     def test_1(self, f_create_temp_project):
-        code = 1
+        
         test = f_create_temp_project
         assert test == 0
