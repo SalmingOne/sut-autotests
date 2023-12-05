@@ -62,3 +62,10 @@ class TestLaborCostPage:
         all_project_page.go_to_all_project_page()
         all_project_page.delete_project()
 
+    #  id-277 3.1.1.2 Удаление значений в таблице Отчет трудозатрат
+    @allure.title("id-277 3.1.1.2 Удаление значений в таблице Отчет трудозатрат")
+    def test_delete_values_on_labor_cost_report_table(self, project, login, driver):
+        labor_cost_page = LaborCostPage(driver)
+        labor_cost_page.go_to_labor_cost_page()
+        labor_cost_page.choose_period("week")
+        labor_cost_page.check_delete_values_on_labor_cost_field()

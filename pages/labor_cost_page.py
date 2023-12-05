@@ -249,7 +249,7 @@ class LaborCostPage(BasePage):
         self.element_is_visible(self.locators.FIRST_DAY_BY_PROJECT).send_keys(Keys.RETURN)
         self.element_is_visible(self.locators.SAVE_BUTTON).click()
         time.sleep(1)  # Без этого ожидания не успевают сохраниться изменения и не удаляется проект
-        assert color_before_save == 'rgba(255, 251, 233, 1)', "Цвет после списания трудозатрат цвет ячейки не жёлтый"
+        assert color_before_save == 'rgba(255, 251, 233, 1)', "После списания трудозатрат цвет ячейки не жёлтый"
         assert color_after_save == 'rgba(0, 0, 0, 0)', "После сохранения списания цвет не белый"
         assert reason_in_field == str(first_day_time), "Количество часов списания не равно введенному значению"
         assert reason_in_field_after_save == str(first_day_time), "Списание не сохранено"
@@ -399,3 +399,30 @@ class LaborCostPage(BasePage):
     @allure.step("Закрываем модальное окно указания причины списания")
     def close_reason_window(self):
         self.element_is_visible(self.locators.BREAK_LABOR_REASON_WINDOW).click()
+
+    # Проверяем цвет поля при удалении списания трудозатрат
+    @allure.step("Проверяем цвет поля при списании трудозатрат")
+    def check_delete_values_on_labor_cost_field(self):
+        first_day_time = 10
+        # Списываем затраты и берем цвета ячейки
+        self.input_time(self.locators.FIRST_DAY_BY_PROJECT, first_day_time)
+        self.element_is_visible(self.locators.SAVE_BUTTON).click()
+        reason_in_field = self.element_is_visible(self.locators.FIRST_DAY_BY_PROJECT).get_attribute('placeholder')
+        time.sleep(1)  # Без этого ожидания не корректно удаляется значение в ячейке
+        # Удаляем списания по проекту
+        self.element_is_visible(self.locators.FIRST_DAY_BY_PROJECT).click()
+        self.element_is_visible(self.locators.FIRST_DAY_BY_PROJECT).send_keys(Keys.BACK_SPACE)
+        self.element_is_visible(self.locators.FIRST_DAY_BY_PROJECT).send_keys(Keys.BACK_SPACE)
+        self.element_is_visible(self.locators.FIRST_DAY_BY_PROJECT).send_keys(Keys.RETURN)
+        color_before_save = self.element_is_visible(self.locators.FIRST_DAY_BY_PROJECT_COLOR).value_of_css_property(
+            'background-color')
+        reason_in_field_after_delete = self.element_is_visible(self.locators.FIRST_DAY_BY_PROJECT).get_attribute(
+            'placeholder')
+        self.element_is_visible(self.locators.SAVE_BUTTON).click()
+        time.sleep(1)  # Без этого ожидания не успевает прогрузиться белый цвет
+        color_after_save = self.element_is_visible(self.locators.FIRST_DAY_BY_PROJECT_COLOR).value_of_css_property(
+            'background-color')
+
+        assert color_before_save == 'rgba(255, 251, 233, 1)', "После удаления списания цвет ячейки не жёлтый"
+        assert color_after_save == 'rgba(0, 0, 0, 0)', "После сохранения удаления списания цвет не белый"
+        assert reason_in_field_after_delete != reason_in_field, "Списание не удалено"
