@@ -23,14 +23,3 @@ class TestAuthorization:
         authorization_page.open()
         authorization_page.authorization("ADMin", PASSWORD)
         authorization_page.check_authorization()
-
-
-class TestA:
-
-    @pytest.mark.labor_reason("True")
-    @pytest.mark.attach_files("True")
-    @pytest.mark.project_status("ACTIVE")
-    def test_1(self, f_create_temp_project):
-        
-        test = f_create_temp_project
-        assert test == 0
