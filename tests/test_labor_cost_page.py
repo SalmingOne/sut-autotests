@@ -1,5 +1,7 @@
 import allure
 
+from pages.all_project_page import AllProjectPage
+from pages.create_project_drawer_page import CreateProjectDrawerPage
 from pages.labor_cost_page import LaborCostPage
 
 
@@ -39,3 +41,24 @@ class TestLaborCostPage:
         assert tooltip_on_code in tooltip_on_project, "Тултип отображается без имени проекта"
         assert 'Проект' in first_column, "Нет столбца Проект"
         assert count_add_overtime_work == all_day, "Количество кнопок переработки не равно количеству дней"
+
+    #  id-1461 3.1.1.2 Содержание модального окна указания причин списания.
+    @allure.title("id-1461 3.1.1.2 Содержание модального окна указания причин списания.")
+    def test_contents_modal_window_indicating_the_reasons(self, login, driver):
+        # Создаем проект с обязательным указанием причины списания
+        create_project_drawer_page = CreateProjectDrawerPage(driver)
+        create_project_drawer_page.go_to_create_project_drawer_from_menu()
+        create_project_drawer_page.create_project('reason')
+        # Проверяем наличие необходимых элементов на модальном окне
+        labor_cost_page = LaborCostPage(driver)
+        labor_cost_page.go_to_labor_cost_page()
+        labor_cost_page.open_reason_window()
+        labor_cost_page.check_title_reason_window()
+        labor_cost_page.check_fields_reason_window()
+        labor_cost_page.check_buttons_reason_window()
+        labor_cost_page.close_reason_window()
+        # Удаляем проект
+        all_project_page = AllProjectPage(driver)
+        all_project_page.go_to_all_project_page()
+        all_project_page.delete_project()
+
