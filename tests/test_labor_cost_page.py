@@ -85,3 +85,20 @@ class TestLaborCostPage:
             assert False, "Кнопка \"Сохранить\" активна"
         else:
             assert True
+
+    @pytest.mark.labor_reason("True")
+    @allure.title("id-1476 Ввод пробела в поле \"Причина\"")
+    def test_enter_whitespace_in_the_reson_field(self, driver, login, f_create_temp_project):
+
+        labor_cost_page = LaborCostPage(driver)
+        locators = LaborCostPageLocators()
+        labor_cost_page.go_to_labor_cost_page()
+        labor_cost_page.open_reason_window(f_create_temp_project["name"])
+        labor_cost_page.input_hours_into_form(6)
+        labor_cost_page.input_reason_into_form(" ")
+        labor_cost_page.save_hours_and_reason()
+
+        if labor_cost_page.element_is_visible(locators.GOAL_REASON_FIELD_IS_REQUIRED):
+            assert True
+        else:
+            assert False, "Отсутствует сообщение \"Поле обязательно\""

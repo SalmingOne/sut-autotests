@@ -389,6 +389,10 @@ class LaborCostPage(BasePage):
         else:
             self.element_is_visible(self.locators.get_random_day_by_project(project_name)).click()
     
+    @allure.step("Нажать Сохранить в модальном окне указание часов и причины списания трудозатрат")
+    def save_hours_and_reason (self):
+        self.element_is_visible(self.locators.SAVE_LABOR_REASON_WINDOW_BUTTON).click()
+
     # Проверяем наличие заголовка на модальном окне указания причины списания
     @allure.step("Проверяем наличие заголовка на модальном окне указания причины списания")
     def check_title_reason_window(self):
