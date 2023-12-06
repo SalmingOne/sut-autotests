@@ -84,4 +84,4 @@ class TestLaborCostPage:
         labor_cost_page.go_to_labor_cost_page()
         value_after_return = labor_cost_page.get_values_on_labor_cost_field_to_check()
 
-        assert value_after_input != value_after_return
+        assert value_after_input != value_after_return, "В ячейке сохранились списанные трудозатраты"
