@@ -426,3 +426,23 @@ class LaborCostPage(BasePage):
         assert color_before_save == 'rgba(255, 251, 233, 1)', "После удаления списания цвет ячейки не жёлтый"
         assert color_after_save == 'rgba(0, 0, 0, 0)', "После сохранения удаления списания цвет не белый"
         assert reason_in_field_after_delete != reason_in_field, "Списание не удалено"
+
+    # Вводим в поле не сохраненные трудозатраты
+    @allure.step("Вводим в поле не сохраненные трудозатраты")
+    def input_unsaved_values_on_labor_cost_field(self):
+        first_day_time = 18
+        self.input_time(self.locators.FIRST_DAY_BY_PROJECT, first_day_time)
+        return str(first_day_time)
+
+    # Проверяем наличие элементов на окне уведомления о не сохраненных данных"
+    @allure.step("Проверяем наличие элементов на окне уведомления о не сохраненных данных")
+    def check_unsaved_data_window(self):
+        assert self.element_is_displayed(self.locators.UNSAVED_WINDOW_TITLE)
+        assert self.element_is_displayed(self.locators.UNSAVED_WINDOW_ACCEPT_BUTTON)
+        assert self.element_is_displayed(self.locators.UNSAVED_WINDOW_ABORT_BUTTON)
+        self.element_is_visible(self.locators.UNSAVED_WINDOW_ACCEPT_BUTTON).click()
+
+    # Берем текст в поле после возвращения на страницу трудозатрат
+    @allure.step("Берем текст в поле после возвращения на страницу трудозатрат")
+    def get_values_on_labor_cost_field_to_check(self):
+        return self.element_is_visible(self.locators.FIRST_DAY_BY_PROJECT).text
