@@ -1,9 +1,9 @@
 import allure
-
+import pytest
 from data.data import LOGIN, PASSWORD
 from pages.authorization_page import AuthorizationPage
 from conftest import IN_URL
-
+from api_methods.project import ProjectApi
 
 # @pytest.mark.smoke_test
 @allure.suite("Страница авторизации")
