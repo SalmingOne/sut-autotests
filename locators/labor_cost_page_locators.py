@@ -76,3 +76,7 @@ class LaborCostPageLocators:
     # Кнопки сохранения и сброса модального окна обязательного списания
     BREAK_LABOR_REASON_WINDOW = (By.XPATH, '//div[contains(@class, "MuiPaper-elevation24")]//button[contains(@class, "MuiButton-outlinedSecondary")]')
     SAVE_LABOR_REASON_WINDOW_BUTTON = (By.XPATH, '//div[contains(@class, "MuiPaper-elevation24")]//button[contains(@class, "onboarding__save-button")]')
+    # Локаторы окна уведомления о не сохранении данных
+    UNSAVED_WINDOW_TITLE = (By.XPATH, '//h6[text()="Подтвердите действие"]')
+    UNSAVED_WINDOW_ACCEPT_BUTTON = (By.XPATH, '//h6[text()="Подтвердите действие"]//following::button[1]')
+    UNSAVED_WINDOW_ABORT_BUTTON = (By.XPATH, '//h6[text()="Подтвердите действие"]//following::button[2]')
