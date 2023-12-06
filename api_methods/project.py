@@ -74,7 +74,7 @@ class ProjectApi:
                 "resources": resources
             }
         )
-        return response.json()
+        return response
 
     @allure.step("Удалить проект с id {id} помощью API")
     def delete_project(self, id: int):
