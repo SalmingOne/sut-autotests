@@ -71,17 +71,15 @@ class TestLaborCostPage:
         labor_cost_page.choose_period("week")
         labor_cost_page.check_delete_values_on_labor_cost_field()
 
-@allure.suite("Поле \"Причина\"")
-class TestReasonField:
-
     @pytest.mark.labor_reason("True")
-    @allure.title("id 1464 Пустой ввод в поле \"Причина\"")
+    @allure.title("id-1464 Пустой ввод в поле \"Причина\"")
     def test_empty_entry_in_the_reson_field(self, driver, login, f_create_temp_project):
 
         labor_cost_page = LaborCostPage(driver)
         locators = LaborCostPageLocators()
         labor_cost_page.go_to_labor_cost_page()
-        labor_cost_page.input_hours_into_form(locators.get_random_day_by_project(f_create_temp_project["name"]), 6)
+        labor_cost_page.open_reason_window(f_create_temp_project["name"])
+        labor_cost_page.input_hours_into_form(6)
 
         if labor_cost_page.element_is_clickable(locators.SAVE_WINDOW_BUTTON):
             assert False, "Кнопка \"Сохранить\" активна"
