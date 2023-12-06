@@ -102,3 +102,25 @@ class TestLaborCostPage:
             assert True
         else:
             assert False, "Отсутствует сообщение \"Поле обязательно\""
+
+    @pytest.mark.labor_reason("True")
+    @allure.title("id-1477 Превышение допустимого количества символов в поле \"Причина\" (255 максимальное количество)")
+    def test_enter_over_max_characters_in_the_reson_field(self, driver, login, f_create_temp_project):
+
+        labor_cost_page = LaborCostPage(driver)
+        locators = LaborCostPageLocators()
+        labor_cost_page.go_to_labor_cost_page()
+        labor_cost_page.open_reason_window(f_create_temp_project["name"])
+        labor_cost_page.input_hours_into_form(6)
+        labor_cost_page.input_reason_into_form("12345678901234567890123456789012345678901234567890"
+                                               "12345678901234567890123456789012345678901234567890"
+                                               "12345678901234567890123456789012345678901234567890"
+                                               "12345678901234567890123456789012345678901234567890"
+                                               "12345678901234567890123456789012345678901234567890"
+                                               "123456")
+        labor_cost_page.save_hours_and_reason()
+
+        if labor_cost_page.element_is_visible(locators.GOAL_NUMBER_OF_CHARACTERS_OVER_MAX):
+            assert True
+        else:
+            assert False, "Отсутствует сообщение \"Максимальное количество символов: 255\""
