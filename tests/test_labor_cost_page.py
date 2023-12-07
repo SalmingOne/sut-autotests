@@ -124,3 +124,19 @@ class TestLaborCostPage:
             assert True
         else:
             assert False, "Отсутствует сообщение \"Максимальное количество символов: 255\""
+            
+    #  id-3165 3.1.1.5. Уведомление пользователей о несохраненных данных в разделе трудозатрат.
+    @allure.title("id-3165 3.1.1.5. Уведомление пользователей о несохраненных данных в разделе трудозатрат.")
+    def test_notify_users_about_unsaved_data(self, project, login, driver):
+        labor_cost_page = LaborCostPage(driver)
+        labor_cost_page.go_to_labor_cost_page()
+        value_after_input = labor_cost_page.input_unsaved_values_on_labor_cost_field()
+
+        all_project_page = AllProjectPage(driver)
+        all_project_page.go_to_all_project_page()
+
+        labor_cost_page.check_unsaved_data_window()
+        labor_cost_page.go_to_labor_cost_page()
+        value_after_return = labor_cost_page.get_values_on_labor_cost_field_to_check()
+
+        assert value_after_input != value_after_return, "В ячейке сохранились списанные трудозатраты"
