@@ -48,6 +48,14 @@ class LaborCostPage(BasePage):
         self.element_is_visible(element).send_keys(in_time)
         self.element_is_visible(element).send_keys(Keys.RETURN)
 
+    @allure.step("Ввод значения часов трудозатрат в модальном окне при обязательном указании причин трудозатрат")
+    def input_hours_into_form(self, hours):
+        self.element_is_visible(self.locators.INPUT_HOUR_FIELD).send_keys(hours)
+
+    @allure.step("Ввод причины трудозатрат в модальном окне при обязательном указании причин трудозатрат")
+    def input_reason_into_form(self, reason):
+        self.element_is_visible(self.locators.INPUT_REASON_DESCRIPTION_FIELD).send_keys(reason)
+
     # Узнаем сколько дней в конкретном месяце, что бы потом вставить значение в последний день
     @allure.step("Узнаем сколько дней в конкретном месяце, что бы потом вставить значение в последний день")
     def get_number_last_month_day(self):
@@ -375,9 +383,12 @@ class LaborCostPage(BasePage):
 
     # Открываем модальное окно указания причины списания
     @allure.step("Открываем модальное окно указания причины списания")
-    def open_reason_window(self):
-        self.element_is_visible(self.locators.RANDOM_DAYS_BY_PROJECT).click()
-
+    def open_reason_window(self, project_name = None):
+        if project_name == None:
+            self.element_is_visible(self.locators.RANDOM_DAYS_BY_PROJECT).click()
+        else:
+            self.element_is_visible(self.locators.get_random_day_by_project(project_name)).click()
+    
     # Проверяем наличие заголовка на модальном окне указания причины списания
     @allure.step("Проверяем наличие заголовка на модальном окне указания причины списания")
     def check_title_reason_window(self):

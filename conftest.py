@@ -14,7 +14,7 @@ from pages.create_project_drawer_page import CreateProjectDrawerPage
 from configuration.config_provider import ConfigProvider
 from api_methods.project import ProjectApi
 
-IN_URL = 'http://10.7.2.3:43050/'
+IN_URL = 'http://10.7.2.3:43055/'
 config = ConfigProvider()
 
 
@@ -60,11 +60,26 @@ def f_auth() -> dict:
 def f_create_temp_project(request) -> Response:
     """ Создаёт временный проект удаляемый по окнчанию теста """
 
+    try:
+        status = request.node.get_closest_marker("project_status").args[0]
+    except AttributeError:
+        status = "ACTIVE"
+    try:
+        laborReasons = bool(request.node.get_closest_marker("labor_reason"))
+    except AttributeError:
+        laborReasons = False
+    try:
+        mandatoryAttachFiles = bool(request.node.get_closest_marker("atach_files"))
+    except AttributeError:
+        mandatoryAttachFiles = False
+    
     project_api = ProjectApi()
     response = project_api.create_project(
-        status=request.node.get_closest_marker("project_status").args[0],
-        laborReasons=bool(request.node.get_closest_marker("labor_reson")),
-        mandatoryAttachFiles=bool(request.node.get_closest_marker("atach_files")))
+        status=status,
+        laborReasons=laborReasons,
+        mandatoryAttachFiles=mandatoryAttachFiles)
     yield response
 
-    project_api.delete_project(response.json()["id"])
+
+
+    project_api.delete_project(response["id"])

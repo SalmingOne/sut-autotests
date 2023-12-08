@@ -3,6 +3,7 @@ from selenium.common import TimeoutException
 from selenium.webdriver import ActionChains, Keys
 from selenium.webdriver.support.ui import WebDriverWait as wait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
 
 
 class BasePage:
@@ -40,7 +41,12 @@ class BasePage:
 
     @allure.step("по элементу можно кликнуть")
     def element_is_clickable(self, locator, timeout=5):
-        return wait(self.driver, timeout).until(EC.element_to_be_clickable(locator))
+        try:
+            wait(self.driver, timeout).until(EC.element_to_be_clickable(locator))
+            return True
+        except TimeoutException:
+            return False
+
 
     @allure.step("перейти к элементу")
     def go_to_element(self, element):

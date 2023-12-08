@@ -2,7 +2,6 @@ import requests
 import allure
 import data.data
 from configuration.config_provider import ConfigProvider
-from requests import Response
 from api_methods.auth import AuthApi
 
 
@@ -26,7 +25,7 @@ class ProjectApi:
             description: dict = data.data.VALID_PROJECT_DATA["description"],
             endDate: str = data.data.VALID_PROJECT_DATA["endDate"],
             fileDescription: dict = data.data.VALID_PROJECT_DATA["fileDescription"],
-            resources: list = data.data.VALID_PROJECT_DATA["resources"]) -> Response:
+            resources: list = data.data.VALID_PROJECT_DATA["resources"]):
         """ Создание проекта через API
 
         :param code: код проекта (обязательное)
@@ -75,7 +74,7 @@ class ProjectApi:
                 "resources": resources
             }
         )
-        return response
+        return response.json()
 
     @allure.step("Удалить проект с id {id} помощью API")
     def delete_project(self, id: int):

@@ -76,6 +76,13 @@ class LaborCostPageLocators:
     # Кнопки сохранения и сброса модального окна обязательного списания
     BREAK_LABOR_REASON_WINDOW = (By.XPATH, '//div[contains(@class, "MuiPaper-elevation24")]//button[contains(@class, "MuiButton-outlinedSecondary")]')
     SAVE_LABOR_REASON_WINDOW_BUTTON = (By.XPATH, '//div[contains(@class, "MuiPaper-elevation24")]//button[contains(@class, "onboarding__save-button")]')
+    # Поле ввода часов для окна с обязательным указанием причин трудозатрат
+    INPUT_HOUR_FIELD = (By.CSS_SELECTOR, 'input[name="hours"]')
+    # Кнопка "Сохранить" в окне с обязательным указанием причин трудозатрат
+    SAVE_WINDOW_BUTTON = (By.XPATH, "//form/div/div/div/button[contains(text(),'Сохранить')]")
+
+    def get_random_day_by_project(self, project_name: str ):
+        return  (By.XPATH, f'//div[@aria-label="{project_name}"]//ancestor::div[@class="MuiBox-root css-j7qwjs"]//div[{random.randint(2, 29)}]//input')
     # Локаторы окна уведомления о не сохранении данных
     UNSAVED_WINDOW_TITLE = (By.XPATH, '//h6[text()="Подтвердите действие"]')
     UNSAVED_WINDOW_ACCEPT_BUTTON = (By.XPATH, '//h6[text()="Подтвердите действие"]//following::button[1]')

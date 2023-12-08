@@ -1,9 +1,10 @@
 import allure
+import pytest
 
 from pages.all_project_page import AllProjectPage
 from pages.create_project_drawer_page import CreateProjectDrawerPage
 from pages.labor_cost_page import LaborCostPage
-
+from locators.labor_cost_page_locators import LaborCostPageLocators
 
 @allure.suite("Таблица трудозатрат")
 class TestLaborCostPage:
@@ -70,6 +71,20 @@ class TestLaborCostPage:
         labor_cost_page.choose_period("week")
         labor_cost_page.check_delete_values_on_labor_cost_field()
 
+    @pytest.mark.labor_reason("True")
+    @allure.title("id-1464 Пустой ввод в поле \"Причина\"")
+    def test_empty_entry_in_the_reson_field(self, driver, login, f_create_temp_project):
+
+        labor_cost_page = LaborCostPage(driver)
+        locators = LaborCostPageLocators()
+        labor_cost_page.go_to_labor_cost_page()
+        labor_cost_page.open_reason_window(f_create_temp_project["name"])
+        labor_cost_page.input_hours_into_form(6)
+
+        assert labor_cost_page.element_is_clickable(locators.SAVE_WINDOW_BUTTON) == False,  'Кнопка "Сохранить" активна'
+
+
+            
     #  id-3165 3.1.1.5. Уведомление пользователей о несохраненных данных в разделе трудозатрат.
     @allure.title("id-3165 3.1.1.5. Уведомление пользователей о несохраненных данных в разделе трудозатрат.")
     def test_notify_users_about_unsaved_data(self, project, login, driver):
