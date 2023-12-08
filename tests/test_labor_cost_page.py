@@ -72,7 +72,7 @@ class TestLaborCostPage:
         labor_cost_page.check_delete_values_on_labor_cost_field()
 
     @pytest.mark.labor_reason("True")
-    @allure.title("id-1464 Пустой ввод в поле \"Причина\"")
+    @allure.title('id-1464 Пустой ввод в поле "Причина"')
     def test_empty_entry_in_the_reson_field(self, driver, login, f_create_temp_project):
 
         labor_cost_page = LaborCostPage(driver)
@@ -82,6 +82,40 @@ class TestLaborCostPage:
         labor_cost_page.input_hours_into_form(6)
 
         assert labor_cost_page.element_is_clickable(locators.SAVE_WINDOW_BUTTON) == False,  'Кнопка "Сохранить" активна'
+
+    @pytest.mark.labor_reason("True")
+    @allure.title('id-1476 Ввод пробела в поле "Причина"')
+    def test_enter_whitespace_in_the_reson_field(self, driver, login, f_create_temp_project):
+
+        labor_cost_page = LaborCostPage(driver)
+        locators = LaborCostPageLocators()
+        labor_cost_page.go_to_labor_cost_page()
+        labor_cost_page.open_reason_window(f_create_temp_project["name"])
+        labor_cost_page.input_hours_into_form(6)
+        labor_cost_page.input_reason_into_form(" ")
+        labor_cost_page.save_hours_and_reason()
+
+        assert labor_cost_page.element_is_visible(locators.GOAL_REASON_FIELD_IS_REQUIRED), 'Отсутствует сообщение "Поле обязательно"'
+
+    @pytest.mark.labor_reason("True")
+    @allure.title('id-1477 Превышение допустимого количества символов в поле "Причина" (255 максимальное количество)')
+    def test_enter_over_max_characters_in_the_reson_field(self, driver, login, f_create_temp_project):
+
+        labor_cost_page = LaborCostPage(driver)
+        locators = LaborCostPageLocators()
+        labor_cost_page.go_to_labor_cost_page()
+        labor_cost_page.open_reason_window(f_create_temp_project["name"])
+        labor_cost_page.input_hours_into_form(6)
+        labor_cost_page.input_reason_into_form("12345678901234567890123456789012345678901234567890"
+                                               "12345678901234567890123456789012345678901234567890"
+                                               "12345678901234567890123456789012345678901234567890"
+                                               "12345678901234567890123456789012345678901234567890"
+                                               "12345678901234567890123456789012345678901234567890"
+                                               "123456")
+        labor_cost_page.save_hours_and_reason()
+
+        assert labor_cost_page.element_is_visible(locators.GOAL_NUMBER_OF_CHARACTERS_OVER_MAX), 'Отсутствует сообщение "Максимальное количество символов: 255"'
+
 
             
     #  id-3165 3.1.1.5. Уведомление пользователей о несохраненных данных в разделе трудозатрат.

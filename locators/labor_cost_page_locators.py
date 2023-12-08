@@ -80,8 +80,10 @@ class LaborCostPageLocators:
     INPUT_HOUR_FIELD = (By.CSS_SELECTOR, 'input[name="hours"]')
     # Кнопка "Сохранить" в окне с обязательным указанием причин трудозатрат
     SAVE_WINDOW_BUTTON = (By.XPATH, "//form/div/div/div/button[contains(text(),'Сохранить')]")
-    # Подсказка "Поле обязательно" при попытке сохранить количество с пустым поле причины списания трудозатрат
+    # Подсказка "Поле обязательно" при попытке сохранить окно с пустым полем причины списания трудозатрат
     GOAL_REASON_FIELD_IS_REQUIRED = (By.XPATH, "//div/p[contains(text(),'Поле обязательно')]")
+    # Подсказка "Максимальное количество символов: 255" при попытке сохранить окно с количеством сиволов превышающим максимальное (255 максимальное) в поле причины списания 
+    GOAL_NUMBER_OF_CHARACTERS_OVER_MAX = (By.XPATH, "//div/p[contains(text(),'Максимальное количество символов: 255')]")
     
     def get_random_day_by_project(self, project_name: str ):
         return  (By.XPATH, f'//div[@aria-label="{project_name}"]//ancestor::div[@class="MuiBox-root css-j7qwjs"]//div[{random.randint(2, 29)}]//input')
