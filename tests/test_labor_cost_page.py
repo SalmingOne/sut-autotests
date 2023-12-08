@@ -83,7 +83,6 @@ class TestLaborCostPage:
 
         assert labor_cost_page.element_is_clickable(locators.SAVE_WINDOW_BUTTON) == False,  'Кнопка "Сохранить" активна'
 
-
             
     #  id-3165 3.1.1.5. Уведомление пользователей о несохраненных данных в разделе трудозатрат.
     @allure.title("id-3165 3.1.1.5. Уведомление пользователей о несохраненных данных в разделе трудозатрат.")
