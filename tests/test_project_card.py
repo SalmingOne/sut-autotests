@@ -1,7 +1,10 @@
 import time
 
 import allure
+import pytest
 
+from data.data import PROJECT_NAME
+from pages.all_project_page import AllProjectPage
 from pages.project_card_page import ProjectCardPage
 
 
@@ -9,9 +12,14 @@ from pages.project_card_page import ProjectCardPage
 class TestProjectCard:
 
     # id-3185 1.3.1 Сохранение изменений на вкладке "Команда"
+    @pytest.mark.demo
     @allure.title("id-3185 1.3.1 Сохранение изменений на вкладке Команда")
-    def test_save_changes_to_the_team_tab(self, project, login, driver):
+    def test_save_changes_to_the_team_tab(self, f_create_temp_project, login, driver):
+        all_project_page = AllProjectPage(driver)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(f"{PROJECT_NAME}")
         project_card_page = ProjectCardPage(driver)
+        project_card_page.go_to_team_tab()
         time.sleep(1)  # Без этого ожидания иногда не успевает прогрузиться проектная роль
         input_member = project_card_page.get_first_team_member()
         project_card_page.go_to_redact_team()

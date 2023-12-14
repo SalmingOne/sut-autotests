@@ -1,6 +1,7 @@
 import time
 
 import allure
+from selenium.webdriver.common.by import By
 
 from locators.all_project_page_locators import AllProjectPageLocators
 from pages.base_page import BasePage
@@ -40,3 +41,9 @@ class AllProjectPage(BasePage):
     def see_all_status_project(self):
         self.element_is_visible(self.locators.STATUS_FILTER_BUTTON).click()
         self.element_is_visible(self.locators.MARK_ALL_STATUS).click()
+
+    # Переходим на страницу проекта по имени
+    @allure.step("Переходим на страницу проекта по имени")
+    def go_project_page(self, name):
+        project_title = (By.XPATH, f'//div[@col-id="name"]//div[text()="{name}"]')
+        self.element_is_visible(project_title).click()
