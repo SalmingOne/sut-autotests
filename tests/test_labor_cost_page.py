@@ -3,7 +3,6 @@ import time
 import allure
 import pytest
 
-
 from pages.all_project_page import AllProjectPage
 from pages.labor_cost_page import LaborCostPage
 from locators.labor_cost_page_locators import LaborCostPageLocators
@@ -135,7 +134,7 @@ class TestLaborCostPage:
         statement_page = StatementPage(driver)
         # Проверяем что нет заявлений в таблице. И если есть удаляем
         labor_cost_page.go_to_labor_cost_page()
-        time.sleep(1) # Без ожидания скрипт срабатывает до загрузки страницы
+        time.sleep(1)  # Без ожидания скрипт срабатывает до загрузки страницы
         if labor_cost_page.check_absence_on_tab() > 0:
             statement_page.go_to_statement_page()
             statement_page.delete_all_absence()
@@ -152,4 +151,26 @@ class TestLaborCostPage:
         statement_page.go_to_statement_page()
         deleted_count = statement_page.delete_all_absence()
         assert absense_count == 4, "Добавились не все 4 отсутствия"
-        assert deleted_count == 4, "Не все 4 отсутсвия есть на странице заявлений"
+        assert deleted_count == 4, "Не все 4 отсутствия есть на странице заявлений"
+
+    #  id-543 Добавление отсутствия на период, в котором есть отсутствия
+    @allure.title("id-543 Добавление отсутствия на период, в котором есть отсутствия")
+    def test_add_absence_twice_for_period(self, login, driver):
+        labor_cost_page = LaborCostPage(driver)
+        statement_page = StatementPage(driver)
+        # Проверяем что нет заявлений в таблице. И если есть удаляем
+        labor_cost_page.go_to_labor_cost_page()
+        time.sleep(1)  # Без ожидания скрипт срабатывает до загрузки страницы
+        if labor_cost_page.check_absence_on_tab() > 0:
+            statement_page.go_to_statement_page()
+            statement_page.delete_all_absence()
+        else:
+            pass
+        # Добавляем отсутствия в один и тот же день
+        labor_cost_page.go_to_labor_cost_page()
+        labor_cost_page.add_absence(0, 'vacation')
+        labor_cost_page.add_absence(0, 'sick_leave')
+        labor_cost_page.check_outer_absence()
+        time.sleep(0.2)  # Без ожидания скрипт срабатывает раньше чем пройдет анимация
+        statement_page.go_to_statement_page()
+        statement_page.delete_all_absence()
