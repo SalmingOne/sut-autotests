@@ -14,7 +14,7 @@ from pages.create_project_drawer_page import CreateProjectDrawerPage
 from configuration.config_provider import ConfigProvider
 from api_methods.project import ProjectApi
 
-IN_URL = 'http://10.7.2.3:43091/'
+IN_URL = 'http://10.7.2.3:43099/'
 config = ConfigProvider()
 
 
