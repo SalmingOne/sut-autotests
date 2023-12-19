@@ -1,3 +1,4 @@
+import os
 import time
 
 import allure
@@ -403,3 +404,65 @@ class LaborCostPage(BasePage):
     @allure.step("Берем текст в поле после возвращения на страницу трудозатрат")
     def get_values_on_labor_cost_field_to_check(self):
         return self.element_is_visible(self.locators.FIRST_DAY_BY_PROJECT).text
+
+    # Получаем номера всех дней где не было списано трудозатрат
+    @allure.step("Получаем номера всех дней где не было списано трудозатрат")
+    def get_numbers_days_zero_reason(self):
+        in_total_list = self.elements_are_visible(self.locators.ALL_IN_TOTAL)
+        data = []
+        for i in in_total_list:
+            data.append(i.text)
+        data.remove('Итого')
+        return [i for i, data in enumerate(data) if data == '0']
+
+    # Открываем дровер добавления отсутствия
+    @allure.step("Открываем дровер добавления отсутствия")
+    def open_add_absence_drawer(self, number_day):
+        all_head_days = self.elements_are_present(self.locators.ADD_OVERTIME_WORK_BUTTON_FIELD)
+        self.action_move_to_element(all_head_days[number_day])
+        all_overtime_buttons = self.elements_are_present(self.locators.ADD_OVERTIME_WORK_BUTTON)
+        all_overtime_buttons[number_day].click()
+
+    # Добавляем отсутствие
+    @allure.step("Добавляем отсутствие")
+    def add_absence(self, number_empty_day, absence_tipe):
+        days_zero_reason = self.get_numbers_days_zero_reason()
+        self.open_add_absence_drawer(days_zero_reason[number_empty_day])
+        if absence_tipe == 'vacation':
+            self.field_absence_drawer(self.locators.VACATION)
+        elif absence_tipe == 'administrative_leave':
+            self.field_absence_drawer(self.locators.ADMINISTRATIVE_LEAVE)
+        elif absence_tipe == 'sick_leave':
+            self.field_absence_drawer(self.locators.SICK_LEAVE)
+        elif absence_tipe == 'maternity_leave':
+            self.field_absence_drawer(self.locators.MATERNITY_LEAVE)
+
+    # Заполняем поля дровера добавления отсутствий
+    @allure.step("Заполняем поля дровера добавления отсутствий")
+    def field_absence_drawer(self, locator):
+        self.element_is_visible(self.locators.OPEN_ABSENCE_CHOOSE_BUTTON).click()
+        self.element_is_visible(locator).click()
+        this_day_text = self.element_is_visible(self.locators.BEGIN_LEAVE_DATA_INPUT).get_attribute('value')
+        self.element_is_visible(self.locators.END_LEAVE_DATA_INPUT).send_keys(this_day_text)
+        self.element_is_present(self.locators.FILE_INPUT).send_keys(os.path.abspath(r'../data/административный.docx'))
+        self.element_is_visible(self.locators.DRAWER_SAVE_BUTTON).click()
+        time.sleep(1.5)
+
+    # Проверяем наличие всех дней недели в шапке таблицы
+    @allure.step("Проверяем наличие всех отсутствий в таблице")
+    def check_absence_on_tab(self):
+        all_day_list = self.elements_are_present(self.locators.ALL_DAYS_VALUE)
+        all_day_value = []
+        for day in all_day_list:
+            all_day_value.append(day.get_attribute('placeholder'))
+        count = 0
+        absences_title = ['От', 'А', 'Б', 'Д']
+        for a in absences_title:
+            try:
+                assert a in all_day_value, "В таблице присутствуют не все отсутствия"
+                count += 1
+            except AssertionError:
+                pass
+        return count
+
+

@@ -1,9 +1,13 @@
+import time
+
 import allure
 import pytest
+
 
 from pages.all_project_page import AllProjectPage
 from pages.labor_cost_page import LaborCostPage
 from locators.labor_cost_page_locators import LaborCostPageLocators
+from pages.statement_page import StatementPage
 
 
 @allure.suite("Таблица трудозатрат")
@@ -123,3 +127,29 @@ class TestLaborCostPage:
         value_after_return = labor_cost_page.get_values_on_labor_cost_field_to_check()
 
         assert value_after_input != value_after_return, "В ячейке сохранились списанные трудозатраты"
+
+    #  id-535 3.1.2.1. Добавление больничного/отпуска.
+    @allure.title("id-535 3.1.2.1. Добавление больничного/отпуска.")
+    def test_add_sick_leave_and_vacation(self, login, driver):
+        labor_cost_page = LaborCostPage(driver)
+        statement_page = StatementPage(driver)
+        # Проверяем что нет заявлений в таблице. И если есть удаляем
+        labor_cost_page.go_to_labor_cost_page()
+        time.sleep(1) # Без ожидания скрипт срабатывает до загрузки страницы
+        if labor_cost_page.check_absence_on_tab() > 0:
+            statement_page.go_to_statement_page()
+            statement_page.delete_all_absence()
+        else:
+            pass
+        # Добавляем 4 разных отсутствия
+        labor_cost_page.go_to_labor_cost_page()
+        labor_cost_page.add_absence(0, 'vacation')
+        labor_cost_page.add_absence(1, 'administrative_leave')
+        labor_cost_page.add_absence(2, 'sick_leave')
+        labor_cost_page.add_absence(3, 'maternity_leave')
+        absense_count = labor_cost_page.check_absence_on_tab()
+        # Удаляем все заявления
+        statement_page.go_to_statement_page()
+        deleted_count = statement_page.delete_all_absence()
+        assert absense_count == 4, "Добавились не все 4 отсутствия"
+        assert deleted_count == 4, "Не все 4 отсутсвия есть на странице заявлений"

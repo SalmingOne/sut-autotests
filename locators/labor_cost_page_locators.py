@@ -26,6 +26,7 @@ class LaborCostPageLocators:
         By.XPATH,
         f'//div[@aria-label="{PROJECT_NAME}"]//ancestor::div[@class="MuiBox-root css-j7qwjs"]//div[8]//input')
     PROJECT_STRING = (By.CSS_SELECTOR, 'div[class="MuiBox-root css-j7qwjs"]')
+    ALL_DAYS_VALUE = (By.XPATH, '//div[@class="MuiBox-root css-j7qwjs"]//div//input')
     # Локаторы для проверки цветов ячеек
     FIRST_DAY_BY_PROJECT_COLOR = (
         By.XPATH,
@@ -55,6 +56,9 @@ class LaborCostPageLocators:
     ADD_TO_PROJECT_BUTTON = (By.CSS_SELECTOR, 'button[aria-label="Добавление на новый проект"]')
     # Кнопка добавления переработки
     ADD_OVERTIME_WORK_BUTTON = (By.CSS_SELECTOR, 'button[aria-label="Нажмите, чтобы добавить отпуск или переработку"]')
+    ADD_OVERTIME_WORK_BUTTON_FIELD = (By.XPATH, '//button[@aria-label="Нажмите, чтобы добавить отпуск или переработку"]//parent::div')
+    ADD_OVERTIME_BUTTON_FIELD = (
+    By.XPATH, '//button[@aria-label="Нажмите, чтобы добавить отпуск или переработку"]//child::*')
     # Фильтрация
     FILTER_BUTTON = (By.XPATH, '//button[contains(@class, "MuiButton-textSizeSmall MuiButton-disableElevation")]')
     ELEMENTS_ON_FILTER = (By.XPATH, '//span[contains(@class, "MuiTypography-body1")]')
@@ -91,3 +95,19 @@ class LaborCostPageLocators:
     UNSAVED_WINDOW_TITLE = (By.XPATH, '//h6[text()="Подтвердите действие"]')
     UNSAVED_WINDOW_ACCEPT_BUTTON = (By.XPATH, '//h6[text()="Подтвердите действие"]//following::button[1]')
     UNSAVED_WINDOW_ABORT_BUTTON = (By.XPATH, '//h6[text()="Подтвердите действие"]//following::button[2]')
+    # Локаторы строки Итого
+    ALL_IN_TOTAL = (By.XPATH, '//p[text()="Итого"]//parent::div//parent::div//p')
+    # Кнопка открытия дровера переработки
+    OPEN_ABSENCE_CHOOSE_BUTTON = (By.CSS_SELECTOR, 'button[aria-label="Открыть"]')
+    # Выбираем переработку или отсутствия
+    OVERTIME_WORK = (By.CSS_SELECTOR, 'li[data-option-index="0"]')
+    VACATION = (By.CSS_SELECTOR, 'li[data-option-index="1"]')
+    ADMINISTRATIVE_LEAVE = (By.CSS_SELECTOR, 'li[data-option-index="2"]')
+    SICK_LEAVE = (By.CSS_SELECTOR, 'li[data-option-index="3"]')
+    MATERNITY_LEAVE = (By.CSS_SELECTOR, 'li[data-option-index="4"]')
+    # Дровер добавления отсутствия
+    BEGIN_LEAVE_DATA_INPUT = (By.XPATH, '//div[contains(@class, "MuiInputBase-colorPrimary MuiInputBase-formControl MuiInputBase-adornedEnd")]//input')
+    END_LEAVE_DATA_INPUT = (By.XPATH, '//div[contains(@class, "MuiFormControl-root MuiTextField-root")][2]//input')
+    FILE_INPUT = (By.CSS_SELECTOR, 'input[type="file"]')
+    DRAWER_SAVE_BUTTON = (By.XPATH, '//button[contains(@class, "MuiButtonBase-root onboarding__save-button onboarding__form-footer-save-button")]')
+
