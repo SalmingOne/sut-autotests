@@ -1,5 +1,3 @@
-import time
-
 import pytest
 import requests
 from requests import Response
@@ -13,8 +11,9 @@ from pages.authorization_page import AuthorizationPage
 from pages.create_project_drawer_page import CreateProjectDrawerPage
 from configuration.config_provider import ConfigProvider
 from api_methods.project import ProjectApi
+from api_methods.system_settings import SystemSettingsApi
 
-IN_URL = 'http://10.7.2.3:43091/'
+IN_URL = 'http://10.7.2.3:43055/'
 config = ConfigProvider()
 
 
@@ -47,7 +46,6 @@ def project(login, driver):
 
 @pytest.fixture
 def f_auth() -> dict:
-
     response = requests.post(
         url=config.get_auth_url(),
         json=config.get_admin_creds()
@@ -58,7 +56,7 @@ def f_auth() -> dict:
 
 @pytest.fixture
 def f_create_temp_project(request) -> Response:
-    """ Создаёт временный проект удаляемый по окончанию теста """
+    """ Создаёт временный проект удаляемый по окнчанию теста """
 
     try:
         status = request.node.get_closest_marker("project_status").args[0]
@@ -69,10 +67,10 @@ def f_create_temp_project(request) -> Response:
     except AttributeError:
         laborReasons = False
     try:
-        mandatoryAttachFiles = bool(request.node.get_closest_marker("atach_files"))
+        mandatoryAttachFiles = bool(request.node.get_closest_marker("attach_files"))
     except AttributeError:
         mandatoryAttachFiles = False
-    
+
     project_api = ProjectApi()
     response = project_api.create_project(
         status=status,
@@ -81,3 +79,27 @@ def f_create_temp_project(request) -> Response:
     yield response
 
     project_api.delete_project(response["id"])
+
+
+@pytest.fixture
+def f_overtime_reason_requirement():
+    sys_settings = SystemSettingsApi()
+    sys_settings.turn_on_required_overwork_reason()
+    yield
+    sys_settings.turn_off_required_overwork_reason()
+
+
+@pytest.fixture
+def f_show_onboarding():
+    sys_settings = SystemSettingsApi()
+    sys_settings.turn_on_show_onboarding()
+    yield
+    sys_settings.turn_off_show_onboarding()
+
+
+@pytest.fixture
+def f_notifications():
+    sys_settings = SystemSettingsApi()
+    sys_settings.turn_on_notifications()
+    yield
+    sys_settings.turn_off_notifications()
