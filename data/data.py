@@ -4,11 +4,11 @@ PROJECT_NAME: str = "AutoTestProject"
 USER_NAME = "Администратор Администратор"
 PROJECT_CODE = "ATP"
 LOGIN = "admin"
-PASSWORD = "password"
+PASSWORD = "admin"
 
 # http://10.7.2.3:43000/api/docs#:~:text=OutputPaginatedNotifications-,InputProject,-ProjectStats
-VALID_PROJECT_DATA = {"code": "ATR",
-                      "name": "AutoTest",
+VALID_PROJECT_DATA = {"code": "ATP",
+                      "name": "AutoTestProject",
                       "startDate": "01.10.2022",
                       "status": "ACTIVE",
                       "laborReasons": False,

@@ -14,7 +14,7 @@ from pages.create_project_drawer_page import CreateProjectDrawerPage
 from configuration.config_provider import ConfigProvider
 from api_methods.project import ProjectApi
 
-IN_URL = 'http://10.7.2.3:43055/'
+IN_URL = 'http://10.7.2.3:43091/'
 config = ConfigProvider()
 
 
@@ -58,7 +58,7 @@ def f_auth() -> dict:
 
 @pytest.fixture
 def f_create_temp_project(request) -> Response:
-    """ Создаёт временный проект удаляемый по окнчанию теста """
+    """ Создаёт временный проект удаляемый по окончанию теста """
 
     try:
         status = request.node.get_closest_marker("project_status").args[0]
@@ -79,7 +79,5 @@ def f_create_temp_project(request) -> Response:
         laborReasons=laborReasons,
         mandatoryAttachFiles=mandatoryAttachFiles)
     yield response
-
-
 
     project_api.delete_project(response["id"])

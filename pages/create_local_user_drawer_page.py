@@ -21,8 +21,8 @@ class CreateLocalUserDrawerPage(BasePage):
         data = []
         for name in names_list:
             data.append(name.get_attribute("name"))
-        assert data == ['username', 'secondName', 'name', 'thirdName'], ("Отсутствуют поля с именем на вкладке личные "
-                                                                         "данные")
+        assert data == ['username', 'secondName', 'name', 'thirdName', 'metadata'], ("Отсутствуют поля с именем на "
+                                                                                     "вкладке личные данные")
 
     # Есть поля с плейсхолдером
     @allure.step("Есть поля с плейсхолдером")

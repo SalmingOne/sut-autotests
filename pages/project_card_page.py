@@ -63,3 +63,8 @@ class ProjectCardPage(BasePage):
             except StaleElementReferenceException:
                 pass
         self.element_is_visible(self.locators.SAVE_BUTTON).click()
+
+    # Переход на вкладку команды проекта
+    @allure.step("Переход на вкладку команды проекта")
+    def go_to_team_tab(self):
+        self.element_is_visible(self.locators.TEAM_TAB).click()

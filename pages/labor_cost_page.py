@@ -100,41 +100,6 @@ class LaborCostPage(BasePage):
 
         return first_day_time + last_day_time
 
-    # Очищаем все дни за месяц
-    @allure.step("Очищаем все дни за месяц")
-    def clear_month_work(self):
-        all_day_list = self.elements_are_present(self.locators.ALL_DAYS_BY_PROJECT)
-        for day in all_day_list:
-            day.click()
-            try:
-                day.send_keys(Keys.BACK_SPACE)
-                day.send_keys(Keys.BACK_SPACE)
-            except ElementNotInteractableException:
-                pass
-
-    # Очищаем все дни за текущий, предыдущий и следующий месяц
-    @allure.step("Очищаем все дни за текущий, предыдущий и следующий месяц")
-    def three_mont_clear(self):
-        self.clear_month_work()
-        try:
-            self.element_is_visible(self.locators.SAVE_BUTTON).click()
-        except ElementClickInterceptedException:
-            pass
-        self.element_is_visible(self.locators.PREVIOUS_PERIOD_BUTTON).click()
-        self.clear_month_work()
-        try:
-            self.element_is_visible(self.locators.SAVE_BUTTON).click()
-        except ElementClickInterceptedException:
-            pass
-        self.element_is_visible(self.locators.THIS_DAY_BUTTON).click()
-        self.element_is_visible(self.locators.NEXT_PERIOD_BUTTON).click()
-        self.clear_month_work()
-        try:
-            self.element_is_visible(self.locators.SAVE_BUTTON).click()
-        except ElementClickInterceptedException:
-            pass
-        time.sleep(1)  # Без этого ожидания не подтверждаются изменения в последнем месяце
-
     # Списываем трудозатраты за первый и последний день недели
     @allure.step("Списываем трудозатраты за первый и последний день недели")
     def input_work_by_week(self):
@@ -211,29 +176,6 @@ class LaborCostPage(BasePage):
 
         self.element_is_visible(self.locators.THIS_DAY_BUTTON).click()
         return first_day_time + last_day_time
-
-    # Удаляем списания за первые и последние месяцы года
-    @allure.step("Удаляем списания за первые и последние месяцы года")
-    def clear_work_by_year(self):
-        self.choose_month_picker('янв.')
-        self.clear_month_work()
-        self.element_is_visible(self.locators.SAVE_BUTTON).click()
-
-        self.element_is_visible(self.locators.PREVIOUS_PERIOD_BUTTON).click()
-        self.clear_month_work()
-        self.element_is_visible(self.locators.FIRST_DAY_BY_PROJECT).click()
-        self.element_is_visible(self.locators.SAVE_BUTTON).click()
-        self.element_is_visible(self.locators.THIS_DAY_BUTTON).click()
-
-        self.choose_month_picker('дек.')
-        self.clear_month_work()
-        self.element_is_visible(self.locators.FIRST_DAY_BY_PROJECT).click()
-        self.element_is_visible(self.locators.SAVE_BUTTON).click()
-
-        self.element_is_visible(self.locators.NEXT_PERIOD_BUTTON).click()
-        self.clear_month_work()
-        self.element_is_visible(self.locators.SAVE_BUTTON).click()
-        self.element_is_visible(self.locators.THIS_DAY_BUTTON).click()
 
     # Проверяем цвет поля при списании трудозатрат
     @allure.step("Проверяем цвет поля при списании трудозатрат")
@@ -314,12 +256,12 @@ class LaborCostPage(BasePage):
     # Проверяем наличие Итого в шапке таблицы
     @allure.step("Проверяем наличие всех дней недели в шапке таблицы")
     def check_tab_head(self):
-        all_day_list = self.elements_are_visible(self.locators.ALL_DAY_NUMBER)
+        all_day_list = self.elements_are_present(self.locators.ALL_DAY_NUMBER)
         numbers = []
         for day in all_day_list:
             numbers.append(day.text)
         assert 'Итого' in numbers, "Итого нет в заголовке"
-        return numbers, len(numbers) - 5
+        return numbers, len(numbers) - 6
 
     # Проверяем наличие всех дней недели в шапке таблицы
     @allure.step("Проверяем наличие всех дней недели в шапке таблицы")
@@ -383,14 +325,14 @@ class LaborCostPage(BasePage):
 
     # Открываем модальное окно указания причины списания
     @allure.step("Открываем модальное окно указания причины списания")
-    def open_reason_window(self, project_name = None):
+    def open_reason_window(self, project_name=None):
         if project_name == None:
             self.element_is_visible(self.locators.RANDOM_DAYS_BY_PROJECT).click()
         else:
             self.element_is_visible(self.locators.get_random_day_by_project(project_name)).click()
-    
+
     @allure.step("Нажать Сохранить в модальном окне указание часов и причины списания трудозатрат")
-    def save_hours_and_reason (self):
+    def save_hours_and_reason(self):
         self.element_is_visible(self.locators.SAVE_LABOR_REASON_WINDOW_BUTTON).click()
 
     # Проверяем наличие заголовка на модальном окне указания причины списания
@@ -449,7 +391,7 @@ class LaborCostPage(BasePage):
         self.input_time(self.locators.FIRST_DAY_BY_PROJECT, first_day_time)
         return str(first_day_time)
 
-    # Проверяем наличие элементов на окне уведомления о не сохраненных данных"
+    # Проверяем наличие элементов на окне уведомления о не сохраненных данных
     @allure.step("Проверяем наличие элементов на окне уведомления о не сохраненных данных")
     def check_unsaved_data_window(self):
         assert self.element_is_displayed(self.locators.UNSAVED_WINDOW_TITLE)

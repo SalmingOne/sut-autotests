@@ -1,4 +1,5 @@
 import allure
+import pytest
 
 from pages.all_project_page import AllProjectPage
 from pages.create_project_drawer_page import CreateProjectDrawerPage
@@ -10,6 +11,7 @@ from pages.project_card_page import ProjectCardPage
 @allure.suite("Создание проекта")
 class TestCreateProject:
     # id-47 1.1.1 Создание нового проекта
+    @pytest.mark.demo
     @allure.title("id-47 1.1.1 Создание нового проекта")
     def test_create_project(self, login, driver):
         # Создаем проект
