@@ -56,7 +56,7 @@ def f_auth() -> dict:
 
 @pytest.fixture
 def f_create_temp_project(request) -> Response:
-    """ Создаёт временный проект удаляемый по окнчанию теста """
+    """ Создаёт временный проект удаляемый по окончанию теста """
 
     try:
         status = request.node.get_closest_marker("project_status").args[0]
