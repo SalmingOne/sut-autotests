@@ -153,7 +153,6 @@ class TestLaborCostPage:
         assert absense_count == 4, "Добавились не все 4 отсутствия"
         assert deleted_count == 4, "Не все 4 отсутствия есть на странице заявлений"
 
-    #  id-543 Добавление отсутствия на период, в котором есть отсутствия
     @allure.title("id-543 Добавление отсутствия на период, в котором есть отсутствия")
     def test_add_absence_twice_for_period(self, login, driver):
         labor_cost_page = LaborCostPage(driver)
