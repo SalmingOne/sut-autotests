@@ -67,3 +67,19 @@ class StatementPage(BasePage):
         start_date = self.elements_are_visible(self.locators.ABSENCE_START_DATE_ON_TAB)[0].text
         end_date = self.elements_are_visible(self.locators.ABSENCE_END_DATE_ON_TAB)[0].text
         return start_date, end_date
+
+    @allure.step("Проверяем удаление заявления")
+    def check_delete_absense(self):
+        self.elements_are_visible(self.locators.ALL_ABSENCE_KEBABS)[0].click()
+        self.element_is_visible(self.locators.KEBABS_DEL_MENU_ITEM).click()
+        description_text = self.element_is_visible(self.locators.DRAWER_DESCRIPTION_TEXT).text
+        self.element_is_visible(self.locators.DEL_ACCEPT_BUTTON).click()
+        return description_text
+
+    @allure.step("Берем текст сообщения системы")
+    def get_allert_message(self):
+        all_alerts = self.elements_are_visible(self.locators.ALLERT_TEXT)
+        data = []
+        for allert in all_alerts:
+            data.append(allert.text)
+        return data
