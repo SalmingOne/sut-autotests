@@ -10,7 +10,7 @@ from conftest import IN_URL
 @allure.suite("Страница авторизации")
 class TestAuthorization:
     @pytest.mark.tryfirst
-    def test_for_token(self, f_auth, driver):
+    def test_for_token(self, f_create_temp_project, f_auth, driver):
         time.sleep(0.2)  # ожидание для перезаписи токена
         print('прошел тест для получения токена')
 

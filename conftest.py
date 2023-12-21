@@ -13,7 +13,7 @@ from configuration.config_provider import ConfigProvider
 from api_methods.project import ProjectApi
 from api_methods.system_settings import SystemSettingsApi
 
-IN_URL = 'http://10.7.2.3:43112/'
+IN_URL = 'http://10.7.2.3:43150/'
 config = ConfigProvider()
 
 

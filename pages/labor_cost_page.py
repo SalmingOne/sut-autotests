@@ -169,7 +169,7 @@ class LaborCostPage(BasePage):
 
     @allure.step("Проверяем цвет поля при списании трудозатрат")
     def check_change_color_on_labor_cost_field(self):
-        first_day_time = 14
+        first_day_time = 4
         # Списываем затраты и берем цвета ячейки
         self.input_time(self.locators.FIRST_DAY_BY_PROJECT, first_day_time)
         color_before_save = self.element_is_visible(self.locators.FIRST_DAY_BY_PROJECT_COLOR).value_of_css_property(
@@ -235,14 +235,14 @@ class LaborCostPage(BasePage):
         assert self.element_is_displayed(self.locators.NEXT_PERIOD_BUTTON), "Нет кнопки следующего периода"
         assert self.element_is_displayed(self.locators.PREVIOUS_PERIOD_BUTTON), "Нет кнопки предыдущего периода"
 
-    @allure.step("Проверяем наличие всех дней недели в шапке таблицы")
+    @allure.step("Проверяем наличие всех дней и Итого недели в шапке таблицы")
     def check_tab_head(self):
         all_day_list = self.elements_are_present(self.locators.ALL_DAY_NUMBER)
         numbers = []
         for day in all_day_list:
             numbers.append(day.text)
         assert 'Итого' in numbers, "Итого нет в заголовке"
-        return numbers, len(numbers) - 6
+        return numbers, len(numbers) - 5
 
     @allure.step("Проверяем наличие всех дней недели в шапке таблицы")
     def check_week_days_head(self):
