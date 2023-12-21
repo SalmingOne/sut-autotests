@@ -14,19 +14,16 @@ from pages.base_page import BasePage
 class LaborCostPage(BasePage):
     locators = LaborCostPageLocators()
 
-    # Переход на таблицу трудозатрат через меню
     @allure.step("Переход на таблицу трудозатрат через меню")
     def go_to_labor_cost_page(self):
         self.action_move_to_element(self.element_is_visible(self.locators.TAB_ACTIVITY))
         self.element_is_visible(self.locators.TAB_LABOR_COST_TABLE).click()
 
-    # Проверка, что код проекта есть на странице
     @allure.step("Проверка, что код проекта есть на странице")
     def check_project_code_at_labor(self):
         check_code_at_labor = self.element_is_present(self.locators.CHECK_CODE_PROJECT).text
         return check_code_at_labor
 
-    # Проверка что кода проекта нет на странице
     @allure.step("Проверка что кода проекта нет на странице")
     def check_no_project_code_at_labor(self):
         try:
@@ -34,7 +31,6 @@ class LaborCostPage(BasePage):
         except TimeoutException:
             return "no element on page"
 
-    # Проверка что появляется окно указания причины списания
     @allure.step("Проверка что появляется окно указания причины списания ")
     def check_to_have_reason_fo_write(self):
         self.element_is_visible(self.locators.RANDOM_DAYS_BY_PROJECT).click()
@@ -42,7 +38,6 @@ class LaborCostPage(BasePage):
         self.element_is_visible(self.locators.BREAK_LABOR_REASON_WINDOW).click()
         assert checked_text == "Причина *", "Не открылось окно указания причины"
 
-    # Ввод значения в клетку таблицы трудозатрат
     @allure.step("Ввод значения в клетку таблицы трудозатрат")
     def input_time(self, element, in_time):
         self.element_is_visible(element).click()
@@ -57,7 +52,6 @@ class LaborCostPage(BasePage):
     def input_reason_into_form(self, reason):
         self.element_is_visible(self.locators.INPUT_REASON_DESCRIPTION_FIELD).send_keys(reason)
 
-    # Узнаем сколько дней в конкретном месяце, что бы потом вставить значение в последний день
     @allure.step("Узнаем сколько дней в конкретном месяце, что бы потом вставить значение в последний день")
     def get_number_last_month_day(self):
         all_day_list = self.elements_are_present(self.locators.ADD_OVERTIME_WORK_BUTTON)
@@ -66,7 +60,6 @@ class LaborCostPage(BasePage):
             numbers.append(day.text)
         return len(numbers)
 
-    # Списываем трудозатраты за первый и последний день месяца
     @allure.step("Списываем трудозатраты за первый и последний день месяца")
     def input_work_by_month(self):
         first_day_time = 5  # Первый день текущего периода
@@ -101,7 +94,6 @@ class LaborCostPage(BasePage):
 
         return first_day_time + last_day_time
 
-    # Списываем трудозатраты за первый и последний день недели
     @allure.step("Списываем трудозатраты за первый и последний день недели")
     def input_work_by_week(self):
         first_day_time = 7
@@ -124,7 +116,6 @@ class LaborCostPage(BasePage):
 
         return first_day_time + last_day_time
 
-    # Выбираем отображаемый период
     @allure.step("Выбираем отображаемый период")
     def choose_period(self, period):
         time.sleep(1)
@@ -134,7 +125,6 @@ class LaborCostPage(BasePage):
         elif period == "week":
             self.element_is_visible(self.locators.WEEK_PERIOD_SELECT).click()
 
-    # Выбираем месяц в датапикере
     @allure.step("Выбираем месяц в датапикере")
     def choose_month_picker(self, month_name):  # имя месяца указывать точно как на экране(с точкой)
         self.element_is_visible(self.locators.MONTH_DATEPICKER).click()
@@ -142,7 +132,6 @@ class LaborCostPage(BasePage):
         month_locator = (By.XPATH, f'//button[text()="{month}"]')
         self.element_is_visible(month_locator).click()
 
-    # Списываем трудозатраты за первый и последний день года
     @allure.step("Списываем трудозатраты за первый и последний день года")
     def input_work_by_year(self):
         first_day_time = 10
@@ -178,7 +167,6 @@ class LaborCostPage(BasePage):
         self.element_is_visible(self.locators.THIS_DAY_BUTTON).click()
         return first_day_time + last_day_time
 
-    # Проверяем цвет поля при списании трудозатрат
     @allure.step("Проверяем цвет поля при списании трудозатрат")
     def check_change_color_on_labor_cost_field(self):
         first_day_time = 14
@@ -205,12 +193,10 @@ class LaborCostPage(BasePage):
         assert reason_in_field == str(first_day_time), "Количество часов списания не равно введенному значению"
         assert reason_in_field_after_save == str(first_day_time), "Списание не сохранено"
 
-    # Проверяем наличие заголовка Трудозатраты
     @allure.step("Проверяем наличие заголовка Трудозатраты")
     def check_title(self):
         assert self.element_is_displayed(self.locators.TITLE_PAGE), "Заголовок страницы Трудозатраты отсутствует"
 
-    # Проверяем наличие выбора периода
     @allure.step("Проверяем наличие выбора периода")
     def check_period_select(self):
         self.element_is_visible(self.locators.PERIOD_SELECT_BUTTON).click()
@@ -221,12 +207,10 @@ class LaborCostPage(BasePage):
         self.action_esc()
         assert data == ['Месяц (по дням)', 'Неделя'], "Не все периоды отображены для выбора"
 
-    # Проверяем наличие кнопки добавления себя на проект
     @allure.step("Проверяем наличие кнопки добавления себя на проект")
     def check_add_to_project_button(self):
         assert self.element_is_displayed(self.locators.ADD_TO_PROJECT_BUTTON), "Нет кнопки добавления себя на проект"
 
-    # Проверяем наличие всех параметров фильтрации
     @allure.step("Проверяем наличие всех параметров фильтрации")
     def check_filter(self):
         self.element_is_visible(self.locators.FILTER_BUTTON).click()
@@ -238,23 +222,19 @@ class LaborCostPage(BasePage):
         assert data == ['Код проекта', 'Название проекта', 'Отображать неактивные проекты',
                         'Отображать причины отклонения'], "Отсутствуют элементы в меню фильтрации"
 
-    # Проверяем наличие кнопки открытия виджетов
     @allure.step("Проверяем наличие кнопки открытия виджетов")
     def check_open_widget_button(self):
         assert self.element_is_displayed(self.locators.OPEN_WIDGET_BUTTON), "Кнопки открытия виджетов нет на странице"
 
-    # Проверяем наличие кнопки выбора месяца
     @allure.step("Проверяем наличие кнопки выбора месяца")
     def check_month_picker(self):
         assert self.element_is_displayed(self.locators.MONTH_DATEPICKER), "Нет кнопки выбора месяца"
 
-    # Проверяем наличие кнопок следующего и предыдущего периода
     @allure.step("Проверяем наличие кнопок следующего и предыдущего периода")
     def check_next_previous_buttons(self):
         assert self.element_is_displayed(self.locators.NEXT_PERIOD_BUTTON), "Нет кнопки следующего периода"
         assert self.element_is_displayed(self.locators.PREVIOUS_PERIOD_BUTTON), "Нет кнопки предыдущего периода"
 
-    # Проверяем наличие Итого в шапке таблицы
     @allure.step("Проверяем наличие всех дней недели в шапке таблицы")
     def check_tab_head(self):
         all_day_list = self.elements_are_present(self.locators.ALL_DAY_NUMBER)
@@ -264,7 +244,6 @@ class LaborCostPage(BasePage):
         assert 'Итого' in numbers, "Итого нет в заголовке"
         return numbers, len(numbers) - 6
 
-    # Проверяем наличие всех дней недели в шапке таблицы
     @allure.step("Проверяем наличие всех дней недели в шапке таблицы")
     def check_week_days_head(self):
         all_day_list = self.elements_are_present(self.locators.SEVEN_DAY_ON_HEAD)
@@ -275,7 +254,6 @@ class LaborCostPage(BasePage):
         for a in day_week:
             assert a in numbers, "Дня недели нет в заголовке"
 
-    # Проверяем наличие красного и белого цвета ячеек в таблице
     @allure.step("Проверяем наличие красного и белого цвета ячеек в таблице")
     def check_colors_of_days(self):
         if self.element_is_displayed(self.locators.PROJECT_STRING):
@@ -289,7 +267,6 @@ class LaborCostPage(BasePage):
         else:
             pass
 
-    # Проверяем наличие выбранных дней при наведении на ячейку таблицы
     @allure.step("Проверяем наличие выбранных дней при наведении на ячейку таблицы")
     def check_have_selected_days(self):
         if self.element_is_displayed(self.locators.PROJECT_STRING):
@@ -300,7 +277,6 @@ class LaborCostPage(BasePage):
         else:
             pass
 
-    # Проверяем наличие тултипа при наведении на код проекта
     @allure.step("Проверяем наличие тултипа при наведении на код проекта")
     def check_tooltip_on_project_code(self):
         if self.element_is_displayed(self.locators.PROJECT_STRING):
@@ -311,20 +287,17 @@ class LaborCostPage(BasePage):
         else:
             pass
 
-    # Проверяем наличие кнопок сохранения и отмены
     @allure.step("Проверяем наличие кнопок сохранения и отмены")
     def check_save_and_disable_buttons(self):
         assert self.element_is_displayed(self.locators.SAVE_BUTTON)
         assert self.element_is_displayed(self.locators.DISABLE_BUTTON)
 
-    # Переходим на отображение по имени проекта
     @allure.step("Переходим на отображение по имени проекта")
     def go_to_filter_by_project_name(self):
         self.element_is_visible(self.locators.FILTER_BUTTON).click()
         self.element_is_visible(self.locators.FILTER_BY_PROJECT_NAME).click()
         self.action_esc()
 
-    # Открываем модальное окно указания причины списания
     @allure.step("Открываем модальное окно указания причины списания")
     def open_reason_window(self, project_name=None):
         if project_name == None:
@@ -336,29 +309,24 @@ class LaborCostPage(BasePage):
     def save_hours_and_reason(self):
         self.element_is_visible(self.locators.SAVE_LABOR_REASON_WINDOW_BUTTON).click()
 
-    # Проверяем наличие заголовка на модальном окне указания причины списания
     @allure.step("Проверяем наличие заголовка на модальном окне указания причины списания")
     def check_title_reason_window(self):
         assert self.element_is_displayed(self.locators.TITLE_MODAL_REASON_WINDOW)
 
-    # Проверяем наличие полей на модальном окне указания причины списания
     @allure.step("Проверяем наличие полей на модальном окне указания причины списания")
     def check_fields_reason_window(self):
         assert self.element_is_displayed(self.locators.INPUT_REASON_TIME_FIELD)
         assert self.element_is_displayed(self.locators.INPUT_REASON_DESCRIPTION_FIELD)
 
-    # Проверяем наличие кнопок на модальном окне указания причины списания
     @allure.step("Проверяем наличие кнопок на модальном окне указания причины списания")
     def check_buttons_reason_window(self):
         assert self.element_is_displayed(self.locators.SAVE_LABOR_REASON_WINDOW_BUTTON)
         assert self.element_is_displayed(self.locators.BREAK_LABOR_REASON_WINDOW)
 
-    # Закрываем модальное окно указания причины списания
     @allure.step("Закрываем модальное окно указания причины списания")
     def close_reason_window(self):
         self.element_is_visible(self.locators.BREAK_LABOR_REASON_WINDOW).click()
 
-    # Проверяем цвет поля при удалении списания трудозатрат
     @allure.step("Проверяем цвет поля при списании трудозатрат")
     def check_delete_values_on_labor_cost_field(self):
         first_day_time = 10
@@ -385,14 +353,12 @@ class LaborCostPage(BasePage):
         assert color_after_save == 'rgba(0, 0, 0, 0)', "После сохранения удаления списания цвет не белый"
         assert reason_in_field_after_delete != reason_in_field, "Списание не удалено"
 
-    # Вводим в поле не сохраненные трудозатраты
     @allure.step("Вводим в поле не сохраненные трудозатраты")
     def input_unsaved_values_on_labor_cost_field(self):
         first_day_time = 18
         self.input_time(self.locators.FIRST_DAY_BY_PROJECT, first_day_time)
         return str(first_day_time)
 
-    # Проверяем наличие элементов на окне уведомления о не сохраненных данных
     @allure.step("Проверяем наличие элементов на окне уведомления о не сохраненных данных")
     def check_unsaved_data_window(self):
         assert self.element_is_displayed(self.locators.UNSAVED_WINDOW_TITLE)
@@ -400,22 +366,22 @@ class LaborCostPage(BasePage):
         assert self.element_is_displayed(self.locators.UNSAVED_WINDOW_ABORT_BUTTON)
         self.element_is_visible(self.locators.UNSAVED_WINDOW_ACCEPT_BUTTON).click()
 
-    # Берем текст в поле после возвращения на страницу трудозатрат
     @allure.step("Берем текст в поле после возвращения на страницу трудозатрат")
     def get_values_on_labor_cost_field_to_check(self):
         return self.element_is_visible(self.locators.FIRST_DAY_BY_PROJECT).text
 
-    # Получаем номера всех дней где не было списано трудозатрат
     @allure.step("Получаем номера всех дней где не было списано трудозатрат")
-    def get_numbers_days_zero_reason(self):
+    def get_numbers_days_reason(self, have_reason):
         in_total_list = self.elements_are_visible(self.locators.ALL_IN_TOTAL)
         data = []
         for i in in_total_list:
             data.append(i.text)
         data.remove('Итого')
-        return [i for i, data in enumerate(data) if data == '0']
+        if have_reason == 'have':
+            return [i for i, data in enumerate(data) if data != '0']
+        elif have_reason == 'zero':
+            return [i for i, data in enumerate(data) if data == '0']
 
-    # Открываем дровер добавления отсутствия
     @allure.step("Открываем дровер добавления отсутствия")
     def open_add_absence_drawer(self, number_day):
         all_head_days = self.elements_are_present(self.locators.ADD_OVERTIME_WORK_BUTTON_FIELD)
@@ -423,10 +389,9 @@ class LaborCostPage(BasePage):
         all_overtime_buttons = self.elements_are_present(self.locators.ADD_OVERTIME_WORK_BUTTON)
         all_overtime_buttons[number_day].click()
 
-    # Добавляем отсутствие
     @allure.step("Добавляем отсутствие")
     def add_absence(self, number_empty_day, absence_tipe):
-        days_zero_reason = self.get_numbers_days_zero_reason()
+        days_zero_reason = self.get_numbers_days_reason("zero")
         self.open_add_absence_drawer(days_zero_reason[number_empty_day])
         if absence_tipe == 'vacation':
             self.field_absence_drawer(self.locators.VACATION)
@@ -437,7 +402,6 @@ class LaborCostPage(BasePage):
         elif absence_tipe == 'maternity_leave':
             self.field_absence_drawer(self.locators.MATERNITY_LEAVE)
 
-    # Заполняем поля дровера добавления отсутствий
     @allure.step("Заполняем поля дровера добавления отсутствий")
     def field_absence_drawer(self, locator):
         self.element_is_visible(self.locators.OPEN_ABSENCE_CHOOSE_BUTTON).click()
@@ -448,7 +412,6 @@ class LaborCostPage(BasePage):
         self.element_is_visible(self.locators.DRAWER_SAVE_BUTTON).click()
         time.sleep(1.5)
 
-    # Проверяем наличие всех дней недели в шапке таблицы
     @allure.step("Проверяем наличие всех отсутствий в таблице")
     def check_absence_on_tab(self):
         all_day_list = self.elements_are_present(self.locators.ALL_DAYS_VALUE)
@@ -468,4 +431,13 @@ class LaborCostPage(BasePage):
     @allure.step("Проверяем наличие сообщения о наложении отсутствий")
     def check_outer_absence(self):
         assert self.element_is_displayed(self.locators.HAVE_OUTER_LEAVE), "Сообщение о наложении отсутствий отсутствует"
+        self.element_is_visible(self.locators.DRAWER_ABORT_BUTTON).click()
+
+    @allure.step("Добавляем отсутствие в день где списаны трудозатраты и проверяем сообщение о наложении")
+    def add_absence_to_reason_day(self):
+        days_have_reason = self.get_numbers_days_reason("have")
+        self.open_add_absence_drawer(days_have_reason[0])
+        self.field_absence_drawer(self.locators.ADMINISTRATIVE_LEAVE)
+        assert self.element_is_displayed(
+            self.locators.HAVE_REASON), "Сообщение о наложении отсутствия на трудозатраты не появилось"
         self.element_is_visible(self.locators.DRAWER_ABORT_BUTTON).click()

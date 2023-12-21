@@ -12,7 +12,6 @@ from pages.statement_page import StatementPage
 @allure.suite("Таблица трудозатрат")
 class TestLaborCostPage:
 
-    #  id-270 3.1.1.2 Заполнение таблицы "Отчет трудозатрат".
     @allure.title("id-270 3.1.1.2 Заполнение таблицы Отчет трудозатрат")
     def test_filing_labor_cost_report_table(self, f_create_temp_project, login, driver):
         labor_cost_page = LaborCostPage(driver)
@@ -20,7 +19,6 @@ class TestLaborCostPage:
         labor_cost_page.choose_period("week")
         labor_cost_page.check_change_color_on_labor_cost_field()
 
-    #  id-267 3.1.1.1 Просмотр таблицы трудозатрат.
     @allure.title("id-267 3.1.1.1 Просмотр таблицы трудозатрат.")
     def test_mapping_labor_cost_page(self, login, driver):
         labor_cost_page = LaborCostPage(driver)
@@ -46,7 +44,6 @@ class TestLaborCostPage:
         assert 'Проект' in first_column, "Нет столбца Проект"
         assert count_add_overtime_work == all_day, "Количество кнопок переработки не равно количеству дней"
 
-    #  id-1461 3.1.1.2 Содержание модального окна указания причин списания.
     @pytest.mark.labor_reason("True")
     @allure.title("id-1461 3.1.1.2 Содержание модального окна указания причин списания.")
     def test_contents_modal_window_indicating_the_reasons(self, f_create_temp_project, login, driver):
@@ -59,7 +56,6 @@ class TestLaborCostPage:
         labor_cost_page.check_buttons_reason_window()
         labor_cost_page.close_reason_window()
 
-    #  id-277 3.1.1.2 Удаление значений в таблице Отчет трудозатрат
     @allure.title("id-277 3.1.1.2 Удаление значений в таблице Отчет трудозатрат")
     def test_delete_values_on_labor_cost_report_table(self, f_create_temp_project, login, driver):
         labor_cost_page = LaborCostPage(driver)
@@ -111,7 +107,6 @@ class TestLaborCostPage:
         assert labor_cost_page.element_is_visible(
             locators.GOAL_NUMBER_OF_CHARACTERS_OVER_MAX), 'Отсутствует сообщение "Максимальное количество символов: 255"'
 
-    #  id-3165 3.1.1.5. Уведомление пользователей о несохраненных данных в разделе трудозатрат.
     @allure.title("id-3165 3.1.1.5. Уведомление пользователей о несохраненных данных в разделе трудозатрат.")
     def test_notify_users_about_unsaved_data(self, f_create_temp_project, login, driver):
         labor_cost_page = LaborCostPage(driver)
@@ -127,7 +122,6 @@ class TestLaborCostPage:
 
         assert value_after_input != value_after_return, "В ячейке сохранились списанные трудозатраты"
 
-    #  id-535 3.1.2.1. Добавление больничного/отпуска.
     @allure.title("id-535 3.1.2.1. Добавление больничного/отпуска.")
     def test_add_sick_leave_and_vacation(self, login, driver):
         labor_cost_page = LaborCostPage(driver)
@@ -173,3 +167,8 @@ class TestLaborCostPage:
         time.sleep(0.2)  # Без ожидания скрипт срабатывает раньше чем пройдет анимация
         statement_page.go_to_statement_page()
         statement_page.delete_all_absence()
+
+    @allure.title("id-539 Добавление отсутствия на период, в котором есть списанные трудозатраты")
+    def test_add_absence_to_labor_reason(self, login, driver):
+        labor_cost_page = LaborCostPage(driver)
+        labor_cost_page.add_absence_to_reason_day()
