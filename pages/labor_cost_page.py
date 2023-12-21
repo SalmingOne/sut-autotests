@@ -465,4 +465,7 @@ class LaborCostPage(BasePage):
                 pass
         return count
 
-
+    @allure.step("Проверяем наличие сообщения о наложении отсутствий")
+    def check_outer_absence(self):
+        assert self.element_is_displayed(self.locators.HAVE_OUTER_LEAVE), "Сообщение о наложении отсутствий отсутствует"
+        self.element_is_visible(self.locators.DRAWER_ABORT_BUTTON).click()
