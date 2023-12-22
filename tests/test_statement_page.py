@@ -80,3 +80,22 @@ class TestStatementPage:
         statement_page.delete_all_absence()
         assert start_date == start_date_outer, "Дата начала отсутствия изменилась или удалилось отсутствие"
         assert end_date == end_date_outer, "Дата конца отсутствия изменилась или удалилось отсутствие"
+
+    @allure.title("id-547 Фильтр таблицы Отсутствие по времени. Прошедшие отсутствия.")
+    def test_filter_past_absences(self, login, driver):
+        labor_cost_page = LaborCostPage(driver)
+        statement_page = StatementPage(driver)
+        # Проверяем, что нет заявлений в таблице. И если есть удаляем
+        labor_cost_page.go_to_labor_cost_page()
+        labor_cost_page.go_to_previous_period()
+        time.sleep(0.5)  # Без ожидания скрипт срабатывает до загрузки страницы
+        count_absense = labor_cost_page.check_absence_on_tab()
+        if count_absense == 0:
+            labor_cost_page.add_absence(1, 'vacation')
+        else:
+            pass
+        statement_page.go_to_statement_page()
+        before = statement_page.get_count_absense()
+        statement_page.click_previous_checkbox()
+        after = statement_page.get_count_absense()
+        assert before != after, "Количество заявлений не изменилось после включения чекбокса прошедшие отсутствия"
