@@ -83,3 +83,9 @@ class StatementPage(BasePage):
         for allert in all_alerts:
             data.append(allert.text)
         return data
+
+    @allure.step("Проверяем отмену удаления заявления")
+    def cansel_delete_absense(self):
+        self.elements_are_visible(self.locators.ALL_ABSENCE_KEBABS)[0].click()
+        self.element_is_visible(self.locators.KEBABS_DEL_MENU_ITEM).click()
+        self.element_is_visible(self.locators.DEL_CANSEL_BUTTON).click()
