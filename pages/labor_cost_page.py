@@ -401,6 +401,8 @@ class LaborCostPage(BasePage):
             self.field_absence_drawer(self.locators.SICK_LEAVE)
         elif absence_tipe == 'maternity_leave':
             self.field_absence_drawer(self.locators.MATERNITY_LEAVE)
+        elif absence_tipe == 'overtime_work':
+            return self.field_overtime_work_drawer(self.locators.OVERTIME_WORK)
 
     @allure.step("Заполняем поля дровера добавления отсутствий")
     def field_absence_drawer(self, locator):
@@ -445,3 +447,20 @@ class LaborCostPage(BasePage):
     @allure.step("Переходим на предыдущий период")
     def go_to_previous_period(self):
         self.element_is_visible(self.locators.PREVIOUS_PERIOD_BUTTON).click()
+
+    @allure.step("Заполняем поля дровера переработки")
+    def field_overtime_work_drawer(self, locator):
+        self.element_is_visible(self.locators.OPEN_ABSENCE_CHOOSE_BUTTON).click()
+        self.element_is_visible(locator).click()
+        self.element_is_visible(self.locators.OVERTIME_WORK_INPUT).send_keys('2')
+        self.element_is_visible(self.locators.OVERTIME_WORK_INPUT).send_keys(Keys.RETURN)
+        self.element_is_visible(self.locators.PROJECT_NAME_DRAWER_INPUT).click()
+        self.elements_are_visible(self.locators.ALL_PROJECT_ON_DRAWER_INPUT)[0].click()
+        self.element_is_present(self.locators.FILE_INPUT).send_keys(os.path.abspath(r'../data/административный.docx'))
+        self.action_move_to_element(self.element_is_present(self.locators.DRAWER_SAVE_BUTTON))
+        self.element_is_present(self.locators.DRAWER_SAVE_BUTTON).click()
+        output_text = self.element_is_visible(self.locators.MUI_ERROR).text
+        self.element_is_present(self.locators.DRAWER_ABORT_BUTTON).click()
+        time.sleep(1.5)
+        return output_text
+

@@ -111,7 +111,13 @@ class LaborCostPageLocators:
     FILE_INPUT = (By.CSS_SELECTOR, 'input[type="file"]')
     DRAWER_SAVE_BUTTON = (By.XPATH, '//button[contains(@class, "MuiButtonBase-root onboarding__save-button onboarding__form-footer-save-button")]')
     DRAWER_ABORT_BUTTON = (By.XPATH, '//p[contains(@class, "MuiTypography-body2 ")]//following::button[contains(@class, "MuiButton-outlinedSizeSmall MuiButton-disableElevation")][2]')
+    OVERTIME_WORK_INPUT = (By.CSS_SELECTOR, 'input[name="overtimeWork"]')
+    PROJECT_NAME_DRAWER_INPUT = (By.CSS_SELECTOR, 'div[name="project"]')
+    ALL_PROJECT_ON_DRAWER_INPUT = (By.CSS_SELECTOR, 'li[role="option"]')
+    DRAWER_OVERTIME_WORK_SAVE_BUTTON = (By.XPATH,
+                          '//p[contains(@class, "MuiTypography-body2 ")]//following::button[contains(@class, "MuiButtonBase-root onboarding__save-button onboarding__form-footer-save-button")][2]')
     # Сообщения о наложении отсутствий
     HAVE_REASON = (By.XPATH, '//span[contains(text(), "На выбранном периоде есть заполненные трудозатраты")]')
     HAVE_OUTER_LEAVE = (By.XPATH, '//span[contains(text(), "Наложение отсутствий, выберите другие даты")]')
+    MUI_ERROR = (By.XPATH, '//p[contains(@class, "Mui-error")]')
 
