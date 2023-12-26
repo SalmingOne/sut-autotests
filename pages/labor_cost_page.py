@@ -464,3 +464,22 @@ class LaborCostPage(BasePage):
         time.sleep(1.5)
         return output_text
 
+    @allure.step("Проверяем добавление пробела в поле обязательного указания переработки")
+    def check_overtime_work_space_in_reason_field(self, number_empty_day, reason):
+        days_zero_reason = self.get_numbers_days_reason("zero")
+        self.open_add_absence_drawer(days_zero_reason[number_empty_day])
+        self.element_is_visible(self.locators.OPEN_ABSENCE_CHOOSE_BUTTON).click()
+        self.element_is_visible(self.locators.OVERTIME_WORK).click()
+        time.sleep(0.5)  # Без этого ожидания не успевает прогрузиться
+        self.element_is_visible(self.locators.OVERTIME_WORK_INPUT).send_keys('4')
+        self.element_is_visible(self.locators.OVERTIME_WORK_INPUT).send_keys(Keys.RETURN)
+        self.element_is_visible(self.locators.PROJECT_NAME_DRAWER_INPUT).click()
+        self.elements_are_visible(self.locators.ALL_PROJECT_ON_DRAWER_INPUT)[0].click()
+        self.element_is_visible(self.locators.OVERTIME_REASON_INPUT).send_keys(reason)
+        self.element_is_present(self.locators.FILE_INPUT).send_keys(os.path.abspath(r'../data/административный.docx'))
+        self.action_move_to_element(self.element_is_present(self.locators.DRAWER_SAVE_BUTTON))
+        self.element_is_present(self.locators.DRAWER_SAVE_BUTTON).click()
+        output_text = self.element_is_visible(self.locators.MUI_ERROR).text
+        self.element_is_present(self.locators.DRAWER_ABORT_BUTTON).click()
+        time.sleep(1.5)
+        return output_text

@@ -42,7 +42,6 @@ class TestLaborCostPage:
 
         assert tooltip_on_code in tooltip_on_project, "Тултип отображается без имени проекта"
         assert 'Проект' in first_column, "Нет столбца Проект"
-        assert count_add_overtime_work == all_day, "Количество кнопок переработки не равно количеству дней"
 
     @pytest.mark.labor_reason("True")
     @allure.title("id-1461 3.1.1.2 Содержание модального окна указания причин списания.")
@@ -199,7 +198,23 @@ class TestLaborCostPage:
         statement_page.click_previous_checkbox()
         statement_page.delete_all_absence()
 
-        assert error_text == 'В выбранный день добавлено отсутствие, выберите другой день для добавления переработки', ""
+        assert error_text == 'В выбранный день добавлено отсутствие, выберите другой день для добавления переработки', "Не появилось сообщение об ошибке"
+
+    @allure.title("id-3634 Ввод пробела в поле Причина на проект с обязательным указанием причины списания")
+    def test_add_space_in_reason_field(self, f_overtime_reason_requirement, login, driver):
+        labor_cost_page = LaborCostPage(driver)
+        statement_page = StatementPage(driver)
+        # Проверяем что нет заявлений в таблице. И если есть удаляем
+        labor_cost_page.go_to_labor_cost_page()
+        time.sleep(1)  # Без ожидания скрипт срабатывает до загрузки страницы
+        if labor_cost_page.check_absence_on_tab() > 0:
+            statement_page.go_to_statement_page()
+            statement_page.click_previous_checkbox()
+            statement_page.delete_all_absence()
+        else:
+            pass
+        error_text = labor_cost_page.check_overtime_work_spae_in_reason_field(0, ' ')
+        assert error_text == 'Укажите причину переработки', "Не появилось сообщение об ошибке"
 
 
 

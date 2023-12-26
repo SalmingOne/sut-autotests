@@ -116,6 +116,7 @@ class LaborCostPageLocators:
     ALL_PROJECT_ON_DRAWER_INPUT = (By.CSS_SELECTOR, 'li[role="option"]')
     DRAWER_OVERTIME_WORK_SAVE_BUTTON = (By.XPATH,
                           '//p[contains(@class, "MuiTypography-body2 ")]//following::button[contains(@class, "MuiButtonBase-root onboarding__save-button onboarding__form-footer-save-button")][2]')
+    OVERTIME_REASON_INPUT = (By.CSS_SELECTOR, 'textarea[name="overtimeReason"]')
     # Сообщения о наложении отсутствий
     HAVE_REASON = (By.XPATH, '//span[contains(text(), "На выбранном периоде есть заполненные трудозатраты")]')
     HAVE_OUTER_LEAVE = (By.XPATH, '//span[contains(text(), "Наложение отсутствий, выберите другие даты")]')
