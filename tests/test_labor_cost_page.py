@@ -131,6 +131,7 @@ class TestLaborCostPage:
         time.sleep(1)  # Без ожидания скрипт срабатывает до загрузки страницы
         if labor_cost_page.check_absence_on_tab() > 0:
             statement_page.go_to_statement_page()
+            statement_page.click_previous_checkbox()
             statement_page.delete_all_absence()
         else:
             pass
@@ -143,6 +144,7 @@ class TestLaborCostPage:
         absense_count = labor_cost_page.check_absence_on_tab()
         # Удаляем все заявления
         statement_page.go_to_statement_page()
+        statement_page.click_previous_checkbox()
         deleted_count = statement_page.delete_all_absence()
         assert absense_count == 4, "Добавились не все 4 отсутствия"
         assert deleted_count == 4, "Не все 4 отсутствия есть на странице заявлений"
@@ -156,6 +158,7 @@ class TestLaborCostPage:
         time.sleep(1)  # Без ожидания скрипт срабатывает до загрузки страницы
         if labor_cost_page.check_absence_on_tab() > 0:
             statement_page.go_to_statement_page()
+            statement_page.click_previous_checkbox()
             statement_page.delete_all_absence()
         else:
             pass
@@ -166,9 +169,37 @@ class TestLaborCostPage:
         labor_cost_page.check_outer_absence()
         time.sleep(0.2)  # Без ожидания скрипт срабатывает раньше чем пройдет анимация
         statement_page.go_to_statement_page()
+        statement_page.click_previous_checkbox()
         statement_page.delete_all_absence()
 
     @allure.title("id-539 Добавление отсутствия на период, в котором есть списанные трудозатраты")
     def test_add_absence_to_labor_reason(self, login, driver):
         labor_cost_page = LaborCostPage(driver)
         labor_cost_page.add_absence_to_reason_day()
+
+    @allure.title("id-539 Добавление отсутствия на период, в котором есть списанные трудозатраты")
+    def test_add_overwork_to_absence(self, login, driver):
+        labor_cost_page = LaborCostPage(driver)
+        statement_page = StatementPage(driver)
+        # Проверяем что нет заявлений в таблице. И если есть удаляем
+        labor_cost_page.go_to_labor_cost_page()
+        time.sleep(1)  # Без ожидания скрипт срабатывает до загрузки страницы
+        if labor_cost_page.check_absence_on_tab() > 0:
+            statement_page.go_to_statement_page()
+            statement_page.click_previous_checkbox()
+            statement_page.delete_all_absence()
+        else:
+            pass
+        # Добавляем отсутствие
+        labor_cost_page.go_to_labor_cost_page()
+        labor_cost_page.add_absence(0, 'vacation')
+        error_text = labor_cost_page.add_absence(0, 'overtime_work')
+
+        statement_page.go_to_statement_page()
+        statement_page.click_previous_checkbox()
+        statement_page.delete_all_absence()
+
+        assert error_text == 'В выбранный день добавлено отсутствие, выберите другой день для добавления переработки', ""
+
+
+

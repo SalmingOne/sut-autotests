@@ -52,10 +52,10 @@ class TestStatementPage:
         start_date, end_date = statement_page.check_data_absense()
         drawer_description_text = statement_page.check_delete_absense()
         time.sleep(0.5)  # Без ожидания не успевает прогрузиться аллерт
-        allert_text = statement_page.get_allert_message()
+        alert_text = statement_page.get_allert_message()
         assert start_date in drawer_description_text, "Даты начала отсутствия нет на дровере удаления"
         assert end_date in drawer_description_text, "Даты конца отсутствия нет на дровере удаления"
-        assert 'Отсутствие успешно удалено' in allert_text, "Не появилось сообщение об удалении отсутствия"
+        assert 'Отсутствие успешно удалено' in alert_text, "Не появилось сообщение об удалении отсутствия"
 
     @allure.title("id-1361 Отмена удаления отсутствия")
     def test_cansel_delete_absences(self, login, driver):
@@ -88,7 +88,7 @@ class TestStatementPage:
         # Проверяем, что нет заявлений в таблице. И если есть удаляем
         labor_cost_page.go_to_labor_cost_page()
         labor_cost_page.go_to_previous_period()
-        time.sleep(0.5)  # Без ожидания скрипт срабатывает до загрузки страницы
+        time.sleep(1)  # Без ожидания скрипт срабатывает до загрузки страницы
         count_absense = labor_cost_page.check_absence_on_tab()
         if count_absense == 0:
             labor_cost_page.add_absence(1, 'vacation')
@@ -98,4 +98,5 @@ class TestStatementPage:
         before = statement_page.get_count_absense()
         statement_page.click_previous_checkbox()
         after = statement_page.get_count_absense()
+        statement_page.delete_all_absence()
         assert before != after, "Количество заявлений не изменилось после включения чекбокса прошедшие отсутствия"
