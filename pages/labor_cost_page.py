@@ -441,3 +441,7 @@ class LaborCostPage(BasePage):
         assert self.element_is_displayed(
             self.locators.HAVE_REASON), "Сообщение о наложении отсутствия на трудозатраты не появилось"
         self.element_is_visible(self.locators.DRAWER_ABORT_BUTTON).click()
+
+    @allure.step("Переходим на предыдущий период")
+    def go_to_previous_period(self):
+        self.element_is_visible(self.locators.PREVIOUS_PERIOD_BUTTON).click()

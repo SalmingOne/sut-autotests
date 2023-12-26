@@ -89,3 +89,11 @@ class StatementPage(BasePage):
         self.elements_are_visible(self.locators.ALL_ABSENCE_KEBABS)[0].click()
         self.element_is_visible(self.locators.KEBABS_DEL_MENU_ITEM).click()
         self.element_is_visible(self.locators.DEL_CANSEL_BUTTON).click()
+
+    @allure.step("Берем количество заявлений")
+    def get_count_absense(self):
+        try:
+            return len(self.elements_are_visible(self.locators.ALL_ABSENCE_KEBABS))
+        except TimeoutException:
+            return 0
+
