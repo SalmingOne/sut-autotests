@@ -213,7 +213,7 @@ class TestLaborCostPage:
             statement_page.delete_all_absence()
         else:
             pass
-        error_text = labor_cost_page.check_overtime_work_spae_in_reason_field(0, ' ')
+        error_text = labor_cost_page.check_overtime_work_space_in_reason_field(0, ' ')
         assert error_text == 'Укажите причину переработки', "Не появилось сообщение об ошибке"
 
 
