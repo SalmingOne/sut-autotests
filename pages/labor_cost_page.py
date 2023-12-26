@@ -481,5 +481,15 @@ class LaborCostPage(BasePage):
         self.element_is_present(self.locators.DRAWER_SAVE_BUTTON).click()
         output_text = self.element_is_visible(self.locators.MUI_ERROR).text
         self.element_is_present(self.locators.DRAWER_ABORT_BUTTON).click()
-        time.sleep(1.5)
         return output_text
+
+    @allure.step("Проверяем, что кнопка сохранения задизейблена и возвращаем текст тултипа")
+    def check_disable_submit_button_and_tooltip(self, number_empty_day):
+        days_zero_reason = self.get_numbers_days_reason("zero")
+        self.open_add_absence_drawer(days_zero_reason[number_empty_day])
+        self.element_is_visible(self.locators.OPEN_ABSENCE_CHOOSE_BUTTON).click()
+        self.element_is_visible(self.locators.OVERTIME_WORK).click()
+        time.sleep(0.5)  # Без этого ожидания не успевает прогрузиться
+        self.action_move_to_element(self.element_is_present(self.locators.DRAWER_SAVE_BUTTON_DISABLE))
+        return self.element_is_visible(self.locators.TOOLTIP).text
+

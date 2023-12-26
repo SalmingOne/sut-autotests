@@ -216,5 +216,20 @@ class TestLaborCostPage:
         error_text = labor_cost_page.check_overtime_work_space_in_reason_field(0, ' ')
         assert error_text == 'Укажите причину переработки', "Не появилось сообщение об ошибке"
 
+    @allure.title("id-2737 Пустой ввод в обязательные поля при добавлении переработки")
+    def test_add_space_in_reason_field(self, login, driver):
+        labor_cost_page = LaborCostPage(driver)
+        statement_page = StatementPage(driver)
+        # Проверяем что нет заявлений в таблице. И если есть удаляем
+        labor_cost_page.go_to_labor_cost_page()
+        time.sleep(1)  # Без ожидания скрипт срабатывает до загрузки страницы
+        if labor_cost_page.check_absence_on_tab() > 0:
+            statement_page.go_to_statement_page()
+            statement_page.click_previous_checkbox()
+            statement_page.delete_all_absence()
+        else:
+            pass
+        tooltip_text = labor_cost_page.check_disable_submit_button_and_tooltip(0)
+        assert tooltip_text == 'Заполните все обязательные поля', "Не появился тултип об обязательности заполнения полей"
 
 
