@@ -110,6 +110,7 @@ class LaborCostPageLocators:
     END_LEAVE_DATA_INPUT = (By.XPATH, '//div[contains(@class, "MuiFormControl-root MuiTextField-root")][2]//input')
     FILE_INPUT = (By.CSS_SELECTOR, 'input[type="file"]')
     DRAWER_SAVE_BUTTON = (By.XPATH, '//button[contains(@class, "MuiButtonBase-root onboarding__save-button onboarding__form-footer-save-button")]')
+    DRAWER_SAVE_BUTTON_DISABLE = (By.XPATH,'//div[@aria-label="Заполните все обязательные поля"]//button[contains(@class, "Mui-disabled onboarding__save-button onboarding__form-footer-save-button")]')
     DRAWER_ABORT_BUTTON = (By.XPATH, '//p[contains(@class, "MuiTypography-body2 ")]//following::button[contains(@class, "MuiButton-outlinedSizeSmall MuiButton-disableElevation")][2]')
     OVERTIME_WORK_INPUT = (By.CSS_SELECTOR, 'input[name="overtimeWork"]')
     PROJECT_NAME_DRAWER_INPUT = (By.CSS_SELECTOR, 'div[name="project"]')
