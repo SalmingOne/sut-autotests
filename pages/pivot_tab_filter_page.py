@@ -8,7 +8,6 @@ from pages.base_page import BasePage
 class PivotTabFilterPage(BasePage):
     locators = PivotTabFilterPageLocators()
 
-    # Берем текст с разных элементов
     @allure.step("Берем текст с разных элементов")
     def get_element_text(self, element):
         if element == 'checked':
@@ -23,7 +22,6 @@ class PivotTabFilterPage(BasePage):
             data.append(element.text)
         return data
 
-    # Выбираем случайные чек-боксы и радиокнопки
     @allure.step("Выбираем случайные чек-боксы и радиокнопки")
     def click_random_checkbox(self):
         item_list = self.elements_are_visible(self.locators.ALL_CHECKBOXES_AND_RADIOBUTTON)
@@ -32,17 +30,14 @@ class PivotTabFilterPage(BasePage):
             self.go_to_element(item)
             item.click()
 
-    # Нажимаем кнопку сбросить все
     @allure.step("Нажимаем кнопку сбросить все")
     def click_reset_button(self):
         self.element_is_visible(self.locators.RESET_ALL_BUTTON).click()
 
-    # Раскрываем дропдаун филиалов
     @allure.step("Раскрываем дропдаун филиалов")
     def open_filial_dropdown(self):
         self.element_is_visible(self.locators.OPEN_FILIAL_DROPDOWN).click()
 
-    # Раскрываем дропдаун интеграций
     @allure.step("Раскрываем дропдаун интеграций")
     def open_integration_dropdown(self):
         self.element_is_visible(self.locators.INTEGRATION_CHECKBOX).click()
