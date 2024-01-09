@@ -217,7 +217,7 @@ class TestLaborCostPage:
         assert error_text == 'Укажите причину переработки', "Не появилось сообщение об ошибке"
 
     @allure.title("id-2737 Пустой ввод в обязательные поля при добавлении переработки")
-    def test_add_space_in_reason_field(self, login, driver):
+    def test_empty_enter(self, login, driver):
         labor_cost_page = LaborCostPage(driver)
         statement_page = StatementPage(driver)
         # Проверяем что нет заявлений в таблице. И если есть удаляем
@@ -249,3 +249,10 @@ class TestLaborCostPage:
         statement_page.go_to_statement_page()
         date_in_tab = statement_page.get_date()
         assert overtime_work_date in date_in_tab, "Даты добавленной переработки нет в таблице переработок"
+
+    @allure.title("id-2710 Содержание дровера Добавление переработки")
+    def test_content_drover_adding_overwork(self, f_overtime_reason_requirement, login, driver):
+        labor_cost_page = LaborCostPage(driver)
+        labor_cost_page.open_overtime_drover(0)
+        labor_cost_page.check_all_overtime_reason()
+        labor_cost_page.check_fields_on_overtime_drover()
