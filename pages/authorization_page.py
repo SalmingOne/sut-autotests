@@ -7,7 +7,6 @@ class AuthorizationPage(BasePage):
     locators = AuthorizationPageLocators()
 
     @allure.step("Авторизация в системе")
-    # Авторизация в системе
     def authorization(self, login, password):
         self.element_is_visible(self.locators.LOGIN_FIELD).send_keys(login)
         self.element_is_visible(self.locators.PASSWORD_FIELD).send_keys(password)

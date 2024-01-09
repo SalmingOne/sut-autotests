@@ -97,3 +97,11 @@ class StatementPage(BasePage):
         except TimeoutException:
             return 0
 
+    @allure.step("Берем даты всех переработок ")
+    def get_date(self):
+        all_dates = self.elements_are_present(self.locators.ALL_DATES_OVERTIME_WORK)
+        data = []
+        for date in all_dates:
+            self.action_move_to_element(date)
+            data.append(date.text)
+        return data

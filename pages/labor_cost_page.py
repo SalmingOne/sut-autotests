@@ -2,7 +2,7 @@ import os
 import time
 
 import allure
-from selenium.common import TimeoutException, ElementNotInteractableException, ElementClickInterceptedException
+from selenium.common import TimeoutException, ElementClickInterceptedException
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 
@@ -461,7 +461,6 @@ class LaborCostPage(BasePage):
         self.element_is_present(self.locators.DRAWER_SAVE_BUTTON).click()
         output_text = self.element_is_visible(self.locators.MUI_ERROR).text
         self.element_is_present(self.locators.DRAWER_ABORT_BUTTON).click()
-        time.sleep(1.5)
         return output_text
 
     @allure.step("Проверяем добавление пробела в поле обязательного указания переработки")
@@ -492,4 +491,48 @@ class LaborCostPage(BasePage):
         time.sleep(0.5)  # Без этого ожидания не успевает прогрузиться
         self.action_move_to_element(self.element_is_present(self.locators.DRAWER_SAVE_BUTTON_DISABLE))
         return self.element_is_visible(self.locators.TOOLTIP).text
+
+    @allure.step("Заполняем поля переработки")
+    def field_overtime_work(self, number_empty_day, overtime_work_hours):
+        days_zero_reason = self.get_numbers_days_reason("zero")
+        self.open_add_absence_drawer(days_zero_reason[number_empty_day])
+        self.element_is_visible(self.locators.OPEN_ABSENCE_CHOOSE_BUTTON).click()
+        self.element_is_visible(self.locators.OVERTIME_WORK).click()
+        time.sleep(0.5)  # Без этого ожидания не успевает прогрузиться
+        this_day_text = self.element_is_visible(self.locators.BEGIN_LEAVE_DATA_INPUT).get_attribute('value')
+        self.element_is_visible(self.locators.OVERTIME_WORK_INPUT).send_keys(overtime_work_hours)
+        self.element_is_visible(self.locators.OVERTIME_WORK_INPUT).send_keys(Keys.RETURN)
+        self.element_is_visible(self.locators.PROJECT_NAME_DRAWER_INPUT).click()
+        time.sleep(0.5)  # Без этого ожидания не успевает прогрузиться
+        project_name = self.elements_are_visible(self.locators.ALL_PROJECT_ON_DRAWER_INPUT)[0].get_attribute(
+            'aria-label')
+        self.elements_are_visible(self.locators.ALL_PROJECT_ON_DRAWER_INPUT)[0].click()
+        self.element_is_present(self.locators.FILE_INPUT).send_keys(os.path.abspath(r'../data/административный.docx'))
+        self.action_move_to_element(self.element_is_present(self.locators.DRAWER_SAVE_BUTTON))
+        self.element_is_present(self.locators.DRAWER_SAVE_BUTTON).click()
+        return days_zero_reason[number_empty_day], overtime_work_hours, project_name, this_day_text
+
+    @allure.step("Берем текст всех сообщений системы")
+    def get_alert_message(self):
+        all_alerts = self.elements_are_visible(self.locators.ALERT_TEXT)
+        data = []
+        for alert in all_alerts:
+            data.append(alert.text)
+        return data
+
+    @allure.step("Проверяем, что переработка есть в таблице трудозатрат")
+    def check_overtime_work_on_tab(self):
+        day, hour, project_name, date = self.field_overtime_work(0, '1')
+        time.sleep(0.5)
+        self.element_is_visible(self.locators.SAVE_BUTTON).click()
+        out = self.element_is_visible(self.locators.get_day_by_project(project_name, day)).get_attribute('placeholder')
+        time.sleep(2)
+        alert_text = self.get_alert_message()
+        assert hour in out, "Переработки нет в нужно клетке строки  проекта"
+        assert 'Переработка успешно добавлена' in alert_text, "Нет сообщения системы о добавлении переработки"
+        return date
+
+
+
+
 

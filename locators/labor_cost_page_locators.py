@@ -90,7 +90,9 @@ class LaborCostPageLocators:
     GOAL_NUMBER_OF_CHARACTERS_OVER_MAX = (By.XPATH, "//div/p[contains(text(),'Максимальное количество символов: 255')]")
     
     def get_random_day_by_project(self, project_name: str ):
-        return  (By.XPATH, f'//div[@aria-label="{project_name}"]//ancestor::div[@class="MuiBox-root css-j7qwjs"]//div[{random.randint(2, 29)}]//input')
+        return (By.XPATH, f'//div[@aria-label="{project_name}"]//ancestor::div[@class="MuiBox-root css-j7qwjs"]//div[{random.randint(2, 29)}]//input')
+    def get_day_by_project(self, project_name, number_day):
+        return (By.XPATH, f'//div[@aria-label="{project_name}"]//ancestor::div[@class="MuiBox-root css-j7qwjs"]//div[{number_day}]//input')
     # Локаторы окна уведомления о не сохранении данных
     UNSAVED_WINDOW_TITLE = (By.XPATH, '//h6[text()="Подтвердите действие"]')
     UNSAVED_WINDOW_ACCEPT_BUTTON = (By.XPATH, '//h6[text()="Подтвердите действие"]//following::button[1]')
@@ -122,4 +124,5 @@ class LaborCostPageLocators:
     HAVE_REASON = (By.XPATH, '//span[contains(text(), "На выбранном периоде есть заполненные трудозатраты")]')
     HAVE_OUTER_LEAVE = (By.XPATH, '//span[contains(text(), "Наложение отсутствий, выберите другие даты")]')
     MUI_ERROR = (By.XPATH, '//p[contains(@class, "Mui-error")]')
+    ALERT_TEXT = (By.XPATH, '//div[contains(@class, "MuiAlert-message")]')
 

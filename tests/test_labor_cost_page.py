@@ -232,4 +232,20 @@ class TestLaborCostPage:
         tooltip_text = labor_cost_page.check_disable_submit_button_and_tooltip(0)
         assert tooltip_text == 'Заполните все обязательные поля', "Не появился тултип об обязательности заполнения полей"
 
-
+    @allure.title("id-2725 Добавление переработки на проект")
+    def test_adding_processing_to_a_project(self, login, driver):
+        labor_cost_page = LaborCostPage(driver)
+        statement_page = StatementPage(driver)
+        # Проверяем что нет заявлений в таблице. И если есть удаляем
+        labor_cost_page.go_to_labor_cost_page()
+        time.sleep(1)  # Без ожидания скрипт срабатывает до загрузки страницы
+        if labor_cost_page.check_absence_on_tab() > 0:
+            statement_page.go_to_statement_page()
+            statement_page.click_previous_checkbox()
+            statement_page.delete_all_absence()
+        else:
+            pass
+        overtime_work_date = labor_cost_page.check_overtime_work_on_tab()
+        statement_page.go_to_statement_page()
+        date_in_tab = statement_page.get_date()
+        assert overtime_work_date in date_in_tab, "Даты добавленной переработки нет в таблице переработок"

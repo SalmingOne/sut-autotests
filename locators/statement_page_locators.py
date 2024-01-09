@@ -12,17 +12,14 @@ class StatementPageLocators:
     DEL_ACCEPT_BUTTON = (By.XPATH, '//button[contains(@class, "onboarding__save-button ")]')
     DEL_CANSEL_BUTTON = (By.XPATH, '//button[contains(@class, "MuiButton-outlinedSizeSmall MuiButton-disableElevation MuiButtonBase-root")]')
     KEBABS_REDACT_MENU_ITEM = (By.XPATH, '//span[text()="Редактировать"]')
-
     FIRST_AND_LAST_ABSENCE_DAY = (By.XPATH, '//input[contains(@class, "MuiInputBase-inputAdornedEnd")]')
-
     DRAWER_SAVE_BUTTON = (By.XPATH,
                           '//button[contains(@class, "MuiButtonBase-root onboarding__save-button onboarding__form-footer-save-button")]')
-
     ABSENCE_START_DATE_ON_TAB = (By.CSS_SELECTOR,
                                  'div[col-id="startDate"][class="ag-cell ag-cell-not-inline-editing ag-cell-normal-height ag-cell-value"]')
     ABSENCE_END_DATE_ON_TAB = (By.CSS_SELECTOR,
                            'div[col-id="endDate"][class="ag-cell ag-cell-not-inline-editing ag-cell-normal-height ag-cell-value"]')
-
     DRAWER_DESCRIPTION_TEXT = (By.CSS_SELECTOR, 'p[id="alert-dialog-description"]')
+    ALERT_TEXT = (By.XPATH, '//div[contains(@class, "MuiAlert-message")]')
+    ALL_DATES_OVERTIME_WORK = (By.XPATH, '//h6[text()="Переработки"]//following::div[contains(@class, "ag-cell ag-cell-not-inline-editing ag-cell-normal-height ag-cell-value")][@col-id="date"]')
 
-    ALLERT_TEXT = (By.XPATH, '//div[contains(@class, "MuiAlert-message")]')
