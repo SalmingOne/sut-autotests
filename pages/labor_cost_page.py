@@ -532,7 +532,28 @@ class LaborCostPage(BasePage):
         assert 'Переработка успешно добавлена' in alert_text, "Нет сообщения системы о добавлении переработки"
         return date
 
+    @allure.step("Открываем дровер добавления переработки")
+    def open_overtime_drover(self, number_empty_day):
+        days_zero_reason = self.get_numbers_days_reason("zero")
+        self.open_add_absence_drawer(days_zero_reason[number_empty_day])
 
+    @allure.step("Проверяем наличие всех типов отсутствий и переработки")
+    def check_all_overtime_reason(self):
+        self.element_is_visible(self.locators.OPEN_ABSENCE_CHOOSE_BUTTON).click()
+        all_reasons = self.elements_are_visible(self.locators.ALL_OVERTIME_WORK_AND_LEAVE)
+        data = []
+        for alert in all_reasons:
+            data.append(alert.text)
+        self.element_is_visible(self.locators.OVERTIME_WORK).click()
+        assert data == ['Переработка', 'Ежегодный отпуск', 'Административный отпуск', 'Больничный', 'Декретный отпуск'], 'В списке не все типы отсутствий и переработки'
 
-
+    @allure.step("Проверяем наличие полей на дровере переработки")
+    def check_fields_on_overtime_drover(self):
+        assert self.element_is_displayed(self.locators.BEGIN_LEAVE_DATA_INPUT), "Отсутствует поле даты переработки"
+        assert self.element_is_displayed(self.locators.PROJECT_NAME_DRAWER_INPUT), "Отсутствует поле проекта переработки"
+        assert self.element_is_displayed(self.locators.CHECK_TASK_FIELD), "Отсутствует поле задачи переработки"
+        assert self.element_is_displayed(self.locators.OVERTIME_WORK_INPUT), "Отсутствует поле времени переработки"
+        assert self.element_is_displayed(self.locators.DRAWER_SAVE_BUTTON_DISABLE), "Отсутствует кнопка сохранения дровера переработки"
+        assert self.element_is_displayed(self.locators.DRAWER_ABORT_BUTTON), "Отсутствует кнопка отмены дровера переработки"
+        assert self.element_is_displayed(self.locators.OVERTIME_REASON_INPUT), "Отсутствует поле описания причины переработки"
 

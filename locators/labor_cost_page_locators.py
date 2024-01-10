@@ -102,6 +102,7 @@ class LaborCostPageLocators:
     # Кнопка открытия дровера переработки
     OPEN_ABSENCE_CHOOSE_BUTTON = (By.CSS_SELECTOR, 'button[aria-label="Открыть"]')
     # Выбираем переработку или отсутствия
+    ALL_OVERTIME_WORK_AND_LEAVE = (By.CSS_SELECTOR, 'li[data-option-index]')
     OVERTIME_WORK = (By.CSS_SELECTOR, 'li[data-option-index="0"]')
     VACATION = (By.CSS_SELECTOR, 'li[data-option-index="1"]')
     ADMINISTRATIVE_LEAVE = (By.CSS_SELECTOR, 'li[data-option-index="2"]')
@@ -111,6 +112,7 @@ class LaborCostPageLocators:
     BEGIN_LEAVE_DATA_INPUT = (By.XPATH, '//div[contains(@class, "MuiInputBase-colorPrimary MuiInputBase-formControl MuiInputBase-adornedEnd")]//input')
     END_LEAVE_DATA_INPUT = (By.XPATH, '//div[contains(@class, "MuiFormControl-root MuiTextField-root")][2]//input')
     FILE_INPUT = (By.CSS_SELECTOR, 'input[type="file"]')
+    CHECK_TASK_FIELD = (By.XPATH, '//label[text()="Задача"]')
     DRAWER_SAVE_BUTTON = (By.XPATH, '//button[contains(@class, "MuiButtonBase-root onboarding__save-button onboarding__form-footer-save-button")]')
     DRAWER_SAVE_BUTTON_DISABLE = (By.XPATH,'//div[@aria-label="Заполните все обязательные поля"]//button[contains(@class, "Mui-disabled onboarding__save-button onboarding__form-footer-save-button")]')
     DRAWER_ABORT_BUTTON = (By.XPATH, '//p[contains(@class, "MuiTypography-body2 ")]//following::button[contains(@class, "MuiButton-outlinedSizeSmall MuiButton-disableElevation")][2]')
