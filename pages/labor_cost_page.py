@@ -553,7 +553,7 @@ class LaborCostPage(BasePage):
         assert self.element_is_displayed(self.locators.PROJECT_NAME_DRAWER_INPUT), "Отсутствует поле проекта переработки"
         assert self.element_is_displayed(self.locators.CHECK_TASK_FIELD), "Отсутствует поле задачи переработки"
         assert self.element_is_displayed(self.locators.OVERTIME_WORK_INPUT), "Отсутствует поле времени переработки"
-        assert self.element_is_displayed(self.locators.DRAWER_SAVE_BUTTON_DISABLE), "Отсутствует кнопки сохранения дровера переработки"
-        assert self.element_is_displayed(self.locators.DRAWER_ABORT_BUTTON), "Отсутствует кнопки отмены дровера переработки"
+        assert self.element_is_displayed(self.locators.DRAWER_SAVE_BUTTON_DISABLE), "Отсутствует кнопка сохранения дровера переработки"
+        assert self.element_is_displayed(self.locators.DRAWER_ABORT_BUTTON), "Отсутствует кнопка отмены дровера переработки"
         assert self.element_is_displayed(self.locators.OVERTIME_REASON_INPUT), "Отсутствует поле описания причины переработки"
 
