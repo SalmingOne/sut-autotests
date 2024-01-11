@@ -8,7 +8,7 @@ from pages.base_page import BasePage
 class VacationSchedulePage(BasePage):
     locators = VacationSchedulePageLocators()
 
-    @allure.step("Переходим на графика отпусков")
+    @allure.step("Переходим на страницу График отпусков")
     def go_to_vacation_schedule_page(self):
         self.action_move_to_element(self.element_is_visible(self.locators.TAB_MORE))
         self.element_is_visible(self.locators.TAB_VACATION_SCHEDULE).click()
