@@ -1,12 +1,12 @@
 import allure
 
 from pages.create_local_user_drawer_page import CreateLocalUserDrawerPage
+from pages.user_page import UserPage
 
 
 @allure.suite("Дровер создания нового локального пользователя")
 class TestCreateLocalUser:
 
-    # id-280 4.2 Содержание дровера "Добавление нового пользователя" при создании локального пользователя
     @allure.title("id-280 4.2 Содержание дровера Добавление нового пользователя при создании локального пользователя")
     def test_create_local_user_drawer(self, login, driver):
         create_local_user_page = CreateLocalUserDrawerPage(driver)
@@ -27,3 +27,12 @@ class TestCreateLocalUser:
         create_local_user_page.check_clear_icon_button()
         create_local_user_page.check_save_button()
         create_local_user_page.check_abort_button()
+
+    @allure.title("id-288 4.2 Отмена добавления нового пользователя")
+    def test_cansel_adding_new_user(self, login, driver):
+        create_local_user_page = CreateLocalUserDrawerPage(driver)
+        create_local_user_page.go_to_create_local_user_drawer()
+        create_local_user_page.field_required_fields('yes')
+        user_page = UserPage(driver)
+
+

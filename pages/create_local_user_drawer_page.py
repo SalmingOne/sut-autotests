@@ -1,3 +1,5 @@
+import time
+
 import allure
 
 from locators.create_local_user_drawer_locators import CreateLocalUserDrawerLocators
@@ -87,3 +89,32 @@ class CreateLocalUserDrawerPage(BasePage):
     def check_abort_button(self):
         button_text = self.element_is_visible(self.locators.ABORT_BUTTON).text
         assert button_text == 'ОТМЕНИТЬ', "Кнопка отмены отсутствует"
+
+    def input_dropdown(self, locator):
+        self.action_move_to_element(self.element_is_visible(locator))
+        self.element_is_visible(locator).click()
+        self.elements_are_visible(self.locators.DROPDOWN_ITEMS)[0].click()
+
+    @allure.step("")
+    def field_required_fields(self, abort=None):
+        self.element_is_visible(self.locators.LOGIN_FIELD).send_keys('AutoUser')
+        self.element_is_visible(self.locators.SECOND_NAME_FIELD).send_keys('Автоматов')
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys('Автомат')
+        self.action_move_to_element(self.element_is_visible(self.locators.GENDER_FIELD))
+        self.element_is_visible(self.locators.GENDER_FIELD).click()
+        self.element_is_visible(self.locators.GENDER_MAILE).click()
+        time.sleep(0.1)
+        self.input_dropdown(self.locators.PROJECT_ROLES_FIELD)
+        self.action_esc()
+        self.input_dropdown(self.locators.DEPARTMENT_FIELD)
+        self.input_dropdown(self.locators.POSITION_FIELD)
+        self.go_to_tab_projects()
+        self.element_is_visible(self.locators.ADD_PROJECTS_BUTTON).click()
+        self.element_is_visible(self.locators.PROJECT_FIELD).click()
+        self.elements_are_visible(self.locators.DROPDOWN_ITEMS)[0].click()
+        self.go_to_tab_contacts()
+        self.element_is_visible(self.locators.EMAIL_FIELD).send_keys('auto@mail.ru')
+        if abort == 'yes':
+            self.element_is_visible(self.locators.ABORT_BUTTON).click()
+        else:
+            self.element_is_visible(self.locators.SAVE_BUTTON).click()
