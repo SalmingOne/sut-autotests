@@ -90,12 +90,13 @@ class CreateLocalUserDrawerPage(BasePage):
         button_text = self.element_is_visible(self.locators.ABORT_BUTTON).text
         assert button_text == 'ОТМЕНИТЬ', "Кнопка отмены отсутствует"
 
+    @allure.step("Выбираем в дровере первое значение")
     def input_dropdown(self, locator):
         self.action_move_to_element(self.element_is_visible(locator))
         self.element_is_visible(locator).click()
         self.elements_are_visible(self.locators.DROPDOWN_ITEMS)[0].click()
 
-    @allure.step("")
+    @allure.step("Создаем локального пользователя")
     def field_required_fields(self, abort=None):
         self.element_is_visible(self.locators.LOGIN_FIELD).send_keys('AutoUser')
         self.element_is_visible(self.locators.SECOND_NAME_FIELD).send_keys('Автоматов')
@@ -103,13 +104,14 @@ class CreateLocalUserDrawerPage(BasePage):
         self.action_move_to_element(self.element_is_visible(self.locators.GENDER_FIELD))
         self.element_is_visible(self.locators.GENDER_FIELD).click()
         self.element_is_visible(self.locators.GENDER_MAILE).click()
-        time.sleep(0.1)
+        time.sleep(0.2)  # Без ожидания иногда скрипт срабатывает раньше анимации
         self.input_dropdown(self.locators.PROJECT_ROLES_FIELD)
         self.action_esc()
         self.input_dropdown(self.locators.DEPARTMENT_FIELD)
         self.input_dropdown(self.locators.POSITION_FIELD)
         self.go_to_tab_projects()
         self.element_is_visible(self.locators.ADD_PROJECTS_BUTTON).click()
+        time.sleep(0.1)  # Без ожидания иногда скрипт срабатывает раньше анимации
         self.element_is_visible(self.locators.PROJECT_FIELD).click()
         self.elements_are_visible(self.locators.DROPDOWN_ITEMS)[0].click()
         self.go_to_tab_contacts()

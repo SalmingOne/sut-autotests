@@ -34,5 +34,7 @@ class TestCreateLocalUser:
         create_local_user_page.go_to_create_local_user_drawer()
         create_local_user_page.field_required_fields('yes')
         user_page = UserPage(driver)
+        assert user_page.check_user_is_not_in_table('Автоматов') == False, "Пользователь есть в таблице"
+
 
 
