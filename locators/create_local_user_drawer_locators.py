@@ -23,3 +23,19 @@ class CreateLocalUserDrawerLocators:
     CLEAR_BUTTON = (By.CSS_SELECTOR, 'svg[data-testid="ClearIcon"]')
     SAVE_BUTTON = (By.XPATH, '//button[contains(@class, "onboarding__save-button")]')
     ABORT_BUTTON = (By.XPATH, '//button[text()="Отменить"]')
+    # Обязательные поля
+    LOGIN_FIELD = (By.CSS_SELECTOR, 'input[name="username"]')
+    SECOND_NAME_FIELD = (By.CSS_SELECTOR, 'input[name="secondName"]')
+    NAME_FIELD = (By.CSS_SELECTOR, 'input[name="name"]')
+    GENDER_FIELD = (By.CSS_SELECTOR, 'input[placeholder="Начните вводить пол"]')
+    GENDER_MAILE = (By.XPATH, '//li[text()="Мужской"]')
+    PROJECT_ROLES_FIELD = (By.CSS_SELECTOR, 'div[name="projectRoles"]')
+
+    DEPARTMENT_FIELD = (By.CSS_SELECTOR, 'input[placeholder="Начните вводить подразделение"]')
+    POSITION_FIELD = (By.CSS_SELECTOR, 'input[placeholder="Начните вводить должность"]')
+
+    PROJECT_FIELD = (By.XPATH, '//label[text()="Проект"]/../div')
+
+    EMAIL_FIELD = (By.CSS_SELECTOR, 'input[name="email"]')
+
+    DROPDOWN_ITEMS = (By.XPATH, '//li[contains(@class, "MuiAutocomplete-option MuiBox-root")]')
