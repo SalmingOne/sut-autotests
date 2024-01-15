@@ -32,3 +32,23 @@ class TestUsersPage:
         assert project_data == ['Проект', 'Роль в проекте', 'Руководитель проекта'], "Отсутствуют поля на вкладке проекты"
         assert contact_data == ['Телефон', 'Почта'], "Отсутствуют поля на вкладке контакты"
 
+    @allure.title("id-134 4.8 Подтверждение восстановления пользователя")
+    def test_user_recovery_confirmation(self, login, driver):
+        user_page = UserPage(driver)
+        user_page.go_to_user_page()
+        # Проверяем что есть нужный пользователь
+        if not user_page.check_user_is_not_in_table('Автотестов'):
+            create_local_user_page = CreateLocalUserDrawerPage(driver)
+            create_local_user_page.field_required_fields('AutoTester', 'Автотестов', 'auto_test@mail.ru', 'yes')
+        else:
+            pass
+        if user_page.get_user_status() == 'Уволeн':
+            pass
+        else:
+            user_page.fired_user()
+        # Проверяем восстановление пользователя
+        user_page.restore_user()
+        assert user_page.get_user_status() == 'Работает'
+        # Увольняем пользователя после теста
+        user_page.fired_user()
+
