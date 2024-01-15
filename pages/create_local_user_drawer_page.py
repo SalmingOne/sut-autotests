@@ -97,9 +97,9 @@ class CreateLocalUserDrawerPage(BasePage):
         self.elements_are_visible(self.locators.DROPDOWN_ITEMS)[0].click()
 
     @allure.step("Создаем локального пользователя")
-    def field_required_fields(self, abort=None):
-        self.element_is_visible(self.locators.LOGIN_FIELD).send_keys('AutoUser')
-        self.element_is_visible(self.locators.SECOND_NAME_FIELD).send_keys('Автоматов')
+    def field_required_fields(self, login, second_name, email, save):
+        self.element_is_visible(self.locators.LOGIN_FIELD).send_keys(login)
+        self.element_is_visible(self.locators.SECOND_NAME_FIELD).send_keys(second_name)
         self.element_is_visible(self.locators.NAME_FIELD).send_keys('Автомат')
         self.action_move_to_element(self.element_is_visible(self.locators.GENDER_FIELD))
         self.element_is_visible(self.locators.GENDER_FIELD).click()
@@ -115,8 +115,12 @@ class CreateLocalUserDrawerPage(BasePage):
         self.element_is_visible(self.locators.PROJECT_FIELD).click()
         self.elements_are_visible(self.locators.DROPDOWN_ITEMS)[0].click()
         self.go_to_tab_contacts()
-        self.element_is_visible(self.locators.EMAIL_FIELD).send_keys('auto@mail.ru')
-        if abort == 'yes':
-            self.element_is_visible(self.locators.ABORT_BUTTON).click()
-        else:
+        self.element_is_visible(self.locators.EMAIL_FIELD).send_keys(email)
+        if save == 'yes':
             self.element_is_visible(self.locators.SAVE_BUTTON).click()
+        elif save == 'no':
+            self.element_is_visible(self.locators.ABORT_BUTTON).click()
+
+    @allure.step("Берем текст сообщения системы")
+    def check_massage(self):
+        return self.element_is_visible(self.locators.ALERT_MESSAGE).text

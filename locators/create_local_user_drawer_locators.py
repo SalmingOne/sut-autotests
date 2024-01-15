@@ -39,3 +39,4 @@ class CreateLocalUserDrawerLocators:
     EMAIL_FIELD = (By.CSS_SELECTOR, 'input[name="email"]')
 
     DROPDOWN_ITEMS = (By.XPATH, '//li[contains(@class, "MuiAutocomplete-option MuiBox-root")]')
+    ALERT_MESSAGE = (By.XPATH, '//div[contains(@class, "MuiAlert-message")]')
