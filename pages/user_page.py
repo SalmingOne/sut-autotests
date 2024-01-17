@@ -48,3 +48,24 @@ class UserPage(BasePage):
     def check_user_card_title(self):
         assert self.element_is_displayed(self.locators.USER_CARD_TITLE)
 
+    @allure.step("Получаем статус пользователя")
+    def get_user_status(self):
+        return self.element_is_visible(self.locators.USER_STATUS).text
+
+    @allure.step("Уволить пользователя")
+    def fired_user(self):
+        self.element_is_visible(self.locators.USER_KEBABS).click()
+        self.element_is_visible(self.locators.FIRED_BUTTON).click()
+        self.element_is_visible(self.locators.CALENDAR_BUTTON).click()
+        self.element_is_visible(self.locators.THIS_DAY_PICKER).click()
+        self.element_is_visible(self.locators.SAVE_BUTTON).click()
+        time.sleep(1)  # Без ожидания не успевает срабатывать анимация
+
+    @allure.step("Восстановить пользователя")
+    def restore_user(self):
+        time.sleep(1)  # Без ожидания не успевает срабатывать анимация
+        self.element_is_visible(self.locators.USER_KEBABS).click()
+        self.element_is_visible(self.locators.RESTORE_BUTTON).click()
+        self.element_is_visible(self.locators.SAVE_BUTTON).click()
+        time.sleep(1)  # Без ожидания не успевает срабатывать анимация
+
