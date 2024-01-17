@@ -47,4 +47,4 @@ class TestCreateLocalUser:
             pass
         create_local_user_page.go_to_create_local_user_drawer()
         create_local_user_page.field_required_fields('AutoTester', 'Автоматов', 'auto@mail.ru', 'yes')
-        assert create_local_user_page.check_massage() == 'Пользователь с таким логином/почтой уже добавлен в систему'
+        assert create_local_user_page.check_massage() == 'Пользователь с таким логином/почтой уже добавлен в систему', "Не появилось сообщение о совпадении логинов"
