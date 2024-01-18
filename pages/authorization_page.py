@@ -14,5 +14,13 @@ class AuthorizationPage(BasePage):
 
     @allure.step("Проверка что пользователь авторизовался")
     def check_authorization(self):
-        checker = self.element_is_visible(self.locators.ACTIVITY_CHECK).text
-        assert checker == "Активность", "пользователь не авторизовался"
+        assert self.element_is_visible(self.locators.ACTIVITY_CHECK).text == "Активность", "Пользователь не авторизовался"
+
+    @allure.step("Выход пользователя из системы")
+    def logout(self):
+        self.element_is_visible(self.locators.PROFILE_BUTTON).click()
+        self.element_is_visible(self.locators.OUT_BUTTON).click()
+
+    @allure.step("Выход пользователя из системы")
+    def check_logout(self):
+        assert self.element_is_displayed(self.locators.LOGIN_FIELD), "Пользователь не вышел из системы"

@@ -7,3 +7,6 @@ class AuthorizationPageLocators:
     IN_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
     ACTIVITY_CHECK = (By.XPATH, '//button[text()="Активность"]')
 
+    PROFILE_BUTTON = (By.CSS_SELECTOR, 'button[id="profile"]')
+    OUT_BUTTON = (By.XPATH, '//a[text()="Выйти"]')
+
