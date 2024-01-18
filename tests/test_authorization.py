@@ -14,7 +14,6 @@ class TestAuthorization:
         time.sleep(0.2)  # ожидание для перезаписи токена
         print('прошел тест для получения токена')
 
-    # id-16 4.1 Авторизация в системе
     @allure.title("id-16  4.1 Авторизация в системе")
     def test_correct_authorization(self, driver):
         authorization_page = AuthorizationPage(driver, IN_URL)
@@ -22,10 +21,15 @@ class TestAuthorization:
         authorization_page.authorization(LOGIN, PASSWORD)
         authorization_page.check_authorization()
 
-    # id-901 4.1 Вход с вводом символов в разном регистре
     @allure.title("id-901  4.1 Вход с вводом символов в разном регистре")
     def test_correct_mixed_authorization(self, driver):
         authorization_page = AuthorizationPage(driver, IN_URL)
         authorization_page.open()
         authorization_page.authorization("ADMin", PASSWORD)
         authorization_page.check_authorization()
+
+    @allure.title("id-1378  4.10. Выход пользователя из системы")
+    def test_user_logout(self, login, driver):
+        authorization_page = AuthorizationPage(driver)
+        authorization_page.logout()
+        authorization_page.check_logout()
