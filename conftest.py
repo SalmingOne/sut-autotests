@@ -5,6 +5,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 
+from api_methods.auth import AuthApi
 from data.data import LOGIN, PASSWORD
 from pages.all_project_page import AllProjectPage
 from pages.authorization_page import AuthorizationPage
@@ -13,7 +14,7 @@ from configuration.config_provider import ConfigProvider
 from api_methods.project import ProjectApi
 from api_methods.system_settings import SystemSettingsApi
 
-IN_URL = 'http://10.7.2.3:32853/'
+IN_URL = 'http://10.7.2.3:32859/'
 config = ConfigProvider()
 
 
@@ -103,3 +104,13 @@ def f_notifications():
     sys_settings.turn_on_notifications()
     yield
     sys_settings.turn_off_notifications()
+
+
+@pytest.fixture
+def eeeee_auth(scope=''):
+    auth_api = AuthApi()
+    auth_api.auth()
+    print("фикстура запустилась")
+    yield
+    print("фикстура закрылась")
+

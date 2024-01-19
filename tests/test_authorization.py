@@ -2,6 +2,8 @@ import time
 
 import allure
 import pytest
+import testit
+
 from data.data import LOGIN, PASSWORD
 from pages.authorization_page import AuthorizationPage
 from conftest import IN_URL
@@ -9,11 +11,12 @@ from conftest import IN_URL
 
 @allure.suite("Страница авторизации")
 class TestAuthorization:
-    @pytest.mark.tryfirst
-    def test_for_token(self, f_create_temp_project, f_auth, driver):
+    @pytest.mark.demo
+    def test_for_token(self, eeeee_auth, driver):
         time.sleep(0.2)  # ожидание для перезаписи токена
         print('прошел тест для получения токена')
 
+    @testit.workItemID(16)
     @allure.title("id-16  4.1 Авторизация в системе")
     def test_correct_authorization(self, driver):
         authorization_page = AuthorizationPage(driver, IN_URL)
