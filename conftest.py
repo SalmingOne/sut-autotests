@@ -14,7 +14,7 @@ from configuration.config_provider import ConfigProvider
 from api_methods.project import ProjectApi
 from api_methods.system_settings import SystemSettingsApi
 
-IN_URL = 'http://10.7.2.3:32859/'
+IN_URL = 'http://10.7.2.3:32879/'
 config = ConfigProvider()
 
 
@@ -107,10 +107,8 @@ def f_notifications():
 
 
 @pytest.fixture
-def eeeee_auth(scope=''):
+def token_auth():
     auth_api = AuthApi()
     auth_api.auth()
-    print("фикстура запустилась")
-    yield
-    print("фикстура закрылась")
+
 
