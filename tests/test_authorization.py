@@ -16,7 +16,8 @@ class TestAuthorization:
         time.sleep(0.2)  # ожидание для перезаписи токена
         print('прошел тест для получения токена')
 
-    @testit.workItemID(16)
+    @testit.workItemIds(16)
+    @testit.displayName("Авторизация в системе")
     @allure.title("id-16  4.1 Авторизация в системе")
     def test_correct_authorization(self, driver):
         authorization_page = AuthorizationPage(driver, IN_URL)
