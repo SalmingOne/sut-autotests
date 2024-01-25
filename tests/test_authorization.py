@@ -25,6 +25,8 @@ class TestAuthorization:
         authorization_page.authorization(LOGIN, PASSWORD)
         authorization_page.check_authorization()
 
+    @testit.workItemIds(901)
+    @testit.displayName("4.1 Вход с вводом символов в разном регистре")
     @allure.title("id-901  4.1 Вход с вводом символов в разном регистре")
     def test_correct_mixed_authorization(self, driver):
         authorization_page = AuthorizationPage(driver, IN_URL)
@@ -32,6 +34,8 @@ class TestAuthorization:
         authorization_page.authorization("ADMin", PASSWORD)
         authorization_page.check_authorization()
 
+    @testit.workItemIds(1378)
+    @testit.displayName("4.10. Выход пользователя из системы")
     @allure.title("id-1378  4.10. Выход пользователя из системы")
     def test_user_logout(self, login, driver):
         authorization_page = AuthorizationPage(driver)
