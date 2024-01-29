@@ -1,4 +1,6 @@
 import allure
+import testit
+
 from locators.authorization_locators import AuthorizationPageLocators
 from pages.base_page import BasePage
 
@@ -6,6 +8,7 @@ from pages.base_page import BasePage
 class AuthorizationPage(BasePage):
     locators = AuthorizationPageLocators()
 
+    @testit.step("Авторизация в системе")
     @allure.step("Авторизация в системе")
     def authorization(self, login, password):
         self.element_is_visible(self.locators.LOGIN_FIELD).send_keys(login)
@@ -16,6 +19,7 @@ class AuthorizationPage(BasePage):
     def check_authorization(self):
         assert self.element_is_visible(self.locators.ACTIVITY_CHECK).text == "Активность", "Пользователь не авторизовался"
 
+    @testit.step("Выход пользователя из системы ")
     @allure.step("Выход пользователя из системы")
     def logout(self):
         self.element_is_visible(self.locators.PROFILE_BUTTON).click()

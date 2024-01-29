@@ -43,6 +43,7 @@ class TestLaborCostPage:
         assert tooltip_on_code in tooltip_on_project, "Тултип отображается без имени проекта"
         assert 'Проект' in first_column, "Нет столбца Проект"
 
+    @pytest.mark.demo
     @pytest.mark.labor_reason("True")
     @allure.title("id-1461 3.1.1.2 Содержание модального окна указания причин списания.")
     def test_contents_modal_window_indicating_the_reasons(self, f_create_temp_project, login, driver):
