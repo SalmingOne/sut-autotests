@@ -20,6 +20,7 @@ class ProjectApi:
             name: str = data.data.VALID_PROJECT_DATA["name"],
             startDate: str = data.data.VALID_PROJECT_DATA["startDate"],
             status: str = data.data.VALID_PROJECT_DATA["status"],
+            selfAdding: bool = data.data.VALID_PROJECT_DATA["selfAdding"],
             laborReasons: bool = data.data.VALID_PROJECT_DATA["laborReasons"],
             mandatoryAttachFiles: bool = data.data.VALID_PROJECT_DATA["mandatoryAttachFiles"],
             description: dict = data.data.VALID_PROJECT_DATA["description"],
@@ -66,6 +67,7 @@ class ProjectApi:
                 "name": name,
                 "startDate": startDate,
                 "status": status,
+                "selfAdding": selfAdding,
                 "laborReasons": laborReasons,
                 "mandatoryAttachFiles": mandatoryAttachFiles,
                 "description": description,
@@ -73,6 +75,7 @@ class ProjectApi:
                 "fileDescription": fileDescription,
                 "resources": resources
             }
+
         )
         return response.json()
 
