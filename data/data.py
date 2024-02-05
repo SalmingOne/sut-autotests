@@ -31,6 +31,7 @@ VALID_PROJECT_DATA = {"code": "ATP",
                                                       "entityRanges": [],
                                                       "data": {}}],
                                           "entityMap": {}},
+                      "automaticLaborReports": False,
                       "resources": [{"projectRoleId": 1,
                                      "userId": 2,
                                      "isProjectManager": True}]}

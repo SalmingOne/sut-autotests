@@ -1,6 +1,7 @@
 import time
 
 import allure
+import testit
 from selenium.webdriver.common.by import By
 
 from locators.all_project_page_locators import AllProjectPageLocators
@@ -10,6 +11,7 @@ from pages.base_page import BasePage
 class AllProjectPage(BasePage):
     locators = AllProjectPageLocators()
 
+    @testit.step("Переходим через меню на страницу все проекты")
     @allure.step("Переходим через меню на страницу все проекты")
     def go_to_all_project_page(self):
         self.action_move_to_element(self.element_is_visible(self.locators.TAB_PROJECTS))
