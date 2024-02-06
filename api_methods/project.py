@@ -20,11 +20,13 @@ class ProjectApi:
             name: str = data.data.VALID_PROJECT_DATA["name"],
             startDate: str = data.data.VALID_PROJECT_DATA["startDate"],
             status: str = data.data.VALID_PROJECT_DATA["status"],
+            selfAdding: bool = data.data.VALID_PROJECT_DATA["selfAdding"],
             laborReasons: bool = data.data.VALID_PROJECT_DATA["laborReasons"],
             mandatoryAttachFiles: bool = data.data.VALID_PROJECT_DATA["mandatoryAttachFiles"],
             description: dict = data.data.VALID_PROJECT_DATA["description"],
             endDate: str = data.data.VALID_PROJECT_DATA["endDate"],
             fileDescription: dict = data.data.VALID_PROJECT_DATA["fileDescription"],
+            automaticLaborReports: bool = data.data.VALID_PROJECT_DATA["automaticLaborReports"],
             resources: list = data.data.VALID_PROJECT_DATA["resources"]):
         """ Создание проекта через API
 
@@ -66,13 +68,16 @@ class ProjectApi:
                 "name": name,
                 "startDate": startDate,
                 "status": status,
+                "selfAdding": selfAdding,
                 "laborReasons": laborReasons,
                 "mandatoryAttachFiles": mandatoryAttachFiles,
                 "description": description,
                 "endDate": endDate,
                 "fileDescription": fileDescription,
+                "automaticLaborReports": automaticLaborReports,
                 "resources": resources
             }
+
         )
         return response.json()
 
