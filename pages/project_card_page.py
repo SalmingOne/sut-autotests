@@ -1,4 +1,5 @@
 import allure
+import testit
 from selenium.common import StaleElementReferenceException
 
 from locators.project_card_locators import ProjectCardLocators
@@ -8,15 +9,18 @@ from pages.base_page import BasePage
 class ProjectCardPage(BasePage):
     locators = ProjectCardLocators()
 
+    @testit.step("Переход на вкладку описание проекта")
     @allure.step("Переход на вкладку описание проекта")
     def go_to_description_tab(self):
         self.element_is_visible(self.locators.DESCRIPTION_TAB).click()
 
+    @testit.step("Получаем имя автора проекта")
     @allure.step("Получаем имя автора проекта")
     def get_project_autor_name(self):
         output_autor_name = self.element_is_visible(self.locators.AUTOR_NAME).text
         return output_autor_name
 
+    @testit.step("Получаем значения полей вкладки описание проекта")
     @allure.step("Получаем значения полей вкладки описание проекта")
     def get_project_description(self):
         output_project_name = self.element_is_visible(self.locators.NAME_FIELD).get_attribute("defaultValue")
@@ -26,6 +30,7 @@ class ProjectCardPage(BasePage):
         output_project_manager = self.element_is_visible(self.locators.MANAGER_LABEL).text
         return output_project_name, output_project_code, output_project_status, output_project_begin_data, output_project_manager
 
+    @testit.step("Получаем роль, ресурс и ставку на первой строке команды до редактирования")
     @allure.step("Получаем роль, ресурс и ставку на первой строке команды до редактирования")
     def get_first_team_member(self):
         member_list = self.elements_are_present(self.locators.FIRST_MEMBER_TEXT)
@@ -34,6 +39,7 @@ class ProjectCardPage(BasePage):
             data.append(member.text)
         return data
 
+    @testit.step("Получаем роль, ресурс и ставку на первой строке команды в режиме редактирования")
     @allure.step("Получаем роль, ресурс и ставку на первой строке команды в режиме редактирования")
     def get_first_team_member_on_redact(self):
         member_list = self.elements_are_present(self.locators.FIRST_MEMBER_TEXT_ON_REDACT)
@@ -42,10 +48,12 @@ class ProjectCardPage(BasePage):
             data.append(member.get_attribute("value"))
         return data
 
+    @testit.step("Переходим в режим редактирования команды")
     @allure.step("Переходим в режим редактирования команды")
     def go_to_redact_team(self):
         self.element_is_visible(self.locators.REDACT_BUTTON).click()
 
+    @testit.step("Меняем роль, ресурс и ставку на первой строке команды")
     @allure.step("Меняем роль, ресурс и ставку на первой строке команды")
     def change_first_team_member(self):
         member_list = self.elements_are_present(self.locators.FIRST_MEMBER_TEXT_ON_REDACT)
@@ -57,6 +65,7 @@ class ProjectCardPage(BasePage):
                 pass
         self.element_is_visible(self.locators.SAVE_BUTTON).click()
 
+    @testit.step("Переход на вкладку команды проекта")
     @allure.step("Переход на вкладку команды проекта")
     def go_to_team_tab(self):
         self.element_is_visible(self.locators.TEAM_TAB).click()

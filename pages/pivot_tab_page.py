@@ -1,6 +1,7 @@
 import time
 
 import allure
+import testit
 from selenium.webdriver.common.by import By
 
 from locators.pivot_tab_page_locators import PivotTabPageLocators
@@ -10,11 +11,13 @@ from pages.base_page import BasePage
 class PivotTabPage(BasePage):
     locators = PivotTabPageLocators()
 
+    @testit.step("Переходим на сводную таблицу через меню")
     @allure.step("Переходим на сводную таблицу через меню")
     def go_to_pivot_page(self):
         self.element_is_visible(self.locators.ANALYTIC_MENU_BUTTON).click()
         self.element_is_visible(self.locators.PIVOT_TAB_BUTTON).click()
 
+    @testit.step("Выбираем отображаемый период")
     @allure.step("Выбираем отображаемый период")
     def choose_period(self, period):
         time.sleep(1)
@@ -28,7 +31,8 @@ class PivotTabPage(BasePage):
         elif period == "year":
             self.element_is_visible(self.locators.YEAR_PERIOD_SELECT).click()
 
-    @allure.step("Берем id строки нужного проекта для дальнейшего поиска ")
+    @testit.step("Берем id строки нужного проекта для дальнейшего поиска")
+    @allure.step("Берем id строки нужного проекта для дальнейшего поиска")
     def get_row_id(self, tab):
         if tab == "project":
             row_id = self.element_is_visible(self.locators.GET_ROW_ID).get_attribute("row-id")
@@ -37,6 +41,7 @@ class PivotTabPage(BasePage):
             row_id = self.element_is_visible(self.locators.GET_ROW_ID_ON_USER).get_attribute("row-id")
             return row_id
 
+    @testit.step("Берем сумму списанных часов за период по проекту")
     @allure.step("Берем сумму списанных часов за период по проекту")
     def get_sum_reason_on_project(self, period):
         row_id = self.get_row_id("project")
@@ -56,6 +61,7 @@ class PivotTabPage(BasePage):
             print(a)
             return a
 
+    @testit.step("Берем сумму списанных часов за период по пользователю")
     @allure.step("Берем сумму списанных часов за период по пользователю")
     def get_sum_reason_on_user(self):
         row_id = self.get_row_id("user")
@@ -64,10 +70,12 @@ class PivotTabPage(BasePage):
         print(a)
         return a
 
+    @testit.step("Переходим на отображение таблицы по пользователю")
     @allure.step("Переходим на отображение таблицы по пользователю")
     def go_to_by_user_tab(self):
         self.element_is_visible(self.locators.BY_USER_BUTTON).click()
 
+    @testit.step("Открываем список проектов пользователя")
     @allure.step("Открываем список проектов пользователя")
     def open_project_list(self):
         self.element_is_visible(self.locators.OPEN_PROJECT_LIST).click()

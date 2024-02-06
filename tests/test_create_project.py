@@ -1,5 +1,8 @@
+import time
+
 import allure
 import pytest
+import testit
 
 from pages.all_project_page import AllProjectPage
 from pages.create_project_drawer_page import CreateProjectDrawerPage
@@ -10,8 +13,8 @@ from pages.project_card_page import ProjectCardPage
 # @pytest.mark.smoke_test
 @allure.suite("Создание проекта")
 class TestCreateProject:
-    # id-47 1.1.1 Создание нового проекта
-    @pytest.mark.demo
+    @testit.workItemIds(47)
+    @testit.displayName("1.1.1 Создание нового проекта")
     @allure.title("id-47 1.1.1 Создание нового проекта")
     def test_create_project(self, login, driver):
         # Создаем проект
@@ -40,7 +43,8 @@ class TestCreateProject:
         all_project_page.go_to_all_project_page()
         all_project_page.delete_project()
 
-    # id-10157 1.1.1 Создание нового проекта в статусе черновик
+    @testit.workItemIds(10157)
+    @testit.displayName("1.1.1 Создание нового проекта в статусе черновик")
     @allure.title("id-10157 1.1.1 Создание нового проекта в статусе черновик")
     def test_create_project_draft(self, login, driver):
         # Создаем проект
@@ -66,14 +70,15 @@ class TestCreateProject:
         # Берем имя проекта со страницы все проекты
         all_project_page = AllProjectPage(driver)
         all_project_page.go_to_all_project_page()
-        # all_project_page.see_all_status_project() На разных стендах работает по разному
+        all_project_page.see_all_status_project()
 
         check_name_at_all = all_project_page.check_project_name_at_all()
         assert project_name == check_name_at_all, "имя созданного проекта отсутствует на странице все проекты"
         # Пока удаление проекта здесь, планирую позже включить его в фикстуру
         all_project_page.delete_project()
 
-    # id-1469 1.1.1 Добавление нового проекта с обязательным указанием причины списания
+    @testit.workItemIds(1469)
+    @testit.displayName("1.1.1 Добавление нового проекта с обязательным указанием причины списания")
     @allure.title("id-1469 1.1.1 Добавление нового проекта с обязательным указанием причины списания")
     def test_create_project_reason(self, login, driver):
         # Создаем проект
@@ -101,3 +106,5 @@ class TestCreateProject:
         assert project_name == check_name_at_all, "имя созданного проекта отсутствует на странице все проекты"
         # Пока удаление проекта здесь, планирую позже включить его в фикстуру
         all_project_page.delete_project()
+
+

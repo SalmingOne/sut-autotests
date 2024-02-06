@@ -1,5 +1,6 @@
 import allure
 import pytest
+import testit
 
 from pages.labor_cost_page import LaborCostPage
 from pages.pivot_tab_page import PivotTabPage
@@ -8,10 +9,9 @@ from pages.pivot_tab_page import PivotTabPage
 @allure.suite("Сводная таблица")
 class TestPivotPage:
 
-    # id-3104 3.2.2.1 Проверка правильности подсчета трудозатрат за месяц при отображении "Сводной таблицы" "За
-    # месяц-по неделям".
-    @allure.title("id-3104 3.2.2.1 Проверка правильности подсчета трудозатрат за месяц при отображении Сводной "
-                  "таблицы За месяц-по неделям")
+    @testit.workItemIds(3104)
+    @testit.displayName("3.2.2.1 Проверка правильности подсчета трудозатрат за месяц при отображении Сводной таблицы За месяц-по неделям")
+    @allure.title("id-3104 3.2.2.1 Проверка правильности подсчета трудозатрат за месяц при отображении Сводной таблицы За месяц-по неделям")
     def test_correct_month_summ_on_pivot_for_month_by_week(self, f_create_temp_project, login, driver):
         # Заполняем таблицу трудозатрат
         labor_cost_page = LaborCostPage(driver)
@@ -29,11 +29,9 @@ class TestPivotPage:
         assert str(sum_in_month) == sum_on_project
         assert str(sum_in_month) == sum_on_user
 
-    # id-3105 3.2.2.1 Проверка правильности подсчета трудозатрат за неделю при отображении "Сводной таблицы" "За
-    # неделю".
-    @pytest.mark.demo
-    @allure.title("id-3105 3.2.2.1 Проверка правильности подсчета трудозатрат за неделю при отображении Сводной "
-                  "таблицы За неделю")
+    @testit.workItemIds(3105)
+    @testit.displayName("3.2.2.1 Проверка правильности подсчета трудозатрат за месяц при отображении Сводной таблицы За месяц-по неделям")
+    @allure.title("id-3105 3.2.2.1 Проверка правильности подсчета трудозатрат за неделю при отображении Сводной таблицы За неделю")
     def test_correct_week_summ_on_pivot_for_week(self, f_create_temp_project, login, driver):
         # Заполняем таблицу трудозатрат
         labor_cost_page = LaborCostPage(driver)
@@ -52,7 +50,8 @@ class TestPivotPage:
         assert str(sum_in_week) == sum_on_project
         assert str(sum_in_week) == sum_on_user
 
-    # id-3106 3.2.2.1 Проверка правильности подсчета трудозатрат за год при отображении "Сводной таблицы" "За год"
+    @testit.workItemIds(3106)
+    @testit.displayName("3.2.2.1 Проверка правильности подсчета трудозатрат за год при отображении Сводной таблицы За год")
     @allure.title(
         "id-3106 3.2.2.1 Проверка правильности подсчета трудозатрат за год при отображении Сводной таблицы За год")
     def test_correct_summ_on_pivot_for_year(self, f_create_temp_project, login, driver):

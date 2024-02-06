@@ -9,7 +9,6 @@ from pages.labor_cost_page import LaborCostPage
 from locators.labor_cost_page_locators import LaborCostPageLocators
 
 
-
 @allure.suite("Таблица трудозатрат")
 class TestLaborCostPage:
 
@@ -33,10 +32,10 @@ class TestLaborCostPage:
         labor_cost_page.check_period_select()
         labor_cost_page.check_add_overtime_work_button()
         labor_cost_page.check_add_absense_button()
-        #labor_cost_page.check_filter()
+        # labor_cost_page.check_filter()
         labor_cost_page.check_open_widget_button()
         labor_cost_page.check_month_picker()
-        #labor_cost_page.check_next_previous_buttons()
+        # labor_cost_page.check_next_previous_buttons()
         all_head_list, day_in_month = labor_cost_page.check_tab_head()
         labor_cost_page.check_week_days_head()
         labor_cost_page.check_colors_of_days()

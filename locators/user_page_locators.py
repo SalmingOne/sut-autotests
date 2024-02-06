@@ -20,7 +20,7 @@ class UserPageLocators:
     CALENDAR_BUTTON = (By.CSS_SELECTOR, 'button[aria-label^="Choose date, selected"]')
     THIS_DAY_PICKER = (By.XPATH,
                        '//button[contains(@class, "MuiButtonBase-root MuiPickersDay-root MuiPickersDay-dayWithMargin MuiPickersDay-today")]')
-    SAVE_BUTTON = (By.XPATH, '//button[contains(@class, "onboarding__save-button")]')
+    SAVE_BUTTON = (By.XPATH, '//p[contains(@class, "MuiTypography-root MuiTypography-body2")]//following::button[@type="submit"]')
     # Карточка пользователя
     CLEAR_BUTTON = (By.CSS_SELECTOR, 'svg[data-testid="ClearIcon"]')
     USER_CARD_LABEL = (By.XPATH, '//label[contains(@class, "")]')

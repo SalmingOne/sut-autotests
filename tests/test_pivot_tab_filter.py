@@ -2,6 +2,7 @@ import time
 
 import allure
 import pytest
+import testit
 
 from pages.pivot_tab_filter_page import PivotTabFilterPage
 from pages.pivot_tab_page import PivotTabPage
@@ -10,8 +11,8 @@ from pages.pivot_tab_page import PivotTabPage
 @allure.suite("Дровер фильтрации сводной таблицы по проектам")
 class TestPivotTabFilterPage:
 
-    #  id-1194 3.2.2.15.1 Реакция системы на нажатие кнопки "Сбросить все" на табе "По проектам".
-    @pytest.mark.demo
+    @testit.workItemIds(1194)
+    @testit.displayName("3.2.2.15.1 Реакция системы на нажатие кнопки Сбросить все на табе По проектам.")
     @allure.title("id-1194 3.2.2.15.1 Реакция системы на нажатие кнопки Сбросить все на табе По проектам.")
     def test_reset_all_button_on_filter(self, login, driver):
         pivot_tab_page = PivotTabPage(driver)
@@ -29,7 +30,8 @@ class TestPivotTabFilterPage:
                                'Показывать активность пользователя'], ("После сброса не все фильтры восстановились по "
                                                                        "умолчанию")
 
-#  id-1187 3.2.2.15.1 Содержание дропдауна с фильтрами при просмотре сводной таблицы "По проектам".
+    @testit.workItemIds(1187)
+    @testit.displayName("3.2.2.15.1 Содержание дропдауна с фильтрами при просмотре сводной таблицы  По проектам")
     @allure.title("id-1187 3.2.2.15.1 Содержание дропдауна с фильтрами при просмотре сводной таблицы  По проектам")
     def test_content_dropdown_filter(self, login, driver):
         pivot_tab_page = PivotTabPage(driver)
