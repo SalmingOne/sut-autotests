@@ -28,8 +28,8 @@ class LaborCostPage(BasePage):
         check_code_at_labor = self.element_is_present(self.locators.CHECK_CODE_PROJECT).text
         return check_code_at_labor
 
-    @testit.step("Проверка что кода проекта нет на странице")
-    @allure.step("Проверка что кода проекта нет на странице")
+    @testit.step("Проверка, что кода проекта нет на странице")
+    @allure.step("Проверка, что кода проекта нет на странице")
     def check_no_project_code_at_labor(self):
         try:
             return self.element_is_present(self.locators.CHECK_CODE_PROJECT).text
@@ -76,7 +76,7 @@ class LaborCostPage(BasePage):
         # Заполняем текущий месяц
         self.input_time(self.locators.FIRST_DAY_BY_PROJECT, first_day_time)
         x, y = self.check_tab_head()
-        last_day_number = int(y) + 1
+        last_day_number = y + 1
         last_day_locator = (
             By.XPATH,
             f'//div[@aria-label="{PROJECT_NAME}"]//ancestor::div[contains(@class,"project-row MuiBox-root")]//div[{last_day_number}]//input')
@@ -85,7 +85,7 @@ class LaborCostPage(BasePage):
         # Переходим на предыдущий месяц и заполняем его
         self.element_is_visible(self.locators.PREVIOUS_PERIOD_BUTTON).click()
         x, y = self.check_tab_head()
-        last_day_number = int(y) + 1
+        last_day_number = y + 1
         last_day_locator = (
             By.XPATH,
             f'//div[@aria-label="{PROJECT_NAME}"]//ancestor::div[contains(@class,"project-row MuiBox-root")]//div[{last_day_number}]//input')
@@ -159,7 +159,7 @@ class LaborCostPage(BasePage):
         # Заполняем последний день предыдущего года
         self.element_is_visible(self.locators.PREVIOUS_PERIOD_BUTTON).click()
         x, y = self.check_tab_head()
-        last_day_number = int(y) + 1
+        last_day_number = y + 1
         last_day_locator = (
             By.XPATH,
             f'//div[@aria-label="{PROJECT_NAME}"]//ancestor::div[contains(@class,"project-row MuiBox-root")]//div[{last_day_number}]//input')
@@ -170,7 +170,7 @@ class LaborCostPage(BasePage):
         # Заполняем последний день текущего года
         self.choose_month_picker('дек.')
         x, y = self.check_tab_head()
-        last_day_number = int(y) + 1
+        last_day_number = y + 1
         last_day_locator = (
             By.XPATH,
             f'//div[@aria-label="{PROJECT_NAME}"]//ancestor::div[contains(@class,"project-row MuiBox-root")]//div[{last_day_number}]//input')
@@ -278,7 +278,7 @@ class LaborCostPage(BasePage):
         numbers = []
         for day in all_day_list:
             numbers.append(day.text)
-        return numbers, numbers[numbers.index('Итого') - 1]
+        return numbers, int(numbers[numbers.index('Итого') - 1])
 
     @testit.step("Проверяем наличие всех дней недели в шапке таблицы")
     @allure.step("Проверяем наличие всех дней недели в шапке таблицы")
