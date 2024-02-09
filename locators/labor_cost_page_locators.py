@@ -44,11 +44,11 @@ class LaborCostPageLocators:
     WEEK_PERIOD_SELECT = (By.CSS_SELECTOR, 'li[data-value="week"]')
     MONTH_PERIOD_SELECT = (By.CSS_SELECTOR, 'li[data-value="month"]')
     PREVIOUS_PERIOD_BUTTON = (By.CSS_SELECTOR, 'svg[data-testid="ChevronLeftIcon"]')
-    NEXT_PERIOD_BUTTON = (By.XPATH, '//button[contains(@class,"onboarding__next-quarter")]')
+    NEXT_PERIOD_BUTTON = (By.CSS_SELECTOR, 'svg[data-testid="ChevronRightIcon"]')
     PERIOD_MENU_ITEM = (By.XPATH, '//li[contains(@class,"MuiMenuItem-gutters")]')
-    THIS_DAY_BUTTON = (By.XPATH, '//button[contains(@class, "onboarding__show-today")]')
+    THIS_DAY_BUTTON = (By.XPATH, '//button[contains(@class, "DateInterval-setToday")]')
     # Датапикер с выбором месяца
-    MONTH_DATEPICKER = (By.XPATH, '//h6[contains(@class, "MuiTypography-root MuiTypography-subtitle2 css-1mh2yc1")]')
+    MONTH_DATEPICKER = (By.XPATH, '//button[contains(@class, "DateInterval-openPicker")]')
     # Локатор для определения количества дней в месяце
     ALL_DAY_NUMBER = (By.XPATH, '//h6[contains(@class, "MuiTypography-root")]')
     # Заголовок страницы

@@ -1,4 +1,5 @@
 import allure
+import testit
 
 from pages.colleagues_page import ColleaguesPage
 
@@ -6,6 +7,8 @@ from pages.colleagues_page import ColleaguesPage
 @allure.suite("Пользователи")
 class TestUsersPage:
 
+    @testit.workItemIds(981)
+    @testit.displayName("4.9.1. Просмотр страницы коллег пользователя в разделе Коллеги")
     @allure.title("id-981 4.9.1. Просмотр страницы коллег пользователя в разделе Коллеги")
     def test_view_colleagues_page(self, login, driver):
         colleagues_page = ColleaguesPage(driver)

@@ -22,19 +22,22 @@ class LaborCostPage(BasePage):
         self.action_move_to_element(self.element_is_visible(self.locators.TAB_ACTIVITY))
         self.element_is_visible(self.locators.TAB_LABOR_COST_TABLE).click()
 
+    @testit.step("Проверка, что код проекта есть на странице")
     @allure.step("Проверка, что код проекта есть на странице")
     def check_project_code_at_labor(self):
         check_code_at_labor = self.element_is_present(self.locators.CHECK_CODE_PROJECT).text
         return check_code_at_labor
 
-    @allure.step("Проверка что кода проекта нет на странице")
+    @testit.step("Проверка, что кода проекта нет на странице")
+    @allure.step("Проверка, что кода проекта нет на странице")
     def check_no_project_code_at_labor(self):
         try:
             return self.element_is_present(self.locators.CHECK_CODE_PROJECT).text
         except TimeoutException:
             return "no element on page"
 
-    @allure.step("Проверка что появляется окно указания причины списания ")
+    @testit.step("Проверка что появляется окно указания причины списания")
+    @allure.step("Проверка что появляется окно указания причины списания")
     def check_to_have_reason_fo_write(self):
         self.element_is_visible(self.locators.RANDOM_DAYS_BY_PROJECT).click()
         checked_text = self.element_is_visible(self.locators.CHECK_LABOR_REASON_FIELD).text
@@ -63,14 +66,7 @@ class LaborCostPage(BasePage):
     def input_reason_into_form(self, reason):
         self.element_is_visible(self.locators.INPUT_REASON_DESCRIPTION_FIELD).send_keys(reason)
 
-    @allure.step("Узнаем сколько дней в конкретном месяце, что бы потом вставить значение в последний день")
-    def get_number_last_month_day(self):
-        all_day_list = self.elements_are_present(self.locators.ADD_OVERTIME_WORK_BUTTON)
-        numbers = []
-        for day in all_day_list:
-            numbers.append(day.text)
-        return len(numbers)
-
+    @testit.step("Списываем трудозатраты за первый и последний день месяца")
     @allure.step("Списываем трудозатраты за первый и последний день месяца")
     def input_work_by_month(self):
         first_day_time = 5  # Первый день текущего периода
@@ -79,7 +75,8 @@ class LaborCostPage(BasePage):
         next_first_day_time = 3  # Первый день следующего периода
         # Заполняем текущий месяц
         self.input_time(self.locators.FIRST_DAY_BY_PROJECT, first_day_time)
-        last_day_number = self.get_number_last_month_day() + 1
+        x, y = self.check_tab_head()
+        last_day_number = y + 1
         last_day_locator = (
             By.XPATH,
             f'//div[@aria-label="{PROJECT_NAME}"]//ancestor::div[contains(@class,"project-row MuiBox-root")]//div[{last_day_number}]//input')
@@ -87,7 +84,8 @@ class LaborCostPage(BasePage):
         self.element_is_visible(self.locators.SAVE_BUTTON).click()
         # Переходим на предыдущий месяц и заполняем его
         self.element_is_visible(self.locators.PREVIOUS_PERIOD_BUTTON).click()
-        last_day_number = self.get_number_last_month_day() + 1
+        x, y = self.check_tab_head()
+        last_day_number = y + 1
         last_day_locator = (
             By.XPATH,
             f'//div[@aria-label="{PROJECT_NAME}"]//ancestor::div[contains(@class,"project-row MuiBox-root")]//div[{last_day_number}]//input')
@@ -105,6 +103,7 @@ class LaborCostPage(BasePage):
 
         return first_day_time + last_day_time
 
+    @testit.step("Списываем трудозатраты за первый и последний день недели")
     @allure.step("Списываем трудозатраты за первый и последний день недели")
     def input_work_by_week(self):
         first_day_time = 7
@@ -137,6 +136,7 @@ class LaborCostPage(BasePage):
         elif period == "week":
             self.element_is_visible(self.locators.WEEK_PERIOD_SELECT).click()
 
+    @testit.step("Выбираем месяц в датапикере")
     @allure.step("Выбираем месяц в датапикере")
     def choose_month_picker(self, month_name):  # имя месяца указывать точно как на экране(с точкой)
         self.element_is_visible(self.locators.MONTH_DATEPICKER).click()
@@ -144,6 +144,7 @@ class LaborCostPage(BasePage):
         month_locator = (By.XPATH, f'//button[text()="{month}"]')
         self.element_is_visible(month_locator).click()
 
+    @testit.step("Списываем трудозатраты за первый и последний день года")
     @allure.step("Списываем трудозатраты за первый и последний день года")
     def input_work_by_year(self):
         first_day_time = 10
@@ -154,23 +155,28 @@ class LaborCostPage(BasePage):
         self.choose_month_picker('янв.')
         self.input_time(self.locators.FIRST_DAY_BY_PROJECT, first_day_time)
         self.element_is_visible(self.locators.SAVE_BUTTON).click()
+        time.sleep(2)  # Без задержки часто не корректно выбирается месяц
         # Заполняем последний день предыдущего года
         self.element_is_visible(self.locators.PREVIOUS_PERIOD_BUTTON).click()
-        last_day_number = self.get_number_last_month_day() + 1
+        x, y = self.check_tab_head()
+        last_day_number = y + 1
         last_day_locator = (
             By.XPATH,
             f'//div[@aria-label="{PROJECT_NAME}"]//ancestor::div[contains(@class,"project-row MuiBox-root")]//div[{last_day_number}]//input')
         self.input_time(last_day_locator, previous_last_day_time)
         self.element_is_visible(self.locators.SAVE_BUTTON).click()
         self.element_is_visible(self.locators.THIS_DAY_BUTTON).click()
+        time.sleep(2)  # Без задержки часто не корректно выбирается месяц
         # Заполняем последний день текущего года
         self.choose_month_picker('дек.')
-        last_day_number = self.get_number_last_month_day() + 1
+        x, y = self.check_tab_head()
+        last_day_number = y + 1
         last_day_locator = (
             By.XPATH,
             f'//div[@aria-label="{PROJECT_NAME}"]//ancestor::div[contains(@class,"project-row MuiBox-root")]//div[{last_day_number}]//input')
         self.input_time(last_day_locator, last_day_time)
         self.element_is_visible(self.locators.SAVE_BUTTON).click()
+        time.sleep(2)  # Без задержки часто не корректно выбирается месяц
         # Заполняем первый день следующего года
         self.element_is_visible(self.locators.NEXT_PERIOD_BUTTON).click()
         self.input_time(self.locators.FIRST_DAY_BY_PROJECT, next_first_day_time)
@@ -272,7 +278,7 @@ class LaborCostPage(BasePage):
         numbers = []
         for day in all_day_list:
             numbers.append(day.text)
-        return numbers, numbers[numbers.index('Итого') - 1]
+        return numbers, int(numbers[numbers.index('Итого') - 1])
 
     @testit.step("Проверяем наличие всех дней недели в шапке таблицы")
     @allure.step("Проверяем наличие всех дней недели в шапке таблицы")
@@ -712,7 +718,6 @@ class LaborCostPage(BasePage):
         else:
             self.element_is_visible(self.locators.PREVIOUS_ABSENCE_CHECKBOX).click()
 
-    # _____________________________________________________________________________________________
     @testit.step("Открываем кебаб меню для редактирования")
     @allure.step("Открываем кебаб меню для редактирования")
     def open_kebab_redact(self):

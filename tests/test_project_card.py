@@ -2,6 +2,7 @@ import time
 
 import allure
 import pytest
+import testit
 
 from data.data import PROJECT_NAME
 from pages.all_project_page import AllProjectPage
@@ -11,8 +12,8 @@ from pages.project_card_page import ProjectCardPage
 @allure.suite("Карточка проекта")
 class TestProjectCard:
 
-    # id-3185 1.3.1 Сохранение изменений на вкладке "Команда"
-    @pytest.mark.demo
+    @testit.workItemIds(3185)
+    @testit.displayName("1.3.1 Сохранение изменений на вкладке Команда")
     @allure.title("id-3185 1.3.1 Сохранение изменений на вкладке Команда")
     def test_save_changes_to_the_team_tab(self, f_create_temp_project, login, driver):
         all_project_page = AllProjectPage(driver)

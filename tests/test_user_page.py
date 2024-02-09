@@ -1,4 +1,5 @@
 import allure
+import testit
 
 from pages.create_local_user_drawer_page import CreateLocalUserDrawerPage
 from pages.user_page import UserPage
@@ -7,6 +8,8 @@ from pages.user_page import UserPage
 @allure.suite("Пользователи")
 class TestUsersPage:
 
+    @testit.workItemIds(1382)
+    @testit.displayName("4.3. Просмотр карточки пользователя в разделе Пользователи")
     @allure.title("id-1382 4.3. Просмотр карточки пользователя в разделе Пользователи")
     def test_viewing_a_user_card_in_the_users_section(self, login, driver):
         user_page = UserPage(driver)
@@ -32,6 +35,8 @@ class TestUsersPage:
         assert project_data == ['Проект', 'Роль в проекте', 'Руководитель проекта'], "Отсутствуют поля на вкладке проекты"
         assert contact_data == ['Телефон', 'Почта'], "Отсутствуют поля на вкладке контакты"
 
+    @testit.workItemIds(134)
+    @testit.displayName("4.8 Подтверждение восстановления пользователя")
     @allure.title("id-134 4.8 Подтверждение восстановления пользователя")
     def test_user_recovery_confirmation(self, login, driver):
         user_page = UserPage(driver)
@@ -52,6 +57,8 @@ class TestUsersPage:
         # Увольняем пользователя после теста
         user_page.fired_user()
 
+    @testit.workItemIds(30)
+    @testit.displayName("4.9 Содержание страницы Пользователи")
     @allure.title("id-30 4.9 Содержание страницы Пользователи")
     def test_contents_of_the_users_page(self, login, driver):
         user_page = UserPage(driver)

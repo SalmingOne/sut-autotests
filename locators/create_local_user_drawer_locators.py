@@ -21,7 +21,7 @@ class CreateLocalUserDrawerLocators:
     TAB_CONTACTS = (By.XPATH, '//button[text()="КОНТАКТЫ"]')
     # Кнопки на всех вкладках
     CLEAR_BUTTON = (By.CSS_SELECTOR, 'svg[data-testid="ClearIcon"]')
-    SAVE_BUTTON = (By.XPATH, '//button[contains(@class, "onboarding__save-button")]')
+    SAVE_BUTTON = (By.XPATH, '//p[contains(@class, "MuiTypography-root MuiTypography-body2")]//following::button[@type="submit"]')
     ABORT_BUTTON = (By.XPATH, '//button[text()="Отменить"]')
     # Обязательные поля
     LOGIN_FIELD = (By.CSS_SELECTOR, 'input[name="username"]')
