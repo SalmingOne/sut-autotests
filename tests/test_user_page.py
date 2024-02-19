@@ -1,4 +1,5 @@
 import allure
+import pytest
 import testit
 
 from pages.create_local_user_drawer_page import CreateLocalUserDrawerPage
@@ -10,6 +11,7 @@ class TestUsersPage:
 
     @testit.workItemIds(1382)
     @testit.displayName("4.3. Просмотр карточки пользователя в разделе Пользователи")
+    @pytest.mark.regress
     @allure.title("id-1382 4.3. Просмотр карточки пользователя в разделе Пользователи")
     def test_viewing_a_user_card_in_the_users_section(self, login, driver):
         user_page = UserPage(driver)
@@ -37,6 +39,7 @@ class TestUsersPage:
 
     @testit.workItemIds(134)
     @testit.displayName("4.8 Подтверждение восстановления пользователя")
+    @pytest.mark.regress
     @allure.title("id-134 4.8 Подтверждение восстановления пользователя")
     def test_user_recovery_confirmation(self, login, driver):
         user_page = UserPage(driver)
@@ -44,6 +47,7 @@ class TestUsersPage:
         # Проверяем что есть нужный пользователь
         if not user_page.check_user_is_not_in_table('Автотестов'):
             create_local_user_page = CreateLocalUserDrawerPage(driver)
+            create_local_user_page.go_to_create_local_user_drawer()
             create_local_user_page.field_required_fields('AutoTester', 'Автотестов', 'auto_test@mail.ru', 'yes')
         else:
             pass
@@ -59,6 +63,7 @@ class TestUsersPage:
 
     @testit.workItemIds(30)
     @testit.displayName("4.9 Содержание страницы Пользователи")
+    @pytest.mark.smoke
     @allure.title("id-30 4.9 Содержание страницы Пользователи")
     def test_contents_of_the_users_page(self, login, driver):
         user_page = UserPage(driver)

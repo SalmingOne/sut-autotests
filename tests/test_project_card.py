@@ -14,6 +14,7 @@ class TestProjectCard:
 
     @testit.workItemIds(3185)
     @testit.displayName("1.3.1 Сохранение изменений на вкладке Команда")
+    @pytest.mark.smoke
     @allure.title("id-3185 1.3.1 Сохранение изменений на вкладке Команда")
     def test_save_changes_to_the_team_tab(self, f_create_temp_project, login, driver):
         all_project_page = AllProjectPage(driver)

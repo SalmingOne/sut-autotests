@@ -14,10 +14,10 @@ class VacationSchedulePageLocators:
     TOOLTIP = (By.XPATH, '//div[contains(@class, "MuiTooltip-tooltipPlacementTop")]')
     # Кнопки выбора периода
     PREVIOUS_PERIOD_BUTTON = (By.CSS_SELECTOR, 'svg[data-testid="ChevronLeftIcon"]')
-    NEXT_PERIOD_BUTTON = (By.XPATH, '//button[contains(@class,"onboarding__next-quarter")]')
-    THIS_DAY_BUTTON = (By.XPATH, '//button[contains(@class, "onboarding__show-today")]')
+    NEXT_PERIOD_BUTTON = (By.CSS_SELECTOR, 'svg[data-testid="ChevronRightIcon"]')
+    THIS_DAY_BUTTON = (By.XPATH, '//button[contains(@class, "DateInterval-setToday")]')
     # Фильтрация
-    FILTER_BUTTON = (By.XPATH, '//button[contains(@class, "MuiButton-textSizeSmall MuiButton-disableElevation")]')
+    FILTER_BUTTON = (By.XPATH, '//button[contains(@class, "MuiButton-text MuiButton-textPrimary")]')
     CHECKBOX_ON_FILTER = (By.XPATH, '//span[contains(@class, "MuiTypography-body1")]//p')
     FILTER_INPUT_PLACEHOLDERS = (By.CSS_SELECTOR, 'input[aria-invalid="false"]')
     # Строки таблицы

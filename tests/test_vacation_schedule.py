@@ -1,4 +1,5 @@
 import allure
+import pytest
 import testit
 
 from pages.vacation_schedule_page import VacationSchedulePage
@@ -9,6 +10,7 @@ class TestVacationSchedulePage:
 
     @testit.workItemIds(505)
     @testit.displayName("Отображение страницы График отпусков")
+    @pytest.mark.regress
     @allure.title("id-505 Отображение страницы График отпусков")
     def test_displaying_the_vacation_schedule_page(self, login, driver):
         vacation_schedule_page = VacationSchedulePage(driver)

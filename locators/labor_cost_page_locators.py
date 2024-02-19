@@ -60,7 +60,7 @@ class LaborCostPageLocators:
     ADD_ABSENSE_BUTTON = (By.XPATH, '//button[text()="Отсутствие"]')
 
     # Фильтрация
-    FILTER_BUTTON = (By.XPATH, '//button[contains(@class, "MuiButton-textSizeSmall MuiButton-disableElevation")]')
+    FILTER_BUTTON = (By.XPATH, '//button[contains(@class, "MuiButton-text MuiButton-textPrimary")]')
     ELEMENTS_ON_FILTER = (By.XPATH, '//div[contains(@class, "MuiPaper-elevation8")]//span[contains(@class, "MuiTypography-body1")]')
     FILTER_BY_PROJECT_NAME = (By.XPATH, '//span[text()="Название проекта"]')
     # Кнопка открытия панели виджетов
@@ -81,7 +81,7 @@ class LaborCostPageLocators:
     BREAK_LABOR_REASON_WINDOW = (By.XPATH,
                                  '//h6[contains(text(), "Списание")]//following::button[contains(@class, "MuiButton-outlinedSecondary")]')
     SAVE_LABOR_REASON_WINDOW_BUTTON = (
-    By.XPATH, '//h6[contains(text(), "Списание")]//following::button[contains(@class, "onboarding__save-button")]')
+    By.XPATH, '//h6[contains(text(), "Списание")]//following::button[contains(@class, "MuiButton-sizeSmall MuiButton-containedSizeSmall")]')
     # Поле ввода часов для окна с обязательным указанием причин трудозатрат
     INPUT_HOUR_FIELD = (By.CSS_SELECTOR, 'input[name="hours"]')
     # Кнопка "Сохранить" в окне с обязательным указанием причин трудозатрат

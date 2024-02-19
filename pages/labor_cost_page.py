@@ -195,18 +195,11 @@ class LaborCostPage(BasePage):
             'background-color')
         reason_in_field = self.element_is_visible(self.locators.FIRST_DAY_BY_PROJECT).get_attribute('placeholder')
         self.element_is_visible(self.locators.SAVE_BUTTON).click()
-        time.sleep(1)  # Без этого ожидания не успевает прогрузиться белый цвет
+        time.sleep(2)  # Без этого ожидания не успевает прогрузиться белый цвет
         color_after_save = self.element_is_visible(self.locators.FIRST_DAY_BY_PROJECT_COLOR).value_of_css_property(
             'background-color')
         reason_in_field_after_save = self.element_is_visible(self.locators.FIRST_DAY_BY_PROJECT).get_attribute(
             'placeholder')
-        # Удаляем списания по проекту
-        self.element_is_visible(self.locators.FIRST_DAY_BY_PROJECT).click()
-        self.element_is_visible(self.locators.FIRST_DAY_BY_PROJECT).send_keys(Keys.BACK_SPACE)
-        self.element_is_visible(self.locators.FIRST_DAY_BY_PROJECT).send_keys(Keys.BACK_SPACE)
-        self.element_is_visible(self.locators.FIRST_DAY_BY_PROJECT).send_keys(Keys.RETURN)
-        self.element_is_visible(self.locators.SAVE_BUTTON).click()
-        time.sleep(1)  # Без этого ожидания не успевают сохраниться изменения и не удаляется проект
         assert color_before_save == 'rgba(255, 251, 233, 1)', "После списания трудозатрат цвет ячейки не жёлтый"
         assert color_after_save == 'rgba(0, 0, 0, 0)', "После сохранения списания цвет не белый"
         assert reason_in_field == str(first_day_time), "Количество часов списания не равно введенному значению"
@@ -496,6 +489,8 @@ class LaborCostPage(BasePage):
         except InvalidArgumentException:
             self.element_is_present(self.locators.FILE_INPUT).send_keys(
                 r'C:\Users\ASUS\PycharmProjects\sut-autotests\data\административный.docx')
+
+
         # Скорее всего это баг. Через селениум с первого клика не нажимает на кнопку сохранить
         self.element_is_visible(self.locators.DRAWER_SAVE_BUTTON).click()
         self.element_is_visible(self.locators.DRAWER_SAVE_BUTTON).click()
@@ -707,6 +702,8 @@ class LaborCostPage(BasePage):
             except StaleElementReferenceException:
                 break
             except ElementClickInterceptedException:
+                break
+            except TimeoutException:
                 break
         return count
 
