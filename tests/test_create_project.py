@@ -1,5 +1,3 @@
-import time
-
 import allure
 import pytest
 import testit
@@ -10,11 +8,11 @@ from pages.labor_cost_page import LaborCostPage
 from pages.project_card_page import ProjectCardPage
 
 
-# @pytest.mark.smoke_test
 @allure.suite("Создание проекта")
 class TestCreateProject:
     @testit.workItemIds(47)
     @testit.displayName("1.1.1 Создание нового проекта")
+    @pytest.mark.smoke
     @allure.title("id-47 1.1.1 Создание нового проекта")
     def test_create_project(self, login, driver):
         # Создаем проект
@@ -45,6 +43,7 @@ class TestCreateProject:
 
     @testit.workItemIds(10157)
     @testit.displayName("1.1.1 Создание нового проекта в статусе черновик")
+    @pytest.mark.smoke
     @allure.title("id-10157 1.1.1 Создание нового проекта в статусе черновик")
     def test_create_project_draft(self, login, driver):
         # Создаем проект
@@ -70,7 +69,7 @@ class TestCreateProject:
         # Берем имя проекта со страницы все проекты
         all_project_page = AllProjectPage(driver)
         all_project_page.go_to_all_project_page()
-        all_project_page.see_all_status_project()
+        #all_project_page.see_all_status_project()
 
         check_name_at_all = all_project_page.check_project_name_at_all()
         assert project_name == check_name_at_all, "имя созданного проекта отсутствует на странице все проекты"
@@ -79,6 +78,7 @@ class TestCreateProject:
 
     @testit.workItemIds(1469)
     @testit.displayName("1.1.1 Добавление нового проекта с обязательным указанием причины списания")
+    @pytest.mark.smoke
     @allure.title("id-1469 1.1.1 Добавление нового проекта с обязательным указанием причины списания")
     def test_create_project_reason(self, login, driver):
         # Создаем проект

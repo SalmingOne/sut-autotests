@@ -18,6 +18,7 @@ class TestAuthorization:
 
     @testit.workItemIds(16)
     @testit.displayName("Авторизация в системе")
+    @pytest.mark.smoke
     @allure.title("id-16  4.1 Авторизация в системе")
     def test_correct_authorization(self, driver):
         authorization_page = AuthorizationPage(driver, IN_URL)
@@ -27,6 +28,7 @@ class TestAuthorization:
 
     @testit.workItemIds(901)
     @testit.displayName("4.1 Вход с вводом символов в разном регистре")
+    @pytest.mark.regress
     @allure.title("id-901  4.1 Вход с вводом символов в разном регистре")
     def test_correct_mixed_authorization(self, driver):
         authorization_page = AuthorizationPage(driver, IN_URL)
@@ -36,6 +38,7 @@ class TestAuthorization:
 
     @testit.workItemIds(1378)
     @testit.displayName("4.10. Выход пользователя из системы")
+    @pytest.mark.smoke
     @allure.title("id-1378  4.10. Выход пользователя из системы")
     def test_user_logout(self, login, driver):
         authorization_page = AuthorizationPage(driver)

@@ -73,6 +73,7 @@ class UserPage(BasePage):
         self.element_is_visible(self.locators.USER_KEBABS).click()
         self.element_is_visible(self.locators.FIRED_BUTTON).click()
         self.element_is_visible(self.locators.CALENDAR_BUTTON).click()
+        time.sleep(1)
         self.element_is_visible(self.locators.THIS_DAY_PICKER).click()
         self.element_is_visible(self.locators.SAVE_BUTTON).click()
         time.sleep(2)  # Без ожидания не успевает срабатывать анимация
@@ -126,7 +127,7 @@ class UserPage(BasePage):
     @testit.step("Берем заголовки элементов кебаб меню")
     @allure.step("Берем заголовки элементов кебаб меню")
     def get_kebab_menu_item(self):
-        time.sleep(1)
+        time.sleep(2)
         self.element_is_visible(self.locators.USER_KEBABS).click()
         menu_item = self.elements_are_visible(self.locators.KEBAB_MENU_ITEM)
         items_text = []

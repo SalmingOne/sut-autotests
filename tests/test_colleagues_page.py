@@ -1,4 +1,5 @@
 import allure
+import pytest
 import testit
 
 from pages.colleagues_page import ColleaguesPage
@@ -9,6 +10,7 @@ class TestUsersPage:
 
     @testit.workItemIds(981)
     @testit.displayName("4.9.1. Просмотр страницы коллег пользователя в разделе Коллеги")
+    @pytest.mark.smoke
     @allure.title("id-981 4.9.1. Просмотр страницы коллег пользователя в разделе Коллеги")
     def test_view_colleagues_page(self, login, driver):
         colleagues_page = ColleaguesPage(driver)
@@ -24,5 +26,5 @@ class TestUsersPage:
 
 
 
-    #Таблицу с возможностью перехода на страницу профиля пользователя со столбцами по умолчанию:
+
 
