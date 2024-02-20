@@ -38,7 +38,7 @@ class ProjectRolesPage(BasePage):
         self.element_is_visible(self.locators.COLOR_INPUT_FIELD).send_keys(Keys.CONTROL + 'a')
         self.element_is_visible(self.locators.COLOR_INPUT_FIELD).send_keys('#7f11e0')
         output_color = self.element_is_visible(self.locators.COLOR_INPUT_BUTTON).value_of_css_property('background-color')
-        assert output_color == 'rgba(127, 17, 224, 1)'
+        assert output_color == 'rgba(127, 17, 224, 1)', "Введенный цвет не отображается на элементе"
 
     @testit.step("Проверяем, что поле Размер ставки не активно")
     @allure.step("Проверяем, что поле Размер ставки не активно")
@@ -90,6 +90,10 @@ class ProjectRolesPage(BasePage):
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
         time.sleep(1)  # Без этого ожидания роль не успевает удалиться
 
+    @testit.step("Проверяем, что кнопка сохранить задизейблена")
+    @allure.step("Проверяем, что кнопка сохранить задизейблена")
+    def submit_button_not_clickable(self):
+        assert not self.element_is_clickable(self.locators.SUBMIT_BUTTON, 2), "Кнопка Сохранить не задизейблена"
 
 
 

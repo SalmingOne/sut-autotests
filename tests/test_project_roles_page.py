@@ -35,3 +35,13 @@ class TestProjectsRolesPage:
         assert project_roles_page.check_role_name_on_tab('Тестировщик автоматизатор')
         # Удаляем созданную роль
         project_roles_page.delete_project_role('Тестировщик автоматизатор')
+
+    @testit.workItemIds(1446)
+    @testit.displayName("6.1.1.1 Пустой ввод при создании проектной роли")
+    @pytest.mark.regress
+    @allure.title("id-1446 6.1.1.1 Пустой ввод при создании проектной роли")
+    def test_blank_input_when_create_a_project_role(self, login, driver):
+        project_roles_page = ProjectRolesPage(driver)
+        project_roles_page.go_to_project_roles_page()
+        project_roles_page.open_create_role_drawer()
+        project_roles_page.submit_button_not_clickable()
