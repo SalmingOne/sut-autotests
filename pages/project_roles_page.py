@@ -26,7 +26,8 @@ class ProjectRolesPage(BasePage):
     @testit.step("Заполняем поле Проектная роль с превышением максимального количества символов")
     @allure.step("Заполняем поле Проектная роль с превышением максимального количества символов")
     def check_max_size_role_name(self):
-        self.element_is_visible(self.locators.INPUT_ROLE_NAME_FIELD).send_keys('роль роль роль роль роль роль роль роль роль роль р')
+        self.element_is_visible(self.locators.INPUT_ROLE_NAME_FIELD).send_keys(
+            'роль роль роль роль роль роль роль роль роль роль р')
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
         error_text = self.element_is_visible(self.locators.MUI_ERROR).text
         self.element_is_visible(self.locators.INPUT_ROLE_NAME_FIELD).clear()
@@ -37,7 +38,8 @@ class ProjectRolesPage(BasePage):
     def check_color_on_color_input(self):
         self.element_is_visible(self.locators.COLOR_INPUT_FIELD).send_keys(Keys.CONTROL + 'a')
         self.element_is_visible(self.locators.COLOR_INPUT_FIELD).send_keys('#7f11e0')
-        output_color = self.element_is_visible(self.locators.COLOR_INPUT_BUTTON).value_of_css_property('background-color')
+        output_color = self.element_is_visible(self.locators.COLOR_INPUT_BUTTON).value_of_css_property(
+            'background-color')
         assert output_color == 'rgba(127, 17, 224, 1)', "Введенный цвет не отображается на элементе"
 
     @testit.step("Проверяем, что поле Размер ставки не активно")
@@ -95,6 +97,36 @@ class ProjectRolesPage(BasePage):
     def submit_button_not_clickable(self):
         assert not self.element_is_clickable(self.locators.SUBMIT_BUTTON, 2), "Кнопка Сохранить не задизейблена"
 
+    @testit.step("Проверяем, что есть кнопка создания новой роли")
+    @allure.step("Проверяем, что есть кнопка создания новой роли")
+    def create_role_button_is_present(self):
+        assert self.element_is_displayed(self.locators.CREATE_ROLE_BUTTON), "Нет кнопки создания роли"
 
+    @testit.step("Проверяем заголовки таблицы Список ролей")
+    @allure.step("Проверяем заголовки таблицы Список ролей")
+    def check_roles_tab_headers(self):
+        all_column = self.elements_are_present(self.locators.PROJECT_ROLES_TAB_HEADERS)
+        column_names = []
+        for name in all_column:
+            column_names.append(name.text)
+        assert column_names == ['Цвет', 'Роль', 'Ставка привлечения', 'Размер ставки'], "Есть не все заголовки таблицы"
 
+    @testit.step("Проверяем, что есть кнопка создания новой роли")
+    @allure.step("Проверяем, что есть кнопка создания новой роли")
+    def check_search_fields(self):
+        assert len(self.elements_are_visible(self.locators.ROLE_SEARCH_FIELD)) >= 3
 
+    @testit.step("Проверяем, что есть три поля поиска")
+    @allure.step("Проверяем, что есть три поля поиска")
+    def check_filter_icons(self):
+        assert len(self.elements_are_present(self.locators.FILTER_ICONS)) >= 3
+
+    @testit.step("Проверяем, что есть кнопка действия и пункты кебаб меню")
+    @allure.step("Проверяем, что есть кнопка действия и пункты кебаб меню")
+    def check_kebab_menu_items(self):
+        self.elements_are_visible(self.locators.ROLE_KEBABS)[0].click()
+        all_menu_items = self.elements_are_visible(self.locators.KEBAB_MENU_ITEMS)
+        item_names = []
+        for name in all_menu_items:
+            item_names.append(name.text)
+        assert item_names == ['Редактировать', 'Удалить'], "Не все пункты есть в кебаб меню"
