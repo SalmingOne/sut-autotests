@@ -111,15 +111,15 @@ class ProjectRolesPage(BasePage):
             column_names.append(name.text)
         assert column_names == ['Цвет', 'Роль', 'Ставка привлечения', 'Размер ставки'], "Есть не все заголовки таблицы"
 
-    @testit.step("Проверяем, что есть кнопка создания новой роли")
-    @allure.step("Проверяем, что есть кнопка создания новой роли")
-    def check_search_fields(self):
-        assert len(self.elements_are_visible(self.locators.ROLE_SEARCH_FIELD)) >= 3
-
     @testit.step("Проверяем, что есть три поля поиска")
     @allure.step("Проверяем, что есть три поля поиска")
+    def check_search_fields(self):
+        assert len(self.elements_are_visible(self.locators.ROLE_SEARCH_FIELD)) >= 3, "Есть не все поля поиска"
+
+    @testit.step("Проверяем, что есть три иконки фильтрации")
+    @allure.step("Проверяем, что есть три иконки фильтрации")
     def check_filter_icons(self):
-        assert len(self.elements_are_present(self.locators.FILTER_ICONS)) >= 3
+        assert len(self.elements_are_present(self.locators.FILTER_ICONS)) >= 3, "Есть не все иконки фильтрации"
 
     @testit.step("Проверяем, что есть кнопка действия и пункты кебаб меню")
     @allure.step("Проверяем, что есть кнопка действия и пункты кебаб меню")
