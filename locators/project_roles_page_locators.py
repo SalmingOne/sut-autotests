@@ -28,3 +28,6 @@ class ProjectRolesPageLocators:
     ROLE_SEARCH_FIELD = (By.CSS_SELECTOR, 'input[placeholder="Поиск"]')
     ROLE_KEBABS = (By.CSS_SELECTOR, 'svg[data-testid="MoreHorizIcon"]')
     DEL_BUTTON_IN_KEBAB_MENU = (By.XPATH, '//span[text()="Удалить"]')
+    KEBAB_MENU_ITEMS = (By.XPATH, '//li[contains(@class, "MuiMenuItem-gutters")]/span[contains(@class,"MuiTypography-caption")]')
+    PROJECT_ROLES_TAB_HEADERS = (By.XPATH, '//div[@class="ag-header-cell-comp-wrapper"]//h6')
+    FILTER_ICONS = (By.CSS_SELECTOR, 'span[class="ag-icon ag-icon-filter"]')

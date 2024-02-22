@@ -45,3 +45,16 @@ class TestProjectsRolesPage:
         project_roles_page.go_to_project_roles_page()
         project_roles_page.open_create_role_drawer()
         project_roles_page.submit_button_not_clickable()
+
+    @testit.workItemIds(1285)
+    @testit.displayName("6.1.1.2. Просмотр справочника проектные роли(в системе есть проектные роли)")
+    @pytest.mark.regress
+    @allure.title("id-1285 6.1.1.2. Просмотр справочника проектные роли(в системе есть проектные роли)")
+    def test_view_project_roles_tab(self, login, driver):
+        project_roles_page = ProjectRolesPage(driver)
+        project_roles_page.go_to_project_roles_page()
+        project_roles_page.create_role_button_is_present()
+        project_roles_page.check_roles_tab_headers()
+        project_roles_page.check_search_fields()
+        project_roles_page.check_filter_icons()
+        project_roles_page.check_kebab_menu_items()
