@@ -20,7 +20,7 @@ class AllProjectPage(BasePage):
     @testit.step("Проверяем, что имя проекта есть на странице")
     @allure.step("Проверяем, что имя проекта есть на странице")
     def check_project_name_at_all(self):
-        check_name_at_all = self.element_is_present(self.locators.CHECK_NAME_PROJECT).text
+        check_name_at_all = self.element_is_present(self.locators.CHECK_NAME_PROJECT, 2).text
         return check_name_at_all
 
     @testit.step("Получаем статус проекта")
