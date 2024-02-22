@@ -17,7 +17,7 @@ class CreateProjectDrawerPage(BasePage):
 
     @testit.step("Создание проекта")
     @allure.step("Создание проекта")
-    def create_project(self, project_name, project_code, project_worker, checkbox):
+    def create_project(self, project_name, project_code, project_worker, checkbox, begin_date, end_date=None):
         self.element_is_visible(self.locators.PROJECT_NAME_FIELD).send_keys(project_name)
         self.element_is_visible(self.locators.PROJECT_CODE_FIELD).send_keys(project_code)
         self.element_is_visible(self.locators.PROJECT_BEGIN_DATA_FIELD).click()
@@ -25,7 +25,11 @@ class CreateProjectDrawerPage(BasePage):
         self.element_is_visible(self.locators.PROJECT_BEGIN_DATA_FIELD).send_keys(Keys.BACK_SPACE)
 
         project_data = '01.10.2022'
-        self.element_is_visible(self.locators.PROJECT_BEGIN_DATA_FIELD).send_keys(project_data)
+        self.element_is_visible(self.locators.PROJECT_BEGIN_DATA_FIELD).send_keys(begin_date)
+        if end_date is not None:
+            self.element_is_visible(self.locators.PROJECT_END_DATA_FIELD).send_keys(end_date)
+        else:
+            pass
         # выбор вариантов чекбокса (черновик, обязательное указание причины списания)
         if checkbox == "reason":
             self.element_is_visible(self.locators.REASON_CHECKBOX).click()

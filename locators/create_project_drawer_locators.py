@@ -12,6 +12,7 @@ class CreateProjectDrawerLocators:
     PROJECT_NAME_FIELD = (By.CSS_SELECTOR, 'input[name="name"]')
     PROJECT_CODE_FIELD = (By.CSS_SELECTOR, 'input[name="code"]')
     PROJECT_BEGIN_DATA_FIELD = (By.XPATH, '//label[text()="Дата начала"]//following::input[1]')
+    PROJECT_END_DATA_FIELD = (By.XPATH, '//label[text()="Дата начала"]//following::input[2]')
     PROJECT_RECOURSE_FIELD = (By.XPATH, '//div[@name="resources"]//following::input[1]')
     PROJECT_MANAGER_FIELD = (By.XPATH, '//div[@name="projectManagers"]//child::input[1]')
     REASON_CHECKBOX = (By.XPATH, '//span[text()="Обязательно указание причины списания трудозатрат"]')

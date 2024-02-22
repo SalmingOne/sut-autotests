@@ -25,7 +25,9 @@ class TestCreateProject:
             "AutoTestProject",
             'ATP',
             "Администратор Администратор",
-            'no')
+            'no',
+            '01.10.2022'
+        )
         create_project_drawer_page.check_created_project()
         # Берем данные с карточки проекта
         project_card_page = ProjectCardPage(driver)
@@ -61,7 +63,9 @@ class TestCreateProject:
             "AutoTestProject",
             'ATP',
             "Администратор Администратор",
-            'draft')
+            'draft',
+            '01.10.2022'
+        )
         create_project_drawer_page.check_created_project()
         # Берем данные с карточки проекта
         project_card_page = ProjectCardPage(driver)
@@ -102,7 +106,8 @@ class TestCreateProject:
             "AutoTestProject",
             'ATP',
             "Администратор Администратор",
-            'reason')
+            'reason',
+            '01.10.2022')
         create_project_drawer_page.check_created_project()
         # Берем данные с карточки проекта
         project_card_page = ProjectCardPage(driver)
@@ -137,7 +142,9 @@ class TestCreateProject:
             "AutoTestProject",
             'AUTO',
             "Администратор Администратор",
-            'no')
+            'no',
+            '01.10.2022'
+        )
         error = create_project_drawer_page.get_mui_error_text()
         assert error == 'Указанное название проекта уже используется в системе', 'Не появилась ошибка о неуникальном названии проекта'
 
@@ -153,7 +160,27 @@ class TestCreateProject:
             "TestProject",
             'ATP',
             "Администратор Администратор",
-            'no')
+            'no',
+            '01.10.2022'
+        )
         error = create_project_drawer_page.get_mui_error_text()
         assert error == 'Указанный код проекта уже используется в системе', 'Не появилась ошибка о неуникальном коде проекта'
 
+    @testit.workItemIds(3134)
+    @testit.displayName("1.1.1 Создание проекта с указанием даты окончания проекта раньше даты начала")
+    @pytest.mark.smoke
+    @allure.title("id-3134 1.1.1 Создание проекта с указанием даты окончания проекта раньше даты начала")
+    def test_entering_an_end_date_before_the_project_start_date(self, login, driver):
+        # Создаем проект
+        create_project_drawer_page = CreateProjectDrawerPage(driver)
+        create_project_drawer_page.go_to_create_project_drawer_from_menu()
+        create_project_drawer_page.create_project(
+            "AutoTestProject",
+            'ATP',
+            "Администратор Администратор",
+            'no',
+            '01.10.2022',
+            '01.09.2022'
+        )
+        error = create_project_drawer_page.get_mui_error_text()
+        assert error == 'Дата окончания проекта не должна быть раньше даты начала', 'Не появилась ошибка о неуникальном названии проекта'
