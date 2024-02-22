@@ -21,6 +21,11 @@ class UserProfilePage(BasePage):
     def go_to_education_tab(self):
         self.element_is_visible(self.locators.EDUCATION_TAB_BUTTON).click()
 
+    @testit.step("Переходим на вкладку Сертификаты")
+    @allure.step("Переходим на вкладку Сертификаты")
+    def go_to_certificate_tab(self):
+        self.element_is_visible(self.locators.CERTIFICATE_TAB_BUTTON).click()
+
     @testit.step("Нажимаем кнопку редактировать")
     @allure.step("Нажимаем кнопку редактировать")
     def press_redact_button(self):
@@ -45,8 +50,13 @@ class UserProfilePage(BasePage):
 
     @testit.step("Берем цвет вкладки Образование")
     @allure.step("Берем цвет вкладки Образование")
-    def get_tab_color(self):
+    def get_education_tab_color(self):
         return self.element_is_visible(self.locators.EDUCATION_TAB_BUTTON).value_of_css_property('background-color')
+
+    @testit.step("Берем цвет вкладки Образование")
+    @allure.step("Берем цвет вкладки Образование")
+    def get_certificate_tab_color(self):
+        return self.element_is_visible(self.locators.CERTIFICATE_TAB_BUTTON).value_of_css_property('background-color')
 
     @testit.step("Берем текст ошибок с незаполненных обязательных полей")
     @allure.step("Берем текст ошибок с незаполненных обязательных полей")

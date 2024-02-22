@@ -13,4 +13,6 @@ class UserProfilePageLocators:
     # Ошибки
     MUI_ERROR = (By.XPATH, '//p[contains(@class, "Mui-error")]')
     ALERT_TEXT = (By.XPATH, '//div[contains(@class, "MuiAlert-message")]')
+    # Вкладка Сертификаты
+    CERTIFICATE_TAB_BUTTON = (By.XPATH, '//button[text()="Сертификаты"]')
 
