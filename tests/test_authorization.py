@@ -11,10 +11,6 @@ from conftest import IN_URL
 
 @allure.suite("Страница авторизации")
 class TestAuthorization:
-    @pytest.mark.token
-    def test_for_token(self, token_auth, driver):
-        time.sleep(0.2)  # ожидание для перезаписи токена
-        print('прошел тест для получения токена')
 
     @testit.workItemIds(16)
     @testit.displayName("Авторизация в системе")

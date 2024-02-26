@@ -198,8 +198,25 @@ class TestCreateProject:
             'ATP',
             "Администратор Администратор",
             'no',
-            '01.10.2022',
-            '01.09.2022'
+            '01.10.2022'
+        )
+        error = create_project_drawer_page.get_mui_error_text()
+        assert error == 'Значение в поле содержит недопустимые символы', 'Не появилась ошибка о недопустимых символах'
+
+    @testit.workItemIds(3133)
+    @testit.displayName("1.1.1 Н. Ввод недопустимых символов в поле Код проекта")
+    @pytest.mark.regress
+    @allure.title("id-3133 1.1.1 Н. Ввод недопустимых символов в поле Код проекта")
+    def test_entering_invalid_characters_in_the_project_code_field(self, login, driver):
+        # Создаем проект
+        create_project_drawer_page = CreateProjectDrawerPage(driver)
+        create_project_drawer_page.go_to_create_project_drawer_from_menu()
+        create_project_drawer_page.create_project(
+            "AutoTestProject",
+            'ATP)(,',
+            "Администратор Администратор",
+            'no',
+            '01.10.2022'
         )
         error = create_project_drawer_page.get_mui_error_text()
         assert error == 'Значение в поле содержит недопустимые символы', 'Не появилась ошибка о недопустимых символах'
