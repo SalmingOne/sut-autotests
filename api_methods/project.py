@@ -10,8 +10,6 @@ config = ConfigProvider()
 
 class ProjectApi:
 
-    def __init__(self):
-        AuthApi().auth()
 
     @allure.step("Создать проект с помощью API")
     def create_project(
@@ -59,10 +57,10 @@ class ProjectApi:
             "isProjectManager" : менеджер проекта (Boolean)
         }]
         """
-
+        token = AuthApi().auth_to_token()
         response = requests.post(
             url=config.get_project_url(),
-            headers=config.get_token_as_dict_for_headers(),
+            headers={"Access": "Bearer " + token},
             json={
                 "code": code,
                 "name": name,
@@ -83,7 +81,8 @@ class ProjectApi:
 
     @allure.step("Удалить проект с id {id} помощью API")
     def delete_project(self, id: int):
+        token = AuthApi().auth_to_token()
         assert requests.delete(
             url=config.get_project_url() + str(id),
-            headers=config.get_token_as_dict_for_headers()
+            headers={"Access": "Bearer " + token}
         ).status_code == 204

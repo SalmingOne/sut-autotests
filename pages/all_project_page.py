@@ -19,8 +19,8 @@ class AllProjectPage(BasePage):
 
     @testit.step("Проверяем, что имя проекта есть на странице")
     @allure.step("Проверяем, что имя проекта есть на странице")
-    def check_project_name_at_all(self):
-        check_name_at_all = self.element_is_present(self.locators.CHECK_NAME_PROJECT, 2).text
+    def check_project_name_at_all(self, project_name):
+        check_name_at_all = self.element_is_present(self.locators.check_project_name_on_tab(project_name), 2).text
         return check_name_at_all
 
     @testit.step("Получаем статус проекта")
@@ -31,9 +31,9 @@ class AllProjectPage(BasePage):
 
     @testit.step("Удаляем проект")
     @allure.step("Удаляем проект")
-    def delete_project(self):
+    def delete_project(self, project_name):
 
-        self.element_is_visible(self.locators.PROJECT_ACTION_BUTTON).click()
+        self.element_is_visible(self.locators.project_action_button(project_name)).click()
         self.element_is_visible(self.locators.PROJECT_DELETE_BUTTON).click()
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
         time.sleep(1)  # Если не поставить явное ожидание драйвер закроется раньше чем, удалится проект

@@ -10,11 +10,15 @@ class AllProjectPageLocators:
 
     # Локатор проверки, что имя проекта есть на странице
     CHECK_NAME_PROJECT = (By.XPATH, f'//div[text()="{data.PROJECT_NAME}"]')
+    def check_project_name_on_tab(self, project_name):
+        return By.XPATH, f'//div[text()="{project_name}"]'
 
     CREATE_PROJECT_BUTTON = (By.XPATH, '//button[text()="Создать проект"]')
     SUBMIT_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
     PROJECT_ACTION_BUTTON = (
         By.XPATH, f'//div[text()="{data.PROJECT_NAME}"]//ancestor::div[contains(@class,"ag-row-level-0")]//button')
+    def project_action_button(self, project_name):
+        return (By.XPATH, f'//div[text()="{project_name}"]//ancestor::div[contains(@class,"ag-row-level-0")]//button')
 
     PROJECT_DELETE_BUTTON = (By.XPATH, '//span[text()="Удалить"]')
 
