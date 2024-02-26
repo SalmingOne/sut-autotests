@@ -220,3 +220,21 @@ class TestCreateProject:
         )
         error = create_project_drawer_page.get_mui_error_text()
         assert error == 'Значение в поле содержит недопустимые символы', 'Не появилась ошибка о недопустимых символах'
+
+    @testit.workItemIds(3131)
+    @testit.displayName("1.1.1 Н. Превышение допустимого количества символов в поле Название проекта")
+    @pytest.mark.regress
+    @allure.title("id-3131 1.1.1 Н. Превышение допустимого количества символов в поле Название проекта")
+    def test_exceeding_the_allowed_number_of_characters_in_the_project_name_field(self, login, driver):
+        # Создаем проект
+        create_project_drawer_page = CreateProjectDrawerPage(driver)
+        create_project_drawer_page.go_to_create_project_drawer_from_menu()
+        create_project_drawer_page.create_project(
+            "Lorem ipsum dolor sit amet consectetuer adipiscing elit sed diam nonummy nibh euismod tincidunt utttt",
+            'ATP',
+            "Администратор Администратор",
+            'no',
+            '01.10.2022'
+        )
+        error = create_project_drawer_page.get_mui_error_text()
+        assert error == 'Максимальное количество символов: 100', 'Не появилась ошибка о превышении максимального количества символов'
