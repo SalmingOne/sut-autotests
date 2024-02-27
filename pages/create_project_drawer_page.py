@@ -1,7 +1,8 @@
+import time
+
 import allure
 import testit
 from selenium.webdriver import Keys
-from data.data import PROJECT_NAME, USER_NAME, PROJECT_CODE
 from locators.create_project_drawer_locators import CreateProjectDrawerLocators
 from pages.base_page import BasePage
 
@@ -12,7 +13,9 @@ class CreateProjectDrawerPage(BasePage):
     @testit.step("Переход на дровер создания проекта")
     @allure.step("Переход на дровер создания проекта")
     def go_to_create_project_drawer_from_menu(self):
+        time.sleep(1)  # без этого ожидания иногда падает тест
         self.action_move_to_element(self.element_is_visible(self.locators.TAB_PROJECTS))
+        self.element_is_visible(self.locators.TAB_PROJECTS).click()
         self.element_is_visible(self.locators.TAB_CREATE_PROJECT).click()
 
     @testit.step("Создание проекта")
