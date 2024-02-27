@@ -1,0 +1,29 @@
+import time
+
+import allure
+import pytest
+import testit
+
+from pages.user_profile_page import UserProfilePage
+
+
+@allure.suite("Профиль пользователя")
+class TestUserProfilePage:
+
+    @testit.workItemIds(4158)
+    @testit.displayName("10.2.1. Пустой ввод в обязательные для заполнения поля при редактировании таба Образование")
+    @pytest.mark.regress
+    @allure.title("id-4158 10.2.1. Пустой ввод в обязательные для заполнения поля при редактировании таба Образование")
+    def test_viewing_a_user_card_in_the_users_section(self, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        user_profile_page.go_to_education_tab()
+        user_profile_page.press_redact_button()
+        user_profile_page.press_add_icon_button()
+        user_profile_page.press_save_button()
+        alert_message = user_profile_page.get_alert_message()
+        tab_color = user_profile_page.get_tab_color()
+        errors = user_profile_page.get_mui_errors_text()
+        assert alert_message == 'Не все поля были заполнены корректно на табе "Образование"', "Не появилось сообщение об ошибке"
+        assert tab_color == 'rgba(255, 236, 229, 1)', "Цвет вкладки не красный"
+        assert 'Поле обязательно' in errors, "Нет сообщений об обязательности поля"
