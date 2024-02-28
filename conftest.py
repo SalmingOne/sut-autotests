@@ -5,7 +5,11 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 
+from api_methods.affiliates import AffiliatesApi
 from api_methods.auth import AuthApi
+from api_methods.departmens import DepartmentsApi
+from api_methods.position import PositionsApi
+from api_methods.project_roles import ProjectRolesApi
 from data.data import LOGIN, PASSWORD
 from pages.all_project_page import AllProjectPage
 from pages.authorization_page import AuthorizationPage
@@ -109,6 +113,32 @@ def f_notifications():
 @pytest.fixture
 def token_auth():
     auth_api = AuthApi()
-    auth_api.auth()
+    x = auth_api.auth_to_token()
+    print(x)
+
+
+@pytest.fixture(scope='session', autouse=True)
+def script():
+    project_roles = ProjectRolesApi()
+    token = AuthApi().auth_to_token()
+    if project_roles.get_project_roles_api(token) == 0:
+        project_roles.post_project_roles_api(token)
+    else:
+        pass
+    departments = DepartmentsApi()
+    if departments.get_departments_api(token) == 0:
+        departments.post_department_api(token)
+    else:
+        pass
+    positions = PositionsApi()
+    if positions.get_positions_api(token) == 0:
+        positions.post_positions_api(token)
+    else:
+        pass
+    affiliates = AffiliatesApi()
+    if affiliates.get_affiliates_api(token) == 0:
+        affiliates.post_affiliates_api(token)
+    else:
+        pass
 
 
