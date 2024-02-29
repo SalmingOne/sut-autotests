@@ -20,3 +20,6 @@ class CreateProjectDrawerLocators:
     SUBMIT_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
     # Локатор проверки, что мы оказались на вкладке команда после создания проекта
     CHECK_CREATE_PROJECT = (By.XPATH, '//h6[text()="Команда"]')
+
+    # Ошибки
+    MUI_ERROR = (By.XPATH, '//p[contains(@class, "Mui-error")]')

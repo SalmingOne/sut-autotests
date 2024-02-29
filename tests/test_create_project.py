@@ -1,6 +1,9 @@
+import time
+
 import allure
 import pytest
 import testit
+from selenium.common import TimeoutException
 
 from pages.all_project_page import AllProjectPage
 from pages.create_project_drawer_page import CreateProjectDrawerPage
@@ -18,7 +21,12 @@ class TestCreateProject:
         # Создаем проект
         create_project_drawer_page = CreateProjectDrawerPage(driver)
         create_project_drawer_page.go_to_create_project_drawer_from_menu()
-        project_name, project_code, project_data, project_worker = create_project_drawer_page.create_project('no')
+        project_name, project_code, project_data, project_worker = create_project_drawer_page.create_project(
+            "AutoTestProject",
+            'ATP',
+            "Администратор Администратор",
+            'no')
+        create_project_drawer_page.check_created_project()
         # Берем данные с карточки проекта
         project_card_page = ProjectCardPage(driver)
         project_card_page.go_to_description_tab()
@@ -49,8 +57,12 @@ class TestCreateProject:
         # Создаем проект
         create_project_drawer_page = CreateProjectDrawerPage(driver)
         create_project_drawer_page.go_to_create_project_drawer_from_menu()
-        project_name, project_code, project_data, project_worker = create_project_drawer_page.create_project('draft')
-
+        project_name, project_code, project_data, project_worker = create_project_drawer_page.create_project(
+            "AutoTestProject",
+            'ATP',
+            "Администратор Администратор",
+            'draft')
+        create_project_drawer_page.check_created_project()
         # Берем данные с карточки проекта
         project_card_page = ProjectCardPage(driver)
         project_card_page.go_to_description_tab()
@@ -69,9 +81,11 @@ class TestCreateProject:
         # Берем имя проекта со страницы все проекты
         all_project_page = AllProjectPage(driver)
         all_project_page.go_to_all_project_page()
-        #all_project_page.see_all_status_project()
-
-        check_name_at_all = all_project_page.check_project_name_at_all()
+        try:
+            check_name_at_all = all_project_page.check_project_name_at_all()
+        except TimeoutException:
+            all_project_page.see_all_status_project()
+            check_name_at_all = all_project_page.check_project_name_at_all()
         assert project_name == check_name_at_all, "имя созданного проекта отсутствует на странице все проекты"
         # Пока удаление проекта здесь, планирую позже включить его в фикстуру
         all_project_page.delete_project()
@@ -84,8 +98,12 @@ class TestCreateProject:
         # Создаем проект
         create_project_drawer_page = CreateProjectDrawerPage(driver)
         create_project_drawer_page.go_to_create_project_drawer_from_menu()
-        project_name, project_code, project_data, project_worker = create_project_drawer_page.create_project('reason')
-
+        project_name, project_code, project_data, project_worker = create_project_drawer_page.create_project(
+            "AutoTestProject",
+            'ATP',
+            "Администратор Администратор",
+            'reason')
+        create_project_drawer_page.check_created_project()
         # Берем данные с карточки проекта
         project_card_page = ProjectCardPage(driver)
         project_card_page.go_to_description_tab()
@@ -106,5 +124,22 @@ class TestCreateProject:
         assert project_name == check_name_at_all, "имя созданного проекта отсутствует на странице все проекты"
         # Пока удаление проекта здесь, планирую позже включить его в фикстуру
         all_project_page.delete_project()
+
+    @testit.workItemIds(48)
+    @testit.displayName("1.1.1 Создание нового проекта")
+    @pytest.mark.smoke
+    @allure.title("id-48 1.1.1 Создание проекта с неуникальным названием")
+    def test_creating_a_project_with_non_unique_name(self, f_create_temp_project, login, driver):
+        # Создаем проект
+        create_project_drawer_page = CreateProjectDrawerPage(driver)
+        create_project_drawer_page.go_to_create_project_drawer_from_menu()
+        create_project_drawer_page.create_project(
+            "AutoTestProject",
+            'AUTO',
+            "Администратор Администратор",
+            'no')
+        error = create_project_drawer_page.get_mui_error_text()
+        assert error == 'Указанное название проекта уже используется в системе', 'Не появилась ошибка о неуникальном названии проекта'
+
 
 
