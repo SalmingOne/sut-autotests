@@ -24,22 +24,22 @@ class LaborCostPage(BasePage):
 
     @testit.step("Проверка, что код проекта есть на странице")
     @allure.step("Проверка, что код проекта есть на странице")
-    def check_project_code_at_labor(self):
-        check_code_at_labor = self.element_is_present(self.locators.CHECK_CODE_PROJECT).text
+    def check_project_code_at_labor(self, project_code):
+        check_code_at_labor = self.element_is_present(self.locators.check_code_project(project_code)).text
         return check_code_at_labor
 
     @testit.step("Проверка, что кода проекта нет на странице")
     @allure.step("Проверка, что кода проекта нет на странице")
-    def check_no_project_code_at_labor(self):
+    def check_no_project_code_at_labor(self, project_code):
         try:
-            return self.element_is_present(self.locators.CHECK_CODE_PROJECT).text
+            return self.element_is_present(self.locators.check_code_project(project_code)).text
         except TimeoutException:
             return "no element on page"
 
     @testit.step("Проверка что появляется окно указания причины списания")
     @allure.step("Проверка что появляется окно указания причины списания")
-    def check_to_have_reason_fo_write(self):
-        self.element_is_visible(self.locators.RANDOM_DAYS_BY_PROJECT).click()
+    def check_to_have_reason_fo_write(self, project_name):
+        self.element_is_visible(self.locators.get_random_day_by_project(project_name)).click()
         checked_text = self.element_is_visible(self.locators.CHECK_LABOR_REASON_FIELD).text
         self.element_is_visible(self.locators.BREAK_LABOR_REASON_WINDOW).click()
         assert checked_text == "Причина *", "Не открылось окно указания причины"

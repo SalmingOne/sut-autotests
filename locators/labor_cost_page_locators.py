@@ -11,6 +11,9 @@ class LaborCostPageLocators:
     TAB_LABOR_COST_TABLE = (By.CSS_SELECTOR, 'a[href="/"]')
     # Проверка, что код проекта есть на странице
     CHECK_CODE_PROJECT = (By.XPATH, f'//a[text()="{PROJECT_CODE}"]')
+    def check_code_project(self, project_code):
+        return (By.XPATH, f'//a[text()="{project_code}"]')
+
     ALL_PROJECT_NAMES = (By.CSS_SELECTOR, 'div[basewrapprops]')
     # Дни в привязке к проекту
     ALL_DAYS_BY_PROJECT = (
