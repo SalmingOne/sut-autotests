@@ -126,7 +126,7 @@ class TestCreateProject:
         all_project_page.delete_project()
 
     @testit.workItemIds(48)
-    @testit.displayName("1.1.1 Создание нового проекта")
+    @testit.displayName("1.1.1 Создание проекта с неуникальным названием")
     @pytest.mark.smoke
     @allure.title("id-48 1.1.1 Создание проекта с неуникальным названием")
     def test_creating_a_project_with_non_unique_name(self, f_create_temp_project, login, driver):
@@ -141,5 +141,19 @@ class TestCreateProject:
         error = create_project_drawer_page.get_mui_error_text()
         assert error == 'Указанное название проекта уже используется в системе', 'Не появилась ошибка о неуникальном названии проекта'
 
-
+    @testit.workItemIds(1470)
+    @testit.displayName("1.1.1 Создание проекта с неуникальным кодом")
+    @pytest.mark.smoke
+    @allure.title("id-1470 1.1.1 Создание проекта с неуникальным кодом")
+    def test_creating_a_project_with_non_unique_code(self, f_create_temp_project, login, driver):
+        # Создаем проект
+        create_project_drawer_page = CreateProjectDrawerPage(driver)
+        create_project_drawer_page.go_to_create_project_drawer_from_menu()
+        create_project_drawer_page.create_project(
+            "TestProject",
+            'ATP',
+            "Администратор Администратор",
+            'no')
+        error = create_project_drawer_page.get_mui_error_text()
+        assert error == 'Указанный код проекта уже используется в системе', 'Не появилась ошибка о неуникальном коде проекта'
 
