@@ -48,7 +48,7 @@ class TestProjectsRolesPage:
 
     @testit.workItemIds(1285)
     @testit.displayName("6.1.1.2. Просмотр справочника проектные роли(в системе есть проектные роли)")
-    @pytest.mark.regress
+    @pytest.mark.smoke
     @allure.title("id-1285 6.1.1.2. Просмотр справочника проектные роли(в системе есть проектные роли)")
     def test_view_project_roles_tab(self, login, driver):
         project_roles_page = ProjectRolesPage(driver)
