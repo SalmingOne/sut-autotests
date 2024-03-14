@@ -215,7 +215,7 @@ class TestLaborCostPage:
     @testit.displayName("3.1.3.1. Добавление переработки на проект на дату, в которую добавлено отсутствие.")
     @pytest.mark.regress
     @allure.title("id-2759 3.1.3.1. Добавление переработки на проект на дату, в которую добавлено отсутствие.")
-    def test_add_overwork_to_absence(self, login, driver):
+    def test_add_overwork_to_absence(self, f_create_temp_project, login, driver):
         labor_cost_page = LaborCostPage(driver)
         labor_cost_page.go_to_labor_cost_page()
         time.sleep(1)  # Без ожидания скрипт срабатывает до загрузки страницы
@@ -238,7 +238,7 @@ class TestLaborCostPage:
     @testit.displayName("Ввод пробела в поле Причина на проект с обязательным указанием причины списания")
     @pytest.mark.regress
     @allure.title("id-3634 Ввод пробела в поле Причина на проект с обязательным указанием причины списания")
-    def test_add_space_in_reason_field(self, f_overtime_reason_requirement, login, driver):
+    def test_add_space_in_reason_field(self, f_overtime_reason_requirement, f_create_temp_project, login, driver):
         labor_cost_page = LaborCostPage(driver)
         # Проверяем что нет заявлений в таблице. И если есть удаляем
         labor_cost_page.go_to_labor_cost_page()

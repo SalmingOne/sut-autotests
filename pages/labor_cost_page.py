@@ -484,15 +484,13 @@ class LaborCostPage(BasePage):
         self.element_is_visible(self.locators.END_LEAVE_DATA_INPUT).send_keys(Keys.RETURN)
         # При запуске нескольких тестов через пайтест работает только с абсолютным путем
         try:
-            self.element_is_present(self.locators.FILE_INPUT).send_keys(
+            self.element_is_present(self.locators.FILE_INPUT, 2).send_keys(
                 os.path.abspath(r'../data/административный.docx'))
         except InvalidArgumentException:
-            self.element_is_present(self.locators.FILE_INPUT).send_keys(
+            self.element_is_present(self.locators.FILE_INPUT, 2).send_keys(
                 r'C:\Users\ASUS\PycharmProjects\sut-autotests\data\административный.docx')
-
-
-        # Скорее всего это баг. Через селениум с первого клика не нажимает на кнопку сохранить
-        self.element_is_visible(self.locators.DRAWER_SAVE_BUTTON).click()
+        except TimeoutException:
+            self.element_is_visible(self.locators.BEGIN_LEAVE_DATA_INPUT).click()
         self.element_is_visible(self.locators.DRAWER_SAVE_BUTTON).click()
         time.sleep(1.5)
 
@@ -570,6 +568,8 @@ class LaborCostPage(BasePage):
         except InvalidArgumentException:
             self.element_is_present(self.locators.FILE_INPUT).send_keys(
                 r'C:\Users\ASUS\PycharmProjects\sut-autotests\data\административный.docx')
+        except TimeoutException:
+            pass
         self.action_move_to_element(self.element_is_present(self.locators.OVERTIME_WORK_SAVE_BUTTON))
         self.element_is_present(self.locators.OVERTIME_WORK_SAVE_BUTTON).click()
 
@@ -601,8 +601,10 @@ class LaborCostPage(BasePage):
         except InvalidArgumentException:
             self.element_is_present(self.locators.FILE_INPUT).send_keys(
                 r'C:\Users\ASUS\PycharmProjects\sut-autotests\data\административный.docx')
-        self.action_move_to_element(self.element_is_present(self.locators.DRAWER_SAVE_BUTTON))
-        self.element_is_present(self.locators.DRAWER_SAVE_BUTTON).click()
+        except TimeoutException:
+            pass
+        self.action_move_to_element(self.element_is_present(self.locators.OVERTIME_WORK_SAVE_BUTTON))
+        self.element_is_present(self.locators.OVERTIME_WORK_SAVE_BUTTON).click()
         output_text = self.element_is_visible(self.locators.MUI_ERROR).text
         self.element_is_present(self.locators.DRAWER_ABORT_BUTTON).click()
         return output_text
