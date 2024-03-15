@@ -14,12 +14,13 @@ class UserPageLocators:
     USER_KEBABS = (By.CSS_SELECTOR, 'svg[data-testid="MoreHorizIcon"]')
     KEBAB_MENU_ITEM = (By.CSS_SELECTOR, 'span[class^="MuiTypography-root MuiTypography-caption"]')
     USER_FULL_INFO_BUTTON = (By.XPATH, '//span[text()="Полная информация"]')
+    REDACT_BUTTON = (By.XPATH, '//span[text()="Редактировать"]')
     FIRED_BUTTON = (By.XPATH, '//span[text()="Уволить"]')
     RESTORE_BUTTON = (By.XPATH, '//span[text()="Восстановить"]')
     # Увольнение пользователя
     CALENDAR_BUTTON = (By.CSS_SELECTOR, 'button[aria-label^="Choose date, selected"]')
-    THIS_DAY_PICKER = (By.XPATH,
-                       '//button[contains(@class, "MuiButtonBase-root MuiPickersDay-root MuiPickersDay-dayWithMargin MuiPickersDay-today")]')
+    THIS_DAY_PICKER = (By.XPATH, '//button[contains(@class, "MuiPickersDay-today")]')
+    DAY_AFTER_THIS_DAY_PICKER = (By.XPATH, '//button[contains(@class, "MuiPickersDay-today")]//following::button[1]')
     SAVE_BUTTON = (By.XPATH, '//p[contains(@class, "MuiTypography-root MuiTypography-body2")]//following::button[@type="submit"]')
     # Карточка пользователя
     CLEAR_BUTTON = (By.CSS_SELECTOR, 'svg[data-testid="ClearIcon"]')
@@ -33,5 +34,8 @@ class UserPageLocators:
     TAB_FILTER_BUTTONS = (By.XPATH, '//div[@class="ag-floating-filter-button"]/button')
 
     COLUMNS_HEADERS = (By.CSS_SELECTOR, 'span[ref="eText"]')
+
+    HIRING_DATA_DATA_PICKER = (By.XPATH, '//label[text()="Дата принятия на работу"]//..//descendant::button')
+    HIRING_DATA_INPUT = (By.XPATH, '//label[text()="Дата принятия на работу"]//..//descendant::input')
 
 

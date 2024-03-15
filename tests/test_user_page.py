@@ -82,3 +82,22 @@ class TestUsersPage:
         assert fired_kebab_menu == ['Полная информация', 'Редактировать', 'Восстановить'], "Есть не все элементы в кебаб меню"
         assert work_kebab_menu == ['Полная информация', 'Редактировать', 'Уволить'], "Есть не все элементы в кебаб меню"
 
+    @testit.workItemIds(129)
+    @testit.displayName("4.6 Выбрать Дату увольнения раньше Даты принятия на работу")
+    @pytest.mark.regress
+    @allure.title("id-129 4.6 Выбрать Дату увольнения раньше Даты принятия на работу")
+    def test_select_the_dismissal_date_before_the_hiring_date(self, login, driver):
+        user_page = UserPage(driver)
+        user_page.go_to_user_page()
+        # Проверяем что есть нужный пользователь
+        if not user_page.check_user_is_not_in_table('АвтоСПроектом'):
+            create_local_user_page = CreateLocalUserDrawerPage(driver)
+            create_local_user_page.go_to_create_local_user_drawer()
+            create_local_user_page.field_required_fields('AutoTester1', 'АвтоСПроектом', 'auto_testt@mail.ru', 'yes')
+        else:
+            pass
+        # Ставим пользователю текущий день как дату принятия на работу
+        user_page.set_the_hiring_date_on_this_day()
+        # Проводим тест
+        user_page.check_fired_data_on_date_picker()
+

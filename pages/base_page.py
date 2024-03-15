@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 import allure
 from selenium.common import TimeoutException
 from selenium.webdriver import ActionChains, Keys
@@ -95,3 +97,8 @@ class BasePage:
             return True
         except TimeoutException:
             return False
+
+    @allure.step("получаем дату нужного количества дней назад от текущей даты в формате день.месяц.год")
+    def get_day_before(self, amount_of_days):
+        day_before = datetime.now() - timedelta(days=amount_of_days)
+        return day_before.strftime("%d.%m.%Y")
