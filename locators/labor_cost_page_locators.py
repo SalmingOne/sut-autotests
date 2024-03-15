@@ -133,7 +133,7 @@ class LaborCostPageLocators:
     CHECK_TASK_FIELD = (By.XPATH, '//label[text()="Задача"]')
     DRAWER_SAVE_BUTTON = (By.XPATH, '//div[@name="type"]//following::button[@type="submit"]')
     DRAWER_SAVE_BUTTON_DISABLE = (By.XPATH,
-                                  '//div[@aria-label="Заполните все обязательные поля"]//button[contains(@class, "Mui-disabled onboarding__save-button onboarding__form-footer-save-button")]')
+                                  '//div[@aria-label="Заполните все обязательные поля"]//button[@type="submit"]')
     OVERTIME_WORK_SAVE_BUTTON_DISABLE = (By.XPATH,
                                   '//div[@name="task"]//following::button[contains(@class, "MuiButton-disableElevation MuiButtonBase-root Mui-disabled ")]')
     DRAWER_ALERT_DIALOG_SAVE_BUTTON = (By.XPATH, '//p[@id="alert-dialog-description"]//following::button[@type="submit"]')
