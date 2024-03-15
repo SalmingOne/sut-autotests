@@ -98,7 +98,7 @@ class BasePage:
         except TimeoutException:
             return False
 
-    @allure.step("получаем дату нужного количества дней назад от текущей даты в формате день.месяц.год")
+    @allure.step("Получение предыдущей даты отличной от текущей на N дней (DD.MM.YYYY)")
     def get_day_before(self, amount_of_days):
         day_before = datetime.now() - timedelta(days=amount_of_days)
         return day_before.strftime("%d.%m.%Y")
