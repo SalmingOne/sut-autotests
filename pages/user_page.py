@@ -117,12 +117,14 @@ class UserPage(BasePage):
     @testit.step("Проверка наличия полей поиска")
     @allure.step("Проверка наличия полей поиска")
     def check_search_fields(self):
-        assert len(self.elements_are_visible(self.locators.SEARCH_TAB_FIELDS)) == 3, "В таблице недостаточно полей поиска или есть лишние"
+        assert len(self.elements_are_visible(
+            self.locators.SEARCH_TAB_FIELDS)) == 3, "В таблице недостаточно полей поиска или есть лишние"
 
     @testit.step("Проверка наличия кнопок фильтрации")
     @allure.step("Проверка наличия кнопок фильтрации")
     def check_filter_tab_buttons(self):
-        assert len(self.elements_are_visible(self.locators.TAB_FILTER_BUTTONS)) == 3, "В таблице недостаточно кнопок фильтрации или есть лишние"
+        assert len(self.elements_are_visible(
+            self.locators.TAB_FILTER_BUTTONS)) == 3, "В таблице недостаточно кнопок фильтрации или есть лишние"
 
     @testit.step("Берем заголовки элементов кебаб меню")
     @allure.step("Берем заголовки элементов кебаб меню")
@@ -135,3 +137,27 @@ class UserPage(BasePage):
             items_text.append(element.text)
         self.action_esc()
         return items_text
+
+    @testit.step("Ставим дату принятия на работу пользователя текущим днем")
+    @allure.step("Ставим дату принятия на работу пользователя текущим днем")
+    def set_the_hiring_date_on_this_day(self):
+        time.sleep(1)  # Без ожидания не успевает срабатывать анимация
+        self.element_is_visible(self.locators.USER_KEBABS).click()
+        self.element_is_visible(self.locators.REDACT_BUTTON).click()
+        hiring_date = self.element_is_visible(self.locators.HIRING_DATA_INPUT).get_attribute('value')
+        if hiring_date != self.get_day_before(0):
+            self.element_is_visible(self.locators.HIRING_DATA_DATA_PICKER).click()
+            self.element_is_visible(self.locators.THIS_DAY_PICKER).click()
+            self.element_is_visible(self.locators.SAVE_BUTTON).click()
+        else:
+            self.action_esc()
+
+    @testit.step("Проверка на совпадения дат увольнения и принятия на работу")
+    @allure.step("Проверка на совпадения дат увольнения и принятия на работу")
+    def check_fired_data_on_date_picker(self):
+        time.sleep(1)  # Без ожидания не успевает срабатывать анимация
+        self.element_is_visible(self.locators.USER_KEBABS).click()
+        self.element_is_visible(self.locators.FIRED_BUTTON).click()
+        self.element_is_visible(self.locators.CALENDAR_BUTTON).click()
+        assert self.element_is_clickable(self.locators.THIS_DAY_PICKER, 2) == False, 'Можно выбрать дату приема на работу'
+        assert self.element_is_clickable(self.locators.DAY_AFTER_THIS_DAY_PICKER) == True, 'Нельзя выбрать дату после даты принятия на работу'
