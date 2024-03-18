@@ -44,7 +44,7 @@ class TestUsersPage:
     def test_user_recovery_confirmation(self, login, driver):
         user_page = UserPage(driver)
         user_page.go_to_user_page()
-        # Проверяем что есть нужный пользователь
+        # Проверяем, что есть нужный пользователь
         if not user_page.check_user_is_not_in_table('Автотестов'):
             create_local_user_page = CreateLocalUserDrawerPage(driver)
             create_local_user_page.go_to_create_local_user_drawer()
@@ -89,7 +89,7 @@ class TestUsersPage:
     def test_select_the_dismissal_date_before_the_hiring_date(self, login, driver):
         user_page = UserPage(driver)
         user_page.go_to_user_page()
-        # Проверяем что есть нужный пользователь
+        # Проверяем, что есть нужный пользователь
         if not user_page.check_user_is_not_in_table('АвтоСПроектом'):
             create_local_user_page = CreateLocalUserDrawerPage(driver)
             create_local_user_page.go_to_create_local_user_drawer()
@@ -101,3 +101,19 @@ class TestUsersPage:
         # Проводим тест
         user_page.check_fired_data_on_date_picker()
 
+    @testit.workItemIds(482)
+    @testit.displayName("7.1.1 Назначение системной роли пользователю")
+    @pytest.mark.smoke
+    @allure.title("id-482 7.1.1 Назначение системной роли пользователю")
+    def test_assigning_a_system_role_to_a_user(self, login, driver):
+        user_page = UserPage(driver)
+        user_page.go_to_user_page()
+        # Проверяем, что есть нужный пользователь
+        if not user_page.check_user_is_not_in_table('АвтоСПроектом'):
+            create_local_user_page = CreateLocalUserDrawerPage(driver)
+            create_local_user_page.go_to_create_local_user_drawer()
+            create_local_user_page.field_required_fields('AutoTester1', 'АвтоСПроектом', 'auto_testt@mail.ru', 'yes')
+        else:
+            pass
+        # Проводим тест
+        user_page.check_assigning_system_role_to_user()
