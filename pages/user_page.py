@@ -161,3 +161,18 @@ class UserPage(BasePage):
         self.element_is_visible(self.locators.CALENDAR_BUTTON).click()
         assert self.element_is_clickable(self.locators.THIS_DAY_PICKER, 2) == False, 'Можно выбрать дату приема на работу'
         assert self.element_is_clickable(self.locators.DAY_AFTER_THIS_DAY_PICKER) == True, 'Нельзя выбрать дату после даты принятия на работу'
+
+    @testit.step("Проверяем назначение системной роли на пользователя")
+    @allure.step("Проверяем назначение системной роли на пользователя")
+    def check_assigning_system_role_to_user(self):
+        time.sleep(1)  # Без ожидания не успевает срабатывать анимация
+        self.element_is_visible(self.locators.USER_KEBABS).click()
+        self.element_is_visible(self.locators.REDACT_BUTTON).click()
+        user_before_add_role = self.element_is_visible(self.locators.USER_SYSTEM_ROLE_DISABLE_INDICATOR).get_attribute('class')
+        self.element_is_visible(self.locators.SYSTEM_ROLE_FIELD).click()
+        add_role = self.elements_are_visible(self.locators.NOT_SELECTED_SYSTEM_ROLE)[0].get_attribute('aria-label')
+        self.elements_are_visible(self.locators.NOT_SELECTED_SYSTEM_ROLE)[0].click()
+        user_after_add_role = self.element_is_visible(self.locators.USER_SYSTEM_ROLE_DISABLE_INDICATOR).get_attribute('class')
+        self.element_is_visible(self.locators.delete_system_role_button(add_role)).click()
+        assert 'Mui-disabled' in user_before_add_role, 'Роль Пользователь не задизейблена'
+        assert 'Mui-disabled' not in user_after_add_role, 'Роль Пользователь задизейблена после добавления другой роли'
