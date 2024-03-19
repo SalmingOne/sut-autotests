@@ -7,6 +7,7 @@ class SchedulePageLocators:
     TAB_SCHEDULE = (By.CSS_SELECTOR, 'a[href="/schedule"]')
 
     REDACT_BUTTON = (By.XPATH, '//button[text()="Редактировать"]')
+    TAKE_OFF_BUTTON = (By.XPATH, '//button[text()="Добавить отгул"]')
 
     NEXT_PERIOD_BUTTON = (By.CSS_SELECTOR, 'svg[data-testid="ChevronRightIcon"]')
 
@@ -25,4 +26,10 @@ class SchedulePageLocators:
 
     DELETE_BREAK_BUTTON = (By.CSS_SELECTOR, 'svg[data-testid="DeleteIcon"]')
     CLEAR_ICON = (By.CSS_SELECTOR, 'svg[data-testid="ClearIcon"]')
+    # Дровер добавления отгула
+    SWITCH_BY_DAY = (By.XPATH, '//span[contains(@class,"MuiSwitch-switchBase MuiSwitch-colorSecondary")]')
+    TAKE_OFF_DATA_PICKER = (By.XPATH, '//label[text()="Дата отгула"]//..//descendant::button')
+    THIS_DAY_PICKER = (By.XPATH, '//button[contains(@class, "MuiPickersDay-today")]')
+    DAY_BEFORE_THIS_DAY_PICKER = (By.XPATH, '//button[contains(@class, "MuiPickersDay-today")]//preceding::button[1]')
+    ADD_TAKE_OFF_DATA_BUTTON = (By.XPATH, '//button[text()="Добавить дату отработки"]')
 

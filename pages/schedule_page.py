@@ -79,3 +79,39 @@ class SchedulePage(BasePage):
     def check_week_days_checkboxes_and_switch(self):
         assert len(self.elements_are_present(self.locators.WEEK_CHECKBOXES)) == 8, 'Нет чекбоксов с днями недели и свича'
 
+    @testit.step("Открытие дровера взятия отгула")
+    @allure.step("Открытие дровера взятия отгула")
+    def open_take_off_drawer(self):
+        self.element_is_visible(self.locators.TAKE_OFF_BUTTON).click()
+
+    @testit.step("Проверка переключения по часам/полный день")
+    @allure.step("Проверка переключения по часам/полный день")
+    def check_switch_by_day(self):
+        before = self.get_drawer_fields_title()
+        self.element_is_visible(self.locators.SWITCH_BY_DAY).click()
+        after = self.get_drawer_fields_title()
+        assert 'Начало рабочего дня' in before, 'Нет поля длительность отгула'
+        assert 'Начало рабочего дня' not in after, 'Есть поле длительность отгула при расчете по дням'
+
+    @testit.step("Проверка полей дровера")
+    @allure.step("Проверка полей дровера")
+    def check_taking_time_off_fields(self):
+        fields = self.get_drawer_fields_title()
+        assert fields == ['Полный день', 'Дата отгула\u2009*', 'Начало рабочего дня', 'Длительность',
+                          'Окончание рабочего дня', 'Дата отработки\u2009*', 'Начало отработки',
+                          'Длительность', 'Окончание отработки'], 'В дровере есть не все поля'
+
+    @testit.step("Проверка выбора даты отгула раньше сегодняшней")
+    @allure.step("Проверка выбора даты отгула раньше сегодняшней")
+    def check_disable_previous_date_on_date_picker(self):
+        self.element_is_visible(self.locators.TAKE_OFF_DATA_PICKER).click()
+        assert self.element_is_clickable(self.locators.THIS_DAY_PICKER), 'Нельзя выбрать текущую дату'
+        assert not self.element_is_clickable(self.locators.DAY_BEFORE_THIS_DAY_PICKER, 2), 'Можно выбрать предыдущую дату'
+
+    @testit.step("Проверка добавления и удаления даты отработки")
+    @allure.step("Проверка добавления и удаления даты отработки")
+    def check_add_and_delete_taking_time_off_buttons(self):
+        self.element_is_visible(self.locators.ADD_TAKE_OFF_DATA_BUTTON).click()
+        self.element_is_visible(self.locators.DELETE_BREAK_BUTTON).click()
+
+
