@@ -11,15 +11,18 @@ class SchedulePageLocators:
     NEXT_PERIOD_BUTTON = (By.CSS_SELECTOR, 'svg[data-testid="ChevronRightIcon"]')
 
     ALL_CHIPS_BUTTON = (By.CSS_SELECTOR, 'div[aria-label="Нажмите, чтобы редактировать рабочие часы"]')
+    ALL_PLUS_BUTTON = (By.CSS_SELECTOR, 'button[aria-label="Нажмите, чтобы указать рабочие часы"]')
     # Дровер редактирования графика работы
     DRAWER_TITLE = (By.XPATH, '//div[contains(@class,"MuiDrawer-paper")]//h6[contains(@class,"MuiTypography-root MuiTypography-subtitle1")]')
     DRAWER_FIELDS_LABELS = (By.XPATH, '//div[contains(@class,"MuiDrawer-paper")]//label')
     DRAWER_SUBMIT_BUTTON = (By.XPATH, '//div[contains(@class,"MuiDrawer-paper")]//button[@type="submit"]')
     DRAWER_BREAK_BUTTON = (By.XPATH, '//div[contains(@class,"MuiDrawer-paper")]//button[text()="Отменить"]')
+    WEEK_CHECKBOXES = (By.CSS_SELECTOR, 'input[type="checkbox"]')
 
     START_BREAK = (By.XPATH, '//div[contains(@name,"breaks")][contains(@name,"startTime")]//input')
     END_BREAK = (By.XPATH, '//div[contains(@name,"breaks")][contains(@name,"endTime")]//input')
     ADD_BREAK_BUTTON = (By.XPATH, '//button[text()="Добавить перерыв"]')
 
     DELETE_BREAK_BUTTON = (By.CSS_SELECTOR, 'svg[data-testid="DeleteIcon"]')
+    CLEAR_ICON = (By.CSS_SELECTOR, 'svg[data-testid="ClearIcon"]')
 
