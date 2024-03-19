@@ -24,21 +24,26 @@ class SchedulePage(BasePage):
         time.sleep(1)  # Без ожидания не всегда успевает прогрузиться страница
         self.elements_are_visible(self.locators.ALL_CHIPS_BUTTON)[0].click()
 
-    @testit.step("Проверка заголовка дровера")
-    @allure.step("Проверка заголовка дровера")
-    def check_drawer_title(self):
-        title = self.element_is_visible(self.locators.DRAWER_TITLE).text
-        assert 'Редактирование графика' in title, 'В заголовке нет слов Редактирование графика'
+    @testit.step("Открытие дровера редактирования стандартного графика")
+    @allure.step("Открытие дровера редактирования стандартного графика")
+    def open_editing_schedule_for_a_standard_chart_drawer(self):
+        self.element_is_visible(self.locators.REDACT_BUTTON).click()
+        time.sleep(1)  # Без ожидания не всегда успевает прогрузиться страница
+        self.elements_are_visible(self.locators.ALL_PLUS_BUTTON)[0].click()
 
-    @testit.step("Проверка заголовков полей дровера")
-    @allure.step("Проверка заголовков полей дровера")
-    def check_drawer_fields_title(self):
+    @testit.step("Получение заголовка дровера")
+    @allure.step("Получение заголовка дровера")
+    def get_drawer_title(self):
+        return self.element_is_visible(self.locators.DRAWER_TITLE).text
+
+    @testit.step("Получение заголовков полей дровера")
+    @allure.step("Получение заголовков полей дровера")
+    def get_drawer_fields_title(self):
         all_titles = self.elements_are_visible(self.locators.DRAWER_FIELDS_LABELS)
         data = []
         for title in all_titles:
             data.append(title.text)
-        assert data == ['Начало рабочего дня', 'Длительность', 'Окончание рабочего дня', 'Начало перерыва',
-                        'Длительность', 'Окончание перерыва'], 'В дровере есть не все поля'
+        return data
 
     @testit.step("Проверка времени перерыва по умолчанию")
     @allure.step("Проверка времени перерыва по умолчанию")
@@ -63,3 +68,14 @@ class SchedulePage(BasePage):
     def check_submit_and_break_button(self):
         assert self.element_is_displayed(self.locators.DRAWER_SUBMIT_BUTTON), 'Нет кнопки сохранить'
         assert self.element_is_displayed(self.locators.DRAWER_BREAK_BUTTON), 'Нет кнопки отменить'
+
+    @testit.step("Проверка наличия кнопки очистки дровера")
+    @allure.step("Проверка наличия кнопки очистки дровера")
+    def check_x_button(self):
+        assert self.element_is_displayed(self.locators.CLEAR_ICON), 'Нет кнопки очистки дровера'
+
+    @testit.step("Проверка наличия чекбоксов с днями недели и свича")
+    @allure.step("Проверка наличия чекбоксов с днями недели и свича")
+    def check_week_days_checkboxes_and_switch(self):
+        assert len(self.elements_are_present(self.locators.WEEK_CHECKBOXES)) == 8, 'Нет чекбоксов с днями недели и свича'
+
