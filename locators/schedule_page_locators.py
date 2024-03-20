@@ -8,9 +8,13 @@ class SchedulePageLocators:
 
     REDACT_BUTTON = (By.XPATH, '//button[text()="Редактировать"]')
     TAKE_OFF_BUTTON = (By.XPATH, '//button[text()="Добавить отгул"]')
+    THIS_WEEK_NUMBER = (By.XPATH, '//h6[contains(text(),"неделя")]')
 
     NEXT_PERIOD_BUTTON = (By.CSS_SELECTOR, 'svg[data-testid="ChevronRightIcon"]')
+    PREVIOUS_PERIOD_BUTTON = (By.CSS_SELECTOR, 'svg[data-testid="ChevronLeftIcon"]')
+    THIS_DAY_BUTTON = (By.XPATH, '//button[contains(@class, "DateInterval-setToday")]')
 
+    WORK_HOURS_IN_DAY = (By.XPATH, '//p[contains(@class,"MuiTypography-root MuiTypography-body1")]')
     ALL_CHIPS_BUTTON = (By.CSS_SELECTOR, 'div[aria-label="Нажмите, чтобы редактировать рабочие часы"]')
     ALL_PLUS_BUTTON = (By.CSS_SELECTOR, 'button[aria-label="Нажмите, чтобы указать рабочие часы"]')
     # Дровер редактирования графика работы
