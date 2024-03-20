@@ -257,7 +257,7 @@ class TestLaborCostPage:
     @testit.displayName("Пустой ввод в обязательные поля при добавлении переработки")
     @pytest.mark.regress
     @allure.title("id-2737 Пустой ввод в обязательные поля при добавлении переработки")
-    def test_empty_enter(self, login, driver):
+    def test_empty_enter(self, f_create_temp_project, login, driver):
         labor_cost_page = LaborCostPage(driver)
         # Проверяем что нет заявлений в таблице. И если есть удаляем
         labor_cost_page.go_to_labor_cost_page()
@@ -375,7 +375,7 @@ class TestLaborCostPage:
     @testit.displayName("Фильтр таблицы Отсутствие по времени. Прошедшие отсутствия.")
     @pytest.mark.regress
     @allure.title("id-547 Фильтр таблицы Отсутствие по времени. Прошедшие отсутствия.")
-    def test_filter_past_absences(self, login, driver):
+    def test_filter_past_absences(self, f_create_temp_project, login, driver):
         labor_cost_page = LaborCostPage(driver)
         # Проверяем, что нет заявлений в таблице. И если есть удаляем
         labor_cost_page.go_to_labor_cost_page()

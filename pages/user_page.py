@@ -72,9 +72,8 @@ class UserPage(BasePage):
     def fired_user(self):
         self.element_is_visible(self.locators.USER_KEBABS).click()
         self.element_is_visible(self.locators.FIRED_BUTTON).click()
-        self.element_is_visible(self.locators.CALENDAR_BUTTON).click()
-        time.sleep(1)
-        self.element_is_visible(self.locators.THIS_DAY_PICKER).click()
+        self.element_is_visible(self.locators.FIRED_ALERT_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.FIRED_ALERT_FIELD).send_keys(self.get_day_before(0))
         self.element_is_visible(self.locators.SAVE_BUTTON).click()
         time.sleep(2)  # Без ожидания не успевает срабатывать анимация
 

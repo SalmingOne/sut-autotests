@@ -21,9 +21,9 @@ class ProjectApi:
             selfAdding: bool = data.data.VALID_PROJECT_DATA["selfAdding"],
             laborReasons: bool = data.data.VALID_PROJECT_DATA["laborReasons"],
             mandatoryAttachFiles: bool = data.data.VALID_PROJECT_DATA["mandatoryAttachFiles"],
-            description: dict = data.data.VALID_PROJECT_DATA["description"],
+            #description: dict = data.data.VALID_PROJECT_DATA["description"],
             endDate: str = data.data.VALID_PROJECT_DATA["endDate"],
-            fileDescription: dict = data.data.VALID_PROJECT_DATA["fileDescription"],
+            #fileDescription: dict = data.data.VALID_PROJECT_DATA["fileDescription"],
             automaticLaborReports: bool = data.data.VALID_PROJECT_DATA["automaticLaborReports"],
             resources: list = data.data.VALID_PROJECT_DATA["resources"]):
         """ Создание проекта через API
@@ -69,9 +69,9 @@ class ProjectApi:
                 "selfAdding": selfAdding,
                 "laborReasons": laborReasons,
                 "mandatoryAttachFiles": mandatoryAttachFiles,
-                "description": description,
+                #"description": description,
                 "endDate": endDate,
-                "fileDescription": fileDescription,
+                #"fileDescription": fileDescription,
                 "automaticLaborReports": automaticLaborReports,
                 "resources": resources
             }

@@ -19,6 +19,7 @@ class UserPageLocators:
     RESTORE_BUTTON = (By.XPATH, '//span[text()="Восстановить"]')
     # Увольнение пользователя
     CALENDAR_BUTTON = (By.CSS_SELECTOR, 'button[aria-label^="Choose date, selected"]')
+    FIRED_ALERT_FIELD = (By.CSS_SELECTOR, 'input[type="tel"]')
     THIS_DAY_PICKER = (By.XPATH, '//button[contains(@class, "MuiPickersDay-today")]')
     DAY_AFTER_THIS_DAY_PICKER = (By.XPATH, '//button[contains(@class, "MuiPickersDay-today")]//following::button[1]')
     SAVE_BUTTON = (
