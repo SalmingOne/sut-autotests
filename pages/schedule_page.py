@@ -114,4 +114,33 @@ class SchedulePage(BasePage):
         self.element_is_visible(self.locators.ADD_TAKE_OFF_DATA_BUTTON).click()
         self.element_is_visible(self.locators.DELETE_BREAK_BUTTON).click()
 
+    @testit.step("Проверка элемента с номером текущей недели")
+    @allure.step("Проверка элемента с номером текущей недели")
+    def check_number_week_displayed(self):
+        assert self.element_is_displayed(self.locators.THIS_WEEK_NUMBER), 'Нет элемента с номером текущей недели'
+
+    @testit.step("Проверка кнопок переключения периода и кнопки Сегодня")
+    @allure.step("Проверка кнопок переключения периода и кнопки Сегодня")
+    def check_switch_periods_and_this_day_button(self):
+        self.element_is_visible(self.locators.NEXT_PERIOD_BUTTON).click()
+        self.element_is_visible(self.locators.NEXT_PERIOD_BUTTON).click()
+        self.element_is_visible(self.locators.PREVIOUS_PERIOD_BUTTON).click()
+        self.element_is_visible(self.locators.THIS_DAY_BUTTON).click()
+        assert not self.element_is_clickable(self.locators.THIS_DAY_BUTTON, 2), "Кнопка Сегодня не задизейблена"
+
+    @testit.step("Проверка кнопки редактирования")
+    @allure.step("Проверка кнопки редактирования")
+    def check_redact_button(self):
+        assert self.element_is_displayed(self.locators.REDACT_BUTTON), 'Нет кнопки редактирования'
+
+    @testit.step("Проверка кнопки добавления отгула")
+    @allure.step("Проверка кнопки добавления отгула")
+    def check_add_take_off_button(self):
+        assert self.element_is_displayed(self.locators.TAKE_OFF_BUTTON), 'Нет кнопки добавления отгула'
+
+    @testit.step("Проверка отображения рабочих часов")
+    @allure.step("Проверка отображения рабочих часов")
+    def check_hours_in_day_fields(self):
+        assert len(self.elements_are_visible(self.locators.WORK_HOURS_IN_DAY)) == 24, 'Не над каждым днем отображаются рабочие часы'
+
 

@@ -63,4 +63,15 @@ class TestSchedulePage:
         schedule_page.check_add_and_delete_taking_time_off_buttons()
         schedule_page.check_submit_and_break_button()
 
-
+    @testit.workItemIds(2262)
+    @testit.displayName("10.2.1.1. Отображение страницы Режим работы")
+    @pytest.mark.smoke
+    @allure.title("id-2262 10.2.1.1. Отображение страницы Режим работы")
+    def test_displaying_the_schedule_page(self, login, driver):
+        schedule_page = SchedulePage(driver)
+        schedule_page.go_to_schedule_page()
+        schedule_page.check_number_week_displayed()
+        schedule_page.check_switch_periods_and_this_day_button()
+        schedule_page.check_redact_button()
+        schedule_page.check_add_take_off_button()
+        schedule_page.check_hours_in_day_fields()
