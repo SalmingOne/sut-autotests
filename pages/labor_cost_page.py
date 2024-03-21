@@ -787,8 +787,9 @@ class LaborCostPage(BasePage):
         self.element_is_visible(self.locators.OVERTIME_WORK_DATA_INPUT).send_keys(Keys.CONTROL + 'a')
         self.element_is_visible(self.locators.OVERTIME_WORK_DATA_INPUT).send_keys(self.get_day_before(0))
         attribute = self.element_is_visible(self.locators.PROJECT_NAME_DRAWER_INPUT_FIELD).get_attribute("value")
-        assert attribute == ''
-        assert not self.element_is_clickable(self.locators.OVERTIME_WORK_SAVE_BUTTON, 1)
+        assert attribute == '', 'Поле проект не очистилось'
+        assert not self.element_is_clickable(self.locators.OVERTIME_WORK_SAVE_BUTTON,
+                                             1), 'Кнопка применить не задизейблена'
 
 
 
