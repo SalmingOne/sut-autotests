@@ -141,8 +141,10 @@ class LaborCostPageLocators:
     DRAWER_ABORT_BUTTON = (By.XPATH,
                            '//p[contains(@class, "MuiTypography-body2 ")]//following::button[contains(@class, "MuiButton-outlinedSizeSmall MuiButton-disableElevation")][2]')
     OVERTIME_WORK_DATA_PICKER = (By.CSS_SELECTOR, 'svg[data-testid="CalendarTodayOutlinedIcon"]')
+    OVERTIME_WORK_DATA_INPUT = (By.CSS_SELECTOR, 'input[type="tel"]')
     OVERTIME_WORK_INPUT = (By.CSS_SELECTOR, 'input[name="overtimeWork"]')
     PROJECT_NAME_DRAWER_INPUT = (By.CSS_SELECTOR, 'div[name="project"]')
+    PROJECT_NAME_DRAWER_INPUT_FIELD = (By.XPATH, '//div[@name="project"]//input')
     def chose_project_on_overtime_work_drawer(self, project_mame):
         return By.XPATH, f'//p[text()="{project_mame}"]'
 

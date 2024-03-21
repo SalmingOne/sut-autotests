@@ -37,3 +37,6 @@ class ConfigProvider:
 
     def get_system_settings_url(self):
         return self.config["api"].get("base_url") + self.config["api"].get("system_settings_url")
+
+    def get_base_url(self) -> str:
+        return self.config["api"].get("base_url")
