@@ -13,4 +13,21 @@ class VariablesPageLocators:
     SAVE_VALUE_CHECKBOXES = (By.XPATH, '//div[@col-id="1"]//input[@type="checkbox"]')
     ALL_KEBABS = (By.CSS_SELECTOR, 'svg[data-testid="MoreHorizIcon"]')
     KEBAB_MENU_ITEM = (By.CSS_SELECTOR, 'span[class^="MuiTypography-root MuiTypography-caption"]')
+    KEBABS_DEL_MENU_ITEM = (By.XPATH, '//span[text()="Удалить"]')
+    DEL_ACCEPT_BUTTON = (By.XPATH, '//p[@id="alert-dialog-description"]//following::button[@type="submit"]')
     ALL_SEARCH_FIELDS = (By.CSS_SELECTOR, 'input[placeholder="Поиск"]')
+    # Дровер создания переменной
+    FIELD_NAME_INPUT = (By.CSS_SELECTOR, 'input[name="name"]')
+    VARIABLE_NAME_INPUT = (By.CSS_SELECTOR, 'input[name="systemName"]')
+    VARIABLE_VALUE_INPUT = (By.CSS_SELECTOR, 'input[name="value"]')
+    SUBMIT_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
+    ABORT_BUTTON = (By.XPATH, '//button[text()="Отменить"]')
+
+    SAVE_VALUE_CHECKBOX = (By.XPATH, '//span[text()="Хранить значение поля"]/../span/input')
+    ASK_VALUE_CHECKBOX = (By.XPATH, '//span[text()="Запрашивать значение у пользователя"]')
+
+    ALERT_TEXT = (By.XPATH, '//div[contains(@class, "MuiAlert-message")]')
+    TEMPLATES_INPUT_FIELD = (By.XPATH, '//input[contains(@class," MuiInputBase-inputAdornedEnd MuiAutocomplete-input MuiAutocomplete-inputFocused")]')
+    CHIPS_IN_TEMPLATES_INPUT_FIELD = (By.XPATH, '//div[contains(@class,"MuiChip-deletable")]')
+    DROPDOWN_ITEMS_NOT_SELECTED = (By.CSS_SELECTOR, 'li[role="option"][aria-selected="false"]')
+
