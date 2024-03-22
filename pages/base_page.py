@@ -1,7 +1,6 @@
 from datetime import datetime, timedelta
 
 import allure
-from selenium.common import TimeoutException
 from selenium.webdriver import ActionChains, Keys
 from selenium.webdriver.support.ui import WebDriverWait as wait
 from selenium.webdriver.support import expected_conditions as EC
@@ -102,3 +101,8 @@ class BasePage:
     def get_day_before(self, amount_of_days):
         day_before = datetime.now() - timedelta(days=amount_of_days)
         return day_before.strftime("%d.%m.%Y")
+
+    @allure.step("Получение предыдущей даты отличной от текущей на N дней (MM.DD.YYYY)")
+    def get_day_before_m_d_y(self, amount_of_days):
+        day_before = datetime.now() - timedelta(days=amount_of_days)
+        return day_before.strftime("%m.%d.%Y")

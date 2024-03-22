@@ -11,14 +11,17 @@ from api_methods.departmens import DepartmentsApi
 from api_methods.position import PositionsApi
 from api_methods.project_roles import ProjectRolesApi
 from data.data import LOGIN, PASSWORD
+from data.models.create_project_model import CreateProject
+from data.urls import Urls
+from endpoints.project_endpoint import ProjectEndpoint
 from pages.all_project_page import AllProjectPage
 from pages.authorization_page import AuthorizationPage
+from pages.base_page import BasePage
 from pages.create_project_drawer_page import CreateProjectDrawerPage
 from configuration.config_provider import ConfigProvider
 from api_methods.project import ProjectApi
 from api_methods.system_settings import SystemSettingsApi
 
-IN_URL = 'http://10.7.2.3:33151/'
 config = ConfigProvider()
 
 
@@ -32,7 +35,7 @@ def driver():
 
 @pytest.fixture
 def login(driver):
-    authorization_page = AuthorizationPage(driver, IN_URL)
+    authorization_page = AuthorizationPage(driver, Urls.url)
     authorization_page.open()
     authorization_page.authorization(LOGIN, PASSWORD)
     return login
@@ -142,3 +145,13 @@ def script():
         pass
 
 
+@pytest.fixture()
+def finished_project():
+    project_endpoint = ProjectEndpoint()
+    payload = CreateProject(
+        endDate=BasePage(driver=None).get_day_before_m_d_y(1)
+    ).model_dump()
+    response = project_endpoint.create_project_api(json=payload)
+
+    yield
+    project_endpoint.delete_project_api(str(response.json()['id']))

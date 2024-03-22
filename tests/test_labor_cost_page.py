@@ -391,3 +391,13 @@ class TestLaborCostPage:
         after = labor_cost_page.get_count_absense()
         labor_cost_page.delete_all_absence()
         assert before != after, "Количество заявлений не изменилось после включения чекбокса прошедшие отсутствия"
+
+    @testit.workItemIds(3383)
+    @testit.displayName("3.1.3.1. Добавление переработки на проект, который завершен")
+    @pytest.mark.regress
+    @allure.title("id-3383 3.1.3.1. Добавление переработки на проект, который завершен")
+    def test_adding_overtime_work_to_a_completed_project(self, finished_project, login, driver):
+        labor_cost_page = LaborCostPage(driver)
+        labor_cost_page.go_to_labor_cost_page()
+        labor_cost_page.open_overtime_drover()
+        labor_cost_page.check_adding_overtime_work_to_a_completed_project()

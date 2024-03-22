@@ -9,6 +9,7 @@ from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 
 from data.data import PROJECT_NAME
+from data.models.create_project_model import CreateProject
 from locators.labor_cost_page_locators import LaborCostPageLocators
 from pages.base_page import BasePage
 
@@ -341,9 +342,8 @@ class LaborCostPage(BasePage):
         column_names = []
         for name in all_column:
             column_names.append(name.text)
-        x = list(set(column_names) - set(
-            ['Дата начала', 'Дата окончания', 'Вид отсутствия', 'Действия', 'Файлы', 'Дата', 'Кол-во часов', 'Причина',
-             'Файлы', 'Тип', 'Проект', 'Действия']))
+        x = list(set(column_names) - set(['Дата начала', 'Дата окончания', 'Вид отсутствия', 'Действия', 'Файлы', 'Дата',
+                                          'Кол-во часов', 'Причина', 'Файлы', 'Тип', 'Проект', 'Действия']))
         assert x == [], "Есть не все столбцы таблиц заявлений"
 
     @testit.step("Проверяем наличие чекбокса отображения предыдущих отсутствий")
@@ -660,17 +660,6 @@ class LaborCostPage(BasePage):
         self.action_move_to_element(self.element_is_visible(self.locators.ADD_OVERTIME_WORK_BUTTON))
         self.element_is_visible(self.locators.ADD_OVERTIME_WORK_BUTTON).click()
 
-    @allure.step("Проверяем наличие всех типов отсутствий и переработки")
-    def check_all_overtime_reason(self):
-        # self.element_is_visible(self.locators.OPEN_ABSENCE_CHOOSE_BUTTON).click()
-        all_reasons = self.elements_are_visible(self.locators.ALL_OVERTIME_WORK_AND_LEAVE)
-        data = []
-        for alert in all_reasons:
-            data.append(alert.text)
-        print(data)
-        assert data == ['Переработка', 'Ежегодный отпуск', 'Административный отпуск', 'Больничный',
-                        'Декретный отпуск'], 'В списке не все типы отсутствий и переработки'
-
     @testit.step("Проверяем наличие полей на дровере переработки")
     @allure.step("Проверяем наличие полей на дровере переработки")
     def check_fields_on_overtime_drover(self):
@@ -775,3 +764,32 @@ class LaborCostPage(BasePage):
             return len(self.elements_are_visible(self.locators.ALL_ABSENCE_KEBABS))
         except TimeoutException:
             return 0
+
+    @testit.step("Проверяем добавление переработки на завершенный проект")
+    @allure.step("Проверяем добавление переработки на завершенный проект")
+    def check_adding_overtime_work_to_a_completed_project(self):
+        time.sleep(0.5)  # Без этого ожидания не успевает прогрузиться
+        self.element_is_visible(self.locators.OVERTIME_WORK_DATA_INPUT).send_keys(self.get_day_before(2))
+        self.element_is_visible(self.locators.PROJECT_NAME_DRAWER_INPUT).click()
+        time.sleep(0.5)  # Без этого ожидания не успевает прогрузиться
+        self.element_is_visible(self.locators.chose_project_on_overtime_work_drawer(CreateProject().name)).click()
+        self.element_is_visible(self.locators.OVERTIME_WORK_INPUT).send_keys('1')
+        self.element_is_visible(self.locators.OVERTIME_WORK_INPUT).send_keys(Keys.RETURN)
+        # При запуске нескольких тестов через пайтест работает только с абсолютным путем
+        try:
+            self.element_is_present(self.locators.FILE_INPUT).send_keys(
+                os.path.abspath(r'../data/административный.docx'))
+        except InvalidArgumentException:
+            self.element_is_present(self.locators.FILE_INPUT).send_keys(
+                r'C:\Users\ASUS\PycharmProjects\sut-autotests\data\административный.docx')
+        except TimeoutException:
+            pass
+        self.element_is_visible(self.locators.OVERTIME_WORK_DATA_INPUT).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.OVERTIME_WORK_DATA_INPUT).send_keys(self.get_day_before(0))
+        attribute = self.element_is_visible(self.locators.PROJECT_NAME_DRAWER_INPUT_FIELD).get_attribute("value")
+        assert attribute == ''
+        assert not self.element_is_clickable(self.locators.OVERTIME_WORK_SAVE_BUTTON, 1)
+
+
+
+
