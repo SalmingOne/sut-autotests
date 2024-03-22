@@ -1,3 +1,5 @@
+import time
+
 import allure
 import pytest
 import testit
@@ -72,3 +74,14 @@ class TestPivotPage:
         sum_on_user = pivot_tab_page.get_sum_reason_on_user()
         assert str(sum_in_year) == sum_on_project
         assert str(sum_in_year) == sum_on_user
+
+    @testit.workItemIds(1181)
+    @testit.displayName("3.2.2.11. Отображение переработок в сводной таблице трудозатрат")
+    @allure.title("id-1181 3.2.2.11. Отображение переработок в сводной таблице трудозатрат")
+    def test_displaying_overwork_on_pivot_page(self, project_with_overtime_work, login, driver):
+        pivot_tab_page = PivotTabPage(driver)
+        pivot_tab_page.go_to_pivot_page()
+        pivot_tab_page.check_overwork_by_project()
+        pivot_tab_page.go_to_by_user_tab()
+        pivot_tab_page.open_project_list()
+        pivot_tab_page.check_overwork_by_user()
