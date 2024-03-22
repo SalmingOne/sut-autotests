@@ -68,3 +68,19 @@ class ColleaguesPage(BasePage):
         self.elements_are_visible(self.locators.USER_NAME_LINK)[0].click()
         assert self.element_is_displayed(self.locators.CHECK_GO_TO_USER_PAGE), "Мы не перешли на страницу пользователя"
 
+    @testit.step("Поиск пользователя по фамилии")
+    @allure.step("Поиск пользователя по фамилии")
+    def search_user(self, second_name):
+        self.element_is_visible(self.locators.SEARCH_FIELD).send_keys(second_name)
+
+    @testit.step("Просмотр системы глазами пользователя")
+    @allure.step("Просмотр системы глазами пользователя")
+    def check_watch_the_user_eyes(self):
+        self.element_is_visible(self.locators.WATCH_USER_EYES_BUTTONS).click()
+        assert self.element_is_displayed(self.locators.check_text_on_page('Трудозатраты')), 'Мы не на странице трудозатрат'
+        self.element_is_visible(self.locators.RETURN_TO_PROFILE_BUTTON).click()
+        assert self.element_is_displayed(self.locators.check_text_on_page('Коллеги')), 'Мы не на странице коллеги'
+
+
+
+
