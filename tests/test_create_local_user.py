@@ -40,7 +40,7 @@ class TestCreateLocalUser:
     def test_cansel_adding_new_user(self, login, driver):
         create_local_user_page = CreateLocalUserDrawerPage(driver)
         create_local_user_page.go_to_create_local_user_drawer()
-        create_local_user_page.field_required_fields('AutoUser', 'Автоматов', 'auto@mail.ru', 'no')
+        create_local_user_page.field_required_fields('AutoUser', 'Автоматов', 'auto@mail.ruru', 'no')
         user_page = UserPage(driver)
         assert user_page.check_user_is_not_in_table('Автоматов') == False, "Пользователь есть в таблице"
 
@@ -54,9 +54,9 @@ class TestCreateLocalUser:
         user_page.go_to_user_page()
         if not user_page.check_user_is_not_in_table('Автотестов'):
             create_local_user_page.go_to_create_local_user_drawer()
-            create_local_user_page.field_required_fields('AutoTester', 'Автотестов', 'auto_test@mail.ru', 'yes')
+            create_local_user_page.field_required_fields('AutoTester', 'Автотестов', 'auto_test@mail.ruru', 'yes')
         else:
             pass
         create_local_user_page.go_to_create_local_user_drawer()
-        create_local_user_page.field_required_fields('AutoTester', 'Автоматов', 'auto@mail.ru', 'yes')
+        create_local_user_page.field_required_fields('AutoTester', 'Автоматов', 'auto@mail.ruru', 'yes')
         assert create_local_user_page.check_massage() == 'Пользователь с таким логином/почтой уже добавлен в систему', "Не появилось сообщение о совпадении логинов"

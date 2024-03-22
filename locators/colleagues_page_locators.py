@@ -14,5 +14,12 @@ class ColleaguesPageLocators:
     SETTING_ICON = (By.CSS_SELECTOR, 'button[aria-label="Настроить отображение столбцов в таблице"]')
     COLUMN_TITLES = (By.CSS_SELECTOR, 'span[class="ag-header-cell-text"]')
     USER_NAME_LINK = (By.CSS_SELECTOR, 'a[href^="/k"]')
+    WATCH_USER_EYES_BUTTONS = (By.CSS_SELECTOR, 'svg[data-testid="VpnKeyIcon"]')
     # Локатор для проверки перехода на страницу пользователя
     CHECK_GO_TO_USER_PAGE = (By.XPATH, '//h6[text()="Общие данные"]')
+    # Просмотр глазами пользователя
+    RETURN_TO_PROFILE_BUTTON = (By.XPATH, '//button[text()="Вернуться в свой профиль"]')
+
+    @staticmethod
+    def check_text_on_page(text):
+        return By.XPATH, f'//*[text()="{text}"]'
