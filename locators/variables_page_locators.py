@@ -30,4 +30,6 @@ class VariablesPageLocators:
     TEMPLATES_INPUT_FIELD = (By.XPATH, '//input[contains(@class," MuiInputBase-inputAdornedEnd MuiAutocomplete-input MuiAutocomplete-inputFocused")]')
     CHIPS_IN_TEMPLATES_INPUT_FIELD = (By.XPATH, '//div[contains(@class,"MuiChip-deletable")]')
     DROPDOWN_ITEMS_NOT_SELECTED = (By.CSS_SELECTOR, 'li[role="option"][aria-selected="false"]')
+    # Ошибки
+    MUI_ERROR = (By.XPATH, '//p[contains(@class, "Mui-error")]')
 

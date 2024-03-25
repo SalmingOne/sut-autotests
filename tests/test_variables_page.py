@@ -37,3 +37,20 @@ class TestVariablesPage:
         variables_page.delete_variable('Имя переменной')
         variables_page.check_rest_fields()
         assert message == ['Переменная успешно добавлена'], 'Не появилось сообщение о добавлении переменной'
+
+    @testit.workItemIds(3164)
+    @testit.displayName("6.3.1.3 Создание переменной в таблице переменных, если уникальные поля НЕ уникальны")
+    @pytest.mark.smoke
+    @allure.title("id-3164 6.3.1.3 Создание переменной в таблице переменных, если уникальные поля НЕ уникальны")
+    def test_creating_a_variable_with_a_non_unique_fields(self, variables, login, driver):
+        variables_page = VariablesPage(driver)
+        variables_page.go_to_variables_page()
+        variables_page.create_variable(
+            variables[0],
+            variables[1],
+            'Значение переменной'
+        )
+        errors = variables_page.get_mui_errors_text()
+        assert errors == ['Переменная с таким названием поля уже создана в системе',
+                          'Переменная с таким названием уже создана в системе'],\
+            'Не появились сообщения о неуникальных полях'

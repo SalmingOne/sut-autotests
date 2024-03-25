@@ -92,6 +92,14 @@ class VariablesPage(BasePage):
         assert len(self.elements_are_visible(self.locators.CHIPS_IN_TEMPLATES_INPUT_FIELD)) == 2, 'Добавились не все шаблоны'
         self.element_is_visible(self.locators.ABORT_BUTTON).click()
 
+    @testit.step("Получение текста ошибок")
+    @allure.step("Получение текста ошибок")
+    def get_mui_errors_text(self):
+        error_messages = self.elements_are_visible(self.locators.MUI_ERROR)
+        data = []
+        for message in error_messages:
+            data.append(message.text)
+        return data
 
 
 

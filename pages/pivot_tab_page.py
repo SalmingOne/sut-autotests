@@ -6,6 +6,7 @@ from selenium.webdriver.common.by import By
 
 from locators.pivot_tab_page_locators import PivotTabPageLocators
 from pages.base_page import BasePage
+from data.models.create_project_model import CreateProject
 
 
 class PivotTabPage(BasePage):
@@ -80,6 +81,33 @@ class PivotTabPage(BasePage):
     def open_project_list(self):
         self.element_is_visible(self.locators.OPEN_PROJECT_LIST).click()
 
+    @testit.step("Открываем дровер фильтрации (отображение)")
     @allure.step("Открываем дровер фильтрации (отображение)")
     def open_filter(self):
         self.element_is_visible(self.locators.FILTER_BUTTON).click()
+
+    @testit.step("Берем aria-colindex текущего столбца")
+    @allure.step("Берем aria-colindex текущего столбца")
+    def get_today_col_index(self):
+        return self.element_is_visible(self.locators.HEADER_TODAY).get_attribute('aria-colindex')
+
+    @testit.step("Проверяем отображение переработок в таблице по проектам")
+    @allure.step("Проверяем отображение переработок в таблице по проектам")
+    def check_overwork_by_project(self):
+        row_id = self.element_is_visible(self.locators.get_row_id_on_project(CreateProject().name)).get_attribute("row-id")
+        col_index = self.get_today_col_index()
+        this_period = self.element_is_visible(self.locators.intersection_field(row_id, col_index)).text
+        end_month = self.element_is_visible(self.locators.intersection_field(row_id, 8)).text
+        assert this_period == end_month, 'Переработки не отразились в итоговом столбце '
+        assert this_period == '3 + 3', 'Переработки не отразились в текущем столбце'
+
+    @testit.step("Проверяем отображение переработок в таблице по пользователям")
+    @allure.step("Проверяем отображение переработок в таблице по пользователям")
+    def check_overwork_by_user(self):
+        row_id = self.element_is_visible(self.locators.get_row_id_on_user(CreateProject().name)).get_attribute("row-id")
+        col_index = self.get_today_col_index()
+        this_period = self.element_is_visible(self.locators.intersection_field(row_id, col_index)).text
+        end_month = self.element_is_visible(self.locators.intersection_field(row_id, 8)).text
+        assert this_period == end_month, 'Переработки не отразились в итоговом столбце '
+        assert this_period == '3 + 3', 'Переработки не отразились в текущем столбце'
+
