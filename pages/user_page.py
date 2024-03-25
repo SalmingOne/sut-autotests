@@ -175,3 +175,12 @@ class UserPage(BasePage):
         self.element_is_visible(self.locators.delete_system_role_button(add_role)).click()
         assert 'Mui-disabled' in user_before_add_role, 'Роль Пользователь не задизейблена'
         assert 'Mui-disabled' not in user_after_add_role, 'Роль Пользователь задизейблена после добавления другой роли'
+
+    @testit.step("Проверяем удаление единственной проектной роли")
+    @allure.step("Проверяем удаление единственной проектной роли")
+    def check_removing_a_single_project_role_from_a_user(self):
+        self.element_is_visible(self.locators.USER_KEBABS).click()
+        self.element_is_visible(self.locators.REDACT_BUTTON).click()
+        time.sleep(1) # Без ожидания не успевает срабатывать анимация
+        self.element_is_visible(self.locators.DELETE_PROJECT_ROLE_ICONS).click()
+        assert not self.element_is_clickable(self.locators.SAVE_BUTTON, 1), 'Кнопка Сохранить не задизейбленна'

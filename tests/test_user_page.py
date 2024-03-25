@@ -2,6 +2,7 @@ import allure
 import pytest
 import testit
 
+from endpoints.users_endpoint import UserEndpoint
 from pages.create_local_user_drawer_page import CreateLocalUserDrawerPage
 from pages.user_page import UserPage
 
@@ -117,3 +118,15 @@ class TestUsersPage:
             pass
         # Проводим тест
         user_page.check_assigning_system_role_to_user()
+
+    @testit.workItemIds(1376)
+    @testit.displayName("4.13 Удаление единственной проектной роли у пользователя")
+    @pytest.mark.smoke
+    @allure.title("id-1376 4.13 Удаление единственной проектной роли у пользователя")
+    def test_removing_a_single_project_role_from_a_user(self, login, driver):
+        user_page = UserPage(driver)
+        user_page.go_to_user_page()
+        user_endpoint = UserEndpoint()
+        users = user_endpoint.get_users_whit_one_project_role_and_no_assignments()
+        user_page.check_user_is_not_in_table(users[0])
+        user_page.check_removing_a_single_project_role_from_a_user()
