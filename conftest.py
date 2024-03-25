@@ -14,6 +14,7 @@ from data.data import LOGIN, PASSWORD
 from data.models.create_project_model import CreateProject
 from data.urls import Urls
 from endpoints.labor_reports_endpoint import LaborReportEndpoint
+from endpoints.logs_endpoint import LogsEndpoint
 from endpoints.project_endpoint import ProjectEndpoint
 from endpoints.variables_endpoint import VariablesEndpoint
 from pages.all_project_page import AllProjectPage
@@ -119,6 +120,9 @@ def f_notifications():
 def script():
     project_roles = ProjectRolesApi()
     token = AuthApi().auth_to_token()
+    logs_endpoint = LogsEndpoint()
+    payload = dict(status=True, level="ALL", depthDateQuantity=0, depthDateType="YEAR")
+    logs_endpoint.post_logs_settings(json=payload)
     if project_roles.get_project_roles_api(token) == 0:
         project_roles.post_project_roles_api(token)
     else:
