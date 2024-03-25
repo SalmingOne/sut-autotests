@@ -15,6 +15,7 @@ from data.models.create_project_model import CreateProject
 from data.urls import Urls
 from endpoints.labor_reports_endpoint import LaborReportEndpoint
 from endpoints.project_endpoint import ProjectEndpoint
+from endpoints.variables_endpoint import VariablesEndpoint
 from pages.all_project_page import AllProjectPage
 from pages.authorization_page import AuthorizationPage
 from pages.base_page import BasePage
@@ -169,3 +170,12 @@ def project_with_overtime_work():
     labor_report_endpoint.post_labor_report_api(json=payload)
     yield
     project_endpoint.delete_project_api(str(project_id))
+
+
+@pytest.fixture()
+def variables():
+    variables_endpoints = VariablesEndpoint()
+    payload = dict(name='Не уникальное имя', systemName='Не уникальное системное имя')
+    response = variables_endpoints.create_variables_api(json=payload)
+    yield payload['name'], payload['systemName']
+    variables_endpoints.delete_variables_api(str(response.json()['id']))
