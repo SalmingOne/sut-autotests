@@ -18,3 +18,5 @@ class Urls:
     variables_url = f'{base_url}' + 'variables/'
     logs_url = f'{base_url}' + 'logs/'
     logs_settings_url = f'{logs_url}' + 'settings/'
+    tags_url = f'{base_url}' + 'tags/'
+    skills_url = f'{base_url}' + 'skills/'

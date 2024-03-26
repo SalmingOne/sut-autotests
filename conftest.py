@@ -16,6 +16,7 @@ from data.urls import Urls
 from endpoints.labor_reports_endpoint import LaborReportEndpoint
 from endpoints.logs_endpoint import LogsEndpoint
 from endpoints.project_endpoint import ProjectEndpoint
+from endpoints.skills_endpoint import SkillsEndpoint
 from endpoints.variables_endpoint import VariablesEndpoint
 from pages.all_project_page import AllProjectPage
 from pages.authorization_page import AuthorizationPage
@@ -197,3 +198,15 @@ def logging_on():
     logs_endpoint = LogsEndpoint()
     payload = dict(status=True, level="ALL", depthDateQuantity=0, depthDateType="YEAR")
     logs_endpoint.post_logs_settings(json=payload)
+
+
+@pytest.fixture()
+def skills():
+    skills_endpoint = SkillsEndpoint()
+    if skills_endpoint.return_len_skills() >= 2:
+        pass
+    else:
+        payload = dict(name='Selenium', tags=[])
+        skills_endpoint.create_skills_api(json=payload)
+        payload = dict(name='Pytest', tags=[])
+        skills_endpoint.create_skills_api(json=payload)
