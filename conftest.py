@@ -183,3 +183,10 @@ def variables():
     response = variables_endpoints.create_variables_api(json=payload)
     yield payload['name'], payload['systemName']
     variables_endpoints.delete_variables_api(str(response.json()['id']))
+
+
+@pytest.fixture()
+def logging_off():
+    logs_endpoint = LogsEndpoint()
+    payload = dict(status=False, level="ALL", depthDateQuantity=0, depthDateType="YEAR")
+    logs_endpoint.post_logs_settings(json=payload)
