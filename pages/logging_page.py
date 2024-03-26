@@ -55,4 +55,12 @@ class LoggingPage(BasePage):
     @allure.step("Проверка наличия пункта меню Аудит")
     def check_audit_menu_item(self):
         self.element_is_visible(self.locators.SETTING_ICON).click()
-        assert self.element_is_displayed(self.locators.AUDIT_PAGE), 'Нет пункта меню Аудит'
+        return self.element_is_displayed(self.locators.AUDIT_PAGE, 1)
+
+    @testit.step("Выключение логирования")
+    @allure.step("Выключение логирования")
+    def disabling_logging(self):
+        time.sleep(0.5)  # Без ожидания не успевает прогрузиться страница
+        self.element_is_visible(self.locators.AUDIT_STATUS_FIELD).click()
+        self.element_is_visible(self.locators.set_choice('Выкл')).click()
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()

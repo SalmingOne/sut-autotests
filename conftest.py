@@ -190,3 +190,10 @@ def logging_off():
     logs_endpoint = LogsEndpoint()
     payload = dict(status=False, level="ALL", depthDateQuantity=0, depthDateType="YEAR")
     logs_endpoint.post_logs_settings(json=payload)
+
+
+@pytest.fixture()
+def logging_on():
+    logs_endpoint = LogsEndpoint()
+    payload = dict(status=True, level="ALL", depthDateQuantity=0, depthDateType="YEAR")
+    logs_endpoint.post_logs_settings(json=payload)
