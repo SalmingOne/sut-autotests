@@ -7,7 +7,7 @@ import testit
 from pages.audit_page import AuditPage
 
 
-@allure.suite("Страница все проекты")
+@allure.suite("Страница аудит")
 class TestAuditPage:
     @testit.workItemIds(1200)
     @testit.displayName("6.4.1 Содержание страницы Аудит")
