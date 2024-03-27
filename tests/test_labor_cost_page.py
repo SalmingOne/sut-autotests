@@ -379,7 +379,8 @@ class TestLaborCostPage:
         labor_cost_page = LaborCostPage(driver)
         # Проверяем, что нет заявлений в таблице. И если есть удаляем
         labor_cost_page.go_to_labor_cost_page()
-        labor_cost_page.go_to_previous_period()
+        # Временное решение
+        #labor_cost_page.go_to_previous_period()
         time.sleep(1)  # Без ожидания скрипт срабатывает до загрузки страницы
         if labor_cost_page.check_absence_on_tab() == 0:
             zero_reason_day = labor_cost_page.get_numbers_days_reason('zero')

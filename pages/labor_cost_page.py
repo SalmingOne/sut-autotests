@@ -40,6 +40,7 @@ class LaborCostPage(BasePage):
     @testit.step("Проверка что появляется окно указания причины списания")
     @allure.step("Проверка что появляется окно указания причины списания")
     def check_to_have_reason_fo_write(self, project_name):
+        self.element_is_visible(self.locators.NEXT_PERIOD_BUTTON).click()
         self.element_is_visible(self.locators.get_random_day_by_project(project_name)).click()
         checked_text = self.element_is_visible(self.locators.CHECK_LABOR_REASON_FIELD).text
         self.element_is_visible(self.locators.BREAK_LABOR_REASON_WINDOW).click()
@@ -689,7 +690,7 @@ class LaborCostPage(BasePage):
                 time.sleep(0.1)  # Без ожидания иногда не корректно выбираются пункты кебаба меню
                 self.element_is_visible(self.locators.DEL_ACCEPT_BUTTON).click()
                 count += 1
-                time.sleep(0.5)  # Без ожидания иногда не корректно выбираются пункты кебаб меню
+                time.sleep(1)  # Без ожидания иногда не корректно выбираются пункты кебаб меню
             except StaleElementReferenceException:
                 break
             except ElementClickInterceptedException:
