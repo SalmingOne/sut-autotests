@@ -24,6 +24,8 @@ class SchedulePageLocators:
     DRAWER_BREAK_BUTTON = (By.XPATH, '//div[contains(@class,"MuiDrawer-paper")]//button[text()="Отменить"]')
     WEEK_CHECKBOXES = (By.CSS_SELECTOR, 'input[type="checkbox"]')
 
+    LI_MENU_ITEM = (By.CSS_SELECTOR, 'li[role="option"]')
+    START_WORK = (By.XPATH, '//label[text()="Начало рабочего дня"]/..//input')
     START_BREAK = (By.XPATH, '//div[contains(@name,"breaks")][contains(@name,"startTime")]//input')
     END_BREAK = (By.XPATH, '//div[contains(@name,"breaks")][contains(@name,"endTime")]//input')
     ADD_BREAK_BUTTON = (By.XPATH, '//button[text()="Добавить перерыв"]')
