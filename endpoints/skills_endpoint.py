@@ -26,3 +26,10 @@ class SkillsEndpoint:
     @allure.step("Получаем количество Знаний")
     def return_len_skills(self):
         return len(self.get_all_skills_api().json())
+
+    @allure.step("Удаляем Знание")
+    def delete_skill_api(self, skill_id):
+        header = AuthEndpoint().get_header_token_api()
+        self.response = requests.delete(url=Urls.skills_url + skill_id, headers=header)
+        assert self.response.status_code == 204
+        return self.response

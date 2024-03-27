@@ -2,6 +2,7 @@ import time
 
 import allure
 import testit
+from selenium.webdriver import Keys
 
 from locators.skills_page_locators import SkillsPageLocators
 from pages.base_page import BasePage
@@ -42,3 +43,50 @@ class SkillsPage(BasePage):
         for element in menu_item:
             items_text.append(element.text)
         assert items_text == ['Редактировать', 'Удалить'], 'В кебаб меню есть не все пункты'
+
+    @testit.step("Открытие дровера редактирования знания по имени")
+    @allure.step("Открытие дровера редактирования знания по имени")
+    def redact_skill_by_name(self, name):
+        self.element_is_visible(self.locators.kebab_by_skill_name(name)).click()
+        self.element_is_visible(self.locators.KEBABS_REDACT_MENU_ITEM).click()
+
+    @testit.step("Проверка превышения максимальной длины имени знания")
+    @allure.step("Проверка превышения максимальной длины имени знания")
+    def check_max_name_field(self):
+        text = 'Loremipsumdolorsitametconsectetueradipiscingelitseddiaaaaaaaaaaaa'
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(text)
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+        error = self.element_is_visible(self.locators.MUI_ERROR).text
+        self.element_is_visible(self.locators.BREAK_BUTTON).click()
+        assert error == 'Максимальное количество символов: 64', 'Не появилось сообщение о превышении максимума символов'
+
+    @testit.step("Изменение названия знания")
+    @allure.step("Изменение названия знания")
+    def change_the_skill(self, new_name):
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(new_name)
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+
+    @testit.step("Проверка знания на табе Знания")
+    @allure.step("Проверка знания на табе Знания")
+    def check_skill_name_on_page(self, name):
+        assert self.element_is_displayed(self.locators.text_on_page(name)),\
+            "В справочнике Знания не сохранились изменения"
+
+    @testit.step("Проверка знания в дровере добавления значений в справочниках Группы знаний")
+    @allure.step("Проверка знания в дровере добавления значений в справочниках Группы знаний")
+    def check_skill_name_on_tag_tab(self, name):
+        self.element_is_visible(self.locators.TAG_TAB).click()
+        time.sleep(1)
+        self.element_is_visible(self.locators.ADD_SKILLS_BUTTON).click()
+        self.element_is_visible(self.locators.ARROW_DOWN).click()
+        assert self.element_is_displayed(self.locators.text_on_page(name)),\
+            "Не сохранились изменения в дровере добавления значений в справочниках Группы знаний"
+
+
+
+
+
+
+

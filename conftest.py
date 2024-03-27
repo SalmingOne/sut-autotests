@@ -210,3 +210,12 @@ def skills():
         skills_endpoint.create_skills_api(json=payload)
         payload = dict(name='Pytest', tags=[])
         skills_endpoint.create_skills_api(json=payload)
+
+
+@pytest.fixture()
+def create_skill():
+    skills_endpoint = SkillsEndpoint()
+    payload = dict(name='Для редактирования', tags=[])
+    response = skills_endpoint.create_skills_api(json=payload)
+    yield payload['name']
+    skills_endpoint.delete_skill_api(str(response.json()['id']))
