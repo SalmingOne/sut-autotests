@@ -14,7 +14,7 @@ class Urls:
     affiliates_url = f'{base_url}' + 'affiliates/'
     users_url = f'{base_url}' + 'users/'
     labor_reports_url = f'{base_url}' + 'labor-reports/'
-    assignment_url = f'{base_url}' + 'assignment/'
+    assignment_url = f'{base_url}' + 'assignments/'
     variables_url = f'{base_url}' + 'variables/'
     logs_url = f'{base_url}' + 'logs/'
     logs_settings_url = f'{logs_url}' + 'settings/'
