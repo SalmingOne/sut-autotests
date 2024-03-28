@@ -15,7 +15,7 @@ class TestPivotPage:
     @testit.displayName("3.2.2.1 Проверка правильности подсчета трудозатрат за месяц при отображении Сводной таблицы За месяц-по неделям")
     @pytest.mark.smoke
     @allure.title("id-3104 3.2.2.1 Проверка правильности подсчета трудозатрат за месяц при отображении Сводной таблицы За месяц-по неделям")
-    def test_correct_month_summ_on_pivot_for_month_by_week(self, f_create_temp_project, login, driver):
+    def test_correct_month_summ_on_pivot_for_month_by_week(self, project_with_assignment, login, driver):
         # Заполняем таблицу трудозатрат
         labor_cost_page = LaborCostPage(driver)
         labor_cost_page.go_to_labor_cost_page()
@@ -36,7 +36,7 @@ class TestPivotPage:
     @testit.displayName("3.2.2.1 Проверка правильности подсчета трудозатрат за месяц при отображении Сводной таблицы За месяц-по неделям")
     @pytest.mark.smoke
     @allure.title("id-3105 3.2.2.1 Проверка правильности подсчета трудозатрат за неделю при отображении Сводной таблицы За неделю")
-    def test_correct_week_summ_on_pivot_for_week(self, f_create_temp_project, login, driver):
+    def test_correct_week_summ_on_pivot_for_week(self, project_with_assignment, login, driver):
         # Заполняем таблицу трудозатрат
         labor_cost_page = LaborCostPage(driver)
         labor_cost_page.go_to_labor_cost_page()
@@ -58,7 +58,7 @@ class TestPivotPage:
     @testit.displayName("3.2.2.1 Проверка правильности подсчета трудозатрат за год при отображении Сводной таблицы За год")
     @allure.title(
         "id-3106 3.2.2.1 Проверка правильности подсчета трудозатрат за год при отображении Сводной таблицы За год")
-    def test_correct_summ_on_pivot_for_year(self, f_create_temp_project, login, driver):
+    def test_correct_summ_on_pivot_for_year(self, project_with_assignment, login, driver):
         # Заполняем таблицу трудозатрат
         labor_cost_page = LaborCostPage(driver)
         labor_cost_page.go_to_labor_cost_page()

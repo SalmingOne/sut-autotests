@@ -13,6 +13,7 @@ from api_methods.project_roles import ProjectRolesApi
 from data.data import LOGIN, PASSWORD
 from data.models.create_project_model import CreateProject
 from data.urls import Urls
+from endpoints.assignments_endpoint import AssignmentEndpoint
 from endpoints.labor_reports_endpoint import LaborReportEndpoint
 from endpoints.logs_endpoint import LogsEndpoint
 from endpoints.project_endpoint import ProjectEndpoint
@@ -219,3 +220,24 @@ def create_skill():
     response = skills_endpoint.create_skills_api(json=payload)
     yield payload['name']
     skills_endpoint.delete_skill_api(str(response.json()['id']))
+
+
+@pytest.fixture()
+def project_with_assignment():
+    assignment_endpoint = AssignmentEndpoint()
+    project_endpoint = ProjectEndpoint()
+    payload = CreateProject().model_dump()
+    response = project_endpoint.create_project_api(json=payload)
+    payload = dict(projectRoleId=1,
+                   projectId=response.json()["id"],
+                   slotId=response.json()["slots"][0]["assignments"][0]['slotId'],
+                   userId=2,
+                   isProjectManager=True,
+                   startDate=CreateProject().startDate
+                   )
+    assignment_endpoint.put_assignment_api(
+        json=payload,
+        assignment_id=str(response.json()["slots"][0]["assignments"][0]["id"])
+    )
+    yield
+    project_endpoint.delete_project_api(str(response.json()['id']))
