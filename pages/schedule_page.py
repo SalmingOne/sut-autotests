@@ -2,6 +2,7 @@ import time
 
 import allure
 import testit
+from selenium.webdriver import Keys
 
 from locators.schedule_page_locators import SchedulePageLocators
 from pages.base_page import BasePage
@@ -143,4 +144,33 @@ class SchedulePage(BasePage):
     def check_hours_in_day_fields(self):
         assert len(self.elements_are_visible(self.locators.WORK_HOURS_IN_DAY)) == 24, 'Не над каждым днем отображаются рабочие часы'
 
+    @testit.step("Переход на следующий период")
+    @allure.step("Переход на следующий период")
+    def go_to_next_period(self):
+        self.element_is_visible(self.locators.NEXT_PERIOD_BUTTON).click()
 
+    @testit.step("Получение текста с чипсы режима работы")
+    @allure.step("Получение текста с чипсы режима работы")
+    def get_text_on_chips(self, number_element):
+        return self.elements_are_visible(self.locators.ALL_CHIPS_BUTTON)[number_element].text
+
+    @testit.step("Начало редактирования")
+    @allure.step("Начало редактирования")
+    def press_redact_button(self):
+        self.element_is_visible(self.locators.REDACT_BUTTON).click()
+
+    @testit.step("Выбор чипсы для редактирования")
+    @allure.step("Выбор чипсы для редактирования")
+    def open_chips_to_edit(self, number_element):
+        self.elements_are_visible(self.locators.ALL_CHIPS_BUTTON)[number_element].click()
+
+    @testit.step("Редактирование начала работы и начала перерыва")
+    @allure.step("Редактирование начала работы и начала перерыва")
+    def editing_a_specific_day(self, start_work, start_break):
+        self.element_is_visible(self.locators.START_WORK).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.START_WORK).send_keys(start_work)
+        self.element_is_visible(self.locators.LI_MENU_ITEM).click()
+        self.element_is_visible(self.locators.START_BREAK).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.START_BREAK).send_keys(start_break)
+        self.element_is_visible(self.locators.LI_MENU_ITEM).click()
+        self.element_is_visible(self.locators.DRAWER_SUBMIT_BUTTON).click()

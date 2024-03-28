@@ -1,3 +1,5 @@
+import time
+
 import allure
 import pytest
 import testit
@@ -75,3 +77,20 @@ class TestSchedulePage:
         schedule_page.check_redact_button()
         schedule_page.check_add_take_off_button()
         schedule_page.check_hours_in_day_fields()
+
+    @testit.workItemIds(11592)
+    @testit.displayName("10.2.1.3 Редактирование конкретного дня")
+    @pytest.mark.smoke
+    @allure.title("id-11592 10.2.1.3 Редактирование конкретного дня")
+    def test_editing_a_specific_day(self, login, driver):
+        schedule_page = SchedulePage(driver)
+        schedule_page.go_to_schedule_page()
+        time.sleep(1)  # Без ожидания начинает выполнять тест на странице трудозатрат
+        schedule_page.go_to_next_period()
+        before_edit = schedule_page.get_text_on_chips(0)
+        schedule_page.press_redact_button()
+        schedule_page.open_chips_to_edit(0)
+        schedule_page.editing_a_specific_day('07:00', '12:00')
+        after_edit = schedule_page.get_text_on_chips(0)
+        assert after_edit != before_edit, 'Изменения не сохранились'
+        assert after_edit == '07:00 - 12:00', 'Не корректно сохранились изменения'
