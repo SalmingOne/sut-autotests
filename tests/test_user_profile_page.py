@@ -1,3 +1,5 @@
+import time
+
 import allure
 import pytest
 import testit
@@ -62,4 +64,29 @@ class TestUserProfilePage:
         assert alert_message == 'Не все поля были заполнены корректно на табе "Опыт работы"', "Не появилось сообщение об ошибке"
         assert tab_color == 'rgba(255, 236, 229, 1)', "Цвет вкладки не красный"
         assert 'Поле обязательно' in errors, "Нет сообщений об обязательности поля"
+
+    @testit.workItemIds(3196)
+    @testit.displayName("10.6.1.4. Содержание страницы Создания резюме")
+    @pytest.mark.smoke
+    @allure.title("id-3196 10.6.1.4. Содержание страницы Создания резюме")
+    def test_contents_of_the_resume_creation_page(self, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        time.sleep(1)
+        user_name = user_profile_page.get_title()
+        start_work = user_profile_page.get_start_work_date()
+        user_profile_page.go_to_resume_tab()
+        user_profile_page.press_create_resume_button()
+        time.sleep(1)
+        user_profile_page.check_disable_save_button()
+        user_profile_page.check_default_values(user_name, start_work)
+        user_profile_page.check_max_symbol()
+        user_profile_page.check_post_tooltip()
+        user_profile_page.check_direction_tooltip()
+        user_profile_page.check_ready_to_work_dropdown()
+        user_profile_page.check_date_pikers()
+        user_profile_page.check_wysiwyg_titles()
+        user_profile_page.check_wysiwyg_functions_titles()
+        user_profile_page.check_break_button()
+        user_profile_page.current_employer_checkbox()
 
