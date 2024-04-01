@@ -204,3 +204,40 @@ class UserProfilePage(BasePage):
     @allure.step("Проверка чекбокса текущий работодатель")
     def current_employer_checkbox(self):
         assert self.element_is_displayed(self.locators.CURRENT_EMPLOYER_CHECKBOX), 'Нет чекбокса текущий работодатель'
+
+    @testit.step("Сохранение резюме")
+    @allure.step("Сохранение резюме")
+    def save_resume(self):
+        resume_title = self.element_is_visible(self.locators.RESUME_TITLE_FIELD).get_attribute('value')
+        self.element_is_visible(self.locators.RESUME_POST_FIELD).send_keys('Администратор')
+        self.elements_are_visible(self.locators.DATE_PIKERS)[1].send_keys(Keys.CONTROL + 'a')
+        self.elements_are_visible(self.locators.DATE_PIKERS)[1].send_keys('01.02.1990')
+        self.elements_are_visible(self.locators.DATE_PIKERS)[2].send_keys(Keys.CONTROL + 'a')
+        self.elements_are_visible(self.locators.DATE_PIKERS)[2].send_keys(self.get_day_before(0))
+        self.element_is_visible(self.locators.SAVE_BUTTON).click()
+        time.sleep(1)
+        return resume_title
+
+    @testit.step("Получение всех названий резюме из таблицы")
+    @allure.step("Получение всех названий резюме из таблицы")
+    def get_names_resume_on_tab(self):
+        resume_titles_on_tab = self.elements_are_visible(self.locators.RESUME_TITLES_ON_TAB)
+        titles = []
+        for resume in resume_titles_on_tab:
+            titles.append(resume.text)
+        return titles
+
+    @testit.step("Удаление резюме")
+    @allure.step("Удаление резюме")
+    def delete_resume(self, name):
+        self.elements_are_visible(self.locators.SEARCH_FIELDS)[1].send_keys(name)
+        time.sleep(1)
+        self.elements_are_visible(self.locators.KEBAB_MENU)[0].click()
+        menu_item = self.elements_are_visible(self.locators.KEBAB_MENU_ITEM)
+        items_text = []
+        for element in menu_item:
+            items_text.append(element.text)
+        self.element_is_visible(self.locators.KEBABS_DEL_MENU_ITEM).click()
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+        time.sleep(1)
+        return items_text
