@@ -8,7 +8,7 @@ class VacationSchedulePageLocators:
     # Заголовок таблицы
     VACATION_SCHEDULE_HEADER = (By.CSS_SELECTOR, 'div[class="ag-header-container"]')
     WEEKS_IN_VACATION_SCHEDULE_HEADER = (By.CSS_SELECTOR, 'div[aria-label^="Неделя №"]')
-    FIRST_WEEK_IN_VACATION_SCHEDULE_HEADER = (By.CSS_SELECTOR, 'div[aria-label="Неделя №1"]')
+    FIRST_WEEK_IN_VACATION_SCHEDULE_HEADER = (By.CSS_SELECTOR, 'h6[class^="MuiTypography-root MuiTypography-subtitle2 today"]')
     TODAY_WEEK = (By.XPATH, '//p[contains(@class, "today")]')
     # Тултип
     TOOLTIP = (By.XPATH, '//div[contains(@class, "MuiTooltip-tooltipPlacementTop")]')
