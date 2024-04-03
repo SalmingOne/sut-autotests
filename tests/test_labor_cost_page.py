@@ -55,6 +55,7 @@ class TestLaborCostPage:
         labor_cost_page.check_stateman_tabs_heads()
         labor_cost_page.check_previous_absense_checkbox()
         labor_cost_page.check_tooltip_on_download_file_text()
+        labor_cost_page.delete_all_absence()
         assert tooltip_on_code in tooltip_on_project, "Тултип отображается без имени проекта"
         assert 'Проект' in all_head_list, "Нет столбца Проект"
         assert 'Итого' in all_head_list, "Нет столбца Итого"
