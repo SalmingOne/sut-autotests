@@ -90,3 +90,23 @@ class TestUserProfilePage:
         user_profile_page.check_break_button()
         user_profile_page.current_employer_checkbox()
 
+    @testit.workItemIds(3201)
+    @testit.displayName("10.6.1.4. Сохранение резюме")
+    @pytest.mark.smoke
+    @allure.title("id-3201 10.6.1.4. Сохранение резюме")
+    def test_saving_your_resume(self, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        time.sleep(1)
+        user_profile_page.go_to_resume_tab()
+        user_profile_page.press_create_resume_button()
+        time.sleep(1)
+        resume_title = user_profile_page.save_resume()
+        message = user_profile_page.get_alert_message()
+        titles = user_profile_page.get_names_resume_on_tab()
+        kebab_menu_items = user_profile_page.delete_resume(resume_title)
+
+        assert message == 'Резюме создано', 'Не появилось сообщение о создании резюме'
+        assert resume_title in titles, 'Названия резюме нет в таблице'
+        assert kebab_menu_items == ['Редактирование', 'Просмотр резюме', 'Копировать', 'Удалить'],\
+            'Созданное резюме не доступно для редактирования, удаления, скачивания и копирования'

@@ -39,5 +39,14 @@ class UserProfilePageLocators:
     WYSIWYG_TITLES = (By.XPATH, '//div[contains(@class,"MuiPaper-rounded MuiPaper-elevation0")]//div[@id]/*[contains(@class, "MuiTypography")]')
     WYSIWYG_INCLUDES_FUNCTION_TITLES = (By.XPATH, '//div[@id="workStack"]//div[@style="visibility: visible;"]//*[@title]')
     CURRENT_EMPLOYER_CHECKBOX = (By.XPATH, '//span[text()="Текущий работодатель"]')
+
+    RESUME_TITLES_ON_TAB = (By.CSS_SELECTOR, 'div[col-id="title"][role="gridcell"]')
+    SEARCH_FIELDS = (By.CSS_SELECTOR, 'input[placeholder="Поиск"]')
+
     # Тултип
     TOOLTIP = (By.XPATH, '//div[contains(@class, "MuiTooltip-tooltipPlacementTop")]')
+
+    KEBAB_MENU = (By.CSS_SELECTOR, 'svg[data-testid="MoreHorizIcon"]')
+    KEBABS_DEL_MENU_ITEM = (By.XPATH, '//span[text()="Удалить"]')
+    KEBAB_MENU_ITEM = (By.XPATH, '//li//span[contains(@class,"MuiTypography-root MuiTypography-caption")]')
+    SUBMIT_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
