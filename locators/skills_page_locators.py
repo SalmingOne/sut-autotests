@@ -24,4 +24,6 @@ class SkillsPageLocators:
     def text_on_page(self, name):
         return (By.XPATH, f'//*[text()="{name}"]')
 
+    def arrow_by_skill_name(self, name):
+        return (By.XPATH, f'//span[text()="{name}"]/..//span[@class="ag-group-contracted "]//span')
 

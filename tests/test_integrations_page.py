@@ -20,7 +20,9 @@ class TestIntegrationsPage:
         integration_page.go_to_integrations_page()
         integration_page.delete_all_jira_integration()
         integration_page.add_jira_integration('https://jira.moskit.pro', LOGIN, PASSWORD)
+        time.sleep(1)  # Необходимо время для прогрузки анимации
         message = integration_page.get_alert_message()
+        time.sleep(1)  # Необходимо время для прогрузки анимации
         integration_page.check_check_icon_on_modal_window()
         integration_page.check_delete_icon_on_modal_window()
         integration_page.check_edit_icon_on_modal_window()

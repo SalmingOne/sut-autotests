@@ -39,7 +39,6 @@ class IntegrationsPage(BasePage):
     @testit.step("Получение сообщений системы")
     @allure.step("Получение сообщений системы")
     def get_alert_message(self):
-        time.sleep(1)
         all_alerts = self.elements_are_visible(self.locators.ALERT_MESSAGE)
         data = []
         for alert in all_alerts:
@@ -59,4 +58,4 @@ class IntegrationsPage(BasePage):
     @testit.step("Проверка отсутствия иконки с функционалом сохранения интеграции")
     @allure.step("Проверка отсутствия иконки с функционалом сохранения интеграции")
     def check_check_icon_on_modal_window(self):
-        assert not self.element_is_displayed(self.locators.CHECK_ICON), "Иконка с функционалом сохранения интеграции присутствует"
+        assert not self.element_is_displayed(self.locators.CHECK_ICON, 1), "Иконка с функционалом сохранения интеграции присутствует"
