@@ -1,8 +1,10 @@
+import time
 
 import allure
 import pytest
 import testit
 
+from endpoints.skills_endpoint import SkillsEndpoint
 from pages.skills_page import SkillsPage
 
 
@@ -33,3 +35,18 @@ class TestSkillsPage:
         skills_page.change_the_skill('новое имя')
         skills_page.check_skill_name_on_page('новое имя')
         skills_page.check_skill_name_on_tag_tab('новое имя')
+
+    @testit.workItemIds(10464)
+    @testit.displayName("10.4.1.2 Добавление данных в справочник Знания")
+    @pytest.mark.smoke
+    @allure.title("id-10464 10.4.1.2 Добавление данных в справочник Знания")
+    def test_adding_the_knowledge_directory(self, create_tag, login, driver):
+        skills_page = SkillsPage(driver)
+        skills_endpoint = SkillsEndpoint()
+        skills_page.go_to_skills_page()
+        time.sleep(1)
+        skills_page.create_skill('Добавленное знание', create_tag)
+        skills_page.check_skill_name_on_page('Добавленное знание')
+        skills_page.check_skill_name_on_tag_tab('Добавленное знание')
+
+        skills_endpoint.delete_skill_by_name_api('Добавленное знание')

@@ -84,9 +84,26 @@ class SkillsPage(BasePage):
         assert self.element_is_displayed(self.locators.text_on_page(name)),\
             "Не сохранились изменения в дровере добавления значений в справочниках Группы знаний"
 
+    @testit.step("Переход на вкладку Знания")
+    @allure.step("Переход на вкладку Знания")
+    def go_to_skill_tab(self):
+        self.element_is_visible(self.locators.SKILLS_TAB).click()
 
+    @testit.step("Проверка наличия Группы знаний на вкладке Знания")
+    @allure.step("Проверка наличия Группы знаний на вкладке Знания")
+    def check_tag_on_skill_tab(self, skill_name, tag_name):
+        self.element_is_visible(self.locators.arrow_by_skill_name(skill_name)).click()
+        assert self.element_is_displayed(self.locators.text_on_page(tag_name)), "Группы знаний нет на вкладке Знания"
 
-
+    @testit.step("Добавление Знания")
+    @allure.step("Добавление Знания")
+    def create_skill(self, name, tag_name):
+        self.element_is_visible(self.locators.ADD_SKILLS_BUTTON).click()
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(name)
+        self.element_is_visible(self.locators.TAG_FIELD).click()
+        self.element_is_visible(self.locators.check_li_item_by_text(tag_name)).click()
+        self.action_esc()
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
 
 
 
