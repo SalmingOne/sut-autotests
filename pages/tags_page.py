@@ -53,3 +53,14 @@ class TagsPage(BasePage):
         assert self.element_is_displayed(self.locators.text_on_page(name)),\
             "Имени группы знаний нет на вкладке группы знаний"
 
+    @testit.step("Изменение группы знаний")
+    @allure.step("Изменение группы знаний")
+    def edit_tag(self, name_before, name, skill_name):
+        self.element_is_visible(self.locators.kebab_by_tag_name(name_before)).click()
+        self.element_is_visible(self.locators.KEBABS_REDACT_MENU_ITEM).click()
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(name)
+        self.element_is_visible(self.locators.SKILL_FIELD).click()
+        self.element_is_visible(self.locators.check_li_item_by_text(skill_name)).click()
+        self.action_esc()
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()

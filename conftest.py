@@ -18,6 +18,7 @@ from endpoints.labor_reports_endpoint import LaborReportEndpoint
 from endpoints.logs_endpoint import LogsEndpoint
 from endpoints.project_endpoint import ProjectEndpoint
 from endpoints.skills_endpoint import SkillsEndpoint
+from endpoints.tags_endpoint import TagsEndpoint
 from endpoints.variables_endpoint import VariablesEndpoint
 from pages.all_project_page import AllProjectPage
 from pages.authorization_page import AuthorizationPage
@@ -241,3 +242,12 @@ def project_with_assignment():
     )
     yield
     project_endpoint.delete_project_api(str(response.json()['id']))
+
+
+@pytest.fixture()
+def create_tag():
+    tags_endpoint = TagsEndpoint()
+    payload = dict(name='Для редактирования', skills=[])
+    response = tags_endpoint.create_tag_api(json=payload)
+    yield payload['name']
+    tags_endpoint.delete_tag_api(str(response.json()['id']))

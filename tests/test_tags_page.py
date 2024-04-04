@@ -13,7 +13,7 @@ from pages.tags_page import TagsPage
 class TestTagsPage:
 
     @testit.workItemIds(10584)
-    @testit.displayName("12.1.1 Добавление не валидной интеграции")
+    @testit.displayName("10.4.2.2 Добавление данных в справочник группы знаний")
     @pytest.mark.smoke
     @allure.title("id-10584 10.4.2.2 Добавление данных в справочник группы знаний")
     def test_adding_data_to_the_knowledge_groups_directory(self, create_skill, skills, login, driver):
@@ -31,4 +31,16 @@ class TestTagsPage:
         # Удаление тега после теста
         tags_endpoint.delete_tag_by_name_api('Тег для авто-теста')
 
-
+    @testit.workItemIds(10593)
+    @testit.displayName("10.4.2.3 Редактирование данных в справочнике группы знаний")
+    @pytest.mark.smoke
+    @allure.title("id-10593 10.4.2.3 Редактирование данных в справочнике группы знаний")
+    def test_editing_data_to_the_knowledge_groups_directory(self, create_skill, create_tag, login, driver):
+        tags_page = TagsPage(driver)
+        skills_page = SkillsPage(driver)
+        tags_page.go_to_tags_page()
+        time.sleep(1)  # Нужно время на анимацию
+        tags_page.edit_tag(create_tag, 'Отредактированное название', create_skill)
+        tags_page.check_tag_on_tag_tab('Отредактированное название')
+        skills_page.go_to_skill_tab()
+        skills_page.check_tag_on_skill_tab(create_skill, 'Отредактированное название')
