@@ -15,8 +15,10 @@ class SkillsPageLocators:
     KEBABS_REDACT_MENU_ITEM = (By.XPATH, '//span[text()="Редактировать"]')
     # Дровер добавления знания
     NAME_FIELD = (By.CSS_SELECTOR, 'input[name="name"]')
+    TAG_FIELD = (By.CSS_SELECTOR, 'input[placeholder="Выберите группу знаний"]')
     SUBMIT_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
     BREAK_BUTTON = (By.XPATH, '//div[contains(@class,"MuiDrawer-paper")]//button[text()="Отменить"]')
+
     MUI_ERROR = (By.XPATH, '//p[contains(@class, "MuiFormHelperText-root Mui-error")]')
     ARROW_DOWN = (By.CSS_SELECTOR, 'svg[data-testid="ArrowDropDownIcon"]')
     def kebab_by_skill_name(self, name):
@@ -27,3 +29,5 @@ class SkillsPageLocators:
     def arrow_by_skill_name(self, name):
         return (By.XPATH, f'//span[text()="{name}"]/..//span[@class="ag-group-contracted "]//span')
 
+    def check_li_item_by_text(self, name):
+        return (By.XPATH, f'//li[text()="{name}"]')

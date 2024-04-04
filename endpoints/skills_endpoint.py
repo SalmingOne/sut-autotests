@@ -1,5 +1,6 @@
 import allure
 import requests
+import testit
 
 from data.urls import Urls
 from endpoints.auth_endpoint import AuthEndpoint
@@ -33,3 +34,18 @@ class SkillsEndpoint:
         self.response = requests.delete(url=Urls.skills_url + skill_id, headers=header)
         assert self.response.status_code == 204
         return self.response
+
+    @allure.step("Получение id знания по имени")
+    def get_skill_id_by_name_api(self, name):
+        header = AuthEndpoint().get_header_token_api()
+        self.response = requests.get(url=Urls.skills_url, headers=header)
+        self.response_json = self.response.json()
+        for skill in self.response_json:
+            if skill['name'] == name:
+                return skill['id']
+
+    @testit.step("Удаление знания по имени")
+    @allure.step("Удаление знания по имени")
+    def delete_skill_by_name_api(self, name):
+        skill_id = self.get_skill_id_by_name_api(name)
+        self.delete_skill_api(str(skill_id))
