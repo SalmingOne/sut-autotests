@@ -32,7 +32,7 @@ class TestFilialPage:
                                'Москва, Красная площадь',
                                '+77777777777',
                                'vip@vip.vip')
-        filial_page.check_filial_on_tab('Центральный филиал')
+        assert filial_page.check_filial_on_tab('Центральный филиал')
         # Удаляем филиал после теста
         filial_endpoint.delete_filial_by_name_api('Центральный филиал')
 
@@ -50,4 +50,18 @@ class TestFilialPage:
         address_after = filial_page.get_address_on_tab(create_filial)
         assert address_after == 'Саратов', 'Новый адрес не сохранился'
         assert address_after != address_before, 'Адрес не изменился'
+
+    @testit.workItemIds(10729)
+    @testit.displayName("6.1.3.5. Удаление ЮЛ")
+    @pytest.mark.smoke
+    @allure.title("id-10729 6.1.3.5. Удаление ЮЛ")
+    def test_deleting_the_filial(self, login, driver):
+        filial_page = FilialPage(driver)
+        filial_endpoint = AffiliatesEndpoint()
+        payload = dict(name='Для удаления', address='г. Москва')
+        filial_endpoint.create_affiliates_api(json=payload)
+        filial_page.go_to_filial_page()
+        filial_page.delete_filial('Для удаления')
+        time.sleep(1)
+        assert not filial_page.check_filial_on_tab('Для удаления'), 'Филиал остался в таблице'
 
