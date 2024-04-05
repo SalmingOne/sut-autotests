@@ -8,6 +8,7 @@ class FilialPageLocators:
     FILIAL_TAB = (By.XPATH, '//div[text()="Филиалы"]')
     # Таблица филиалы
     ADD_FILIAL_BUTTON = (By.XPATH, '//button[contains(@class,"MuiButton-root MuiButton-text MuiButton-textPrimary")]')
+    REDACT_BUTTON = (By.XPATH, '//span[text()="Редактировать"]')
     # Дровер добавления/редактирования филиала
     NAME_FIELD = (By.CSS_SELECTOR, 'input[name="name"]')
     ADDRESS_FIELD = (By.CSS_SELECTOR, 'input[name="address"]')
@@ -26,3 +27,9 @@ class FilialPageLocators:
     DROPDOWN_ITEMS = (By.CSS_SELECTOR, 'li[class^="MuiAutocomplete-option"]')
     def text_on_page(self, name):
         return (By.XPATH, f'//*[text()="{name}"]')
+
+    def address_by_filial_name(self, name):
+        return (By.XPATH, f'//div[text()="{name}"]/..//following-sibling::div[@col-id="address"]/div')
+
+    def kebab_by_filial_name(self, name):
+        return (By.XPATH, f'//div[text()="{name}"]/..//following-sibling::div[@col-id="1"]')

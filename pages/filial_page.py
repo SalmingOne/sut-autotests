@@ -119,4 +119,20 @@ class FilialPage(BasePage):
     def check_filial_on_tab(self, name):
         assert self.element_is_displayed(self.locators.text_on_page(name)), "Филиала нет в таблице"
 
+    @testit.step("Получаем адрес филиала")
+    @allure.step("Получаем адрес филиала")
+    def get_address_on_tab(self, name):
+        return self.element_is_visible(self.locators.address_by_filial_name(name)).text
+
+    @testit.step("Изменение адреса филиала")
+    @allure.step("Изменение адреса филиала")
+    def change_filial_address(self, name, new_address):
+        self.element_is_visible(self.locators.kebab_by_filial_name(name)).click()
+        self.element_is_visible(self.locators.REDACT_BUTTON).click()
+        self.element_is_visible(self.locators.ADDRESS_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.ADDRESS_FIELD).send_keys(new_address)
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+
+
+
 

@@ -13,6 +13,7 @@ from api_methods.project_roles import ProjectRolesApi
 from data.data import LOGIN, PASSWORD
 from data.models.create_project_model import CreateProject
 from data.urls import Urls
+from endpoints.affiliates_endpoint import AffiliatesEndpoint
 from endpoints.assignments_endpoint import AssignmentEndpoint
 from endpoints.labor_reports_endpoint import LaborReportEndpoint
 from endpoints.logs_endpoint import LogsEndpoint
@@ -251,3 +252,12 @@ def create_tag():
     response = tags_endpoint.create_tag_api(json=payload)
     yield payload['name']
     tags_endpoint.delete_tag_api(str(response.json()['id']))
+
+
+@pytest.fixture()
+def create_filial():
+    filial_endpoint = AffiliatesEndpoint()
+    payload = dict(name='Для редактирования', address='г. Москва')
+    response = filial_endpoint.create_affiliates_api(json=payload)
+    yield payload['name']
+    filial_endpoint.delete_affiliates_api(str(response.json()['id']))
