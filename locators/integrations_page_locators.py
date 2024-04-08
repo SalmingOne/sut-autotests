@@ -18,5 +18,5 @@ class IntegrationsPageLocators:
     EDIT_BUTTON_ON_MODAL = (By.XPATH, '//div[@role="dialog"]//*[@data-testid="EditIcon"]')
     ADD_INTEGRATION_ON_MODAL = (By.XPATH, '//button[text()="Добавить интеграцию"]')
 
-    SUBMIT_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
+    ALERT_SUBMIT_BUTTON = (By.XPATH, '//div[@role="presentation"]//button[@type="submit"]')
     ALERT_MESSAGE = (By.XPATH, '//div[contains(@class, "MuiAlert-message")]')

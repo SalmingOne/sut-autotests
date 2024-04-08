@@ -23,7 +23,7 @@ class IntegrationsPage(BasePage):
             pass
         else:
             self.element_is_visible(self.locators.DELETE_ALL_JIRA_INTEGRATION).click()
-            self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+            self.element_is_visible(self.locators.ALERT_SUBMIT_BUTTON).click()
 
     @testit.step("Добавление интеграции jira")
     @allure.step("Добавление интеграции jira")
@@ -59,3 +59,7 @@ class IntegrationsPage(BasePage):
     @allure.step("Проверка отсутствия иконки с функционалом сохранения интеграции")
     def check_check_icon_on_modal_window(self):
         assert not self.element_is_displayed(self.locators.CHECK_ICON, 1), "Иконка с функционалом сохранения интеграции присутствует"
+
+    def delete_integration_from_modal(self):
+        self.element_is_visible(self.locators.DELETE_BUTTON_ON_MODAL).click()
+        self.element_is_visible(self.locators.ALERT_SUBMIT_BUTTON).click()
