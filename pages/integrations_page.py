@@ -23,7 +23,7 @@ class IntegrationsPage(BasePage):
             pass
         else:
             self.element_is_visible(self.locators.DELETE_ALL_JIRA_INTEGRATION).click()
-            self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+            self.element_is_visible(self.locators.ALERT_SUBMIT_BUTTON).click()
 
     @testit.step("Добавление интеграции jira")
     @allure.step("Добавление интеграции jira")
@@ -53,9 +53,40 @@ class IntegrationsPage(BasePage):
     @testit.step("Проверка наличия иконки редактирования")
     @allure.step("Проверка наличия иконки редактирования")
     def check_edit_icon_on_modal_window(self):
-        assert self.element_is_displayed(self.locators.EDIT_BUTTON_ON_MODAL), "Иконка редактирования интеграции отсутствует"
+        assert self.element_is_displayed(self.locators.EDIT_BUTTON_ON_MODAL),\
+            "Иконка редактирования интеграции отсутствует"
 
     @testit.step("Проверка отсутствия иконки с функционалом сохранения интеграции")
     @allure.step("Проверка отсутствия иконки с функционалом сохранения интеграции")
     def check_check_icon_on_modal_window(self):
-        assert not self.element_is_displayed(self.locators.CHECK_ICON, 1), "Иконка с функционалом сохранения интеграции присутствует"
+        assert not self.element_is_displayed(self.locators.CHECK_ICON, 1),\
+            "Иконка с функционалом сохранения интеграции присутствует"
+
+    @testit.step("Удаление интеграции из модального окна")
+    @allure.step("Удаление интеграции из модального окна")
+    def delete_integration_from_modal(self):
+        self.element_is_visible(self.locators.DELETE_BUTTON_ON_MODAL).click()
+        self.element_is_visible(self.locators.ALERT_SUBMIT_BUTTON).click()
+
+    @testit.step("Проверка заголовков интеграций")
+    @allure.step("Проверка заголовков интеграций")
+    def check_integration_titles(self):
+        all_integrations = self.elements_are_visible(self.locators.INTEGRATIONS_TITLES)
+        titles = []
+        for integration in all_integrations:
+            titles.append(integration.text)
+        assert titles == ['Jira', 'Confluence', 'Bitbucket', 'Testit', 'Gitlab', '1C', 'Discord-Бот', 'Telegram-Бот'],\
+            'Есть не все интеграции'
+
+    @testit.step("Проверка кнопок добавления и удаления интеграций")
+    @allure.step("Проверка кнопок добавления и удаления интеграций")
+    def check_delete_and_add_buttons(self):
+        delete_buttons = len(self.elements_are_visible(self.locators.DELETE_INTEGRATION_BUTTONS))
+        add_buttons = len(self.elements_are_visible(self.locators.ADD_INTEGRATION_BUTTONS))
+        assert delete_buttons and add_buttons == 8, "Кнопок добавления и удаления интеграций не 8"
+
+    @testit.step("Проверка кнопок редактирования интеграций")
+    @allure.step("Проверка кнопок редактирования интеграций")
+    def check_edit_buttons(self):
+        assert len(self.elements_are_visible(self.locators.EDIT_INTEGRATION_BUTTONS)) == 6,\
+            "Кнопок редактирования интеграций не 6"
