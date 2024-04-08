@@ -65,3 +65,12 @@ class TestFilialPage:
         time.sleep(1)
         assert not filial_page.check_filial_on_tab('Для удаления'), 'Филиал остался в таблице'
 
+    @testit.workItemIds(10725)
+    @testit.displayName("6.1.3.4. Удаление пользователя из ЮЛ")
+    @pytest.mark.smoke
+    @allure.title("id-10725 6.1.3.4. Удаление пользователя из ЮЛ")
+    def test_removing_a_user_from_the_filial(self, create_filial, login, driver):
+        filial_page = FilialPage(driver)
+        filial_page.go_to_filial_page()
+        filial_page.add_first_user_to_filial(create_filial)
+        filial_page.check_removing_user_from_filial(create_filial)

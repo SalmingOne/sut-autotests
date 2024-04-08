@@ -68,7 +68,6 @@ class FilialPage(BasePage):
     @allure.step("Проверка полей Ставки привлечения и Размер ставки")
     def check_attraction_rate(self):
         size_before = self.element_is_visible(self.locators.ATTRACTION_RATE_SIZE_FIELD).get_attribute('value')
-        print(size_before)
         self.element_is_visible(self.locators.ATTRACTION_RATE_FIELD).click()
         try:
             self.elements_are_visible(self.locators.DROPDOWN_ITEMS)[0].click()
@@ -140,4 +139,33 @@ class FilialPage(BasePage):
         self.element_is_visible(self.locators.KEBAB_DELETE_BUTTON).click()
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
 
+    @testit.step("Назначение случайных пользователей в филиал")
+    @allure.step("Назначение случайных пользователей в филиал")
+    def add_first_user_to_filial(self, filial_name):
+        self.element_is_visible(self.locators.kebab_by_filial_name(filial_name)).click()
+        self.element_is_visible(self.locators.REDACT_BUTTON).click()
+        self.element_is_visible(self.locators.EMPLOYEES_FIELD).click()
+        self.elements_are_visible(self.locators.DROPDOWN_ITEMS)[1].click()
+        self.elements_are_visible(self.locators.DROPDOWN_ITEMS)[2].click()
+        self.action_esc()
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+
+    @testit.step("Получение пользователей назначенных на филиал")
+    @allure.step("Получение пользователей назначенных на филиал")
+    def get_employees_in_field(self):
+        all_chips = self.elements_are_visible(self.locators.EMPLOYEES_CHIPS)
+        data = []
+        for chips in all_chips:
+            data.append(chips.text)
+        return data
+
+    @testit.step("Проверка удаления пользователя из филиала")
+    @allure.step("Проверка удаления пользователя из филиала")
+    def check_removing_user_from_filial(self, filial_name):
+        self.element_is_visible(self.locators.kebab_by_filial_name(filial_name)).click()
+        self.element_is_visible(self.locators.REDACT_BUTTON).click()
+        employees_before = self.get_employees_in_field()
+        self.elements_are_visible(self.locators.EMPLOYEES_CHIPS_DELETE_ICON)[0].click()
+        employees_after = self.get_employees_in_field()
+        assert employees_before != employees_after, 'Пользователь не удалился из поля'
 

@@ -16,6 +16,8 @@ class FilialPageLocators:
     ATTRACTION_RATE_FIELD = (By.CSS_SELECTOR, 'input[placeholder="Выберите ставку привлечения"]')
     ATTRACTION_RATE_SIZE_FIELD = (By.CSS_SELECTOR, 'input[name="attractionRateSize"]')
     EMPLOYEES_FIELD = (By.CSS_SELECTOR, 'div[name="employees"]')
+    EMPLOYEES_CHIPS = (By.XPATH, '//div[@name="employees"]//span[contains(@class,"MuiChip-label")]')
+    EMPLOYEES_CHIPS_DELETE_ICON = (By.XPATH, '//div[@name="employees"]//span[contains(@class,"MuiChip-label")]/..//*[@data-testid="CancelIcon"]')
     DIRECTOR_FIELD = (By.CSS_SELECTOR, 'div[name="director"]')
     AFFILIATE_FIELD = (By.CSS_SELECTOR, 'div[name="affiliate"]')
     PHONE_FIELD = (By.CSS_SELECTOR, 'input[name="phone"]')
