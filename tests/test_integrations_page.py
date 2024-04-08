@@ -51,4 +51,13 @@ class TestIntegrationsPage:
         assert 'Настройки интеграции сохранены. Интеграция готова к использованию.' in message,\
             'Нет сообщения о готовности интеграции'
 
-
+    @testit.workItemIds(994)
+    @testit.displayName("12.1.1 Содержание подраздела Интеграции с интеграциями")
+    @pytest.mark.smoke
+    @allure.title("id-994 12.1.1 Содержание подраздела Интеграции с интеграциями")
+    def test_contents_of_integrations_page(self, login, driver):
+        integration_page = IntegrationsPage(driver)
+        integration_page.go_to_integrations_page()
+        integration_page.check_integration_titles()
+        integration_page.check_delete_and_add_buttons()
+        integration_page.check_edit_buttons()

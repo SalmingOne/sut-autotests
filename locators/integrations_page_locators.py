@@ -20,3 +20,8 @@ class IntegrationsPageLocators:
 
     ALERT_SUBMIT_BUTTON = (By.XPATH, '//div[@role="presentation"]//button[@type="submit"]')
     ALERT_MESSAGE = (By.XPATH, '//div[contains(@class, "MuiAlert-message")]')
+
+    INTEGRATIONS_TITLES = (By.CSS_SELECTOR, 'h6[class^="MuiTypography-root MuiTypography-subtitle2 title"]')
+    ADD_INTEGRATION_BUTTONS = (By.CSS_SELECTOR, 'div[aria-label="Добавить интеграцию"]')
+    EDIT_INTEGRATION_BUTTONS = (By.CSS_SELECTOR, 'div[aria-label="Редактировать интеграции"]')
+    DELETE_INTEGRATION_BUTTONS = (By.CSS_SELECTOR, 'div[aria-label="Удалить все интеграции"]')
