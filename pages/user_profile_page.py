@@ -57,7 +57,11 @@ class UserProfilePage(BasePage):
     @testit.step("Берем текст сообщения системы")
     @allure.step("Берем текст сообщения системы")
     def get_alert_message(self):
-        return self.element_is_visible(self.locators.ALERT_TEXT).text
+        all_messages = self.elements_are_visible(self.locators.ALERT_TEXT)
+        data = []
+        for message in all_messages:
+            data.append(message.text)
+        return data
 
     @testit.step("Берем цвет вкладки Образование")
     @allure.step("Берем цвет вкладки Образование")

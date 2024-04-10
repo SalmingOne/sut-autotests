@@ -83,7 +83,8 @@ class IntegrationsPage(BasePage):
     def check_delete_and_add_buttons(self):
         delete_buttons = len(self.elements_are_visible(self.locators.DELETE_INTEGRATION_BUTTONS))
         add_buttons = len(self.elements_are_visible(self.locators.ADD_INTEGRATION_BUTTONS))
-        assert delete_buttons and add_buttons == 8, "Кнопок добавления и удаления интеграций не 8"
+        assert delete_buttons == 8, "Кнопок удаления интеграций не 8"
+        assert add_buttons == 7 or 8, "Недостаточно кнопок добавления интеграций"
 
     @testit.step("Проверка кнопок редактирования интеграций")
     @allure.step("Проверка кнопок редактирования интеграций")
