@@ -19,7 +19,7 @@ class AuditPage(BasePage):
     @testit.step("Проверка заголовков столбцов")
     @allure.step("Проверка заголовков столбцов")
     def check_columns_headers(self):
-        time.sleep(1)
+        time.sleep(2)
         columns_headers = self.elements_are_visible(self.locators.AUDIT_TAB_COLUMN_TITLES)
         headers_text = []
         for element in columns_headers:

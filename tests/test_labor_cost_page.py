@@ -208,7 +208,7 @@ class TestLaborCostPage:
     @testit.displayName("Добавление отсутствия на период, в котором есть списанные трудозатраты")
     @pytest.mark.regress
     @allure.title("id-539 Добавление отсутствия на период, в котором есть списанные трудозатраты")
-    def test_add_absence_to_labor_reason(self, login, driver):
+    def test_add_absence_to_labor_reason(self, project_with_overtime_work, login, driver):
         labor_cost_page = LaborCostPage(driver)
         labor_cost_page.add_absence_to_reason_day()
 

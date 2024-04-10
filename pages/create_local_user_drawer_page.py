@@ -120,6 +120,7 @@ class CreateLocalUserDrawerPage(BasePage):
         self.input_dropdown(self.locators.DEPARTMENT_FIELD)
         self.input_dropdown(self.locators.POSITION_FIELD)
         self.go_to_tab_projects()
+        time.sleep(1)
         self.element_is_visible(self.locators.ADD_PROJECTS_BUTTON).click()
         time.sleep(0.1)  # Без ожидания иногда скрипт срабатывает раньше анимации
         self.element_is_visible(self.locators.PROJECT_FIELD).click()
