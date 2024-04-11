@@ -99,10 +99,10 @@ class TestUsersPage:
             create_local_user_page.field_required_fields('AutoTester1', 'АвтоСПроектом', 'auto_testt@mail.rruu', 'yes')
         else:
             pass
-        # Ставим пользователю текущий день как дату принятия на работу
-        user_page.set_the_hiring_date_on_this_day()
+        hiring_date = user_page.get_the_hiring_date()
         # Проводим тест
-        user_page.check_fired_data_on_date_picker()
+        user_page.check_fired_data_on_date_picker(hiring_date)
+
 
     @testit.workItemIds(482)
     @testit.displayName("7.1.1 Назначение системной роли пользователю")

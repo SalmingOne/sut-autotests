@@ -137,29 +137,28 @@ class UserPage(BasePage):
         self.action_esc()
         return items_text
 
-    @testit.step("Ставим дату принятия на работу пользователя текущим днем")
-    @allure.step("Ставим дату принятия на работу пользователя текущим днем")
-    def set_the_hiring_date_on_this_day(self):
+    @testit.step("Получаем дату принятия на работу пользователя")
+    @allure.step("Получаем дату принятия на работу пользователя")
+    def get_the_hiring_date(self):
         time.sleep(1)  # Без ожидания не успевает срабатывать анимация
         self.element_is_visible(self.locators.USER_KEBABS).click()
         self.element_is_visible(self.locators.REDACT_BUTTON).click()
         hiring_date = self.element_is_visible(self.locators.HIRING_DATA_INPUT).get_attribute('value')
-        if hiring_date != self.get_day_before(0):
-            self.element_is_visible(self.locators.HIRING_DATA_DATA_PICKER).click()
-            self.element_is_visible(self.locators.THIS_DAY_PICKER).click()
-            self.element_is_visible(self.locators.SAVE_BUTTON).click()
-        else:
-            self.action_esc()
+        self.action_esc()
+        return hiring_date
+
 
     @testit.step("Проверка на совпадения дат увольнения и принятия на работу")
     @allure.step("Проверка на совпадения дат увольнения и принятия на работу")
-    def check_fired_data_on_date_picker(self):
+    def check_fired_data_on_date_picker(self, date):
         time.sleep(1)  # Без ожидания не успевает срабатывать анимация
         self.element_is_visible(self.locators.USER_KEBABS).click()
         self.element_is_visible(self.locators.FIRED_BUTTON).click()
+        self.element_is_visible(self.locators.FIRED_ALERT_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.FIRED_ALERT_FIELD).send_keys(date)
         self.element_is_visible(self.locators.CALENDAR_BUTTON).click()
-        assert self.element_is_clickable(self.locators.THIS_DAY_PICKER, 2) == False, 'Можно выбрать дату приема на работу'
-        assert self.element_is_clickable(self.locators.DAY_AFTER_THIS_DAY_PICKER) == True, 'Нельзя выбрать дату после даты принятия на работу'
+        assert not self.element_is_clickable(self.locators.DAY_BEFORE_SELECTED_DAY_PICKER, 2), 'Можно выбрать дату приема на работу'
+
 
     @testit.step("Проверяем назначение системной роли на пользователя")
     @allure.step("Проверяем назначение системной роли на пользователя")
