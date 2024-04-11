@@ -20,6 +20,7 @@ from endpoints.logs_endpoint import LogsEndpoint
 from endpoints.project_endpoint import ProjectEndpoint
 from endpoints.skills_endpoint import SkillsEndpoint
 from endpoints.tags_endpoint import TagsEndpoint
+from endpoints.users_endpoint import UserEndpoint
 from endpoints.variables_endpoint import VariablesEndpoint
 from pages.all_project_page import AllProjectPage
 from pages.authorization_page import AuthorizationPage
@@ -261,3 +262,26 @@ def create_filial():
     response = filial_endpoint.create_affiliates_api(json=payload)
     yield payload['name']
     filial_endpoint.delete_affiliates_api(str(response.json()['id']))
+
+
+@pytest.fixture()
+def create_work_user():
+    user_endpoint = UserEndpoint()
+    user_id = user_endpoint.get_user_id_by_email('auto_testt@mail.rruu')
+    if user_id is None:
+        payload = dict(username="AutoTester1",
+                       name="Автомат",
+                       secondName="АвтоСПроектом",
+                       gender="MALE",
+                       phone="",
+                       email="auto_testt@mail.rruu",
+                       hourlyWage=False,
+                       startWorkDate="2024-04-11",
+                       userAssignments=[],
+                       projectRoleIds=[1],
+                       postId=1,
+                       departmentId=1,
+                       systemRoleIds=[1]
+                       )
+        response = user_endpoint.create_user_api(json=payload)
+        print(response.status_code)

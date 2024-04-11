@@ -16,7 +16,7 @@ class TestUsersPage:
     @testit.displayName("4.3. Просмотр карточки пользователя в разделе Пользователи")
     @pytest.mark.regress
     @allure.title("id-1382 4.3. Просмотр карточки пользователя в разделе Пользователи")
-    def test_viewing_a_user_card_in_the_users_section(self, login, driver):
+    def test_viewing_a_user_card_in_the_users_section(self, create_work_user, login, driver):
         user_page = UserPage(driver)
         user_page.go_to_user_page()
         if not user_page.check_user_is_not_in_table('АвтоСПроектом'):
@@ -89,7 +89,7 @@ class TestUsersPage:
     @testit.displayName("4.6 Выбрать Дату увольнения раньше Даты принятия на работу")
     @pytest.mark.regress
     @allure.title("id-129 4.6 Выбрать Дату увольнения раньше Даты принятия на работу")
-    def test_select_the_dismissal_date_before_the_hiring_date(self, login, driver):
+    def test_select_the_dismissal_date_before_the_hiring_date(self, create_work_user, login, driver):
         user_page = UserPage(driver)
         user_page.go_to_user_page()
         # Проверяем, что есть нужный пользователь
@@ -108,7 +108,7 @@ class TestUsersPage:
     @testit.displayName("7.1.1 Назначение системной роли пользователю")
     @pytest.mark.smoke
     @allure.title("id-482 7.1.1 Назначение системной роли пользователю")
-    def test_assigning_a_system_role_to_a_user(self, login, driver):
+    def test_assigning_a_system_role_to_a_user(self, create_work_user, login, driver):
         user_page = UserPage(driver)
         user_page.go_to_user_page()
         # Проверяем, что есть нужный пользователь
