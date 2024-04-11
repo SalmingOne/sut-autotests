@@ -285,3 +285,5 @@ def create_work_user():
                        )
         response = user_endpoint.create_user_api(json=payload)
         print(response.status_code)
+    else:
+        pass
