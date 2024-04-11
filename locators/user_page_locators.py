@@ -21,6 +21,8 @@ class UserPageLocators:
     CALENDAR_BUTTON = (By.CSS_SELECTOR, 'button[aria-label^="Choose date, selected"]')
     FIRED_ALERT_FIELD = (By.CSS_SELECTOR, 'input[type="tel"]')
     THIS_DAY_PICKER = (By.XPATH, '//button[contains(@class, "MuiPickersDay-today")]')
+    SELECTED_DAY_PICKER = (By.XPATH, '//button[contains(@class, "Mui-selected MuiPickersDay-dayWithMargin")]')
+    DAY_BEFORE_SELECTED_DAY_PICKER = (By.XPATH, '//button[contains(@class, "Mui-selected MuiPickersDay-dayWithMargin")]//preceding::button[1]')
     DAY_AFTER_THIS_DAY_PICKER = (By.XPATH, '//button[contains(@class, "MuiPickersDay-today")]//following::button[1]')
     SAVE_BUTTON = (
     By.XPATH, '//p[contains(@class, "MuiTypography-root MuiTypography-body2")]//following::button[@type="submit"]')
