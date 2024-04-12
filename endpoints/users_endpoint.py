@@ -43,3 +43,10 @@ class UserEndpoint:
             if len(user["projectRoles"]) == 1 and len(user["assignments"]) == 0:
                 data.append(user["secondName"])
         return data
+
+    @allure.step("Создание пользователя")
+    def create_user_api(self, json):
+        header = AuthEndpoint().get_header_token_api()
+        self.response = requests.post(url=Urls.users_url, headers=header, json=json)
+        self.response_json = self.response.json()
+        return self.response

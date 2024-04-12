@@ -147,7 +147,6 @@ class UserPage(BasePage):
         self.action_esc()
         return hiring_date
 
-
     @testit.step("Проверка на совпадения дат увольнения и принятия на работу")
     @allure.step("Проверка на совпадения дат увольнения и принятия на работу")
     def check_fired_data_on_date_picker(self, date):
@@ -157,8 +156,8 @@ class UserPage(BasePage):
         self.element_is_visible(self.locators.FIRED_ALERT_FIELD).send_keys(Keys.CONTROL + 'a')
         self.element_is_visible(self.locators.FIRED_ALERT_FIELD).send_keys(date)
         self.element_is_visible(self.locators.CALENDAR_BUTTON).click()
-        assert not self.element_is_clickable(self.locators.DAY_BEFORE_SELECTED_DAY_PICKER, 2), 'Можно выбрать дату приема на работу'
-
+        assert not self.element_is_clickable(self.locators.DAY_BEFORE_SELECTED_DAY_PICKER,
+                                             2), 'Можно выбрать дату приема на работу'
 
     @testit.step("Проверяем назначение системной роли на пользователя")
     @allure.step("Проверяем назначение системной роли на пользователя")
@@ -166,11 +165,13 @@ class UserPage(BasePage):
         time.sleep(1)  # Без ожидания не успевает срабатывать анимация
         self.element_is_visible(self.locators.USER_KEBABS).click()
         self.element_is_visible(self.locators.REDACT_BUTTON).click()
-        user_before_add_role = self.element_is_visible(self.locators.USER_SYSTEM_ROLE_DISABLE_INDICATOR).get_attribute('class')
+        user_before_add_role = self.element_is_visible(self.locators.USER_SYSTEM_ROLE_DISABLE_INDICATOR).get_attribute(
+            'class')
         self.element_is_visible(self.locators.SYSTEM_ROLE_FIELD).click()
         add_role = self.elements_are_visible(self.locators.NOT_SELECTED_SYSTEM_ROLE)[0].get_attribute('aria-label')
         self.elements_are_visible(self.locators.NOT_SELECTED_SYSTEM_ROLE)[0].click()
-        user_after_add_role = self.element_is_visible(self.locators.USER_SYSTEM_ROLE_DISABLE_INDICATOR).get_attribute('class')
+        user_after_add_role = self.element_is_visible(self.locators.USER_SYSTEM_ROLE_DISABLE_INDICATOR).get_attribute(
+            'class')
         self.element_is_visible(self.locators.delete_system_role_button(add_role)).click()
         assert 'Mui-disabled' in user_before_add_role, 'Роль Пользователь не задизейблена'
         assert 'Mui-disabled' not in user_after_add_role, 'Роль Пользователь задизейблена после добавления другой роли'
@@ -180,6 +181,6 @@ class UserPage(BasePage):
     def check_removing_a_single_project_role_from_a_user(self):
         self.element_is_visible(self.locators.USER_KEBABS).click()
         self.element_is_visible(self.locators.REDACT_BUTTON).click()
-        time.sleep(1) # Без ожидания не успевает срабатывать анимация
+        time.sleep(1)  # Без ожидания не успевает срабатывать анимация
         self.element_is_visible(self.locators.DELETE_PROJECT_ROLE_ICONS).click()
         assert not self.element_is_clickable(self.locators.SAVE_BUTTON, 1), 'Кнопка Сохранить не задизейбленна'
