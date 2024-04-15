@@ -24,12 +24,6 @@ class AllProjectPage(BasePage):
         check_name_at_all = self.element_is_present(self.locators.check_project_name_on_tab(project_name), 2).text
         return check_name_at_all
 
-    @testit.step("Получаем статус проекта")
-    @allure.step("Получаем статус проекта")
-    def get_project_status_at_all(self):
-        project_status_at_all = self.element_is_present(self.locators.PROJECT_STATUS_TEXT).text
-        return project_status_at_all
-
     @testit.step("Удаляем проект")
     @allure.step("Удаляем проект")
     def delete_project(self, project_name):
@@ -90,7 +84,8 @@ class AllProjectPage(BasePage):
         tab_title_names = []
         for title in tab_titles:
             tab_title_names.append(title.text)
-        assert tab_title_names == ['Название', 'Код', 'Дата начала', 'Дата окончания', 'Статус', 'Действия'], "В таблице есть не все столбцы"
+        assert tab_title_names == ['Название', 'Код', 'Дата начала', 'Дата окончания', 'Статус',
+                                   'Действия'], "В таблице есть не все столбцы"
 
     @testit.step("Проверяем наличие всех пунктов меню Действия")
     @allure.step("Проверяем наличие всех пунктов меню Действия")
@@ -101,5 +96,3 @@ class AllProjectPage(BasePage):
         for item in menu_items:
             menu_items_names.append(item.text)
         assert menu_items_names == ['В архив', 'Удалить'], "Есть не все пункты меню Действия"
-
-
