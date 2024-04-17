@@ -2,7 +2,7 @@ import random
 
 from selenium.webdriver.common.by import By
 
-from data.data import PROJECT_CODE, PROJECT_NAME
+from data.data import PROJECT_NAME
 
 
 class LaborCostPageLocators:
@@ -10,22 +10,16 @@ class LaborCostPageLocators:
     TAB_ACTIVITY = (By.CSS_SELECTOR, 'div[id="activity"]')
     TAB_LABOR_COST_TABLE = (By.CSS_SELECTOR, 'a[href="/"]')
     # Проверка, что код проекта есть на странице
-    CHECK_CODE_PROJECT = (By.XPATH, f'//a[text()="{PROJECT_CODE}"]')
     def check_code_project(self, project_code):
         return (By.XPATH, f'//a[text()="{project_code}"]')
 
     ALL_PROJECT_NAMES = (By.CSS_SELECTOR, 'div[basewrapprops]')
     # Дни в привязке к проекту
-    ALL_DAYS_BY_PROJECT = (
-        By.XPATH, f'//div[@aria-label="{PROJECT_NAME}"]//ancestor::div[contains(@class,"project-row MuiBox-root")]//div//input')
     RANDOM_DAYS_BY_PROJECT = (
         By.XPATH,
         f'//div[@aria-label="{PROJECT_NAME}"]//ancestor::div[contains(@class,"project-row MuiBox-root")]//div[{random.randint(2, 29)}]//input')
     FIRST_DAY_BY_PROJECT = (
         By.XPATH, f'//div[@aria-label="{PROJECT_NAME}"]//ancestor::div[contains(@class,"project-row MuiBox-root")]//div[2]//input')
-    LAST_28_DAY_BY_PROJECT = (
-        By.XPATH,
-        f'//div[@aria-label="{PROJECT_NAME}"]//ancestor::div[contains(@class,"project-row MuiBox-root")]//div[29]//input')
     LAST_7_DAY_BY_PROJECT = (
         By.XPATH,
         f'//div[@aria-label="{PROJECT_NAME}"]//ancestor::div[contains(@class,"project-row MuiBox-root")]//div[8]//input')
