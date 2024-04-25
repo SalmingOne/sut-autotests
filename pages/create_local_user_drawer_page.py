@@ -2,6 +2,7 @@ import time
 
 import allure
 import testit
+from selenium.common import TimeoutException
 
 from locators.create_local_user_drawer_locators import CreateLocalUserDrawerLocators
 from pages.base_page import BasePage
@@ -105,6 +106,13 @@ class CreateLocalUserDrawerPage(BasePage):
         self.element_is_visible(locator).click()
         self.elements_are_visible(self.locators.DROPDOWN_ITEMS)[0].click()
 
+    @testit.step("Выбираем в дровере нужное значение")
+    @allure.step("Выбираем в дровере нужное значение")
+    def input_dropdown_by_text(self, locator, text):
+        self.action_move_to_element(self.element_is_visible(locator))
+        self.element_is_visible(locator).click()
+        self.element_is_visible(self.locators.dropdown_by_text(text)).click()
+
     @testit.step("Создаем локального пользователя")
     @allure.step("Создаем локального пользователя")
     def field_required_fields(self, login, second_name, email, save):
@@ -115,16 +123,20 @@ class CreateLocalUserDrawerPage(BasePage):
         self.element_is_visible(self.locators.GENDER_FIELD).click()
         self.element_is_visible(self.locators.GENDER_MAILE).click()
         time.sleep(0.2)  # Без ожидания иногда скрипт срабатывает раньше анимации
+        self.input_dropdown_by_text(self.locators.PROJECT_ROLES_FIELD, 'Аналитик')
+        self.action_esc()
         self.input_dropdown(self.locators.PROJECT_ROLES_FIELD)
         self.action_esc()
         self.input_dropdown(self.locators.DEPARTMENT_FIELD)
         self.input_dropdown(self.locators.POSITION_FIELD)
         self.go_to_tab_projects()
-        time.sleep(1)
         self.element_is_visible(self.locators.ADD_PROJECTS_BUTTON).click()
-        time.sleep(0.1)  # Без ожидания иногда скрипт срабатывает раньше анимации
+        time.sleep(0.5)  # Без ожидания иногда скрипт срабатывает раньше анимации
         self.element_is_visible(self.locators.PROJECT_FIELD).click()
-        self.elements_are_visible(self.locators.DROPDOWN_ITEMS)[0].click()
+        try:
+            self.elements_are_visible(self.locators.DROPDOWN_ITEMS)[0].click()
+        except TimeoutException:
+            pass
         self.go_to_tab_contacts()
         self.element_is_visible(self.locators.EMAIL_FIELD).send_keys(email)
         if save == 'yes':

@@ -39,3 +39,8 @@ class ProjectEndpoint:
         for project in self.response_json:
             if project['name'] == name:
                 return project['id']
+
+    @allure.step("Удаление проекта по имени")
+    def delete_project_by_name_api(self, name):
+        project_id = self.get_project_id_by_name(name)
+        self.delete_project_api(str(project_id))

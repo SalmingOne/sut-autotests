@@ -44,6 +44,12 @@ class SkillsPage(BasePage):
             items_text.append(element.text)
         assert items_text == ['Редактировать', 'Удалить'], 'В кебаб меню есть не все пункты'
 
+    @testit.step("Сортируем знания по имени")
+    @allure.step("Сортируем знания по имени")
+    def sort_skills(self):
+        self.element_is_visible(self.locators.SORT_SKILLS_BUTTON).click()
+        time.sleep(1)
+
     @testit.step("Открытие дровера редактирования знания по имени")
     @allure.step("Открытие дровера редактирования знания по имени")
     def redact_skill_by_name(self, name):

@@ -24,12 +24,15 @@ class TestTagsPage:
         time.sleep(1)  # Нужно время на анимацию
         tags_page.press_add_tag_button()
         tags_page.check_name_field()
-        tags_page.create_tag('Тег для авто-теста', create_skill)
-        tags_page.check_tag_on_tag_tab('Тег для авто-теста')
+        tags_page.create_tag('AAABBB', create_skill)
+        tags_page.sort_tags()
+        tags_page.check_tag_on_tag_tab('AAABBB')
         skills_page.go_to_skill_tab()
-        skills_page.check_tag_on_skill_tab(create_skill, 'Тег для авто-теста')
+        time.sleep(1)
+        skills_page.sort_skills()
+        skills_page.check_tag_on_skill_tab(create_skill, 'AAABBB')
         # Удаление тега после теста
-        tags_endpoint.delete_tag_by_name_api('Тег для авто-теста')
+        tags_endpoint.delete_tag_by_name_api('AAABBB')
 
     @testit.workItemIds(10593)
     @testit.displayName("10.4.2.3 Редактирование данных в справочнике группы знаний")
@@ -39,8 +42,13 @@ class TestTagsPage:
         tags_page = TagsPage(driver)
         skills_page = SkillsPage(driver)
         tags_page.go_to_tags_page()
-        time.sleep(1)  # Нужно время на анимацию
-        tags_page.edit_tag(create_tag, 'Отредактированное название', create_skill)
-        tags_page.check_tag_on_tag_tab('Отредактированное название')
+        time.sleep(2)  # Нужно время на анимацию
+        tags_page.sort_tags()
+        time.sleep(1)
+        tags_page.edit_tag(create_tag, 'ASBEST', create_skill)
+        tags_page.check_tag_on_tag_tab('ASBEST')
         skills_page.go_to_skill_tab()
-        skills_page.check_tag_on_skill_tab(create_skill, 'Отредактированное название')
+        time.sleep(1)
+        skills_page.sort_skills()
+        time.sleep(1)
+        skills_page.check_tag_on_skill_tab(create_skill, 'ASBEST')

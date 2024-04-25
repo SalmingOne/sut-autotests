@@ -493,6 +493,7 @@ class LaborCostPage(BasePage):
         except TimeoutException:
             self.element_is_visible(self.locators.BEGIN_LEAVE_DATA_INPUT).click()
         self.element_is_visible(self.locators.DRAWER_SAVE_BUTTON).click()
+        self.element_is_visible(self.locators.DRAWER_SAVE_BUTTON).click()
         time.sleep(1.5)
 
     @testit.step("Проверяем наличие всех отсутствий в таблице")
@@ -538,6 +539,7 @@ class LaborCostPage(BasePage):
     def add_absence_to_reason_day(self):
         days_have_reason = self.get_numbers_days_reason("have")
         self.add_absence(days_have_reason[0], 'sick_leave')
+        self.element_is_visible(self.locators.SAVE_WINDOW_BUTTON).click()
         assert self.element_is_displayed(
             self.locators.HAVE_REASON), "Сообщение о наложении отсутствия на трудозатраты не появилось"
         self.element_is_visible(self.locators.DRAWER_ABORT_BUTTON).click()

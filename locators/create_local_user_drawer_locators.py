@@ -40,3 +40,6 @@ class CreateLocalUserDrawerLocators:
 
     DROPDOWN_ITEMS = (By.XPATH, '//li[contains(@class, "MuiAutocomplete-option MuiBox-root")]')
     ALERT_MESSAGE = (By.XPATH, '//div[contains(@class, "MuiAlert-message")]')
+    DROPDOWN_I = (By.XPATH, '//p[text()="Аналитик"]/..')
+    def dropdown_by_text(self, text):
+        return (By.XPATH, f'//p[text()="{text}"]/..')

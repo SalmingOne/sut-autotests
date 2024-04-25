@@ -76,12 +76,12 @@ class TestUserProfilePage:
     def test_contents_of_the_resume_creation_page(self, login, driver):
         user_profile_page = UserProfilePage(driver)
         user_profile_page.go_to_user_profile()
-        time.sleep(1)
+        time.sleep(2)
         user_name = user_profile_page.get_title()
         start_work = user_profile_page.get_start_work_date()
         user_profile_page.go_to_resume_tab()
         user_profile_page.press_create_resume_button()
-        time.sleep(1)
+        time.sleep(2)
         user_profile_page.check_disable_save_button()
         user_profile_page.check_default_values(user_name, start_work)
         user_profile_page.check_max_symbol()
@@ -106,11 +106,13 @@ class TestUserProfilePage:
         user_profile_page.press_create_resume_button()
         time.sleep(1)
         resume_title = user_profile_page.save_resume()
+        time.sleep(2)
         message = user_profile_page.get_alert_message()
+        time.sleep(2)
         titles = user_profile_page.get_names_resume_on_tab()
         kebab_menu_items = user_profile_page.delete_resume(resume_title)
 
-        assert message == 'Резюме создано', 'Не появилось сообщение о создании резюме'
+        assert message == ['Резюме создано'], 'Не появилось сообщение о создании резюме'
         assert resume_title in titles, 'Названия резюме нет в таблице'
         assert kebab_menu_items == ['Редактирование', 'Просмотр резюме', 'Копировать', 'Удалить'],\
             'Созданное резюме не доступно для редактирования, удаления, скачивания и копирования'

@@ -1,9 +1,11 @@
 from pydantic import BaseModel
 
+from data.data import USER_ID
+
 
 class Resource(BaseModel):
     projectRoleId: int = 1
-    userId: int = 2
+    userId: int = USER_ID
     isProjectManager: bool = True
 
 

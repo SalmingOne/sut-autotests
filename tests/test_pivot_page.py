@@ -1,9 +1,9 @@
-import time
 
 import allure
 import pytest
 import testit
 
+from endpoints.users_endpoint import UserEndpoint
 from pages.labor_cost_page import LaborCostPage
 from pages.pivot_tab_page import PivotTabPage
 
@@ -56,6 +56,7 @@ class TestPivotPage:
 
     @testit.workItemIds(3106)
     @testit.displayName("3.2.2.1 Проверка правильности подсчета трудозатрат за год при отображении Сводной таблицы За год")
+    @pytest.mark.smoke
     @allure.title(
         "id-3106 3.2.2.1 Проверка правильности подсчета трудозатрат за год при отображении Сводной таблицы За год")
     def test_correct_summ_on_pivot_for_year(self, project_with_assignment, login, driver):
@@ -77,6 +78,7 @@ class TestPivotPage:
 
     @testit.workItemIds(1181)
     @testit.displayName("3.2.2.11. Отображение переработок в сводной таблице трудозатрат")
+    @pytest.mark.smoke
     @allure.title("id-1181 3.2.2.11. Отображение переработок в сводной таблице трудозатрат")
     def test_displaying_overwork_on_pivot_page(self, project_with_overtime_work, login, driver):
         pivot_tab_page = PivotTabPage(driver)

@@ -42,6 +42,11 @@ class TagsPage(BasePage):
         self.action_esc()
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
 
+    @testit.step("Сортируем группы знаний по имени")
+    @allure.step("Сортируем группы знаний по имени")
+    def sort_tags(self):
+        self.element_is_visible(self.locators.SORT_TAGS_BUTTON).click()
+
     @testit.step("Переход на вкладку группы знаний")
     @allure.step("Переход на вкладку группы знаний")
     def go_to_tag_tab(self):

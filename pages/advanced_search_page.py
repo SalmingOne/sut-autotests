@@ -37,7 +37,7 @@ class AdvancedSearchPage(BasePage):
         self.element_is_visible(self.locators.SAVE_SEARCH_BUTTON).click()
         self.element_is_visible(self.locators.SEARCH_NAME_FIELD).send_keys('Авто-поиск')
         self.element_is_visible(self.locators.CHECK_ICON).click()
-        return 'Авто-поиск', criterion_value, operator_value, condition_value[:-4]
+        return 'Авто-поиск', criterion_value, operator_value, condition_value[:-3]
 
     @testit.step("Получение названий сохраненных поисков")
     @allure.step("Получение названий сохраненных поисков")
@@ -66,6 +66,6 @@ class AdvancedSearchPage(BasePage):
             values.append(field.get_attribute('value'))
         self.element_is_visible(self.locators.DELETE_SEARCH_BUTTON).click()
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
-        time.sleep(1)
+        time.sleep(2)
         return values
 
