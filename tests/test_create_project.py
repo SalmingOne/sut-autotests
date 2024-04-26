@@ -5,6 +5,8 @@ import pytest
 import testit
 from selenium.common import TimeoutException
 
+from data.data import USER_NAME
+from endpoints.project_endpoint import ProjectEndpoint
 from pages.all_project_page import AllProjectPage
 from pages.create_project_drawer_page import CreateProjectDrawerPage
 from pages.labor_cost_page import LaborCostPage
@@ -24,7 +26,7 @@ class TestCreateProject:
         project_name, project_code, project_data, project_worker = create_project_drawer_page.create_project(
             "AutoTestProject1",
             'ATP1',
-            "Администратор Администратор",
+            USER_NAME,
             'no',
             '01.10.2022'
         )
@@ -47,9 +49,9 @@ class TestCreateProject:
         labor_cost_page.go_to_labor_cost_page()
         check_code_at_labor = labor_cost_page.check_project_code_at_labor('ATP1')
         assert project_code == check_code_at_labor, "код созданного проекта отсутствует на странице трудозатрат"
-        # Пока удаление проекта здесь, планирую позже включить его в фикстуру
-        all_project_page.go_to_all_project_page()
-        all_project_page.delete_project("AutoTestProject1")
+        # Удаляем проект
+        project_endpoint = ProjectEndpoint()
+        project_endpoint.delete_project_by_name_api("AutoTestProject1")
 
     @testit.workItemIds(10157)
     @testit.displayName("1.1.1 Создание нового проекта в статусе черновик")
@@ -62,7 +64,7 @@ class TestCreateProject:
         project_name, project_code, project_data, project_worker = create_project_drawer_page.create_project(
             "AutoTestProjectDraft",
             'ATPD',
-            "Администратор Администратор",
+            USER_NAME,
             'draft',
             '01.10.2022'
         )
@@ -91,8 +93,9 @@ class TestCreateProject:
             all_project_page.see_all_status_project()
             check_name_at_all = all_project_page.check_project_name_at_all('AutoTestProjectDraft')
         assert project_name == check_name_at_all, "имя созданного проекта отсутствует на странице все проекты"
-        # Пока удаление проекта здесь, планирую позже включить его в фикстуру
-        all_project_page.delete_project('AutoTestProjectDraft')
+        # Удаляем проект
+        project_endpoint = ProjectEndpoint()
+        project_endpoint.delete_project_by_name_api("AutoTestProjectDraft")
 
     @testit.workItemIds(1469)
     @testit.displayName("1.1.1 Добавление нового проекта с обязательным указанием причины списания")
@@ -105,7 +108,7 @@ class TestCreateProject:
         project_name, project_code, project_data, project_worker = create_project_drawer_page.create_project(
             "AutoTestProjectReason",
             'ATPR',
-            "Администратор Администратор",
+            USER_NAME,
             'reason',
             '01.10.2022')
         create_project_drawer_page.check_created_project()
@@ -127,8 +130,9 @@ class TestCreateProject:
         all_project_page.go_to_all_project_page()
         check_name_at_all = all_project_page.check_project_name_at_all('AutoTestProjectReason')
         assert project_name == check_name_at_all, "имя созданного проекта отсутствует на странице все проекты"
-        # Пока удаление проекта здесь, планирую позже включить его в фикстуру
-        all_project_page.delete_project('AutoTestProjectReason')
+        # Удаляем проект
+        project_endpoint = ProjectEndpoint()
+        project_endpoint.delete_project_by_name_api("AutoTestProjectReason")
 
     @testit.workItemIds(48)
     @testit.displayName("1.1.1 Создание проекта с неуникальным названием")
@@ -141,7 +145,7 @@ class TestCreateProject:
         create_project_drawer_page.create_project(
             "AutoTestProject",
             'AUTO',
-            "Администратор Администратор",
+            USER_NAME,
             'no',
             '01.10.2022'
         )
@@ -159,7 +163,7 @@ class TestCreateProject:
         create_project_drawer_page.create_project(
             "TestProject",
             'ATP',
-            "Администратор Администратор",
+            USER_NAME,
             'no',
             '01.10.2022'
         )
@@ -177,7 +181,7 @@ class TestCreateProject:
         create_project_drawer_page.create_project(
             "AutoTestProject",
             'ATP',
-            "Администратор Администратор",
+            USER_NAME,
             'no',
             '01.10.2022',
             '01.09.2022'
@@ -196,7 +200,7 @@ class TestCreateProject:
         create_project_drawer_page.create_project(
             "AutoTestProject)(,",
             'ATP',
-            "Администратор Администратор",
+            USER_NAME,
             'no',
             '01.10.2022'
         )
@@ -214,7 +218,7 @@ class TestCreateProject:
         create_project_drawer_page.create_project(
             "AutoTestProject",
             'ATP)(,',
-            "Администратор Администратор",
+            USER_NAME,
             'no',
             '01.10.2022'
         )
@@ -232,7 +236,7 @@ class TestCreateProject:
         create_project_drawer_page.create_project(
             "Lorem ipsum dolor sit amet consectetuer adipiscing elit sed diam nonummy nibh euismod tincidunt utttt",
             'ATP',
-            "Администратор Администратор",
+            USER_NAME,
             'no',
             '01.10.2022'
         )
@@ -250,7 +254,7 @@ class TestCreateProject:
         create_project_drawer_page.create_project(
             "AutoTestProject",
             'AutoTestPro',
-            "Администратор Администратор",
+            USER_NAME,
             'no',
             '01.10.2022'
         )

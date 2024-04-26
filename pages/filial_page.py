@@ -1,3 +1,5 @@
+import time
+
 import allure
 import testit
 from selenium.common import TimeoutException
@@ -136,6 +138,7 @@ class FilialPage(BasePage):
     @allure.step("Удаление филиала")
     def delete_filial(self, name):
         self.element_is_visible(self.locators.kebab_by_filial_name(name)).click()
+        time.sleep(1)
         self.element_is_visible(self.locators.KEBAB_DELETE_BUTTON).click()
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
 
@@ -143,6 +146,7 @@ class FilialPage(BasePage):
     @allure.step("Назначение случайных пользователей в филиал")
     def add_first_user_to_filial(self, filial_name):
         self.element_is_visible(self.locators.kebab_by_filial_name(filial_name)).click()
+        time.sleep(1)
         self.element_is_visible(self.locators.REDACT_BUTTON).click()
         self.element_is_visible(self.locators.EMPLOYEES_FIELD).click()
         self.elements_are_visible(self.locators.DROPDOWN_ITEMS)[1].click()
@@ -163,6 +167,7 @@ class FilialPage(BasePage):
     @allure.step("Проверка удаления пользователя из филиала")
     def check_removing_user_from_filial(self, filial_name):
         self.element_is_visible(self.locators.kebab_by_filial_name(filial_name)).click()
+        time.sleep(1)
         self.element_is_visible(self.locators.REDACT_BUTTON).click()
         employees_before = self.get_employees_in_field()
         self.elements_are_visible(self.locators.EMPLOYEES_CHIPS_DELETE_ICON)[0].click()

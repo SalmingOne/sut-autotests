@@ -18,7 +18,7 @@ class TestPivotTabFilterPage:
     def test_reset_all_button_on_filter(self, login, driver):
         pivot_tab_page = PivotTabPage(driver)
         pivot_tab_page.go_to_pivot_page()
-        time.sleep(1)  # Без ожидания открывается фильтр на странице трудозатрат вместо сводной таблицы
+        time.sleep(2)  # Без ожидания открывается фильтр на странице трудозатрат вместо сводной таблицы
         pivot_tab_page.open_filter()
         pivot_tab_filter_page = PivotTabFilterPage(driver)
         before_changes = pivot_tab_filter_page.get_element_text('checked')
@@ -38,7 +38,7 @@ class TestPivotTabFilterPage:
     def test_content_dropdown_filter(self, login, driver):
         pivot_tab_page = PivotTabPage(driver)
         pivot_tab_page.go_to_pivot_page()
-        time.sleep(1)  # Без ожидания открывается фильтр на странице трудозатрат вместо сводной таблицы
+        time.sleep(2)  # Без ожидания открывается фильтр на странице трудозатрат вместо сводной таблицы
         pivot_tab_page.open_filter()
         pivot_tab_filter_page = PivotTabFilterPage(driver)
         all_elements = pivot_tab_filter_page.get_element_text('all')

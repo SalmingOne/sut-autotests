@@ -28,7 +28,7 @@ class TestAuthorization:
     def test_correct_mixed_authorization(self, driver):
         authorization_page = AuthorizationPage(driver, Urls.url)
         authorization_page.open()
-        authorization_page.authorization("ADMin", PASSWORD)
+        authorization_page.authorization(LOGIN.upper(), PASSWORD)
         authorization_page.check_authorization()
 
     @testit.workItemIds(1378)

@@ -23,7 +23,7 @@ class UserProfilePageLocators:
     EXPERIENCES_TAB_BUTTON = (By.XPATH, '//button[text()="Опыт работы"]')
     # Вкладка Резюме
     RESUME_TAB_BUTTON = (By.XPATH, '//button[text()="Резюме"]')
-    CREATE_RESUME_BUTTON = (By.CSS_SELECTOR, 'a[href="/kk/2/resume/new"]')
+    CREATE_RESUME_BUTTON = (By.XPATH, '//a[text()="Создать"]')
     START_WORK_IN_RESUME = (By.XPATH, '//p[@id="experienceDate"]/..//input')
     READY_TO_WORK_DROPDOWN = (By.CSS_SELECTOR, 'input[role="combobox"]')
     RESUME_TITLE_FIELD = (By.CSS_SELECTOR, 'input[name="title"]')

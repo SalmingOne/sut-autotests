@@ -41,7 +41,7 @@ class UserEndpoint:
         data = []
         for user in self.response_json:
             if len(user["projectRoles"]) == 1 and len(user["assignments"]) == 0:
-                data.append(user["secondName"])
+                data.append(user["secondName"] + ' ' + user["name"])
         return data
 
     @allure.step("Создание пользователя")
@@ -50,3 +50,12 @@ class UserEndpoint:
         self.response = requests.post(url=Urls.users_url, headers=header, json=json)
         self.response_json = self.response.json()
         return self.response
+
+    @allure.step("Получение id пользователя по логину")
+    def get_user_id_by_login_api(self, username):
+        header = AuthEndpoint().get_header_token_api()
+        self.response = requests.get(url=Urls.users_url, headers=header)
+        self.response_json = self.response.json()
+        for user in self.response_json:
+            if user['username'] == username:
+                return user['id']

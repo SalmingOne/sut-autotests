@@ -26,7 +26,7 @@ class TestLaborCostPage:
     @testit.displayName("3.1.1.1 Просмотр таблицы трудозатрат.")
     @pytest.mark.smoke
     @allure.title("id-267 3.1.1.1 Просмотр таблицы трудозатрат.")
-    def test_mapping_labor_cost_page(self, login, driver):
+    def test_mapping_labor_cost_page(self, project_with_assignment, login, driver):
         labor_cost_page = LaborCostPage(driver)
         labor_cost_page.go_to_labor_cost_page()
         labor_cost_page.check_title()
@@ -376,12 +376,12 @@ class TestLaborCostPage:
     @testit.displayName("Фильтр таблицы Отсутствие по времени. Прошедшие отсутствия.")
     @pytest.mark.regress
     @allure.title("id-547 Фильтр таблицы Отсутствие по времени. Прошедшие отсутствия.")
-    def test_filter_past_absences(self, f_create_temp_project, login, driver):
+    def test_filter_past_absences(self, project_with_assignment, login, driver):
         labor_cost_page = LaborCostPage(driver)
         # Проверяем, что нет заявлений в таблице. И если есть удаляем
         labor_cost_page.go_to_labor_cost_page()
         # Временное решение
-        #labor_cost_page.go_to_previous_period()
+        labor_cost_page.go_to_previous_period()
         time.sleep(1)  # Без ожидания скрипт срабатывает до загрузки страницы
         if labor_cost_page.check_absence_on_tab() == 0:
             zero_reason_day = labor_cost_page.get_numbers_days_reason('zero')

@@ -1,3 +1,5 @@
+import time
+
 import allure
 import testit
 from selenium.common import StaleElementReferenceException
@@ -13,6 +15,7 @@ class ProjectCardPage(BasePage):
     @allure.step("Переход на вкладку описание проекта")
     def go_to_description_tab(self):
         self.element_is_visible(self.locators.DESCRIPTION_TAB).click()
+        time.sleep(1)
 
     @testit.step("Получаем имя автора проекта")
     @allure.step("Получаем имя автора проекта")

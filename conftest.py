@@ -10,7 +10,7 @@ from api_methods.auth import AuthApi
 from api_methods.departmens import DepartmentsApi
 from api_methods.position import PositionsApi
 from api_methods.project_roles import ProjectRolesApi
-from data.data import LOGIN, PASSWORD
+from data.data import LOGIN, PASSWORD, USER_ID
 from data.models.create_project_model import CreateProject
 from data.urls import Urls
 from endpoints.affiliates_endpoint import AffiliatesEndpoint
@@ -121,7 +121,7 @@ def f_notifications():
     sys_settings.turn_off_notifications()
 
 
-@pytest.fixture(scope='session', autouse=True)
+@pytest.fixture(scope='session')
 def script():
     project_roles = ProjectRolesApi()
     token = AuthApi().auth_to_token()
@@ -174,7 +174,7 @@ def project_with_overtime_work():
         overtimeWork=3,
         hours=3,
         type="DEFAULT",
-        userId=2
+        userId=USER_ID
     )]
     labor_report_endpoint.post_labor_report_api(json=payload)
     yield
@@ -219,7 +219,7 @@ def skills():
 @pytest.fixture()
 def create_skill():
     skills_endpoint = SkillsEndpoint()
-    payload = dict(name='Для редактирования', tags=[])
+    payload = dict(name='ABCD', tags=[])
     response = skills_endpoint.create_skills_api(json=payload)
     yield payload['name']
     skills_endpoint.delete_skill_api(str(response.json()['id']))
@@ -234,7 +234,7 @@ def project_with_assignment():
     payload = dict(projectRoleId=1,
                    projectId=response.json()["id"],
                    slotId=response.json()["slots"][0]["assignments"][0]['slotId'],
-                   userId=2,
+                   userId=USER_ID,
                    isProjectManager=True,
                    startDate=CreateProject().startDate
                    )
@@ -249,7 +249,7 @@ def project_with_assignment():
 @pytest.fixture()
 def create_tag():
     tags_endpoint = TagsEndpoint()
-    payload = dict(name='Для редактирования', skills=[])
+    payload = dict(name='ABSENT', skills=[])
     response = tags_endpoint.create_tag_api(json=payload)
     yield payload['name']
     tags_endpoint.delete_tag_api(str(response.json()['id']))

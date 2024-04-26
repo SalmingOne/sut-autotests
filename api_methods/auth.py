@@ -3,6 +3,7 @@ import time
 import requests
 import allure
 from configuration.config_provider import ConfigProvider
+from data.data import LOGIN, PASSWORD
 
 config = ConfigProvider()
 
@@ -29,7 +30,7 @@ class AuthApi:
 
         response = requests.post(
             url=config.get_auth_url(),
-            json=config.get_admin_creds()
+            json=dict(login=LOGIN, password=PASSWORD)
         )
 
         if response.status_code == 200:
