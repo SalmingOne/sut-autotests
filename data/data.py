@@ -1,40 +1,13 @@
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
+from endpoints.users_endpoint import UserEndpoint
 
-PROJECT_NAME: str = "AutoTestProject"
-USER_NAME = "Гвоздев Сергей"
+load_dotenv()
+user_endpoint = UserEndpoint()
+
+PROJECT_NAME = "AutoTestProject"
 LOGIN = os.getenv('LOGIN')
 PASSWORD = os.getenv('PASSWORD')
-USER_ID = 187
-
-# http://10.7.2.3:43000/api/docs#:~:text=OutputPaginatedNotifications-,InputProject,-ProjectStats
-VALID_PROJECT_DATA = {"code": "ATP",
-                      "name": "AutoTestProject",
-                      "startDate": "01.10.2022",
-                      "status": "ACTIVE",
-                      "selfAdding": True,
-                      "laborReasons": False,
-                      "mandatoryAttachFiles": False,
-                      "description": {"blocks": [{"key": "46l7i",
-                                                  "text": "ProjectDescription",
-                                                  "type": "unstyled",
-                                                  "depth": 0,
-                                                  "inlineStyleRanges": [],
-                                                  "entityRanges": [],
-                                                  "data": {}}],
-                                      "entityMap": {}},
-                      "endDate": "01.10.2025",
-                      "fileDescription": {"blocks": [{"key": "46l7i",
-                                                      "text": "AttachFileDescription",
-                                                      "type": "unstyled",
-                                                      "depth": 0,
-                                                      "inlineStyleRanges": [],
-                                                      "entityRanges": [],
-                                                      "data": {}}],
-                                          "entityMap": {}},
-                      "automaticLaborReports": False,
-                      "resources": [{"projectRoleId": 1,
-                                     "userId": 187,
-                                     "isProjectManager": True}]}
+USER_NAME = user_endpoint.get_user_id_and_name_by_login(LOGIN)[1]
+USER_ID = user_endpoint.get_user_id_and_name_by_login(LOGIN)[0]

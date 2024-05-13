@@ -16,7 +16,7 @@ class TestAuthorization:
     @pytest.mark.smoke
     @allure.title("id-16  4.1 Авторизация в системе")
     def test_correct_authorization(self, driver):
-        authorization_page = AuthorizationPage(driver, Urls.url)
+        authorization_page = AuthorizationPage(driver, Urls.base_url)
         authorization_page.open()
         authorization_page.authorization(LOGIN, PASSWORD)
         authorization_page.check_authorization()
@@ -26,7 +26,7 @@ class TestAuthorization:
     @pytest.mark.regress
     @allure.title("id-901  4.1 Вход с вводом символов в разном регистре")
     def test_correct_mixed_authorization(self, driver):
-        authorization_page = AuthorizationPage(driver, Urls.url)
+        authorization_page = AuthorizationPage(driver, Urls.base_url)
         authorization_page.open()
         authorization_page.authorization(LOGIN.upper(), PASSWORD)
         authorization_page.check_authorization()

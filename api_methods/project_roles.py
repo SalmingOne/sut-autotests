@@ -1,16 +1,16 @@
 import requests
 
-from configuration.config_provider import ConfigProvider
+from data.urls import Urls
 
-config = ConfigProvider()
 class ProjectRolesApi:
 
-    def get_project_roles_api(self, token):
-        response = requests.get(url=config.get_project_url() +'project-roles', headers={"Access": "Bearer " + token}).json()
+    def get_project_roles_api(self, header):
+        response = requests.get(url=Urls.project_role_url, headers=header).json()
         return len(response)
-    def post_project_roles_api(self, token):
+
+    def post_project_roles_api(self, header):
         payload = {
             "name": "Тестировщик автоматизатор"
         }
-        response = requests.post(url=config.get_project_url() + 'project-roles', headers={"Access": "Bearer " + token}, json=payload)
+        response = requests.post(url=Urls.project_role_url, headers=header, json=payload)
 

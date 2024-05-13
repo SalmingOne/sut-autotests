@@ -51,11 +51,11 @@ class UserEndpoint:
         self.response_json = self.response.json()
         return self.response
 
-    @allure.step("Получение id пользователя по логину")
-    def get_user_id_by_login_api(self, username):
+    @allure.step("Получаем имя и id пользователя по логину")
+    def get_user_id_and_name_by_login(self, login):
         header = AuthEndpoint().get_header_token_api()
         self.response = requests.get(url=Urls.users_url, headers=header)
         self.response_json = self.response.json()
         for user in self.response_json:
-            if user['username'] == username:
-                return user['id']
+            if user['username'] == login:
+                return user['id'], (user["secondName"] + ' ' + user["name"])

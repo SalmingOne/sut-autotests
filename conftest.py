@@ -5,8 +5,6 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 
-from api_methods.affiliates import AffiliatesApi
-from api_methods.auth import AuthApi
 from api_methods.departmens import DepartmentsApi
 from api_methods.position import PositionsApi
 from api_methods.project_roles import ProjectRolesApi
@@ -15,6 +13,7 @@ from data.models.create_project_model import CreateProject
 from data.urls import Urls
 from endpoints.affiliates_endpoint import AffiliatesEndpoint
 from endpoints.assignments_endpoint import AssignmentEndpoint
+from endpoints.auth_endpoint import AuthEndpoint
 from endpoints.labor_reports_endpoint import LaborReportEndpoint
 from endpoints.logs_endpoint import LogsEndpoint
 from endpoints.project_endpoint import ProjectEndpoint
@@ -22,15 +21,9 @@ from endpoints.skills_endpoint import SkillsEndpoint
 from endpoints.tags_endpoint import TagsEndpoint
 from endpoints.users_endpoint import UserEndpoint
 from endpoints.variables_endpoint import VariablesEndpoint
-from pages.all_project_page import AllProjectPage
 from pages.authorization_page import AuthorizationPage
 from pages.base_page import BasePage
-from pages.create_project_drawer_page import CreateProjectDrawerPage
-from configuration.config_provider import ConfigProvider
-from api_methods.project import ProjectApi
 from api_methods.system_settings import SystemSettingsApi
-
-config = ConfigProvider()
 
 
 @pytest.fixture(scope='function')
@@ -43,58 +36,41 @@ def driver():
 
 @pytest.fixture
 def login(driver):
-    authorization_page = AuthorizationPage(driver, Urls.url)
+    authorization_page = AuthorizationPage(driver, Urls.base_url)
     authorization_page.open()
     authorization_page.authorization(LOGIN, PASSWORD)
     return login
 
 
-@pytest.fixture
-def project(login, driver):
-    create_project_drawer_page = CreateProjectDrawerPage(driver)
-    create_project_drawer_page.go_to_create_project_drawer_from_menu()
-    create_project_drawer_page.create_project('no')
-    yield project
-    all_project_page = AllProjectPage(driver)
-    all_project_page.go_to_all_project_page()
-    all_project_page.delete_project()
+@pytest.fixture()
+def simple_project():
+    project_endpoint = ProjectEndpoint()
+    payload = CreateProject().model_dump()
+    response = project_endpoint.create_project_api(json=payload)
+    yield response.json()
+    project_endpoint.delete_project_api(str(response.json()['id']))
 
 
-@pytest.fixture
-def f_auth() -> dict:
-    response = requests.post(
-        url=config.get_auth_url(),
-        json=config.get_admin_creds()
-    )
+@pytest.fixture()
+def project_with_labor_reason():
+    project_endpoint = ProjectEndpoint()
+    payload = CreateProject(
+        laborReasons=True
+    ).model_dump()
+    response = project_endpoint.create_project_api(json=payload)
+    yield response.json()
+    project_endpoint.delete_project_api(str(response.json()['id']))
 
-    return {"Access": "Bearer " + response.json()["accessToken"]}
 
-
-@pytest.fixture
-def f_create_temp_project(request) -> Response:
-    """ Создаёт временный проект удаляемый по окончанию теста """
-
-    try:
-        status = request.node.get_closest_marker("project_status").args[0]
-    except AttributeError:
-        status = "ACTIVE"
-    try:
-        laborReasons = bool(request.node.get_closest_marker("labor_reason"))
-    except AttributeError:
-        laborReasons = False
-    try:
-        mandatoryAttachFiles = bool(request.node.get_closest_marker("attach_files"))
-    except AttributeError:
-        mandatoryAttachFiles = False
-
-    project_api = ProjectApi()
-    response = project_api.create_project(
-        status=status,
-        laborReasons=laborReasons,
-        mandatoryAttachFiles=mandatoryAttachFiles)
-    yield response
-
-    project_api.delete_project(response["id"])
+@pytest.fixture()
+def project_with_attach_files():
+    project_endpoint = ProjectEndpoint()
+    payload = CreateProject(
+        mandatoryAttachFiles=True
+    ).model_dump()
+    response = project_endpoint.create_project_api(json=payload)
+    yield response.json()
+    project_endpoint.delete_project_api(str(response.json()['id']))
 
 
 @pytest.fixture
@@ -124,27 +100,28 @@ def f_notifications():
 @pytest.fixture(scope='session')
 def script():
     project_roles = ProjectRolesApi()
-    token = AuthApi().auth_to_token()
+    header = AuthEndpoint().get_header_token_api()
     logs_endpoint = LogsEndpoint()
     payload = dict(status=True, level="ALL", depthDateQuantity=0, depthDateType="YEAR")
     logs_endpoint.post_logs_settings(json=payload)
-    if project_roles.get_project_roles_api(token) == 0:
-        project_roles.post_project_roles_api(token)
+    if project_roles.get_project_roles_api(header) == 0:
+        project_roles.post_project_roles_api(header)
     else:
         pass
     departments = DepartmentsApi()
-    if departments.get_departments_api(token) == 0:
-        departments.post_department_api(token)
+    if departments.get_departments_api(header) == 0:
+        departments.post_department_api(header)
     else:
         pass
     positions = PositionsApi()
-    if positions.get_positions_api(token) == 0:
-        positions.post_positions_api(token)
+    if positions.get_positions_api(header) == 0:
+        positions.post_positions_api(header)
     else:
         pass
-    affiliates = AffiliatesApi()
-    if affiliates.get_affiliates_api(token) == 0:
-        affiliates.post_affiliates_api(token)
+    filial_endpoint = AffiliatesEndpoint()
+    if len(filial_endpoint.get_all_affiliates_api().json()) == 0:
+        payload = dict(name="Саратовский филиал", address='г. Саратов')
+        filial_endpoint.create_affiliates_api(json=payload)
     else:
         pass
 

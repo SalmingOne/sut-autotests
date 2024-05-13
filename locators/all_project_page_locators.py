@@ -1,7 +1,5 @@
 from selenium.webdriver.common.by import By
 
-from data import data
-
 
 class AllProjectPageLocators:
     # Пункты меню для перехода на страницу все проекты

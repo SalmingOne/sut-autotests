@@ -11,7 +11,6 @@ class AuthModels:
             login: str = data.data.LOGIN
             password: str = data.data.PASSWORD
 
-
     class AuthResponseModel:
         class Model(BaseModel):
             accessToken: str

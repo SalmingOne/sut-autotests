@@ -1,19 +1,17 @@
 import requests
 
-from configuration.config_provider import ConfigProvider
+from data.urls import Urls
 
-config = ConfigProvider()
 
 class DepartmentsApi:
 
-    def get_departments_api(self, token):
-        response = requests.get(url=config.get_project_url() + 'departments', headers={"Access": "Bearer " + token}).json()
+    def get_departments_api(self, header):
+        response = requests.get(url=Urls.department_url, headers=header).json()
         return len(response)
 
-    def post_department_api(self, token):
+    def post_department_api(self, header):
         payload = {
-              "name": "Первый отдел",
-              "departmentId": None
+            "name": "Первый отдел",
+            "departmentId": None
         }
-        response = requests.post(url=config.get_project_url() + 'departments', headers={"Access": "Bearer " + token}, json=payload)
-
+        response = requests.post(url=Urls.department_url, headers=header, json=payload)

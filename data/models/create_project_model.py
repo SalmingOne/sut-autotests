@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from data.data import USER_ID
+from data.data import USER_ID, PROJECT_NAME
 
 
 class Resource(BaseModel):
@@ -11,7 +11,7 @@ class Resource(BaseModel):
 
 class CreateProject(BaseModel):
     code: str = 'ATP'
-    name: str = 'AutoTestProject'
+    name: str = PROJECT_NAME
     startDate: str = '01.10.2022'
     endDate: str = '12.21.2029'
     status: str = 'ACTIVE'
