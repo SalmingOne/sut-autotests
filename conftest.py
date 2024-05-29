@@ -264,3 +264,9 @@ def create_work_user():
         print(response.status_code)
     else:
         pass
+
+
+@pytest.fixture(scope='session', autouse=True)
+def write_user_creds_file():
+    user_endpoint = UserEndpoint()
+    user_endpoint.write_user_id_and_name_to_file(LOGIN)

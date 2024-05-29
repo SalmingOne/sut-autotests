@@ -2,14 +2,15 @@ from __future__ import annotations
 
 from pydantic import BaseModel
 from typing import List, Optional
-import data.data
+
+from data.data import LOGIN, PASSWORD
 
 
 class AuthModels:
     class AuthRequestModel:
         class Model(BaseModel):
-            login: str = data.data.LOGIN
-            password: str = data.data.PASSWORD
+            login: str = LOGIN
+            password: str = PASSWORD
 
     class AuthResponseModel:
         class Model(BaseModel):
