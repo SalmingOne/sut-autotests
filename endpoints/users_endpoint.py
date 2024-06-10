@@ -65,7 +65,7 @@ class UserEndpoint:
     @allure.step("Записываем имя и id пользователя по логину в файл")
     def write_user_id_and_name_to_file(self, login):
         user_id, name = self.get_user_id_and_name_by_login(login)
-        file = open(os.path.abspath('../user_id_end_name.py'), "w")
+        file = open(os.path.abspath('../user_id_end_name.py'), "w", encoding='utf-8')
         file.write(
             'ID = ' + str(user_id) +
             '\nUSER_NAME = ' + f"'{str(name)}'"
