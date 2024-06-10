@@ -1,16 +1,16 @@
 import requests
 
-from configuration.config_provider import ConfigProvider
-config = ConfigProvider()
+from data.urls import Urls
+
 
 class PositionsApi:
 
-    def get_positions_api(self, token):
-        response = requests.get(url=config.get_project_url() + 'posts', headers={"Access": "Bearer " + token}).json()
+    def get_positions_api(self, header):
+        response = requests.get(url=Urls.post_url, headers=header).json()
         return len(response)
 
-    def post_positions_api(self, token):
+    def post_positions_api(self, header):
         payload = {
             "name": "Специалист эксперт"
         }
-        response = requests.post(url=config.get_project_url() + 'posts', headers={"Access": "Bearer " + token}, json=payload)
+        response = requests.post(url=Urls.post_url, headers=header, json=payload)

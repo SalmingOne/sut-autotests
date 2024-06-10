@@ -28,10 +28,6 @@ class BasePage:
     def element_is_present(self, locator, timeout=5):
         return wait(self.driver, timeout).until(EC.presence_of_element_located(locator))
 
-    @allure.step("элемент представлен долгое ожидание")
-    def element_is_present_long_wait(self, locator, timeout=20):
-        return wait(self.driver, timeout).until(EC.presence_of_element_located(locator))
-
     @allure.step("элементы представлены")
     def elements_are_present(self, locator, timeout=5):
         return wait(self.driver, timeout).until(EC.presence_of_all_elements_located(locator))
@@ -47,7 +43,6 @@ class BasePage:
             return True
         except TimeoutException:
             return False
-
 
     @allure.step("перейти к элементу")
     def go_to_element(self, element):

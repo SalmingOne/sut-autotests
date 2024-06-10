@@ -16,7 +16,7 @@ class TestLaborCostPage:
     @testit.displayName("3.1.1.2 Заполнение таблицы Отчет трудозатрат")
     @pytest.mark.smoke
     @allure.title("id-270 3.1.1.2 Заполнение таблицы Отчет трудозатрат")
-    def test_filing_labor_cost_report_table(self, f_create_temp_project, login, driver):
+    def test_filing_labor_cost_report_table(self, simple_project, login, driver):
         labor_cost_page = LaborCostPage(driver)
         labor_cost_page.go_to_labor_cost_page()
         labor_cost_page.choose_period("week")
@@ -63,9 +63,8 @@ class TestLaborCostPage:
     @testit.workItemIds(1461)
     @testit.displayName("3.1.1.2 Содержание модального окна указания причин списания.")
     @pytest.mark.smoke
-    @pytest.mark.labor_reason("True")
     @allure.title("id-1461 3.1.1.2 Содержание модального окна указания причин списания.")
-    def test_contents_modal_window_indicating_the_reasons(self, f_create_temp_project, login, driver):
+    def test_contents_modal_window_indicating_the_reasons(self, project_with_labor_reason, login, driver):
         # Проверяем наличие необходимых элементов на модальном окне
         labor_cost_page = LaborCostPage(driver)
         labor_cost_page.go_to_labor_cost_page()
@@ -79,7 +78,7 @@ class TestLaborCostPage:
     @testit.displayName("3.1.1.2 Удаление значений в таблице Отчет трудозатрат")
     @pytest.mark.regress
     @allure.title("id-277 3.1.1.2 Удаление значений в таблице Отчет трудозатрат")
-    def test_delete_values_on_labor_cost_report_table(self, f_create_temp_project, login, driver):
+    def test_delete_values_on_labor_cost_report_table(self, simple_project, login, driver):
         labor_cost_page = LaborCostPage(driver)
         labor_cost_page.go_to_labor_cost_page()
         labor_cost_page.choose_period("week")
@@ -88,13 +87,12 @@ class TestLaborCostPage:
     @testit.workItemIds(1464)
     @testit.displayName("Пустой ввод в поле Причина")
     @pytest.mark.regress
-    @pytest.mark.labor_reason("True")
     @allure.title('id-1464 Пустой ввод в поле "Причина"')
-    def test_empty_entry_in_the_reason_field(self, f_create_temp_project, login, driver):
+    def test_empty_entry_in_the_reason_field(self, project_with_labor_reason, login, driver):
         labor_cost_page = LaborCostPage(driver)
         locators = LaborCostPageLocators()
         labor_cost_page.go_to_labor_cost_page()
-        labor_cost_page.open_reason_window(f_create_temp_project["name"])
+        labor_cost_page.open_reason_window(project_with_labor_reason["name"])
         labor_cost_page.input_hours_into_form(6)
         assert labor_cost_page.element_is_clickable(locators.SAVE_WINDOW_BUTTON) == False, 'Кнопка "Сохранить" активна'
 
@@ -103,11 +101,11 @@ class TestLaborCostPage:
     @pytest.mark.regress
     @pytest.mark.labor_reason("True")
     @allure.title('id-1476 Ввод пробела в поле Причина')
-    def test_enter_whitespace_in_the_reason_field(self, f_create_temp_project, login, driver):
+    def test_enter_whitespace_in_the_reason_field(self, project_with_labor_reason, login, driver):
         labor_cost_page = LaborCostPage(driver)
         locators = LaborCostPageLocators()
         labor_cost_page.go_to_labor_cost_page()
-        labor_cost_page.open_reason_window(f_create_temp_project["name"])
+        labor_cost_page.open_reason_window(project_with_labor_reason["name"])
         labor_cost_page.input_hours_into_form(6)
         labor_cost_page.input_reason_into_form(" ")
         labor_cost_page.save_hours_and_reason()
@@ -118,13 +116,12 @@ class TestLaborCostPage:
     @testit.workItemIds(1477)
     @testit.displayName("Превышение допустимого количества символов в поле Причина (255 максимальное количество)")
     @pytest.mark.regress
-    @pytest.mark.labor_reason("True")
     @allure.title('id-1477 Превышение допустимого количества символов в поле "Причина" (255 максимальное количество)')
-    def test_enter_over_max_characters_in_the_reason_field(self, f_create_temp_project, login, driver):
+    def test_enter_over_max_characters_in_the_reason_field(self, project_with_labor_reason, login, driver):
         labor_cost_page = LaborCostPage(driver)
         locators = LaborCostPageLocators()
         labor_cost_page.go_to_labor_cost_page()
-        labor_cost_page.open_reason_window(f_create_temp_project["name"])
+        labor_cost_page.open_reason_window(project_with_labor_reason["name"])
         labor_cost_page.input_hours_into_form(6)
         labor_cost_page.input_reason_into_form("12345678901234567890123456789012345678901234567890"
                                                "12345678901234567890123456789012345678901234567890"
@@ -141,7 +138,7 @@ class TestLaborCostPage:
     @testit.displayName("3.1.1.5. Уведомление пользователей о несохраненных данных в разделе трудозатрат.")
     @pytest.mark.regress
     @allure.title("id-3165 3.1.1.5. Уведомление пользователей о несохраненных данных в разделе трудозатрат.")
-    def test_notify_users_about_unsaved_data(self, f_create_temp_project, login, driver):
+    def test_notify_users_about_unsaved_data(self, simple_project, login, driver):
         labor_cost_page = LaborCostPage(driver)
         labor_cost_page.go_to_labor_cost_page()
         value_after_input = labor_cost_page.input_unsaved_values_on_labor_cost_field()
@@ -216,7 +213,7 @@ class TestLaborCostPage:
     @testit.displayName("3.1.3.1. Добавление переработки на проект на дату, в которую добавлено отсутствие.")
     @pytest.mark.regress
     @allure.title("id-2759 3.1.3.1. Добавление переработки на проект на дату, в которую добавлено отсутствие.")
-    def test_add_overwork_to_absence(self, f_create_temp_project, login, driver):
+    def test_add_overwork_to_absence(self, simple_project, login, driver):
         labor_cost_page = LaborCostPage(driver)
         labor_cost_page.go_to_labor_cost_page()
         time.sleep(1)  # Без ожидания скрипт срабатывает до загрузки страницы
@@ -239,7 +236,7 @@ class TestLaborCostPage:
     @testit.displayName("Ввод пробела в поле Причина на проект с обязательным указанием причины списания")
     @pytest.mark.regress
     @allure.title("id-3634 Ввод пробела в поле Причина на проект с обязательным указанием причины списания")
-    def test_add_space_in_reason_field(self, f_overtime_reason_requirement, f_create_temp_project, login, driver):
+    def test_add_space_in_reason_field(self, f_overtime_reason_requirement, simple_project, login, driver):
         labor_cost_page = LaborCostPage(driver)
         # Проверяем что нет заявлений в таблице. И если есть удаляем
         labor_cost_page.go_to_labor_cost_page()
@@ -258,7 +255,7 @@ class TestLaborCostPage:
     @testit.displayName("Пустой ввод в обязательные поля при добавлении переработки")
     @pytest.mark.regress
     @allure.title("id-2737 Пустой ввод в обязательные поля при добавлении переработки")
-    def test_empty_enter(self, f_create_temp_project, login, driver):
+    def test_empty_enter(self, simple_project, login, driver):
         labor_cost_page = LaborCostPage(driver)
         # Проверяем что нет заявлений в таблице. И если есть удаляем
         labor_cost_page.go_to_labor_cost_page()
@@ -270,7 +267,7 @@ class TestLaborCostPage:
     @testit.displayName("Добавление переработки на проект")
     @pytest.mark.regress
     @allure.title("id-2725 Добавление переработки на проект")
-    def test_adding_processing_to_a_project(self, f_create_temp_project, login, driver):
+    def test_adding_processing_to_a_project(self, simple_project, login, driver):
         labor_cost_page = LaborCostPage(driver)
         # Проверяем что нет заявлений в таблице. И если есть удаляем
         labor_cost_page.go_to_labor_cost_page()

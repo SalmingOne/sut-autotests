@@ -138,7 +138,7 @@ class TestCreateProject:
     @testit.displayName("1.1.1 Создание проекта с неуникальным названием")
     @pytest.mark.smoke
     @allure.title("id-48 1.1.1 Создание проекта с неуникальным названием")
-    def test_creating_a_project_with_non_unique_name(self, f_create_temp_project, login, driver):
+    def test_creating_a_project_with_non_unique_name(self, simple_project, login, driver):
         # Создаем проект
         create_project_drawer_page = CreateProjectDrawerPage(driver)
         create_project_drawer_page.go_to_create_project_drawer_from_menu()
@@ -156,7 +156,7 @@ class TestCreateProject:
     @testit.displayName("1.1.1 Создание проекта с неуникальным кодом")
     @pytest.mark.smoke
     @allure.title("id-1470 1.1.1 Создание проекта с неуникальным кодом")
-    def test_creating_a_project_with_non_unique_code(self, f_create_temp_project, login, driver):
+    def test_creating_a_project_with_non_unique_code(self, simple_project, login, driver):
         # Создаем проект
         create_project_drawer_page = CreateProjectDrawerPage(driver)
         create_project_drawer_page.go_to_create_project_drawer_from_menu()
