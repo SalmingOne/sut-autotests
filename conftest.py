@@ -58,6 +58,18 @@ def project_with_labor_reason():
         laborReasons=True
     ).model_dump()
     response = project_endpoint.create_project_api(json=payload)
+    payload = dict(projectRoleId=1,
+                   projectId=response.json()["id"],
+                   slotId=response.json()["slots"][0]["assignments"][0]['slotId'],
+                   userId=USER_ID,
+                   isProjectManager=True,
+                   startDate=CreateProject().startDate
+                   )
+    assignment_endpoint = AssignmentEndpoint()
+    assignment_endpoint.put_assignment_api(
+        json=payload,
+        assignment_id=str(response.json()["slots"][0]["assignments"][0]["id"])
+    )
     yield response.json()
     project_endpoint.delete_project_api(str(response.json()['id']))
 

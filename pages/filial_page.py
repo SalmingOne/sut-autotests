@@ -42,7 +42,7 @@ class FilialPage(BasePage):
     @testit.step("Проверка всех полей с ограничением в 255 символов")
     @allure.step("Проверка всех полей с ограничением в 255 символов")
     def check_max_lait(self):
-        fields = [self.locators.NAME_FIELD, self.locators.ADDRESS_FIELD, ]
+        fields = [self.locators.NAME_FIELD, self.locators.ADDRESS_FIELD]
         for field in fields:
             self.check_255_symbol_in_field(field)
 
