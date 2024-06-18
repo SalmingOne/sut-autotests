@@ -116,3 +116,23 @@ class TestUserProfilePage:
         assert resume_title in titles, 'Названия резюме нет в таблице'
         assert kebab_menu_items == ['Редактирование', 'Просмотр резюме', 'Копировать', 'Удалить'],\
             'Созданное резюме не доступно для редактирования, удаления, скачивания и копирования'
+
+    @testit.workItemIds(1102)
+    @testit.displayName("10.2.2. Отмена внесенных изменений в личном профиле сотрудника")
+    @pytest.mark.regress
+    @allure.title("id-1102 10.2.2. Отмена внесенных изменений в личном профиле сотрудника")
+    def test_cancel_changes_to_personal_profile(self, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+
+        before = user_profile_page.get_children_text()
+        user_profile_page.press_redact_button()
+        user_profile_page.change_children_text('Измененный текст')
+
+        after = user_profile_page.get_children_text()
+        user_profile_page.check_cansel_changes()
+
+        after_cansel = user_profile_page.get_children_text()
+        assert before != after, 'Значение в поле не изменилось после редактирования'
+        assert before == after_cansel, 'Значение в поле изменилось после отмены редактирования'
+

@@ -245,3 +245,27 @@ class UserProfilePage(BasePage):
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
         time.sleep(1)
         return items_text
+
+    @testit.step("Получение текста с поля дети")
+    @allure.step("Получение текста с поля дети")
+    def get_children_text(self):
+        return self.element_is_visible(self.locators.CHILDREN_TEXT_AREA).text
+
+    @testit.step("Добавление текста в поле дети")
+    @allure.step("Добавление текста в поле дети")
+    def change_children_text(self, text):
+        self.element_is_visible(self.locators.CHILDREN_TEXT_AREA).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.CHILDREN_TEXT_AREA).send_keys(text)
+
+    @testit.step("Проверка модального окна при отмене изменений")
+    @allure.step("Проверка модального окна при отмене изменений")
+    def check_cansel_changes(self):
+        self.element_is_visible(self.locators.BREAK_BUTTON).click()
+        assert self.element_is_visible(self.locators.SUBMIT_BUTTON), 'Отсутствует кнопка Подтвердить'
+        assert self.element_is_visible(self.locators.CANSEL_BUTTON), 'Отсутствует кнопка Отменить'
+        assert self.element_is_visible(self.locators.ALERT_DIALOG_DESCRIPTION).text == ('Внесенные изменения не '
+                                                                                        'сохранятся. Закрыть режим '
+                                                                                        'редактирования?'), \
+            'Не корректный текст в модальном окне'
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+

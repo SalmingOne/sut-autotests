@@ -8,6 +8,11 @@ class UserProfilePageLocators:
 
     PROFILE_TITLE = (By.CSS_SELECTOR, 'h6[class^="MuiTypography-root MuiTypography-subtitle1"]')
     START_WORK = (By.XPATH, '//label[text()="Прием в компанию"]/..//input')
+    CHILDREN_TEXT_AREA = (By.CSS_SELECTOR, 'textarea[name="children"]')
+    # Модальное окно с диалогом
+    ALERT_DIALOG_DESCRIPTION = (By.CSS_SELECTOR, 'p[id="alert-dialog-description"]')
+    SUBMIT_BUTTON = (By.XPATH, '//button[text()="Подтвердить"]')
+    CANSEL_BUTTON = (By.XPATH, '//p[@id="alert-dialog-description"]/..//button[text()="Отменить"]')
     # Вкладка Образование
     EDUCATION_TAB_BUTTON = (By.XPATH, '//button[text()="Образование"]')
     REDACT_BUTTON = (By.XPATH, '//button[text()="Редактировать"]')
