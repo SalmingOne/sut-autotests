@@ -136,3 +136,16 @@ class TestUserProfilePage:
         assert before != after, 'Значение в поле не изменилось после редактирования'
         assert before == after_cansel, 'Значение в поле изменилось после отмены редактирования'
 
+    @testit.workItemIds(4162)
+    @testit.displayName("10.2.1. Переход на другой таб, если не заполнены обязательные поля")
+    @pytest.mark.regress
+    @allure.title("id-4162 10.2.1. Переход на другой таб, если не заполнены обязательные поля")
+    def test_move_to_another_tab_if_required_fields_are_not_filled_in(self, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        user_profile_page.go_to_education_tab()
+        user_profile_page.press_redact_button()
+        user_profile_page.press_add_icon_button()
+        user_profile_page.go_to_user_profile_tab()
+        have_start_work_field = user_profile_page.check_start_work_is_visible()
+        assert have_start_work_field, "Не произошел переход на другой таб"

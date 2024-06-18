@@ -22,6 +22,11 @@ class UserProfilePage(BasePage):
     def go_to_education_tab(self):
         self.element_is_visible(self.locators.EDUCATION_TAB_BUTTON).click()
 
+    @testit.step("Переходим на вкладку профиль пользователя")
+    @allure.step("Переходим на вкладку профиль пользователя")
+    def go_to_user_profile_tab(self):
+        self.element_is_visible(self.locators.MY_PROFILE_TAB_BUTTON).click()
+
     @testit.step("Переходим на вкладку резюме")
     @allure.step("Переходим на вкладку резюме")
     def go_to_resume_tab(self):
@@ -268,4 +273,9 @@ class UserProfilePage(BasePage):
                                                                                         'редактирования?'), \
             'Не корректный текст в модальном окне'
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+
+    @testit.step("Проверка перехода на другой таб")
+    @allure.step("Проверка перехода на другой таб")
+    def check_start_work_is_visible(self):
+        return self.element_is_displayed(self.locators.START_WORK)
 
