@@ -9,6 +9,9 @@ class UserProfilePageLocators:
     PROFILE_TITLE = (By.CSS_SELECTOR, 'h6[class^="MuiTypography-root MuiTypography-subtitle1"]')
     START_WORK = (By.XPATH, '//label[text()="Прием в компанию"]/..//input')
     CHILDREN_TEXT_AREA = (By.CSS_SELECTOR, 'textarea[name="children"]')
+    FAMILY_STATUS = (By.XPATH, '//div[@name="maritalStatus"]//input')
+    NOT_SELECTED_LI = (By.CSS_SELECTOR, 'li[role="option"][aria-selected="false"]')
+    BORN_DATE = (By.XPATH, '//label[text()="Дата рождения"]/..//input')
     # Модальное окно с диалогом
     ALERT_DIALOG_DESCRIPTION = (By.CSS_SELECTOR, 'p[id="alert-dialog-description"]')
 

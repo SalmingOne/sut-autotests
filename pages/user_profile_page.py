@@ -1,3 +1,4 @@
+import random
 import time
 
 import allure
@@ -278,4 +279,21 @@ class UserProfilePage(BasePage):
     @allure.step("Проверка перехода на другой таб")
     def check_start_work_is_visible(self):
         return self.element_is_displayed(self.locators.START_WORK)
+
+    @testit.step("Получение дополнительной информации профиля")
+    @allure.step("Получение дополнительной информации профиля")
+    def get_additional_information(self):
+        family_statys = self.element_is_visible(self.locators.FAMILY_STATUS).get_attribute('value')
+        children = self.element_is_visible(self.locators.CHILDREN_TEXT_AREA).text
+        born_date = self.element_is_visible(self.locators.BORN_DATE).get_attribute('value')
+        return family_statys, children, born_date
+
+    @testit.step("Изменение дополнительной информации профиля")
+    @allure.step("Изменение дополнительной информации профиля")
+    def input_additional_information(self):
+        self.element_is_visible(self.locators.FAMILY_STATUS).click()
+        self.elements_are_visible(self.locators.NOT_SELECTED_LI)[0].click()
+        self.change_children_text(f'сын {random.randint(1,10000)}')
+        self.element_is_visible(self.locators.BORN_DATE).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.BORN_DATE).send_keys(f'02.03.{random.randint(1,2000)}')
 
