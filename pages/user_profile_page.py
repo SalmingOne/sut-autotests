@@ -1,3 +1,4 @@
+import random
 import time
 
 import allure
@@ -21,6 +22,11 @@ class UserProfilePage(BasePage):
     @allure.step("Переходим на вкладку образование")
     def go_to_education_tab(self):
         self.element_is_visible(self.locators.EDUCATION_TAB_BUTTON).click()
+
+    @testit.step("Переходим на вкладку профиль пользователя")
+    @allure.step("Переходим на вкладку профиль пользователя")
+    def go_to_user_profile_tab(self):
+        self.element_is_visible(self.locators.MY_PROFILE_TAB_BUTTON).click()
 
     @testit.step("Переходим на вкладку резюме")
     @allure.step("Переходим на вкладку резюме")
@@ -245,3 +251,49 @@ class UserProfilePage(BasePage):
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
         time.sleep(1)
         return items_text
+
+    @testit.step("Получение текста с поля дети")
+    @allure.step("Получение текста с поля дети")
+    def get_children_text(self):
+        return self.element_is_visible(self.locators.CHILDREN_TEXT_AREA).text
+
+    @testit.step("Добавление текста в поле дети")
+    @allure.step("Добавление текста в поле дети")
+    def change_children_text(self, text):
+        self.element_is_visible(self.locators.CHILDREN_TEXT_AREA).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.CHILDREN_TEXT_AREA).send_keys(text)
+
+    @testit.step("Проверка модального окна при отмене изменений")
+    @allure.step("Проверка модального окна при отмене изменений")
+    def check_cansel_changes(self):
+        self.element_is_visible(self.locators.BREAK_BUTTON).click()
+        assert self.element_is_visible(self.locators.SUBMIT_BUTTON), 'Отсутствует кнопка Подтвердить'
+        assert self.element_is_visible(self.locators.CANSEL_BUTTON), 'Отсутствует кнопка Отменить'
+        assert self.element_is_visible(self.locators.ALERT_DIALOG_DESCRIPTION).text == ('Внесенные изменения не '
+                                                                                        'сохранятся. Закрыть режим '
+                                                                                        'редактирования?'), \
+            'Не корректный текст в модальном окне'
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+
+    @testit.step("Проверка перехода на другой таб")
+    @allure.step("Проверка перехода на другой таб")
+    def check_start_work_is_visible(self):
+        return self.element_is_displayed(self.locators.START_WORK)
+
+    @testit.step("Получение дополнительной информации профиля")
+    @allure.step("Получение дополнительной информации профиля")
+    def get_additional_information(self):
+        family_statys = self.element_is_visible(self.locators.FAMILY_STATUS).get_attribute('value')
+        children = self.element_is_visible(self.locators.CHILDREN_TEXT_AREA).text
+        born_date = self.element_is_visible(self.locators.BORN_DATE).get_attribute('value')
+        return family_statys, children, born_date
+
+    @testit.step("Изменение дополнительной информации профиля")
+    @allure.step("Изменение дополнительной информации профиля")
+    def input_additional_information(self):
+        self.element_is_visible(self.locators.FAMILY_STATUS).click()
+        self.elements_are_visible(self.locators.NOT_SELECTED_LI)[0].click()
+        self.change_children_text(f'сын {random.randint(1,10000)}')
+        self.element_is_visible(self.locators.BORN_DATE).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.BORN_DATE).send_keys(f'02.03.{random.randint(1,2000)}')
+

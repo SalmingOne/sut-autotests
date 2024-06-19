@@ -13,7 +13,7 @@ class TestAuditPage:
     @testit.displayName("6.4.1 Содержание страницы Аудит")
     @pytest.mark.smoke
     @allure.title("id-1200 6.4.1 Содержание страницы Аудит")
-    def test_view_audit_page(self, login, driver):
+    def test_view_audit_page(self, login, logging_on, driver):
         audit_page = AuditPage(driver)
         audit_page.go_to_audit_page()
         audit_page.check_columns_headers()

@@ -116,3 +116,54 @@ class TestUserProfilePage:
         assert resume_title in titles, 'Названия резюме нет в таблице'
         assert kebab_menu_items == ['Редактирование', 'Просмотр резюме', 'Копировать', 'Удалить'],\
             'Созданное резюме не доступно для редактирования, удаления, скачивания и копирования'
+
+    @testit.workItemIds(1102)
+    @testit.displayName("10.2.2. Отмена внесенных изменений в личном профиле сотрудника")
+    @pytest.mark.regress
+    @allure.title("id-1102 10.2.2. Отмена внесенных изменений в личном профиле сотрудника")
+    def test_cancel_changes_to_personal_profile(self, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+
+        before = user_profile_page.get_children_text()
+        user_profile_page.press_redact_button()
+        user_profile_page.change_children_text('Измененный текст')
+
+        after = user_profile_page.get_children_text()
+        user_profile_page.check_cansel_changes()
+
+        after_cansel = user_profile_page.get_children_text()
+        assert before != after, 'Значение в поле не изменилось после редактирования'
+        assert before == after_cansel, 'Значение в поле изменилось после отмены редактирования'
+
+    @testit.workItemIds(4162)
+    @testit.displayName("10.2.1. Переход на другой таб, если не заполнены обязательные поля")
+    @pytest.mark.regress
+    @allure.title("id-4162 10.2.1. Переход на другой таб, если не заполнены обязательные поля")
+    def test_move_to_another_tab_if_required_fields_are_not_filled_in(self, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        user_profile_page.go_to_education_tab()
+        user_profile_page.press_redact_button()
+        user_profile_page.press_add_icon_button()
+        user_profile_page.go_to_user_profile_tab()
+        have_start_work_field = user_profile_page.check_start_work_is_visible()
+        assert have_start_work_field, "Не произошел переход на другой таб"
+
+    @testit.workItemIds(1146)
+    @testit.displayName("10.2.2. Редактирование раздела Дополнительная информация в личном профиле сотрудника")
+    @pytest.mark.regress
+    @allure.title("id-1146 10.2.2. Редактирование раздела Дополнительная информация в личном профиле сотрудника")
+    def test_editing_the_additional_information_section_in_personal_profile(self, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        before = user_profile_page.get_additional_information()
+        user_profile_page.press_redact_button()
+        time.sleep(1)
+        user_profile_page.input_additional_information()
+        user_profile_page.press_save_button()
+        time.sleep(1)
+        after = user_profile_page.get_additional_information()
+        assert before[0] != after[0], 'Семейное положение не изменилось'
+        assert before[1] != after[1], 'Информация о детях не изменилась'
+        assert before[2] != after[2], 'Дата рождения не изменилась'

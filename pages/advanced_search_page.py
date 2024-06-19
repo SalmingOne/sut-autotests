@@ -2,6 +2,7 @@ import time
 
 import allure
 import testit
+from selenium.common import TimeoutException
 
 from locators.advanced_search_page_locators import AdvancedSearchPageLocators
 from pages.base_page import BasePage
@@ -31,13 +32,18 @@ class AdvancedSearchPage(BasePage):
         self.elements_are_visible(self.locators.LI_MENU_ITEM)[1].click()
         time.sleep(1)
         self.elements_are_visible(self.locators.OPEN_BUTTONS)[2].click()
-        condition_value = self.elements_are_visible(self.locators.LI_MENU_ITEM)[1].text
-        self.elements_are_visible(self.locators.LI_MENU_ITEM)[1].click()
+        try:
+            condition_value = self.elements_are_visible(self.locators.LI_MENU_ITEM, 2)[1].text
+            self.elements_are_visible(self.locators.LI_MENU_ITEM)[1].click()
+        except TimeoutException:
+            self.elements_are_visible(self.locators.OPEN_BUTTONS)[2].click()
+            condition_value = self.elements_are_visible(self.locators.LI_MENU_ITEM)[1].text
+            self.elements_are_visible(self.locators.LI_MENU_ITEM)[1].click()
 
         self.element_is_visible(self.locators.SAVE_SEARCH_BUTTON).click()
         self.element_is_visible(self.locators.SEARCH_NAME_FIELD).send_keys('Авто-поиск')
         self.element_is_visible(self.locators.CHECK_ICON).click()
-        return 'Авто-поиск', criterion_value, operator_value, condition_value[:-3]
+        return 'Авто-поиск', criterion_value, operator_value, condition_value.split('(')[0].rstrip()
 
     @testit.step("Получение названий сохраненных поисков")
     @allure.step("Получение названий сохраненных поисков")
