@@ -414,3 +414,21 @@ class UserProfilePage(BasePage):
     def delete_file_from_site(self):
         self.elements_are_visible(self.locators.DELETE_ICON)[1].click()
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+
+    @testit.step("Проверка и заполнение формы сертификата")
+    @allure.step("Проверка и заполнение формы сертификата")
+    def check_and_field_certificate_form(self):
+        self.element_is_visible(self.locators.CERTIFICATE_NAME).send_keys(f'Сертификат {random.randint(1, 1000)}')
+        self.element_is_visible(self.locators.CERTIFICATE_DATA_PICKER).click()
+        assert not self.element_is_clickable(self.locators.DAY_AFTER_THIS_DAY_PICKER, 2), \
+            'Можно выбрать завтрашнюю дату'
+        self.element_is_visible(self.locators.CERTIFICATE_DATA_PICKER).click()
+        assert self.element_is_displayed(self.locators.DELETE_ICON), 'Нет иконки удаления'
+
+    @testit.step("Нажимаем иконку удаления")
+    @allure.step("Нажимаем иконку удаления")
+    def press_delete_icon(self):
+        self.elements_are_visible(self.locators.DELETE_ICON)[0].click()
+
+
+

@@ -207,7 +207,37 @@ class TestUserProfilePage:
         user_profile_page.delete_file('диплом.docx')
         assert 'Файл сохранен' in message, "Не появилось сообщение файл сохранен"
 
-
+    @testit.workItemIds(1143)
+    @testit.displayName("10.2.2. Добавление сертификата в разделе Сертификаты в личном профиле сотрудника")
+    @pytest.mark.regress
+    @allure.title("id-1143 10.2.2. Добавление сертификата в разделе Сертификаты в личном профиле сотрудника")
+    def test_adding_a_certificate_file_in_the_certificate_tab(self, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        user_profile_page.go_to_certificate_tab()
+        user_profile_page.press_redact_button()
+        time.sleep(1)
+        # Добавляем сертификат
+        user_profile_page.press_add_icon_button()
+        time.sleep(1)
+        user_profile_page.check_and_field_certificate_form()
+        user_profile_page.add_file('сертификат.pdf', 'Сертификат FANG')
+        user_profile_page.check_add_file('сертификат.pdf')
+        user_profile_page.press_save_button()
+        user_profile_page.press_save_button()
+        time.sleep(1)
+        # Проверяем сообщение
+        message = user_profile_page.get_alert_message()
+        user_profile_page.go_to_certificate_tab()
+        time.sleep(1)
+        user_profile_page.check_download_file_icon()
+        # Удаляем сертификат
+        user_profile_page.press_redact_button()
+        time.sleep(1)
+        user_profile_page.press_delete_icon()
+        user_profile_page.press_save_button()
+        user_profile_page.delete_file('сертификат.pdf')
+        assert 'Файл сохранен' in message, "Не появилось сообщение файл сохранен"
 
 
 
