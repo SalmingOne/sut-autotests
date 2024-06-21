@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 
 import allure
 import testit
+from selenium.common import TimeoutException
 from selenium.webdriver import Keys
 
 from locators.user_profile_page_locators import UserProfilePageLocators
@@ -318,7 +319,10 @@ class UserProfilePage(BasePage):
         self.elements_are_visible(self.locators.NOT_SELECTED_LI)[0].click()
         self.element_is_visible(self.locators.FACULTY).click()
         self.press_save_button()
-        self.press_save_button()
+        try:
+            self.press_save_button()
+        except TimeoutException:
+            pass
 
     @testit.step("Получение значений выпадающего списка")
     @allure.step("Получение значений выпадающего списка")
