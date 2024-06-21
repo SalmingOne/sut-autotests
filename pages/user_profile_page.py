@@ -434,5 +434,10 @@ class UserProfilePage(BasePage):
     def press_delete_icon(self):
         self.elements_are_visible(self.locators.DELETE_ICON)[0].click()
 
+    @testit.step("Проверка иконки удаления")
+    @allure.step("Проверка иконки удаления")
+    def check_delete_icon(self):
+        assert self.element_is_displayed(self.locators.DELETE_ICON), "Нет иконки удаления"
+
 
 
