@@ -167,3 +167,50 @@ class TestUserProfilePage:
         assert before[0] != after[0], 'Семейное положение не изменилось'
         assert before[1] != after[1], 'Информация о детях не изменилась'
         assert before[2] != after[2], 'Дата рождения не изменилась'
+
+    @testit.workItemIds(1134)
+    @testit.displayName("10.2.2. Добавление файла диплома в разделе Образование в личном профиле сотрудника")
+    @pytest.mark.regress
+    @allure.title("id-1134 10.2.2. Добавление файла диплома в разделе Образование в личном профиле сотрудника")
+    def test_adding_a_diploma_file_in_the_education_section(self, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        user_profile_page.go_to_education_tab()
+        # Создаем диплом если его нет
+        if user_profile_page.check_diploma_title():
+            pass
+        else:
+            user_profile_page.add_simple_diploma()
+            time.sleep(1)
+            user_profile_page.go_to_education_tab()
+        user_profile_page.press_redact_button()
+        time.sleep(1)
+        # Проверяем поля раздела образование
+        user_profile_page.check_education_form()
+        # Добавляем диплом
+        user_profile_page.add_file('диплом.docx', 'Диплом')
+        user_profile_page.check_add_file('диплом.docx')
+        time.sleep(1)
+        user_profile_page.press_save_button()
+        user_profile_page.press_save_button()
+        time.sleep(2)
+        # Проверяем сообщение
+        message = user_profile_page.get_alert_message()
+        user_profile_page.go_to_education_tab()
+        time.sleep(1)
+        user_profile_page.check_download_file_icon()
+        # Удаляем файл с сайта
+        user_profile_page.press_redact_button()
+        time.sleep(1)
+        user_profile_page.delete_file_from_site()
+        user_profile_page.press_save_button()
+        user_profile_page.delete_file('диплом.docx')
+        assert 'Файл сохранен' in message, "Не появилось сообщение файл сохранен"
+
+
+
+
+
+
+
+

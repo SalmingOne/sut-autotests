@@ -1,5 +1,7 @@
+import os
 import random
 import time
+from datetime import datetime, timedelta
 
 import allure
 import testit
@@ -58,6 +60,7 @@ class UserProfilePage(BasePage):
     @testit.step("Нажимаем кнопку сохранения")
     @allure.step("Нажимаем кнопку сохранения")
     def press_save_button(self):
+        time.sleep(1)  # Без этого ожидания не всегда нажимается кнопка
         self.element_is_visible(self.locators.SAVE_BUTTON).click()
 
     @testit.step("Берем текст сообщения системы")
@@ -115,7 +118,7 @@ class UserProfilePage(BasePage):
         full_name = self.element_is_visible(self.locators.RESUME_FULL_NAME_FIELD).get_attribute('value')
         start_work_resume = self.element_is_visible(self.locators.START_WORK_IN_RESUME).get_attribute('value')
 
-        assert self.get_day_before_y_m_d(0) and name in resume_title,\
+        assert self.get_day_before_y_m_d(0) and name in resume_title, \
             'Название резюме по умолчанию не содержит ФИО пользователя или текущую дату'
         assert name == full_name, 'ФИО не подтянулось из карточки пользователя'
         assert start_work == start_work_resume, 'Дата начала работы в компании не подтянулась из профиля'
@@ -152,14 +155,15 @@ class UserProfilePage(BasePage):
     @allure.step("Проверка тултипа поля должность")
     def check_post_tooltip(self):
         self.action_move_to_element(self.element_is_visible(self.locators.RESUME_POST_FIELD))
-        assert self.element_is_visible(self.locators.TOOLTIP).text == 'Пример: Разработчик, Developer, Аналитик, Lead QA и т.д.',\
+        assert self.element_is_visible(
+            self.locators.TOOLTIP).text == 'Пример: Разработчик, Developer, Аналитик, Lead QA и т.д.', \
             'Не корректный тултип при наведении на поле должность'
 
     @testit.step("Проверка тултипа поля Место проживания")
     @allure.step("Проверка тултипа поля Место проживания")
     def check_direction_tooltip(self):
         self.action_move_to_element(self.element_is_visible(self.locators.RESUME_DIRECTION_FIELD))
-        assert self.element_is_visible(self.locators.TOOLTIP).text == 'Пример: Россия, Москва',\
+        assert self.element_is_visible(self.locators.TOOLTIP).text == 'Пример: Россия, Москва', \
             'Не корректный тултип при наведении на полеМесто проживания'
 
     @testit.step("Проверка дропдауна готовность к работе")
@@ -293,7 +297,120 @@ class UserProfilePage(BasePage):
     def input_additional_information(self):
         self.element_is_visible(self.locators.FAMILY_STATUS).click()
         self.elements_are_visible(self.locators.NOT_SELECTED_LI)[0].click()
-        self.change_children_text(f'сын {random.randint(1,10000)}')
+        self.change_children_text(f'сын {random.randint(1, 10000)}')
         self.element_is_visible(self.locators.BORN_DATE).send_keys(Keys.CONTROL + 'a')
-        self.element_is_visible(self.locators.BORN_DATE).send_keys(f'02.03.{random.randint(1,2000)}')
+        self.element_is_visible(self.locators.BORN_DATE).send_keys(f'02.03.{random.randint(1, 2000)}')
 
+    @testit.step("Проверка заголовка диплом")
+    @allure.step("Проверка заголовка диплом")
+    def check_diploma_title(self):
+        return self.element_is_displayed(self.locators.CHECK_DIPLOMA_TITLE, 1)
+
+    @testit.step("Добавление простого диплома")
+    @allure.step("Добавление простого диплома")
+    def add_simple_diploma(self):
+        self.press_redact_button()
+        time.sleep(1)
+        self.element_is_visible(self.locators.ADD_ICON).click()
+        self.element_is_visible(self.locators.EDUCATION_FORM).click()
+        self.elements_are_visible(self.locators.NOT_SELECTED_LI)[0].click()
+        self.element_is_visible(self.locators.EDUCATION_LEVEL).click()
+        self.elements_are_visible(self.locators.NOT_SELECTED_LI)[0].click()
+        self.element_is_visible(self.locators.FACULTY).click()
+        self.press_save_button()
+        self.press_save_button()
+
+    @testit.step("Получение значений выпадающего списка")
+    @allure.step("Получение значений выпадающего списка")
+    def get_dropdown_menu_items(self, locator):
+        self.element_is_visible(locator).click()
+        time.sleep(1)
+        all_items = self.elements_are_visible(self.locators.LI_MENU_ITEM)
+        menu_item_text = []
+        for item in all_items:
+            self.action_move_to_element(item)
+            menu_item_text.append(item.text)
+        self.element_is_visible(locator).send_keys(Keys.RETURN)
+        return menu_item_text
+
+    @testit.step("Проверка ограничения в 128 символов для поля")
+    @allure.step("Проверка ограничения в 128 символов для поля")
+    def check_128_symbol_in_field(self, locator):
+        bed_value = ('Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt'
+                     ' ut laoreet dolore magna aliquam')
+        self.element_is_visible(locator).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(locator).send_keys(bed_value)
+        self.element_is_visible(self.locators.EDUCATION_FORM).click()
+        error_text = self.element_is_visible(self.locators.MUI_ERROR).text
+        time.sleep(2)
+        self.element_is_visible(locator).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(locator).send_keys('1')
+        self.element_is_visible(self.locators.EDUCATION_FORM).click()
+        assert error_text == 'Максимальное количество символов: 128', \
+            "Не появилось сообщение о превышении максимального количества символов"
+
+    @testit.step("Проверка поля дата окончания")
+    @allure.step("Проверка поля дата окончания")
+    def check_year_of_graduation_field(self):
+        self.element_is_visible(self.locators.YEAR_OF_GRADUATION).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.YEAR_OF_GRADUATION).send_keys('1949')
+        self.element_is_visible(self.locators.EDUCATION_FORM).click()
+        error_text = self.element_is_visible(self.locators.MUI_ERROR).text
+        assert error_text == 'Введите год не ранее 1950', 'Можно ввести год ранее 1950'
+        plus_11_year = datetime.now() + timedelta(days=4015)
+        self.element_is_visible(self.locators.YEAR_OF_GRADUATION).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.YEAR_OF_GRADUATION).send_keys(plus_11_year.strftime("%Y"))
+        self.element_is_visible(self.locators.EDUCATION_FORM).click()
+        error_text = self.element_is_visible(self.locators.MUI_ERROR).text
+        self.element_is_visible(self.locators.YEAR_OF_GRADUATION).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.YEAR_OF_GRADUATION).send_keys(datetime.now().strftime("%Y"))
+        assert 'Введите год не позднее' in error_text, 'Можно ввести год позднее текущий год плюс 10 лет'
+
+    @testit.step("Проверка содержания раздела образование")
+    @allure.step("Проверка содержания раздела образование")
+    def check_education_form(self):
+        educations = self.get_dropdown_menu_items(self.locators.EDUCATION_FORM)
+        directions = self.get_dropdown_menu_items(self.locators.DIRECTION)
+        levels = self.get_dropdown_menu_items(self.locators.EDUCATION_LEVEL)
+        self.check_128_symbol_in_field(self.locators.FACULTY_NAME)
+        self.check_128_symbol_in_field(self.locators.SPECIALIZATION_NAME)
+        self.check_year_of_graduation_field()
+
+        assert educations == ['Заочное', 'Очное', 'Очно-заочное'], 'Не корректный список в дропдауне Форма обучения'
+        assert directions == ['Гуманитарное', 'Техническое'], 'Не корректный список в дропдауне Направление'
+        assert levels == ['Студент', 'Среднее профессиональное', 'Повышение квалификации', 'Неполное высшее',
+                          'Специалист', 'Начальное профессиональное образование', 'Бакалавр', 'Доктор наук',
+                          'Кандидат наук', 'Магистр'], 'Не корректный список в дропдауне Образовательно-квалификационный уровень'
+        assert self.element_is_displayed(self.locators.INSTITUTION_NAME), 'Нет поля Название образовательного учреждения'
+        assert self.element_is_displayed(self.locators.DELETE_ICON), 'Нет иконки удаления'
+        assert self.element_is_displayed(self.locators.ADD_ICON), 'Нет иконки добавления'
+
+    @testit.step("Добавление файла")
+    @allure.step("Добавление файла")
+    def add_file(self, name, text):
+        file = open(os.path.abspath(rf'../{name}'), 'w+')
+        file.write(f'{text}')
+        file.close()
+        self.element_is_present(self.locators.FILE_INPUT).send_keys(os.path.abspath(rf'../{name}'))
+
+    @testit.step("Проверка добавления файла")
+    @allure.step("Проверка добавления файла")
+    def check_add_file(self, name):
+        file_name = self.element_is_visible(self.locators.FILE_INPUT_CHECK).text
+        assert file_name == name, "Файл не добавился или добавился не сте именем"
+
+    @testit.step("Удаление файла")
+    @allure.step("Удаление файла")
+    def delete_file(self, name):
+        os.remove(rf'../{name}')
+
+    @testit.step("Проверка иконки скачивания файла")
+    @allure.step("Проверка иконки скачивания файла")
+    def check_download_file_icon(self):
+        assert self.element_is_displayed(self.locators.FILE_DOWNLOAD_ICON), "Нет иконки скачивания файла"
+
+    @testit.step("Удаление файла с сайта")
+    @allure.step("Удаление файла с сайта")
+    def delete_file_from_site(self):
+        self.elements_are_visible(self.locators.DELETE_ICON)[1].click()
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
