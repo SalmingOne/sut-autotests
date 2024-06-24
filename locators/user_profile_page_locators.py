@@ -44,6 +44,7 @@ class UserProfilePageLocators:
     CERTIFICATE_NAME = (By.CSS_SELECTOR, 'input[placeholder="Введите название"]')
     CERTIFICATE_DATA_PICKER = (By.CSS_SELECTOR, 'svg[data-testid="CalendarTodayOutlinedIcon"]')
     DAY_AFTER_THIS_DAY_PICKER = (By.XPATH, '//button[contains(@class, "MuiPickersDay-today")]//following::button[1]')
+    CERTIFICATE_TITLE = (By.XPATH, '//a[contains(@class,"MuiTypography-root MuiTypography-body2 MuiLink-root MuiLink-underlineHover")]//h6')
     # Вкладка Опыт работы
     EXPERIENCES_TAB_BUTTON = (By.XPATH, '//button[text()="Опыт работы"]')
     # Вкладка Резюме
