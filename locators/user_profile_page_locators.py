@@ -41,6 +41,9 @@ class UserProfilePageLocators:
     ALERT_TEXT = (By.XPATH, '//div[contains(@class, "MuiAlert-message")]')
     # Вкладка Сертификаты
     CERTIFICATE_TAB_BUTTON = (By.XPATH, '//button[text()="Сертификаты"]')
+    CERTIFICATE_NAME = (By.CSS_SELECTOR, 'input[placeholder="Введите название"]')
+    CERTIFICATE_DATA_PICKER = (By.CSS_SELECTOR, 'svg[data-testid="CalendarTodayOutlinedIcon"]')
+    DAY_AFTER_THIS_DAY_PICKER = (By.XPATH, '//button[contains(@class, "MuiPickersDay-today")]//following::button[1]')
     # Вкладка Опыт работы
     EXPERIENCES_TAB_BUTTON = (By.XPATH, '//button[text()="Опыт работы"]')
     # Вкладка Резюме

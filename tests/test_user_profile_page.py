@@ -4,6 +4,9 @@ import allure
 import pytest
 import testit
 
+from pages.colleagues_page import ColleaguesPage
+from pages.create_local_user_drawer_page import CreateLocalUserDrawerPage
+from pages.user_page import UserPage
 from pages.user_profile_page import UserProfilePage
 
 
@@ -89,6 +92,7 @@ class TestUserProfilePage:
         user_profile_page.check_direction_tooltip()
         user_profile_page.check_ready_to_work_dropdown()
         user_profile_page.check_date_pikers()
+        user_profile_page.check_delete_icon()
         user_profile_page.check_wysiwyg_titles()
         user_profile_page.check_wysiwyg_functions_titles()
         user_profile_page.check_break_button()
@@ -114,7 +118,7 @@ class TestUserProfilePage:
 
         assert message == ['Резюме создано'], 'Не появилось сообщение о создании резюме'
         assert resume_title in titles, 'Названия резюме нет в таблице'
-        assert kebab_menu_items == ['Редактирование', 'Просмотр резюме', 'Копировать', 'Удалить'],\
+        assert kebab_menu_items == ['Редактирование', 'Просмотр резюме', 'Копировать', 'Удалить'], \
             'Созданное резюме не доступно для редактирования, удаления, скачивания и копирования'
 
     @testit.workItemIds(1102)
@@ -207,10 +211,203 @@ class TestUserProfilePage:
         user_profile_page.delete_file('диплом.docx')
         assert 'Файл сохранен' in message, "Не появилось сообщение файл сохранен"
 
+    @testit.workItemIds(1143)
+    @testit.displayName("10.2.2. Добавление сертификата в разделе Сертификаты в личном профиле сотрудника")
+    @pytest.mark.regress
+    @allure.title("id-1143 10.2.2. Добавление сертификата в разделе Сертификаты в личном профиле сотрудника")
+    def test_adding_a_certificate_file_in_the_certificate_tab(self, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        user_profile_page.go_to_certificate_tab()
+        user_profile_page.press_redact_button()
+        time.sleep(1)
+        # Добавляем сертификат
+        user_profile_page.press_add_icon_button()
+        time.sleep(1)
+        user_profile_page.check_and_field_certificate_form()
+        user_profile_page.add_file('сертификат.pdf', 'Сертификат FANG')
+        user_profile_page.check_add_file('сертификат.pdf')
+        user_profile_page.press_save_button()
+        user_profile_page.press_save_button()
+        time.sleep(1)
+        # Проверяем сообщение
+        message = user_profile_page.get_alert_message()
+        user_profile_page.go_to_certificate_tab()
+        time.sleep(1)
+        user_profile_page.check_download_file_icon()
+        # Удаляем сертификат
+        user_profile_page.press_redact_button()
+        time.sleep(1)
+        user_profile_page.press_delete_icon()
+        user_profile_page.press_save_button()
+        user_profile_page.delete_file('сертификат.pdf')
+        assert 'Файл сохранен' in message, "Не появилось сообщение файл сохранен"
 
+    @testit.workItemIds(2106)
+    @testit.displayName("10.2.2. Редактирование раздела Информация о сотруднике в чужом профиле")
+    @pytest.mark.regress
+    @allure.title("id-2106 10.2.2. Редактирование раздела Информация о сотруднике в чужом профиле")
+    def test_editing_the_employee_information_section_in_someone_else_profile(self, create_work_user, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        colleagues_page = ColleaguesPage(driver)
+        user_page = UserPage(driver)
+        user_page.go_to_user_page()
+        # Проверяем, что есть нужный пользователь
+        if not user_page.check_user_is_not_in_table('АвтоСПроектом'):
+            create_local_user_page = CreateLocalUserDrawerPage(driver)
+            create_local_user_page.go_to_create_local_user_drawer()
+            create_local_user_page.field_required_fields('AutoTester1', 'АвтоСПроектом', 'auto_testt@mail.rruu', 'yes')
+        else:
+            pass
+        # Проводим тест
+        colleagues_page.go_colleagues_page()
+        colleagues_page.search_user('АвтоСПроектом')
+        time.sleep(1)
+        colleagues_page.check_user_name_link()
 
+        user_name = user_profile_page.get_title()
+        before = user_profile_page.get_additional_information()
+        user_profile_page.press_redact_button()
+        time.sleep(1)
+        user_profile_page.input_additional_information()
+        user_profile_page.press_save_button()
+        time.sleep(1)
+        after = user_profile_page.get_additional_information()
+        assert 'АвтоСПроектом' in user_name, "Не произошел переход на страницу пользователя"
+        assert before[0] != after[0], 'Семейное положение не изменилось'
+        assert before[1] != after[1], 'Информация о детях не изменилась'
+        assert before[2] != after[2], 'Дата рождения не изменилась'
 
+    @testit.workItemIds(2099)
+    @testit.displayName("10.2.2. Добавление карточки нового диплома в разделе Образование в чужом профиле")
+    @pytest.mark.regress
+    @allure.title("id-2099 10.2.2. Добавление карточки нового диплома в разделе Образование в чужом профиле")
+    def test_adding_a_diploma_card_in_the_education_section_in_someone_else_profile(self, create_work_user, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        colleagues_page = ColleaguesPage(driver)
+        user_page = UserPage(driver)
+        user_page.go_to_user_page()
+        # Проверяем, что есть нужный пользователь
+        if not user_page.check_user_is_not_in_table('АвтоСПроектом'):
+            create_local_user_page = CreateLocalUserDrawerPage(driver)
+            create_local_user_page.go_to_create_local_user_drawer()
+            create_local_user_page.field_required_fields('AutoTester1', 'АвтоСПроектом', 'auto_testt@mail.rruu', 'yes')
+        else:
+            pass
+        # Проводим тест
+        colleagues_page.go_colleagues_page()
+        colleagues_page.search_user('АвтоСПроектом')
+        time.sleep(1)
+        colleagues_page.check_user_name_link()
+        user_name = user_profile_page.get_title()
+        user_profile_page.go_to_education_tab()
+        # Удаляем диплом если есть
+        if user_profile_page.check_diploma_title():
+            user_profile_page.press_redact_button()
+            time.sleep(1)
+            user_profile_page.press_delete_icon()
+            user_profile_page.press_save_button()
+        else:
+            pass
+        # Добавляем диплом
+        user_profile_page.add_simple_diploma()
+        time.sleep(1)
+        # Удаляем диплом после теста
+        user_profile_page.go_to_education_tab()
+        user_profile_page.press_redact_button()
+        time.sleep(1)
+        user_profile_page.press_delete_icon()
+        user_profile_page.press_save_button()
 
+        assert 'АвтоСПроектом' in user_name, "Не произошел переход на страницу пользователя"
 
+    @testit.workItemIds(2101)
+    @testit.displayName("10.2.2. Добавление файла диплома в разделе Образование в чужом профиле")
+    @pytest.mark.regress
+    @allure.title("id-2101 10.2.2. Добавление файла диплома в разделе Образование в чужом профиле")
+    def test_adding_a_diploma_file_in_the_education_section_in_someone_else_profile(self, create_work_user, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        colleagues_page = ColleaguesPage(driver)
+        user_page = UserPage(driver)
+        user_page.go_to_user_page()
+        # Проверяем, что есть нужный пользователь
+        if not user_page.check_user_is_not_in_table('АвтоСПроектом'):
+            create_local_user_page = CreateLocalUserDrawerPage(driver)
+            create_local_user_page.go_to_create_local_user_drawer()
+            create_local_user_page.field_required_fields('AutoTester1', 'АвтоСПроектом', 'auto_testt@mail.rruu', 'yes')
+        else:
+            pass
+        # Проводим тест
+        colleagues_page.go_colleagues_page()
+        colleagues_page.search_user('АвтоСПроектом')
+        time.sleep(1)
+        colleagues_page.check_user_name_link()
+        user_name = user_profile_page.get_title()
+        user_profile_page.go_to_education_tab()
+        # Создаем диплом если его нет
+        if user_profile_page.check_diploma_title():
+            pass
+        else:
+            user_profile_page.add_simple_diploma()
+            time.sleep(1)
+            user_profile_page.go_to_education_tab()
+        user_profile_page.press_redact_button()
+        time.sleep(1)
+        # Добавляем диплом
+        user_profile_page.add_file('диплом.docx', 'Диплом')
+        user_profile_page.check_add_file('диплом.docx')
+        time.sleep(1)
+        user_profile_page.press_save_button()
+        time.sleep(1)
+        # Проверяем сообщение
+        message = user_profile_page.get_alert_message()
+        time.sleep(1)
+        user_profile_page.check_download_file_icon()
+        # Удаляем файл с сайта
+        user_profile_page.press_redact_button()
+        time.sleep(1)
+        user_profile_page.delete_file_from_site()
+        user_profile_page.press_save_button()
+        user_profile_page.delete_file('диплом.docx')
 
+        assert 'Файл сохранен' in message, "Не появилось сообщение файл сохранен"
+        assert 'АвтоСПроектом' in user_name, "Не произошел переход на страницу пользователя"
 
+    @testit.workItemIds(2102)
+    @testit.displayName("10.2.2. Удаление карточки диплома в разделеОбразование в чужом профиле")
+    @pytest.mark.regress
+    @allure.title("id-2102 10.2.2. Удаление карточки диплома в разделе Образование в чужом профиле")
+    def test_delete_a_diploma_cart_from_the_education_section_in_someone_else_profile(self, create_work_user, login,
+                                                                                    driver):
+        user_profile_page = UserProfilePage(driver)
+        colleagues_page = ColleaguesPage(driver)
+        user_page = UserPage(driver)
+        user_page.go_to_user_page()
+        # Проверяем, что есть нужный пользователь
+        if not user_page.check_user_is_not_in_table('АвтоСПроектом'):
+            create_local_user_page = CreateLocalUserDrawerPage(driver)
+            create_local_user_page.go_to_create_local_user_drawer()
+            create_local_user_page.field_required_fields('AutoTester1', 'АвтоСПроектом', 'auto_testt@mail.rruu', 'yes')
+        else:
+            pass
+        colleagues_page.go_colleagues_page()
+        colleagues_page.search_user('АвтоСПроектом')
+        time.sleep(1)
+        colleagues_page.check_user_name_link()
+        user_name = user_profile_page.get_title()
+        user_profile_page.go_to_education_tab()
+        # Создаем диплом если его нет
+        if user_profile_page.check_diploma_title():
+            pass
+        else:
+            user_profile_page.add_simple_diploma()
+            time.sleep(1)
+            user_profile_page.go_to_education_tab()
+        user_profile_page.press_redact_button()
+        # Удаляем диплом
+        time.sleep(1)
+        user_profile_page.press_delete_icon()
+        user_profile_page.press_save_button()
+        time.sleep(1)
+        assert not user_profile_page.check_diploma_title(), "Карточка диплома не удалилась "
+        assert 'АвтоСПроектом' in user_name, "Не произошел переход на страницу пользователя"
