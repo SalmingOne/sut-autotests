@@ -307,6 +307,11 @@ class UserProfilePage(BasePage):
     def check_diploma_title(self):
         return self.element_is_displayed(self.locators.CHECK_DIPLOMA_TITLE, 1)
 
+    @testit.step("Проверка заголовка сертификата")
+    @allure.step("Проверка заголовка сертификата")
+    def check_certificate_title(self):
+        return self.element_is_displayed(self.locators.CERTIFICATE_TITLE, 1)
+
     @testit.step("Добавление простого диплома")
     @allure.step("Добавление простого диплома")
     def add_simple_diploma(self):
