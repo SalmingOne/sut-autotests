@@ -466,3 +466,43 @@ class TestUserProfilePage:
 
         assert 'Файл сохранен' in message, "Не появилось сообщение файл сохранен"
         assert 'АвтоСПроектом' in user_name, "Не произошел переход на страницу пользователя"
+
+    @testit.workItemIds(11620)
+    @testit.displayName("10.2.2. Удаление карточки с сертификатом в чужом профиле")
+    @pytest.mark.regress
+    @allure.title("id-11620 10.2.2. Удаление карточки с сертификатом в чужом профиле")
+    def test_deleting_a_certificate_in_someone_else_profile(self, create_work_user, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        colleagues_page = ColleaguesPage(driver)
+        user_page = UserPage(driver)
+        user_page.go_to_user_page()
+        # Проверяем, что есть нужный пользователь
+        if not user_page.check_user_is_not_in_table('АвтоСПроектом'):
+            create_local_user_page = CreateLocalUserDrawerPage(driver)
+            create_local_user_page.go_to_create_local_user_drawer()
+            create_local_user_page.field_required_fields('AutoTester1', 'АвтоСПроектом', 'auto_testt@mail.rruu', 'yes')
+        else:
+            pass
+        colleagues_page.go_colleagues_page()
+        colleagues_page.search_user('АвтоСПроектом')
+        time.sleep(1)
+        colleagues_page.check_user_name_link()
+        user_name = user_profile_page.get_title()
+        user_profile_page.go_to_certificate_tab()
+        # Если нет сертификата создаем его
+        if user_profile_page.check_certificate_title():
+            pass
+        else:
+            user_profile_page.press_redact_button()
+            user_profile_page.press_add_icon_button()
+            time.sleep(1)
+            user_profile_page.check_and_field_certificate_form()
+            user_profile_page.press_save_button()
+        # Удаляем сертификат
+        user_profile_page.press_redact_button()
+        time.sleep(1)
+        user_profile_page.press_delete_icon()
+        user_profile_page.press_save_button()
+
+        assert not user_profile_page.check_certificate_title()
+        assert 'АвтоСПроектом' in user_name, "Не произошел переход на страницу пользователя"
