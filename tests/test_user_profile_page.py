@@ -466,3 +466,81 @@ class TestUserProfilePage:
 
         assert 'Файл сохранен' in message, "Не появилось сообщение файл сохранен"
         assert 'АвтоСПроектом' in user_name, "Не произошел переход на страницу пользователя"
+
+    @testit.workItemIds(11620)
+    @testit.displayName("10.2.2. Удаление карточки с сертификатом в чужом профиле")
+    @pytest.mark.regress
+    @allure.title("id-11620 10.2.2. Удаление карточки с сертификатом в чужом профиле")
+    def test_deleting_a_certificate_in_someone_else_profile(self, create_work_user, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        colleagues_page = ColleaguesPage(driver)
+        user_page = UserPage(driver)
+        user_page.go_to_user_page()
+        # Проверяем, что есть нужный пользователь
+        if not user_page.check_user_is_not_in_table('АвтоСПроектом'):
+            create_local_user_page = CreateLocalUserDrawerPage(driver)
+            create_local_user_page.go_to_create_local_user_drawer()
+            create_local_user_page.field_required_fields('AutoTester1', 'АвтоСПроектом', 'auto_testt@mail.rruu', 'yes')
+        else:
+            pass
+        colleagues_page.go_colleagues_page()
+        colleagues_page.search_user('АвтоСПроектом')
+        time.sleep(1)
+        colleagues_page.check_user_name_link()
+        user_name = user_profile_page.get_title()
+        user_profile_page.go_to_certificate_tab()
+        # Если нет сертификата создаем его
+        if user_profile_page.check_certificate_title():
+            pass
+        else:
+            user_profile_page.press_redact_button()
+            user_profile_page.press_add_icon_button()
+            time.sleep(1)
+            user_profile_page.check_and_field_certificate_form()
+            user_profile_page.press_save_button()
+        # Удаляем сертификат
+        user_profile_page.press_redact_button()
+        time.sleep(1)
+        user_profile_page.press_delete_icon()
+        user_profile_page.press_save_button()
+
+        assert not user_profile_page.check_certificate_title()
+        assert 'АвтоСПроектом' in user_name, "Не произошел переход на страницу пользователя"
+
+    @testit.workItemIds(2095)
+    @testit.displayName("10.2.2. Отмена внесенных изменений в чужом профиле")
+    @pytest.mark.regress
+    @allure.title("id-2095 10.2.2. Отмена внесенных изменений в чужом профиле")
+    def test_undoing_changes_made_to_someone_else_profile(self, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        colleagues_page = ColleaguesPage(driver)
+        user_page = UserPage(driver)
+        user_page.go_to_user_page()
+        # Проверяем, что есть нужный пользователь
+        if not user_page.check_user_is_not_in_table('АвтоСПроектом'):
+            create_local_user_page = CreateLocalUserDrawerPage(driver)
+            create_local_user_page.go_to_create_local_user_drawer()
+            create_local_user_page.field_required_fields('AutoTester1', 'АвтоСПроектом', 'auto_testt@mail.rruu', 'yes')
+        else:
+            pass
+        colleagues_page.go_colleagues_page()
+        colleagues_page.search_user('АвтоСПроектом')
+        time.sleep(1)
+        colleagues_page.check_user_name_link()
+        user_name = user_profile_page.get_title()
+        # Получаем значения до
+        email_before = user_profile_page.get_email_text()
+        phone_before = user_profile_page.get_phone_text()
+        # Редактируем телефон и адрес почты
+        user_profile_page.press_redact_button()
+        user_profile_page.change_email_text('test_changes@webbee.ruu')
+        user_profile_page.change_phone_text('+55555555555')
+        phone_in = user_profile_page.get_phone_text_on_redact()
+        user_profile_page.check_cansel_changes()
+        # Получаем значения после отмены
+        email_after = user_profile_page.get_email_text()
+        phone_after = user_profile_page.get_phone_text()
+        assert email_before == email_after, "Адрес изменился"
+        assert phone_before == phone_after, "Телефон изменился"
+        assert phone_in == '+55555555555', "В поле номер телефона не отображается введенное значение"
+        assert 'АвтоСПроектом' in user_name, "Не произошел переход на страницу пользователя"

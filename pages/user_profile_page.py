@@ -268,6 +268,33 @@ class UserProfilePage(BasePage):
         self.element_is_visible(self.locators.CHILDREN_TEXT_AREA).send_keys(Keys.CONTROL + 'a')
         self.element_is_visible(self.locators.CHILDREN_TEXT_AREA).send_keys(text)
 
+    @testit.step("Добавление текста в поле email")
+    @allure.step("Добавление текста в поле email")
+    def change_email_text(self, text):
+        self.element_is_visible(self.locators.EMAIL_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.EMAIL_FIELD).send_keys(text)
+
+    @testit.step("Добавление текста в поле телефон")
+    @allure.step("Добавление текста в поле телефон")
+    def change_phone_text(self, text):
+        self.element_is_visible(self.locators.PHONE_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.PHONE_FIELD).send_keys(text)
+
+    @testit.step("Получение текста с поля email")
+    @allure.step("Получение текста с поля email")
+    def get_email_text(self):
+        return self.element_is_visible(self.locators.EMAIL_TEXT_AREA).text
+
+    @testit.step("Получение текста с поля телефон")
+    @allure.step("Получение текста с поля телефон")
+    def get_phone_text(self):
+        return self.element_is_visible(self.locators.PHONE_TEXT_AREA).text
+
+    @testit.step("Получение текста с поля телефон во время редактирования")
+    @allure.step("Получение текста с поля телефон во время редактирования")
+    def get_phone_text_on_redact(self):
+        return self.element_is_visible(self.locators.PHONE_FIELD).get_attribute('value')
+
     @testit.step("Проверка модального окна при отмене изменений")
     @allure.step("Проверка модального окна при отмене изменений")
     def check_cansel_changes(self):
