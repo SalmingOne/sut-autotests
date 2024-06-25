@@ -12,6 +12,10 @@ class UserProfilePageLocators:
     FAMILY_STATUS = (By.XPATH, '//div[@name="maritalStatus"]//input')
     NOT_SELECTED_LI = (By.CSS_SELECTOR, 'li[role="option"][aria-selected="false"]')
     BORN_DATE = (By.XPATH, '//label[text()="Дата рождения"]/..//input')
+    EMAIL_TEXT_AREA = (By.CSS_SELECTOR, 'textarea[name="email"]')
+    EMAIL_FIELD = (By.CSS_SELECTOR, 'input[name="email"]')
+    PHONE_TEXT_AREA = (By.CSS_SELECTOR, 'textarea[name="phone"]')
+    PHONE_FIELD = (By.CSS_SELECTOR, 'input[name="phone"]')
     # Модальное окно с диалогом
     ALERT_DIALOG_DESCRIPTION = (By.CSS_SELECTOR, 'p[id="alert-dialog-description"]')
 
