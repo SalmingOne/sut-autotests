@@ -44,3 +44,12 @@ class ProjectEndpoint:
     def delete_project_by_name_api(self, name):
         project_id = self.get_project_id_by_name(name)
         self.delete_project_api(str(project_id))
+
+    @allure.step("Получаем дату старта проекта по имени")
+    def get_project_start_date_by_name(self, name):
+        header = AuthEndpoint().get_header_token_api()
+        self.response = requests.get(url=Urls.project_url, headers=header)
+        self.response_json = self.response.json()
+        for project in self.response_json:
+            if project['name'] == name:
+                return project['startDate']

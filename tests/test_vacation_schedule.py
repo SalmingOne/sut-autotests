@@ -1,3 +1,5 @@
+import time
+
 import allure
 import pytest
 import testit
@@ -20,6 +22,7 @@ class TestVacationSchedulePage:
         vacation_schedule_page.check_arrows()
         vacation_schedule_page.check_header_and_week_in_header()
         vacation_schedule_page.check_this_day_button()
+        time.sleep(0.5)
         vacation_schedule_page.check_filter_drover()
         vacation_schedule_page.check_user_rows()
         vacation_schedule_page.check_roles_rows()

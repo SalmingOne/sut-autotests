@@ -21,6 +21,16 @@ class TestUserProfilePage:
         user_profile_page = UserProfilePage(driver)
         user_profile_page.go_to_user_profile()
         user_profile_page.go_to_education_tab()
+        # Удаляем диплом если есть
+        if user_profile_page.check_diploma_title():
+            user_profile_page.press_redact_button()
+            time.sleep(1)
+            user_profile_page.press_delete_icon()
+            user_profile_page.press_save_button()
+            user_profile_page.go_to_education_tab()
+        else:
+            pass
+
         user_profile_page.press_redact_button()
         user_profile_page.press_add_icon_button()
         user_profile_page.press_save_button()
@@ -42,6 +52,7 @@ class TestUserProfilePage:
         user_profile_page.go_to_user_profile()
         user_profile_page.go_to_certificate_tab()
         user_profile_page.press_redact_button()
+        time.sleep(1)
         user_profile_page.press_add_icon_button()
         user_profile_page.press_save_button()
         user_profile_page.go_to_certificate_tab()
@@ -61,6 +72,7 @@ class TestUserProfilePage:
         user_profile_page.go_to_user_profile()
         user_profile_page.go_to_experience_tab()
         user_profile_page.press_redact_button()
+        time.sleep(1)
         user_profile_page.press_add_icon_button()
         user_profile_page.press_save_button()
         user_profile_page.go_to_experience_tab()
@@ -147,6 +159,7 @@ class TestUserProfilePage:
     def test_move_to_another_tab_if_required_fields_are_not_filled_in(self, login, driver):
         user_profile_page = UserProfilePage(driver)
         user_profile_page.go_to_user_profile()
+        time.sleep(2)
         user_profile_page.go_to_education_tab()
         user_profile_page.press_redact_button()
         user_profile_page.press_add_icon_button()
@@ -179,6 +192,7 @@ class TestUserProfilePage:
     def test_adding_a_diploma_file_in_the_education_section(self, login, driver):
         user_profile_page = UserProfilePage(driver)
         user_profile_page.go_to_user_profile()
+        time.sleep(2)
         user_profile_page.go_to_education_tab()
         # Создаем диплом если его нет
         if user_profile_page.check_diploma_title():
@@ -196,12 +210,9 @@ class TestUserProfilePage:
         user_profile_page.check_add_file('диплом.docx')
         time.sleep(1)
         user_profile_page.press_save_button()
-        user_profile_page.press_save_button()
-        time.sleep(2)
+        time.sleep(1)
         # Проверяем сообщение
         message = user_profile_page.get_alert_message()
-        user_profile_page.go_to_education_tab()
-        time.sleep(1)
         user_profile_page.check_download_file_icon()
         # Удаляем файл с сайта
         user_profile_page.press_redact_button()
@@ -218,6 +229,7 @@ class TestUserProfilePage:
     def test_adding_a_certificate_file_in_the_certificate_tab(self, login, driver):
         user_profile_page = UserProfilePage(driver)
         user_profile_page.go_to_user_profile()
+        time.sleep(2)
         user_profile_page.go_to_certificate_tab()
         user_profile_page.press_redact_button()
         time.sleep(1)
@@ -228,7 +240,7 @@ class TestUserProfilePage:
         user_profile_page.add_file('сертификат.pdf', 'Сертификат FAANG')
         user_profile_page.check_add_file('сертификат.pdf')
         user_profile_page.press_save_button()
-        user_profile_page.press_save_button()
+
         time.sleep(1)
         # Проверяем сообщение
         message = user_profile_page.get_alert_message()
@@ -239,7 +251,6 @@ class TestUserProfilePage:
         user_profile_page.press_redact_button()
         time.sleep(1)
         user_profile_page.press_delete_icon()
-        user_profile_page.press_save_button()
         user_profile_page.delete_file('сертификат.pdf')
         assert 'Файл сохранен' in message, "Не появилось сообщение файл сохранен"
 
@@ -282,7 +293,8 @@ class TestUserProfilePage:
     @testit.displayName("10.2.2. Добавление карточки нового диплома в разделе Образование в чужом профиле")
     @pytest.mark.regress
     @allure.title("id-2099 10.2.2. Добавление карточки нового диплома в разделе Образование в чужом профиле")
-    def test_adding_a_diploma_card_in_the_education_section_in_someone_else_profile(self, create_work_user, login, driver):
+    def test_adding_a_diploma_card_in_the_education_section_in_someone_else_profile(self, create_work_user, login,
+                                                                                    driver):
         user_profile_page = UserProfilePage(driver)
         colleagues_page = ColleaguesPage(driver)
         user_page = UserPage(driver)
@@ -325,7 +337,8 @@ class TestUserProfilePage:
     @testit.displayName("10.2.2. Добавление файла диплома в разделе Образование в чужом профиле")
     @pytest.mark.regress
     @allure.title("id-2101 10.2.2. Добавление файла диплома в разделе Образование в чужом профиле")
-    def test_adding_a_diploma_file_in_the_education_section_in_someone_else_profile(self, create_work_user, login, driver):
+    def test_adding_a_diploma_file_in_the_education_section_in_someone_else_profile(self, create_work_user, login,
+                                                                                    driver):
         user_profile_page = UserProfilePage(driver)
         colleagues_page = ColleaguesPage(driver)
         user_page = UserPage(driver)
@@ -378,7 +391,7 @@ class TestUserProfilePage:
     @pytest.mark.regress
     @allure.title("id-2102 10.2.2. Удаление карточки диплома в разделе Образование в чужом профиле")
     def test_delete_a_diploma_cart_from_the_education_section_in_someone_else_profile(self, create_work_user, login,
-                                                                                    driver):
+                                                                                      driver):
         user_profile_page = UserProfilePage(driver)
         colleagues_page = ColleaguesPage(driver)
         user_page = UserPage(driver)
@@ -511,7 +524,7 @@ class TestUserProfilePage:
     @testit.displayName("10.2.2. Отмена внесенных изменений в чужом профиле")
     @pytest.mark.regress
     @allure.title("id-2095 10.2.2. Отмена внесенных изменений в чужом профиле")
-    def test_undoing_changes_made_to_someone_else_profile(self, login, driver):
+    def test_undoing_changes_made_to_someone_else_profile(self, create_work_user, login, driver):
         user_profile_page = UserProfilePage(driver)
         colleagues_page = ColleaguesPage(driver)
         user_page = UserPage(driver)
@@ -543,4 +556,53 @@ class TestUserProfilePage:
         assert email_before == email_after, "Адрес изменился"
         assert phone_before == phone_after, "Телефон изменился"
         assert phone_in == '+55555555555', "В поле номер телефона не отображается введенное значение"
+        assert 'АвтоСПроектом' in user_name, "Не произошел переход на страницу пользователя"
+
+    @testit.workItemIds(1935)
+    @testit.displayName("10.2.3. Добавление проекта в разделе Опыт работы в чужом профиле")
+    @pytest.mark.regress
+    @allure.title("id-1935 10.2.3. Добавление проекта в разделе Опыт работы в чужом профиле")
+    def test_adding_a_project_in_the_work_experience_section_someone_else_profile(self, login, create_filial, driver):
+        user_profile_page = UserProfilePage(driver)
+        colleagues_page = ColleaguesPage(driver)
+        user_page = UserPage(driver)
+        user_page.go_to_user_page()
+        # Проверяем, что есть нужный пользователь
+        if not user_page.check_user_is_not_in_table('АвтоСПроектом'):
+            create_local_user_page = CreateLocalUserDrawerPage(driver)
+            create_local_user_page.go_to_create_local_user_drawer()
+            create_local_user_page.field_required_fields('AutoTester1', 'АвтоСПроектом', 'auto_testt@mail.rruu', 'yes')
+        else:
+            pass
+        colleagues_page.go_colleagues_page()
+        colleagues_page.search_user('АвтоСПроектом')
+        time.sleep(1)
+        colleagues_page.check_user_name_link()
+        user_name = user_profile_page.get_title()
+        user_profile_page.go_to_experience_tab()
+        time.sleep(1)
+        if user_profile_page.check_experience_title():
+            user_profile_page.press_redact_button()
+            time.sleep(1)
+            user_profile_page.press_delete_icon()
+            user_profile_page.press_save_button()
+        else:
+            pass
+        # Проверяем создание с выбором работодателя
+        user_profile_page.check_work_experience_form()
+        assert user_profile_page.check_experience_title(), "Карточка проекта не добавлена"
+
+        user_profile_page.press_redact_button()
+        time.sleep(1)
+        user_profile_page.press_delete_icon()
+        user_profile_page.press_save_button()
+        # Проверяем создание с добавлением работодателя
+        user_profile_page.field_work_experience_form_with_new_employer()
+        assert user_profile_page.check_experience_title(), "Карточка проекта не добавлена"
+
+        user_profile_page.press_redact_button()
+        time.sleep(1)
+        user_profile_page.press_delete_icon()
+        user_profile_page.press_save_button()
+        time.sleep(0.2)
         assert 'АвтоСПроектом' in user_name, "Не произошел переход на страницу пользователя"
