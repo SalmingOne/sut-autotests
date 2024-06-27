@@ -606,3 +606,41 @@ class TestUserProfilePage:
         user_profile_page.press_save_button()
         time.sleep(0.2)
         assert 'АвтоСПроектом' in user_name, "Не произошел переход на страницу пользователя"
+
+    @testit.workItemIds(2104)
+    @testit.displayName("10.2.3. Удаление карточки проекта в разделе Опыт работы в чужом профиле")
+    @pytest.mark.regress
+    @allure.title("id-2104 10.2.3. Удаление карточки проекта в разделе Опыт работы в чужом профиле")
+    def test_deleting_a_project_in_the_work_experience_section_someone_else_profile(self, login, create_filial, driver):
+        user_profile_page = UserProfilePage(driver)
+        colleagues_page = ColleaguesPage(driver)
+        user_page = UserPage(driver)
+        user_page.go_to_user_page()
+        # Проверяем, что есть нужный пользователь
+        if not user_page.check_user_is_not_in_table('АвтоСПроектом'):
+            create_local_user_page = CreateLocalUserDrawerPage(driver)
+            create_local_user_page.go_to_create_local_user_drawer()
+            create_local_user_page.field_required_fields('AutoTester1', 'АвтоСПроектом', 'auto_testt@mail.rruu', 'yes')
+        else:
+            pass
+        colleagues_page.go_colleagues_page()
+        colleagues_page.search_user('АвтоСПроектом')
+        time.sleep(1)
+        colleagues_page.check_user_name_link()
+        user_name = user_profile_page.get_title()
+        user_profile_page.go_to_experience_tab()
+        time.sleep(1)
+        # Создаем карточку проекта если нет
+        if user_profile_page.check_experience_title():
+            pass
+        else:
+            user_profile_page.field_work_experience_form_with_new_employer()
+        # Удаляем карточку проекта
+        user_profile_page.press_redact_button()
+        time.sleep(1)
+        user_profile_page.press_delete_icon()
+        user_profile_page.press_save_button()
+        time.sleep(0.2)
+        # Проверяем удаление карточки
+        assert not user_profile_page.check_experience_title(), "Карточка проекта не удалилась"
+        assert 'АвтоСПроектом' in user_name, "Не произошел переход на страницу пользователя"
