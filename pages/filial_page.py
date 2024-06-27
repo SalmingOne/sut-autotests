@@ -174,3 +174,17 @@ class FilialPage(BasePage):
         employees_after = self.get_employees_in_field()
         assert employees_before != employees_after, 'Пользователь не удалился из поля'
 
+    @testit.step("Удаление всех ресурсов с филиала")
+    @allure.step("Удаление всех ресурсов с филиала")
+    def delete_all_resources_from_filial(self, name):
+        self.element_is_visible(self.locators.kebab_by_filial_name(name)).click()
+        self.element_is_visible(self.locators.REDACT_BUTTON).click()
+        self.element_is_visible(self.locators.DIRECTOR_FIELD).click()
+        self.element_is_visible(self.locators.CLEAR_DIRECTOR_FIELD_BUTTON).click()
+        all_employs = self.elements_are_visible(self.locators.EMPLOYEES_CHIPS_DELETE_ICON)
+        while len(all_employs) > 0:
+            try:
+                self.elements_are_visible(self.locators.EMPLOYEES_CHIPS_DELETE_ICON, 1)[0].click()
+            except TimeoutException:
+                break
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
