@@ -174,3 +174,13 @@ class SchedulePage(BasePage):
         self.element_is_visible(self.locators.START_BREAK).send_keys(start_break)
         self.element_is_visible(self.locators.LI_MENU_ITEM).click()
         self.element_is_visible(self.locators.DRAWER_SUBMIT_BUTTON).click()
+
+    @testit.step("Проверка наличия модального окна первого запуска")
+    @allure.step("Проверка наличия модального окна первого запуска")
+    def check_text_on_modal(self):
+        return self.element_is_displayed(self.locators.TEXT_IN_MODAL)
+
+    @testit.step("Нажатие кнопки сохранить модального окна первого запуска")
+    @allure.step("Нажатие кнопки сохранить модального окна первого запуска")
+    def press_submit_button_in_modal(self):
+        self.element_is_visible(self.locators.SUBMIT_IN_MODAL).click()

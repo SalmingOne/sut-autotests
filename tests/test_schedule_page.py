@@ -17,6 +17,10 @@ class TestSchedulePage:
     def test_displaying_schedule_for_a_specific_day(self, login, driver):
         schedule_page = SchedulePage(driver)
         schedule_page.go_to_schedule_page()
+        if schedule_page.check_text_on_modal():
+            schedule_page.press_submit_button_in_modal()
+        else:
+            pass
         schedule_page.open_editing_schedule_for_a_specific_day_drawer()
         title = schedule_page.get_drawer_title()
         fields = schedule_page.get_drawer_fields_title()
@@ -36,6 +40,10 @@ class TestSchedulePage:
     def test_displaying_schedule_for_a_standard_chart(self, login, driver):
         schedule_page = SchedulePage(driver)
         schedule_page.go_to_schedule_page()
+        if schedule_page.check_text_on_modal():
+            schedule_page.press_submit_button_in_modal()
+        else:
+            pass
         schedule_page.open_editing_schedule_for_a_standard_chart_drawer()
         schedule_page.check_x_button()
         schedule_page.check_week_days_checkboxes_and_switch()
@@ -58,6 +66,10 @@ class TestSchedulePage:
     def test_displaying_the_taking_time_off_driver(self, login, driver):
         schedule_page = SchedulePage(driver)
         schedule_page.go_to_schedule_page()
+        if schedule_page.check_text_on_modal():
+            schedule_page.press_submit_button_in_modal()
+        else:
+            pass
         schedule_page.open_take_off_drawer()
         schedule_page.check_taking_time_off_fields()
         schedule_page.check_disable_previous_date_on_date_picker()
@@ -72,6 +84,10 @@ class TestSchedulePage:
     def test_displaying_the_schedule_page(self, login, driver):
         schedule_page = SchedulePage(driver)
         schedule_page.go_to_schedule_page()
+        if schedule_page.check_text_on_modal():
+            schedule_page.press_submit_button_in_modal()
+        else:
+            pass
         schedule_page.check_number_week_displayed()
         schedule_page.check_switch_periods_and_this_day_button()
         schedule_page.check_redact_button()
@@ -85,6 +101,10 @@ class TestSchedulePage:
     def test_editing_a_specific_day(self, login, driver):
         schedule_page = SchedulePage(driver)
         schedule_page.go_to_schedule_page()
+        if schedule_page.check_text_on_modal():
+            schedule_page.press_submit_button_in_modal()
+        else:
+            pass
         time.sleep(1)  # Без ожидания начинает выполнять тест на странице трудозатрат
         schedule_page.go_to_next_period()
         before_edit = schedule_page.get_text_on_chips(0)
