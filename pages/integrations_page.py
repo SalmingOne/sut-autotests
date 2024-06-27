@@ -74,7 +74,7 @@ class IntegrationsPage(BasePage):
         titles = []
         for integration in all_integrations:
             titles.append(integration.text)
-        assert titles == ['Jira', 'Confluence', 'Bitbucket', 'Testit', 'Gitlab', '1C', 'Discord-Бот', 'Telegram-Бот'],\
+        assert titles == ['Jira', 'Confluence', 'Bitbucket', 'Testit', 'Gitlab', '1C:ЗУП', 'Discord-Бот', 'Telegram-Бот'],\
             'Есть не все интеграции'
 
     @testit.step("Проверка кнопок добавления и удаления интеграций")
