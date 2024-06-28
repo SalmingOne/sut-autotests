@@ -48,15 +48,10 @@ class TestCreateLocalUser:
     @testit.displayName("Совпадение логинов пользователей")
     @pytest.mark.regress
     @allure.title("id-289 Совпадение логинов пользователей")
-    def test_matching_user_logins(self, login, driver):
+    def test_matching_user_logins(self, create_work_user, login, driver):
         user_page = UserPage(driver)
         create_local_user_page = CreateLocalUserDrawerPage(driver)
         user_page.go_to_user_page()
-        if not user_page.check_user_is_not_in_table('Автотестов'):
-            create_local_user_page.go_to_create_local_user_drawer()
-            create_local_user_page.field_required_fields('AutoTester', 'Автотестов', 'auto_test@mail.ruru', 'yes')
-        else:
-            pass
         create_local_user_page.go_to_create_local_user_drawer()
         create_local_user_page.field_required_fields('AutoTester', 'Автоматов', 'auto@mail.ruru', 'yes')
         assert create_local_user_page.check_massage() == 'Пользователь с таким логином/почтой уже добавлен в систему', "Не появилось сообщение о совпадении логинов"

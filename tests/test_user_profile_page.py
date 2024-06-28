@@ -261,15 +261,7 @@ class TestUserProfilePage:
     def test_editing_the_employee_information_section_in_someone_else_profile(self, create_work_user, login, driver):
         user_profile_page = UserProfilePage(driver)
         colleagues_page = ColleaguesPage(driver)
-        user_page = UserPage(driver)
-        user_page.go_to_user_page()
-        # Проверяем, что есть нужный пользователь
-        if not user_page.check_user_is_not_in_table('АвтоСПроектом'):
-            create_local_user_page = CreateLocalUserDrawerPage(driver)
-            create_local_user_page.go_to_create_local_user_drawer()
-            create_local_user_page.field_required_fields('AutoTester1', 'АвтоСПроектом', 'auto_testt@mail.rruu', 'yes')
-        else:
-            pass
+        time.sleep(1)
         # Проводим тест
         colleagues_page.go_colleagues_page()
         colleagues_page.search_user('АвтоСПроектом')
@@ -297,16 +289,7 @@ class TestUserProfilePage:
                                                                                     driver):
         user_profile_page = UserProfilePage(driver)
         colleagues_page = ColleaguesPage(driver)
-        user_page = UserPage(driver)
-        user_page.go_to_user_page()
-        # Проверяем, что есть нужный пользователь
-        if not user_page.check_user_is_not_in_table('АвтоСПроектом'):
-            create_local_user_page = CreateLocalUserDrawerPage(driver)
-            create_local_user_page.go_to_create_local_user_drawer()
-            create_local_user_page.field_required_fields('AutoTester1', 'АвтоСПроектом', 'auto_testt@mail.rruu', 'yes')
-        else:
-            pass
-        # Проводим тест
+        time.sleep(1)
         colleagues_page.go_colleagues_page()
         colleagues_page.search_user('АвтоСПроектом')
         time.sleep(1)
@@ -341,15 +324,7 @@ class TestUserProfilePage:
                                                                                     driver):
         user_profile_page = UserProfilePage(driver)
         colleagues_page = ColleaguesPage(driver)
-        user_page = UserPage(driver)
-        user_page.go_to_user_page()
-        # Проверяем, что есть нужный пользователь
-        if not user_page.check_user_is_not_in_table('АвтоСПроектом'):
-            create_local_user_page = CreateLocalUserDrawerPage(driver)
-            create_local_user_page.go_to_create_local_user_drawer()
-            create_local_user_page.field_required_fields('AutoTester1', 'АвтоСПроектом', 'auto_testt@mail.rruu', 'yes')
-        else:
-            pass
+        time.sleep(1)
         # Проводим тест
         colleagues_page.go_colleagues_page()
         colleagues_page.search_user('АвтоСПроектом')
@@ -394,15 +369,7 @@ class TestUserProfilePage:
                                                                                       driver):
         user_profile_page = UserProfilePage(driver)
         colleagues_page = ColleaguesPage(driver)
-        user_page = UserPage(driver)
-        user_page.go_to_user_page()
-        # Проверяем, что есть нужный пользователь
-        if not user_page.check_user_is_not_in_table('АвтоСПроектом'):
-            create_local_user_page = CreateLocalUserDrawerPage(driver)
-            create_local_user_page.go_to_create_local_user_drawer()
-            create_local_user_page.field_required_fields('AutoTester1', 'АвтоСПроектом', 'auto_testt@mail.rruu', 'yes')
-        else:
-            pass
+        time.sleep(1)
         colleagues_page.go_colleagues_page()
         colleagues_page.search_user('АвтоСПроектом')
         time.sleep(1)
@@ -433,15 +400,7 @@ class TestUserProfilePage:
                                                                                       driver):
         user_profile_page = UserProfilePage(driver)
         colleagues_page = ColleaguesPage(driver)
-        user_page = UserPage(driver)
-        user_page.go_to_user_page()
-        # Проверяем, что есть нужный пользователь
-        if not user_page.check_user_is_not_in_table('АвтоСПроектом'):
-            create_local_user_page = CreateLocalUserDrawerPage(driver)
-            create_local_user_page.go_to_create_local_user_drawer()
-            create_local_user_page.field_required_fields('AutoTester1', 'АвтоСПроектом', 'auto_testt@mail.rruu', 'yes')
-        else:
-            pass
+        time.sleep(1)
         colleagues_page.go_colleagues_page()
         colleagues_page.search_user('АвтоСПроектом')
         time.sleep(1)
@@ -487,15 +446,7 @@ class TestUserProfilePage:
     def test_deleting_a_certificate_in_someone_else_profile(self, create_work_user, login, driver):
         user_profile_page = UserProfilePage(driver)
         colleagues_page = ColleaguesPage(driver)
-        user_page = UserPage(driver)
-        user_page.go_to_user_page()
-        # Проверяем, что есть нужный пользователь
-        if not user_page.check_user_is_not_in_table('АвтоСПроектом'):
-            create_local_user_page = CreateLocalUserDrawerPage(driver)
-            create_local_user_page.go_to_create_local_user_drawer()
-            create_local_user_page.field_required_fields('AutoTester1', 'АвтоСПроектом', 'auto_testt@mail.rruu', 'yes')
-        else:
-            pass
+        time.sleep(1)
         colleagues_page.go_colleagues_page()
         colleagues_page.search_user('АвтоСПроектом')
         time.sleep(1)
@@ -527,15 +478,7 @@ class TestUserProfilePage:
     def test_undoing_changes_made_to_someone_else_profile(self, create_work_user, login, driver):
         user_profile_page = UserProfilePage(driver)
         colleagues_page = ColleaguesPage(driver)
-        user_page = UserPage(driver)
-        user_page.go_to_user_page()
-        # Проверяем, что есть нужный пользователь
-        if not user_page.check_user_is_not_in_table('АвтоСПроектом'):
-            create_local_user_page = CreateLocalUserDrawerPage(driver)
-            create_local_user_page.go_to_create_local_user_drawer()
-            create_local_user_page.field_required_fields('AutoTester1', 'АвтоСПроектом', 'auto_testt@mail.rruu', 'yes')
-        else:
-            pass
+        time.sleep(1)
         colleagues_page.go_colleagues_page()
         colleagues_page.search_user('АвтоСПроектом')
         time.sleep(1)
@@ -565,15 +508,7 @@ class TestUserProfilePage:
     def test_adding_a_project_in_the_work_experience_section_someone_else_profile(self, login, create_filial, driver):
         user_profile_page = UserProfilePage(driver)
         colleagues_page = ColleaguesPage(driver)
-        user_page = UserPage(driver)
-        user_page.go_to_user_page()
-        # Проверяем, что есть нужный пользователь
-        if not user_page.check_user_is_not_in_table('АвтоСПроектом'):
-            create_local_user_page = CreateLocalUserDrawerPage(driver)
-            create_local_user_page.go_to_create_local_user_drawer()
-            create_local_user_page.field_required_fields('AutoTester1', 'АвтоСПроектом', 'auto_testt@mail.rruu', 'yes')
-        else:
-            pass
+        time.sleep(1)
         colleagues_page.go_colleagues_page()
         colleagues_page.search_user('АвтоСПроектом')
         time.sleep(1)
@@ -611,18 +546,10 @@ class TestUserProfilePage:
     @testit.displayName("10.2.3. Удаление карточки проекта в разделе Опыт работы в чужом профиле")
     @pytest.mark.regress
     @allure.title("id-2104 10.2.3. Удаление карточки проекта в разделе Опыт работы в чужом профиле")
-    def test_deleting_a_project_in_the_work_experience_section_someone_else_profile(self, login, create_filial, driver):
+    def test_deleting_a_project_in_the_work_experience_section_someone_else_profile(self, login, create_work_user, create_filial, driver):
         user_profile_page = UserProfilePage(driver)
         colleagues_page = ColleaguesPage(driver)
-        user_page = UserPage(driver)
-        user_page.go_to_user_page()
-        # Проверяем, что есть нужный пользователь
-        if not user_page.check_user_is_not_in_table('АвтоСПроектом'):
-            create_local_user_page = CreateLocalUserDrawerPage(driver)
-            create_local_user_page.go_to_create_local_user_drawer()
-            create_local_user_page.field_required_fields('AutoTester1', 'АвтоСПроектом', 'auto_testt@mail.rruu', 'yes')
-        else:
-            pass
+        time.sleep(1)
         colleagues_page.go_colleagues_page()
         colleagues_page.search_user('АвтоСПроектом')
         time.sleep(1)

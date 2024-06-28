@@ -257,25 +257,58 @@ def create_filial():
 def create_work_user():
     user_endpoint = UserEndpoint()
     user_id = user_endpoint.get_user_id_by_email('auto_testt@mail.rruu')
+    payload = dict(username="AutoTester1",
+                   name="Автомат",
+                   secondName="АвтоСПроектом",
+                   gender="MALE",
+                   phone="",
+                   email="auto_testt@mail.rruu",
+                   hourlyWage=False,
+                   startWorkDate="2024-04-11",
+                   userAssignments=[dict(
+                       projectId=3,
+                       projectRoleId=1,
+                       isProjectManager=False
+                   )
+                   ],
+                   projectRoleIds=[1],
+                   postId=1,
+                   departmentId=1,
+                   systemRoleIds=[1]
+                   )
     if user_id is None:
-        payload = dict(username="AutoTester1",
-                       name="Автомат",
-                       secondName="АвтоСПроектом",
-                       gender="MALE",
-                       phone="",
-                       email="auto_testt@mail.rruu",
-                       hourlyWage=False,
-                       startWorkDate="2024-04-11",
-                       userAssignments=[],
-                       projectRoleIds=[1],
-                       postId=1,
-                       departmentId=1,
-                       systemRoleIds=[1]
-                       )
         response = user_endpoint.create_user_api(json=payload)
         print(response.status_code)
     else:
-        pass
+        response = user_endpoint.change_user(user_id=str(user_id), json=payload)
+        print(response.status_code)
+
+
+@pytest.fixture()
+def create_fired_user():
+    user_endpoint = UserEndpoint()
+    user_id = user_endpoint.get_user_id_by_email('auto_test@mail.ruru')
+    payload = dict(username="AutoTester",
+                   name="Автомат",
+                   secondName="Автотестов",
+                   gender="MALE",
+                   phone="",
+                   email="auto_test@mail.ruru",
+                   hourlyWage=False,
+                   startWorkDate="2024-04-11",
+                   dismissalDate="2024-05-11",
+                   userAssignments=[],
+                   projectRoleIds=[1],
+                   postId=1,
+                   departmentId=1,
+                   systemRoleIds=[1]
+                   )
+    if user_id is None:
+        response = user_endpoint.create_user_api(json=payload)
+        print(response.status_code)
+    else:
+        response = user_endpoint.change_user(user_id=str(user_id), json=payload)
+        print(response.status_code)
 
 
 @pytest.fixture(scope='session', autouse=True)
