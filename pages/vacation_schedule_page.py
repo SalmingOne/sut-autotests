@@ -27,7 +27,9 @@ class VacationSchedulePage(BasePage):
     @testit.step("Есть тултип с номером недели")
     @allure.step("Есть тултип с номером недели")
     def check_tooltip(self):
+        time.sleep(0.5)
         self.action_move_to_element(self.element_is_visible(self.locators.FIRST_WEEK_IN_VACATION_SCHEDULE_HEADER))
+        self.action_move_to_element(self.element_is_visible(self.locators.VACATION_SCHEDULE_HEADER))
         assert 'Неделя №' in self.element_is_visible(self.locators.TOOLTIP).text, "В тултипе не отображается номер недели"
 
     @testit.step("Текущая неделя выделена цветом")

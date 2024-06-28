@@ -8,6 +8,7 @@ import testit
 from selenium.common import TimeoutException
 from selenium.webdriver import Keys
 
+from endpoints.project_endpoint import ProjectEndpoint
 from locators.user_profile_page_locators import UserProfilePageLocators
 from pages.base_page import BasePage
 
@@ -339,6 +340,11 @@ class UserProfilePage(BasePage):
     def check_certificate_title(self):
         return self.element_is_displayed(self.locators.CERTIFICATE_TITLE, 1)
 
+    @testit.step("Проверка заголовка опыт работы")
+    @allure.step("Проверка заголовка опыт работы")
+    def check_experience_title(self):
+        return self.element_is_displayed(self.locators.EXPERIENCES_TITLE, 1)
+
     @testit.step("Добавление простого диплома")
     @allure.step("Добавление простого диплома")
     def add_simple_diploma(self):
@@ -371,17 +377,17 @@ class UserProfilePage(BasePage):
 
     @testit.step("Проверка ограничения в 128 символов для поля")
     @allure.step("Проверка ограничения в 128 символов для поля")
-    def check_128_symbol_in_field(self, locator):
+    def check_128_symbol_in_field(self, locator, locator_to_click):
         bed_value = ('Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt'
                      ' ut laoreet dolore magna aliquam')
         self.element_is_visible(locator).send_keys(Keys.CONTROL + 'a')
         self.element_is_visible(locator).send_keys(bed_value)
-        self.element_is_visible(self.locators.EDUCATION_FORM).click()
+        self.element_is_visible(locator_to_click).click()
         error_text = self.element_is_visible(self.locators.MUI_ERROR).text
         time.sleep(2)
         self.element_is_visible(locator).send_keys(Keys.CONTROL + 'a')
         self.element_is_visible(locator).send_keys('1')
-        self.element_is_visible(self.locators.EDUCATION_FORM).click()
+        self.element_is_visible(locator_to_click).click()
         assert error_text == 'Максимальное количество символов: 128', \
             "Не появилось сообщение о превышении максимального количества символов"
 
@@ -408,8 +414,8 @@ class UserProfilePage(BasePage):
         educations = self.get_dropdown_menu_items(self.locators.EDUCATION_FORM)
         directions = self.get_dropdown_menu_items(self.locators.DIRECTION)
         levels = self.get_dropdown_menu_items(self.locators.EDUCATION_LEVEL)
-        self.check_128_symbol_in_field(self.locators.FACULTY_NAME)
-        self.check_128_symbol_in_field(self.locators.SPECIALIZATION_NAME)
+        self.check_128_symbol_in_field(self.locators.FACULTY_NAME, self.locators.EDUCATION_FORM)
+        self.check_128_symbol_in_field(self.locators.SPECIALIZATION_NAME, self.locators.EDUCATION_FORM)
         self.check_year_of_graduation_field()
 
         assert educations == ['Заочное', 'Очное', 'Очно-заочное'], 'Не корректный список в дропдауне Форма обучения'
@@ -471,5 +477,130 @@ class UserProfilePage(BasePage):
     def check_delete_icon(self):
         assert self.element_is_displayed(self.locators.DELETE_ICON), "Нет иконки удаления"
 
+    @testit.step("Проверка некликабельности полей до заполнения поля работодатель")
+    @allure.step("Проверка некликабельности полей до заполнения поля работодатель")
+    def check_disable_fields_in_work_experience_form(self):
+        assert not self.element_is_clickable(self.locators.EXPERIENCES_PROJECT_FIELD, 1), "Поле Название проекта кликабельно"
+        assert not self.element_is_clickable(self.locators.EXPERIENCES_SPECIALIZATION_ACTION, 1), "Поле Вид деятельности кликабельно"
+        assert not self.element_is_clickable(self.locators.EXPERIENCES_SPECIALIZATION_SLOT,1), "Поле Проектная роль кликабельно"
+        assert not self.element_is_clickable(self.locators.EXPERIENCES_DESCRIPTION_TEXT, 1), "Поле Описание кликабельно"
+        assert not self.element_is_clickable(self.elements_are_visible(self.locators.EXPERIENCES_DATA_PICKER)[0], 1), "Поле Дата начала работы кликабельно"
+        assert not self.element_is_clickable(self.elements_are_visible(self.locators.EXPERIENCES_DATA_PICKER)[1], 1), "Поле Дата окончания работы кликабельно"
+        assert not self.element_is_clickable(self.locators.EXPERIENCES_KNOWLEDGE_FIELD, 1), "Поле Знание кликабельно"
 
+    @testit.step("Проверка максимальной длины поля работодатель")
+    @allure.step("Проверка максимальной длины поля работодатель")
+    def check_128_in_experience_tab(self):
+        bed_value = ('Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt'
+                     ' ut laoreet dolore magna aliquam')
+        self.element_is_visible(self.locators.EXPERIENCES_EMPLOYER_FIELD).send_keys(bed_value)
+        li_text = self.element_is_visible(self.locators.LI_MENU_ITEM).get_attribute('aria-label')
+        self.element_is_visible(self.locators.EXPERIENCES_EMPLOYER_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.EXPERIENCES_EMPLOYER_FIELD).clear()
+        assert li_text == 'Максимальное количество символов: 128', "Не появилось сообщение о превышении максимальной длины"
 
+    @testit.step("Получение даты за день до создания проекта")
+    @allure.step("Получение даты за день до создания проекта")
+    def get_day_before_create_project(self, project_name):
+        project_endpoint = ProjectEndpoint()
+        date = project_endpoint.get_project_start_date_by_name(project_name)
+        f_date = date[8:10] + '.' + date[5:7] + '.' + date[0:4]
+        day_before = datetime.strptime(f_date, "%d.%m.%Y") - timedelta(days=1)
+        return day_before.strftime("%d.%m.%Y")
+
+    @testit.step("Проверка поля Дата начала проекта")
+    @allure.step("Проверка поля Дата начала проекта")
+    def check_start_date_field(self):
+        project_name = self.element_is_visible(self.locators.EXPERIENCES_PROJECT_FIELD).get_attribute('value')
+        before_create_project = self.get_day_before_create_project(project_name)
+        self.element_is_visible(self.locators.EXPERIENCES_BEGIN_DATA_INPUT).send_keys(before_create_project)
+        self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_SLOT).click()
+        error_text = self.element_is_visible(self.locators.MUI_ERROR).text
+        time.sleep(2)
+        self.element_is_visible(self.locators.EXPERIENCES_BEGIN_DATA_INPUT).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.EXPERIENCES_BEGIN_DATA_INPUT).send_keys(self.get_day_before(0))
+        self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_SLOT).click()
+        assert error_text == 'Дата начала работы некорректна', "Не появилось сообщение о некорректной дате"
+
+    @testit.step("Проверка формы Опыт работы с выбором работодателя")
+    @allure.step("Проверка формы Опыт работы с выбором работодателя")
+    def check_work_experience_form(self):
+        self.press_redact_button()
+        self.press_add_icon_button()
+        self.check_disable_fields_in_work_experience_form()
+        self.check_128_in_experience_tab()
+        self.element_is_visible(self.locators.EXPERIENCES_EMPLOYER_FIELD).click()
+        self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
+        self.element_is_visible(self.locators.EXPERIENCES_PROJECT_FIELD).click()
+        self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
+
+        specializations = self.get_dropdown_menu_items(self.locators.EXPERIENCES_SPECIALIZATION_ACTION)
+        assert specializations == ['Инжиниринг', 'Административно-управленческий персонал', 'Блок ИТ'], "Не все значения в дропдауне Вид деятельности"
+        self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_ACTION).click()
+        time.sleep(1)
+        self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
+
+        self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_SLOT).click()
+        time.sleep(1)
+        self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
+        self.check_start_date_field()
+
+        self.element_is_visible(self.locators.EXPERIENCES_KNOWLEDGE_FIELD).click()
+        time.sleep(1)
+        self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
+        self.press_save_button()
+
+    @testit.step("Проверка максимального значения символов 64")
+    @allure.step("Проверка максимального значения символов 64")
+    def check_64_symbol(self, locator, locator_to_click):
+        bed_value = ('Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed dia')
+        self.element_is_visible(locator).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(locator).send_keys(bed_value)
+        self.element_is_visible(locator_to_click).click()
+        error_text = self.element_is_visible(self.locators.MUI_ERROR).text
+        time.sleep(2)
+        self.element_is_visible(locator).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(locator).send_keys('1')
+        self.element_is_visible(locator_to_click).click()
+        assert error_text == 'Максимальное количество символов: 64', \
+            "Не появилось сообщение о превышении максимального количества символов"
+
+    @testit.step("Проверка поля Работодатель при самостоятельном заполнении")
+    @allure.step("Проверка поля Работодатель при самостоятельном заполнении")
+    def field_custom_employer_field(self):
+        self.element_is_visible(self.locators.EXPERIENCES_EMPLOYER_FIELD).send_keys(Keys.CONTROL + "a")
+        self.element_is_visible(self.locators.EXPERIENCES_EMPLOYER_FIELD).send_keys('Новый работодатель')
+        li_text = self.element_is_visible(self.locators.LI_MENU_ITEM).get_attribute('aria-label')
+        assert li_text == 'Добавить работодателя "Новый работодатель"'
+        self.element_is_visible(self.locators.LI_MENU_ITEM).click()
+
+    @testit.step("Проверка поля Дата начала при самостоятельном заполнении")
+    @allure.step("Проверка поля Дата начала при самостоятельном заполнении")
+    def check_custom_begin_data_field(self):
+        self.elements_are_visible(self.locators.EXPERIENCES_DATA_PICKER)[0].click()
+        assert not self.element_is_clickable(self.locators.NEXT_DAY_IN_PICKER, 1)
+        self.elements_are_visible(self.locators.EXPERIENCES_DATA_PICKER)[0].click()
+
+        self.element_is_visible(self.locators.EXPERIENCES_BEGIN_DATA_INPUT).send_keys(self.get_day_before(22000))
+        self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_SLOT).click()
+        error_text = self.element_is_visible(self.locators.MUI_ERROR).text
+        time.sleep(2)
+        self.element_is_visible(self.locators.EXPERIENCES_BEGIN_DATA_INPUT).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.EXPERIENCES_BEGIN_DATA_INPUT).send_keys(self.get_day_before(0))
+        self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_SLOT).click()
+        assert error_text == 'Дата начала работы некорректна', "Не появилось сообщение о некорректной дате"
+
+    @testit.step("Проверка формы Опыт работы с самостоятельным заполнением")
+    @allure.step("Проверка формы Опыт работы с самостоятельным заполнением")
+    def field_work_experience_form_with_new_employer(self):
+        self.press_redact_button()
+        self.press_add_icon_button()
+        time.sleep(2)
+        self.field_custom_employer_field()
+        self.check_128_symbol_in_field(self.locators.EXPERIENCES_CUSTOM_PROJECT_FIELD, self.locators.EXPERIENCES_KNOWLEDGE_FIELD)
+        self.check_64_symbol(self.locators.EXPERIENCES_SPECIALIZATION_SLOT, self.locators.EXPERIENCES_KNOWLEDGE_FIELD)
+        self.check_custom_begin_data_field()
+        self.element_is_visible(self.locators.EXPERIENCES_KNOWLEDGE_FIELD).click()
+        time.sleep(1)
+        self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
+        self.press_save_button()

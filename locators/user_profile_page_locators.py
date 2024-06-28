@@ -51,6 +51,19 @@ class UserProfilePageLocators:
     CERTIFICATE_TITLE = (By.XPATH, '//a[contains(@class,"MuiTypography-root MuiTypography-body2 MuiLink-root MuiLink-underlineHover")]//h6')
     # Вкладка Опыт работы
     EXPERIENCES_TAB_BUTTON = (By.XPATH, '//button[text()="Опыт работы"]')
+    EXPERIENCES_EMPLOYER_FIELD = (By.CSS_SELECTOR, 'input[placeholder="Выберите работодателя"]')
+    EXPERIENCES_PROJECT_FIELD = (By.CSS_SELECTOR, 'input[placeholder="Выберите проект"]')
+    EXPERIENCES_CUSTOM_PROJECT_FIELD = (By.CSS_SELECTOR, 'input[placeholder="Введите проект"]')
+    EXPERIENCES_SPECIALIZATION_ACTION = (By.CSS_SELECTOR, 'input[placeholder="Выберите деятельность"]')
+    EXPERIENCES_SPECIALIZATION_SLOT = (By.CSS_SELECTOR, 'input[placeholder="Выберите роль"]')
+    EXPERIENCES_DESCRIPTION = (By.CSS_SELECTOR, 'div[aria-label="rdw-wrapper"]')
+    EXPERIENCES_DESCRIPTION_TEXT = (By.CSS_SELECTOR, 'span[data-text]')
+
+    EXPERIENCES_DATA_PICKER = (By.CSS_SELECTOR, 'button[aria-label="Choose date"]')
+    NEXT_DAY_IN_PICKER = (By.XPATH, '//button[contains(@class, "today")]//following::button[1]')
+    EXPERIENCES_TITLE = (By.XPATH, '//div[contains(@name,"employer")]')
+    EXPERIENCES_BEGIN_DATA_INPUT = (By.XPATH, '//label[text()="Дата начала работы"]/..//input')
+    EXPERIENCES_KNOWLEDGE_FIELD = (By.CSS_SELECTOR, 'input[placeholder="Выберите уровни"]')
     # Вкладка Резюме
     RESUME_TAB_BUTTON = (By.XPATH, '//button[text()="Резюме"]')
     CREATE_RESUME_BUTTON = (By.XPATH, '//a[text()="Создать"]')
