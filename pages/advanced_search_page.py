@@ -75,3 +75,30 @@ class AdvancedSearchPage(BasePage):
         time.sleep(2)
         return values
 
+    @testit.step("Добавление строки в расширенном поиске")
+    @allure.step("Добавление строки в расширенном поиске")
+    def add_string_to_search(self):
+        self.element_is_visible(self.locators.NEW_SEARCH_BUTTON).click()
+        self.element_is_visible(self.locators.KEBAB_MENU_BUTTON).click()
+        self.element_is_visible(self.locators.ADD_RULES_BUTTON).click()
+
+    @testit.step("Проверка переключателя с выбором оператора")
+    @allure.step("Проверка переключателя с выбором оператора")
+    def check_operator_selector_switch(self):
+        assert self.element_is_displayed(self.locators.AND_SWITCH), "Нет селектора с оператором И"
+        assert 'Mui-selected' in self.element_is_visible(self.locators.AND_SWITCH).get_attribute('class'), "Оператор И не выбран по умолчанию"
+        assert self.element_is_displayed(self.locators.OR_SWITCH), "Нет селектора с оператором ИЛИ"
+
+    @testit.step("Проверка наличия двух строк")
+    @allure.step("Проверка наличия двух строк")
+    def check_two_string(self):
+        assert len(self.elements_are_visible(self.locators.CRITERION_FIELD)) == 2, "Не два поля Критерии"
+        assert len(self.elements_are_visible(self.locators.RUL_FIELD)) == 2, "Не два поля Правила"
+        assert len(self.elements_are_visible(self.locators.DELETE_ICON)) == 2, "Не две иконки удаления строки"
+
+    @testit.step("Проверка удаления одной строки")
+    @allure.step("Проверка наличия двух строк")
+    def check_delete_string(self):
+        self.elements_are_visible(self.locators.DELETE_ICON)[0].click()
+        assert len(self.elements_are_visible(self.locators.CRITERION_FIELD)) == 1, "Не удалилась строка"
+        assert not self.element_is_displayed(self.locators.DELETE_ICON, 1), "Осталась иконка удаления строки"

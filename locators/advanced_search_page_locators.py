@@ -19,7 +19,16 @@ class AdvancedSearchPageLocators:
     SEARCH_CHIPS = (By.XPATH, '//button[@role="tab"]//div')
 
     ALL_FIELDS = (By.CSS_SELECTOR, 'input[role="combobox"]')
+    CRITERION_FIELD = (By.XPATH, '//label[text()="Выберите критерий поиска"]/..//input')
+    RUL_FIELD = (By.XPATH, '//label[text()="Правило"]/..//input')
+    DELETE_ICON = (By.CSS_SELECTOR, 'svg[data-testid="DeleteIcon"]')
     TOOLTIP = (By.XPATH, '//div[contains(@class, "MuiTooltip-tooltipPlacementTop")]')
     SUBMIT_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
     def chips_by_name(self, name):
         return (By.XPATH, f'//div[text()="{name}"]')
+
+    KEBAB_MENU_BUTTON = (By.CSS_SELECTOR, 'svg[data-testid="MoreHorizIcon"]')
+    ADD_RULES_BUTTON = (By.XPATH, '//span[text()="Добавить правило"]')
+
+    AND_SWITCH = (By.CSS_SELECTOR, 'button[value="and"]')
+    OR_SWITCH = (By.CSS_SELECTOR, 'button[value="or"]')
