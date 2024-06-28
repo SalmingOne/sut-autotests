@@ -32,7 +32,9 @@ class TestFilialPage:
                                'Москва, Красная площадь',
                                '+77777777777',
                                'vip@vip.vip')
-        assert filial_page.check_filial_on_tab('Центральный филиал')
+        assert filial_page.check_filial_on_tab('Центральный филиал'), "Филиал не создался"
+        # Снятие ресурсов с филиала
+        filial_page.delete_all_resources_from_filial('Центральный филиал')
         # Удаляем филиал после теста
         filial_endpoint.delete_filial_by_name_api('Центральный филиал')
 

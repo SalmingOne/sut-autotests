@@ -19,6 +19,7 @@ class FilialPageLocators:
     EMPLOYEES_CHIPS = (By.XPATH, '//div[@name="employees"]//span[contains(@class,"MuiChip-label")]')
     EMPLOYEES_CHIPS_DELETE_ICON = (By.XPATH, '//div[@name="employees"]//span[contains(@class,"MuiChip-label")]/..//*[@data-testid="CancelIcon"]')
     DIRECTOR_FIELD = (By.CSS_SELECTOR, 'div[name="director"]')
+    CLEAR_DIRECTOR_FIELD_BUTTON = (By.XPATH, '//div[@name="director"]//button[@aria-label="Очистить поле"]')
     AFFILIATE_FIELD = (By.CSS_SELECTOR, 'div[name="affiliate"]')
     PHONE_FIELD = (By.CSS_SELECTOR, 'input[name="phone"]')
     EMAIL_FIELD = (By.CSS_SELECTOR, 'input[name="email"]')
