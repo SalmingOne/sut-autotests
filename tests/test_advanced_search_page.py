@@ -34,3 +34,15 @@ class TestAdvancedSearchPage:
         advanced_search_page.check_operator_selector_switch()
         advanced_search_page.check_two_string()
         advanced_search_page.check_delete_string()
+
+    @testit.workItemIds(1131)
+    @testit.displayName("10.3.1. Добавление и удаление группы поиска")
+    @pytest.mark.regress
+    @allure.title("id-1131 10.3.1. Добавление и удаление группы поиска")
+    def test_adding_or_removing_search_group(self, login, driver):
+        advanced_search_page = AdvancedSearchPage(driver)
+        advanced_search_page.go_advanced_search_page()
+        advanced_search_page.add_group_to_search()
+        advanced_search_page.check_add_block()
+        advanced_search_page.check_menu_item()
+        advanced_search_page.check_delete_group()

@@ -97,8 +97,45 @@ class AdvancedSearchPage(BasePage):
         assert len(self.elements_are_visible(self.locators.DELETE_ICON)) == 2, "Не две иконки удаления строки"
 
     @testit.step("Проверка удаления одной строки")
-    @allure.step("Проверка наличия двух строк")
+    @allure.step("Проверка удаления одной строки")
     def check_delete_string(self):
         self.elements_are_visible(self.locators.DELETE_ICON)[0].click()
         assert len(self.elements_are_visible(self.locators.CRITERION_FIELD)) == 1, "Не удалилась строка"
         assert not self.element_is_displayed(self.locators.DELETE_ICON, 1), "Осталась иконка удаления строки"
+
+    @testit.step("Добавление группы поиска")
+    @allure.step("Добавление группы поиска")
+    def add_group_to_search(self):
+        self.element_is_visible(self.locators.NEW_SEARCH_BUTTON).click()
+        self.element_is_visible(self.locators.KEBAB_MENU_BUTTON).click()
+        self.element_is_visible(self.locators.ADD_GROUP_BUTTON).click()
+
+    @testit.step("Проверка наличия второй группы поиска")
+    @allure.step("Проверка наличия второй группы поиска")
+    def check_add_block(self):
+        assert len(self.elements_are_visible(self.locators.CRITERION_FIELD)) == 3, "Не три поля Критерии"
+        assert len(self.elements_are_visible(self.locators.RUL_FIELD)) == 3, "Не три поля Правила"
+        assert len(self.elements_are_visible(self.locators.DELETE_ICON)) == 3, "Не три иконки удаления строки"
+        assert len(self.elements_are_visible(self.locators.AND_SWITCH)) == 2, "Нет второй группы"
+
+    @testit.step("Получение текста элементов кебаб меню")
+    @allure.step("Получение текста элементов кебаб меню")
+    def get_kebab_menu_item_text(self, index_element):
+        self.elements_are_visible(self.locators.KEBAB_MENU_BUTTON)[index_element].click()
+        all_li = self.elements_are_visible(self.locators.MENU_ITEM_TEXT)
+        data = []
+        for li in all_li:
+            data.append(li.text)
+        return data
+
+    @testit.step("Проверка текста элементов кебаб меню")
+    @allure.step("Проверка текста элементов кебаб меню")
+    def check_menu_item(self):
+        assert self.get_kebab_menu_item_text(1) == ['Добавить правило', 'Добавить группу', 'Удалить группу'], "Не корректные пункты кебаб меню"
+
+    @testit.step("Проверка удаления группы поиска")
+    @allure.step("Проверка удаления группы поиска")
+    def check_delete_group(self):
+        self.element_is_visible(self.locators.DELETE_GROUP_BUTTON).click()
+        assert len(self.elements_are_visible(self.locators.CRITERION_FIELD)) == 1, "Не удалилась группа"
+        assert not self.element_is_displayed(self.locators.DELETE_ICON, 1), "Осталась иконка удаления строки\группы"

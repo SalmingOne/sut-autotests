@@ -10,6 +10,7 @@ class AdvancedSearchPageLocators:
     NEW_SEARCH_BUTTON = (By.XPATH, '//button[text()="Новый поиск"]')
     OPEN_BUTTONS = (By.CSS_SELECTOR, 'button[title="Открыть"]')
     LI_MENU_ITEM = (By.CSS_SELECTOR, 'li[role="option"]')
+    MENU_ITEM_TEXT = (By.XPATH, '//li[@role="menuitem"]//span[contains(@class,"MuiTypography-root MuiTypography-caption")]')
     SAVE_SEARCH_BUTTON = (By.XPATH, '//button[text()="Сохранить поиск"]')
     DELETE_SEARCH_BUTTON = (By.XPATH, '//button[text()="Удалить сохраненный поиск"]')
 
@@ -29,6 +30,8 @@ class AdvancedSearchPageLocators:
 
     KEBAB_MENU_BUTTON = (By.CSS_SELECTOR, 'svg[data-testid="MoreHorizIcon"]')
     ADD_RULES_BUTTON = (By.XPATH, '//span[text()="Добавить правило"]')
+    ADD_GROUP_BUTTON = (By.XPATH, '//span[text()="Добавить группу"]')
+    DELETE_GROUP_BUTTON = (By.XPATH, '//span[text()="Удалить группу"]')
 
     AND_SWITCH = (By.CSS_SELECTOR, 'button[value="and"]')
     OR_SWITCH = (By.CSS_SELECTOR, 'button[value="or"]')
