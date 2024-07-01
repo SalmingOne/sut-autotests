@@ -156,9 +156,9 @@ class AdvancedSearchPage(BasePage):
             all_operators.append(operator.get_attribute('aria-label'))
         return all_operators
 
-    @testit.step("Проверка операторов числового типа поля")
-    @allure.step("Проверка операторов числового типа поля")
-    def check_numeric_field(self):
+    @testit.step("Проверка операторов числового типа поля и даты")
+    @allure.step("Проверка операторов числового типа поля и даты")
+    def check_numeric_and_date_field(self):
         self.element_is_visible(self.locators.NEW_SEARCH_BUTTON).click()
         self.element_is_visible(self.locators.CRITERION_FIELD).send_keys('Дата рождения')
         self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()

@@ -63,4 +63,13 @@ class TestAdvancedSearchPage:
     def test_comparison_operators_for_employee_searches_numeric_field_type(self, login, driver):
         advanced_search_page = AdvancedSearchPage(driver)
         advanced_search_page.go_advanced_search_page()
-        advanced_search_page.check_numeric_field()
+        advanced_search_page.check_numeric_and_date_field()
+
+    @testit.workItemIds(1138)
+    @testit.displayName("10.3.1. Операторы сравнения для поиска сотрудников (дата)")
+    @pytest.mark.regress
+    @allure.title("id-1138 10.3.1. Операторы сравнения для поиска сотрудников (дата)")
+    def test_comparison_operators_for_employee_searches_date_type(self, login, driver):
+        advanced_search_page = AdvancedSearchPage(driver)
+        advanced_search_page.go_advanced_search_page()
+        advanced_search_page.check_numeric_and_date_field()
