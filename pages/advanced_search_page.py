@@ -3,6 +3,7 @@ import time
 import allure
 import testit
 from selenium.common import TimeoutException
+from selenium.webdriver import Keys
 
 from locators.advanced_search_page_locators import AdvancedSearchPageLocators
 from pages.base_page import BasePage
@@ -195,5 +196,26 @@ class AdvancedSearchPage(BasePage):
         all_fields_after = self.get_all_fields()
         assert all_fields_before != all_fields_after, "Не удалилось правило"
         assert all_fields_after == ['', 'Равно'], "Отображается не одна строка поиска (по умолчанию)"
+
+    @testit.step("Получение текста тултипа")
+    @allure.step("Получение текста тултипа")
+    def get_tooltip(self, locator):
+        self.action_move_to_element(self.element_is_visible(locator))
+        tooltip_text = self.element_is_visible(self.locators.TOOLTIP).text
+        return tooltip_text
+
+    @testit.step("Проверка правила Пусто")
+    @allure.step("Проверка правила Пусто")
+    def check_selecting_the_rule_empty_or_not_empty(self):
+        self.element_is_visible(self.locators.NEW_SEARCH_BUTTON).click()
+        time.sleep(1)
+        self.element_is_visible(self.locators.CRITERION_FIELD).send_keys('Статус')
+        self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
+        self.element_is_visible(self.locators.RUL_FIELD).send_keys(Keys.CONTROL + "a")
+        self.element_is_visible(self.locators.RUL_FIELD).send_keys('Пусто')
+        self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
+        tooltip = self.get_tooltip(self.locators.STATUS_VALUE_FIELD)
+        assert tooltip == 'Выбранное правило не предполагает заполнение данного поля', "Не отображается тултип"
+        assert not self.element_is_clickable(self.locators.STATUS_VALUE_FIELD, 1), "Поле Значение не задизейблено"
 
 

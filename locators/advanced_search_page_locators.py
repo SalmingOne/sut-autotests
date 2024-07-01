@@ -23,6 +23,7 @@ class AdvancedSearchPageLocators:
     ALL_FIELDS = (By.CSS_SELECTOR, 'input[role="combobox"]')
     CRITERION_FIELD = (By.XPATH, '//label[text()="Выберите критерий поиска"]/..//input')
     RUL_FIELD = (By.XPATH, '//label[text()="Правило"]/..//input')
+    STATUS_VALUE_FIELD = (By.XPATH, '//label[text()="Статус"]/..//input')
     DELETE_ICON = (By.CSS_SELECTOR, 'svg[data-testid="DeleteIcon"]')
     TOOLTIP = (By.XPATH, '//div[contains(@class, "MuiTooltip-tooltipPlacementTop")]')
     SUBMIT_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')

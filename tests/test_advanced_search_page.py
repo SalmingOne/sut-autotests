@@ -84,13 +84,22 @@ class TestAdvancedSearchPage:
         advanced_search_page.go_advanced_search_page()
         advanced_search_page.check_identity_field()
 
-    @testit.workItemIds(10094)
+    @testit.workItemIds(10096)
     @testit.displayName("10.3.1. Сброс значений в модальном окне поиска")
     @pytest.mark.regress
-    @allure.title("id-10094 10.3.1. Сброс значений в модальном окне поиска")
+    @allure.title("id-10096 10.3.1. Сброс значений в модальном окне поиска")
     def test_resetting_values_in_a_modal_search_window(self, login, driver):
         advanced_search_page = AdvancedSearchPage(driver)
         advanced_search_page.go_advanced_search_page()
         time.sleep(3)
         advanced_search_page.check_resetting_values_in_a_modal_search_window()
+
+    @testit.workItemIds(10127)
+    @testit.displayName("10.3.1. Выбор правила Пусто или Не пусто")
+    @pytest.mark.regress
+    @allure.title("id-10127 10.3.1. Выбор правила Пусто или Не пусто")
+    def test_selecting_the_rule_empty_or_not_empty(self, login, driver):
+        advanced_search_page = AdvancedSearchPage(driver)
+        advanced_search_page.go_advanced_search_page()
+        advanced_search_page.check_selecting_the_rule_empty_or_not_empty()
 
