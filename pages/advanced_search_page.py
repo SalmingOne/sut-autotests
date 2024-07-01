@@ -146,3 +146,24 @@ class AdvancedSearchPage(BasePage):
         self.element_is_visible(self.locators.NEW_SEARCH_BUTTON).click()
         self.element_is_visible(self.locators.ABORT_BUTTON).click()
         assert not self.element_is_displayed(self.locators.CRITERION_FIELD, 1), "Модальное окно новый поиск не закрылось"
+
+    @testit.step("Получение текста всех операторов")
+    @allure.step("Получение текста всех операторов")
+    def get_operators(self):
+        operators = self.elements_are_visible(self.locators.LI_MENU_ITEM)
+        all_operators = []
+        for operator in operators:
+            all_operators.append(operator.get_attribute('aria-label'))
+        return all_operators
+
+    @testit.step("Проверка операторов числового типа поля")
+    @allure.step("Проверка операторов числового типа поля")
+    def check_numeric_field(self):
+        self.element_is_visible(self.locators.NEW_SEARCH_BUTTON).click()
+        self.element_is_visible(self.locators.CRITERION_FIELD).send_keys('Дата рождения')
+        self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
+        self.element_is_visible(self.locators.RUL_FIELD).click()
+        assert self.get_operators() == ['Равно', 'Не равно', 'Меньше', 'Меньше или равно', 'Больше', 'Больше или равно', 'Пусто', 'Не пусто'], \
+            "Не корректные операторы сравнения при выборе числового типа поля"
+
+

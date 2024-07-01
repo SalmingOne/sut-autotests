@@ -30,6 +30,9 @@ class AdvancedSearchPageLocators:
     def chips_by_name(self, name):
         return (By.XPATH, f'//div[text()="{name}"]')
 
+    def li_by_aria_label(self, name):
+        return (By.CSS_SELECTOR, f'li[aria-label="{name}"]')
+
     KEBAB_MENU_BUTTON = (By.CSS_SELECTOR, 'svg[data-testid="MoreHorizIcon"]')
     ADD_RULES_BUTTON = (By.XPATH, '//span[text()="Добавить правило"]')
     ADD_GROUP_BUTTON = (By.XPATH, '//span[text()="Добавить группу"]')
