@@ -73,3 +73,12 @@ class TestAdvancedSearchPage:
         advanced_search_page = AdvancedSearchPage(driver)
         advanced_search_page.go_advanced_search_page()
         advanced_search_page.check_numeric_and_date_field()
+
+    @testit.workItemIds(1139)
+    @testit.displayName("10.3.1.  Операторы сравнения для поиска сотрудников (тождество)")
+    @pytest.mark.regress
+    @allure.title("id-1139 10.3.1.  Операторы сравнения для поиска сотрудников (тождество)")
+    def test_comparison_operators_for_employee_searches_identity_type(self, login, driver):
+        advanced_search_page = AdvancedSearchPage(driver)
+        advanced_search_page.go_advanced_search_page()
+        advanced_search_page.check_identity_field()

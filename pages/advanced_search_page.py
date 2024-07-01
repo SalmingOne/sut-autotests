@@ -166,4 +166,11 @@ class AdvancedSearchPage(BasePage):
         assert self.get_operators() == ['Равно', 'Не равно', 'Меньше', 'Меньше или равно', 'Больше', 'Больше или равно', 'Пусто', 'Не пусто'], \
             "Не корректные операторы сравнения при выборе числового типа поля"
 
-
+    @testit.step("Проверка операторов поля с типом тождество")
+    @allure.step("Проверка операторов поля с типом тождество")
+    def check_identity_field(self):
+        self.element_is_visible(self.locators.NEW_SEARCH_BUTTON).click()
+        self.element_is_visible(self.locators.CRITERION_FIELD).send_keys('Пол')
+        self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
+        self.element_is_visible(self.locators.RUL_FIELD).click()
+        assert self.get_operators() == ['Равно', 'Не равно', 'Пусто', 'Не пусто'], "Не корректные операторы сравнения"
