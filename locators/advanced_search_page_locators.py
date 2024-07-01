@@ -25,6 +25,8 @@ class AdvancedSearchPageLocators:
     DELETE_ICON = (By.CSS_SELECTOR, 'svg[data-testid="DeleteIcon"]')
     TOOLTIP = (By.XPATH, '//div[contains(@class, "MuiTooltip-tooltipPlacementTop")]')
     SUBMIT_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
+    ABORT_BUTTON = (By.XPATH, '//button[text()="Отмена"]')
+
     def chips_by_name(self, name):
         return (By.XPATH, f'//div[text()="{name}"]')
 

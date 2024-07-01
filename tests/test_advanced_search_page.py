@@ -46,3 +46,12 @@ class TestAdvancedSearchPage:
         advanced_search_page.check_add_block()
         advanced_search_page.check_menu_item()
         advanced_search_page.check_delete_group()
+
+    @testit.workItemIds(3206)
+    @testit.displayName("10.3.1. Отмена поиска")
+    @pytest.mark.regress
+    @allure.title("id-3206 10.3.1. Отмена поиска")
+    def test_cancel_search(self, login, driver):
+        advanced_search_page = AdvancedSearchPage(driver)
+        advanced_search_page.go_advanced_search_page()
+        advanced_search_page. check_cancel_search()

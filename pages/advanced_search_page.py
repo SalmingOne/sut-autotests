@@ -139,3 +139,10 @@ class AdvancedSearchPage(BasePage):
         self.element_is_visible(self.locators.DELETE_GROUP_BUTTON).click()
         assert len(self.elements_are_visible(self.locators.CRITERION_FIELD)) == 1, "Не удалилась группа"
         assert not self.element_is_displayed(self.locators.DELETE_ICON, 1), "Осталась иконка удаления строки\группы"
+
+    @testit.step("Проверка отмены поиска")
+    @allure.step("Проверка отмены поиска")
+    def check_cancel_search(self):
+        self.element_is_visible(self.locators.NEW_SEARCH_BUTTON).click()
+        self.element_is_visible(self.locators.ABORT_BUTTON).click()
+        assert not self.element_is_displayed(self.locators.CRITERION_FIELD, 1), "Модальное окно новый поиск не закрылось"
