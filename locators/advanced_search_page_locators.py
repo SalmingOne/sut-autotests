@@ -13,6 +13,7 @@ class AdvancedSearchPageLocators:
     MENU_ITEM_TEXT = (By.XPATH, '//li[@role="menuitem"]//span[contains(@class,"MuiTypography-root MuiTypography-caption")]')
     SAVE_SEARCH_BUTTON = (By.XPATH, '//button[text()="Сохранить поиск"]')
     DELETE_SEARCH_BUTTON = (By.XPATH, '//button[text()="Удалить сохраненный поиск"]')
+    RESET_ALL_BUTTON = (By.XPATH, '//button[text()="Сбросить все"]')
 
     SEARCH_NAME_FIELD = (By.CSS_SELECTOR, 'input[name="textValue"]')
     CHECK_ICON = (By.CSS_SELECTOR, 'svg[data-testid="CheckIcon"]')

@@ -16,6 +16,7 @@ class TestAdvancedSearchPage:
     def test_saving_advanced_search(self, login, driver):
         advanced_search_page = AdvancedSearchPage(driver)
         advanced_search_page.go_advanced_search_page()
+        time.sleep(2)
         search_name, criterion_value, operator_value, condition_value = advanced_search_page.create_new_search()
         chips_names = advanced_search_page.get_search_chips_names()
         advanced_search_page.check_tooltip(search_name)
@@ -82,3 +83,14 @@ class TestAdvancedSearchPage:
         advanced_search_page = AdvancedSearchPage(driver)
         advanced_search_page.go_advanced_search_page()
         advanced_search_page.check_identity_field()
+
+    @testit.workItemIds(10094)
+    @testit.displayName("10.3.1. Сброс значений в модальном окне поиска")
+    @pytest.mark.regress
+    @allure.title("id-10094 10.3.1. Сброс значений в модальном окне поиска")
+    def test_resetting_values_in_a_modal_search_window(self, login, driver):
+        advanced_search_page = AdvancedSearchPage(driver)
+        advanced_search_page.go_advanced_search_page()
+        time.sleep(3)
+        advanced_search_page.check_resetting_values_in_a_modal_search_window()
+

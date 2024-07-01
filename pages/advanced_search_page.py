@@ -62,14 +62,20 @@ class AdvancedSearchPage(BasePage):
         tooltip_text = self.element_is_visible(self.locators.TOOLTIP).text
         assert name in tooltip_text, "В тултипе нет полного имени поиска"
 
-    @testit.step("Удаление сохраненного поиска")
-    @allure.step("Удаление сохраненного поиска")
-    def get_chips_values_and_delete_search_chips(self, name):
-        self.action_double_click(self.element_is_visible(self.locators.chips_by_name(name)))
+    @testit.step("Получение значений всех полей")
+    @allure.step("Получение значений всех полей")
+    def get_all_fields(self):
         fields = self.elements_are_visible(self.locators.ALL_FIELDS)
         values = []
         for field in fields:
             values.append(field.get_attribute('value'))
+        return values
+
+    @testit.step("Удаление сохраненного поиска")
+    @allure.step("Удаление сохраненного поиска")
+    def get_chips_values_and_delete_search_chips(self, name):
+        self.action_double_click(self.element_is_visible(self.locators.chips_by_name(name)))
+        values = self.get_all_fields()
         self.element_is_visible(self.locators.DELETE_SEARCH_BUTTON).click()
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
         time.sleep(2)
@@ -174,3 +180,20 @@ class AdvancedSearchPage(BasePage):
         self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
         self.element_is_visible(self.locators.RUL_FIELD).click()
         assert self.get_operators() == ['Равно', 'Не равно', 'Пусто', 'Не пусто'], "Не корректные операторы сравнения"
+
+    @testit.step("Проверка кнопки сбросить все")
+    @allure.step("Проверка кнопки сбросить все")
+    def check_resetting_values_in_a_modal_search_window(self):
+        self.element_is_visible(self.locators.NEW_SEARCH_BUTTON).click()
+        time.sleep(1)
+        self.element_is_visible(self.locators.KEBAB_MENU_BUTTON).click()
+        self.element_is_visible(self.locators.ADD_RULES_BUTTON).click()
+        self.elements_are_visible(self.locators.CRITERION_FIELD)[1].send_keys('Должность')
+        self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
+        all_fields_before = self.get_all_fields()
+        self.element_is_visible(self.locators.RESET_ALL_BUTTON).click()
+        all_fields_after = self.get_all_fields()
+        assert all_fields_before != all_fields_after, "Не удалилось правило"
+        assert all_fields_after == ['', 'Равно'], "Отображается не одна строка поиска (по умолчанию)"
+
+
