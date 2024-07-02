@@ -257,6 +257,8 @@ def create_filial():
 @pytest.fixture()
 def create_work_user():
     user_endpoint = UserEndpoint()
+    project_endpoint = ProjectEndpoint()
+    first_project_id = project_endpoint.get_all_project().json()[0]['id']
     user_id = user_endpoint.get_user_id_by_email('auto_testt@mail.rruu')
     payload = dict(username="AutoTester1",
                    name="Автомат",
@@ -267,7 +269,7 @@ def create_work_user():
                    hourlyWage=False,
                    startWorkDate="2024-04-11",
                    userAssignments=[dict(
-                       projectId=3,
+                       projectId=first_project_id,
                        projectRoleId=1,
                        isProjectManager=False
                    )
@@ -329,3 +331,15 @@ def create_advanced_search():
     response = advanced_search.create_advanced_search_api(json=payload)
     yield payload['title']
     advanced_search.delete_advanced_search_api(str(response.json()['id']))
+
+
+@pytest.fixture()
+def advanced_search_to_delete():
+    advanced_search = SearchProfileEndpoint()
+    payload = dict(
+        userId=USER_ID,
+        title='Для удаления',
+        query="{\"rules\":[{\"field\":\"status\",\"value\":\"WORK\",\"operator\":\"in\"}],\"combinator\":\"and\"}"
+    )
+    advanced_search.create_advanced_search_api(json=payload)
+    yield payload['title']

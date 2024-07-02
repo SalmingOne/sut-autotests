@@ -141,3 +141,15 @@ class TestAdvancedSearchPage:
         after = advanced_search_page.check_search_not_change(create_advanced_search)
         assert before == after, "Изменения сохранились"
 
+    @testit.workItemIds(3242)
+    @testit.displayName("10.3.5. Удаление сохраненного поиска")
+    @pytest.mark.regress
+    @allure.title("id-3242 10.3.5. Удаление сохраненного поиска")
+    def test_deleting_a_saved_search(self, login, advanced_search_to_delete, driver):
+        advanced_search_page = AdvancedSearchPage(driver)
+        time.sleep(1)
+        advanced_search_page.go_advanced_search_page()
+        advanced_search_page.get_chips_values_and_delete_search_chips(advanced_search_to_delete)
+        message = advanced_search_page.get_massage()
+        assert not advanced_search_page.check_chips_on_page(advanced_search_page), "Чипса сохраненного поиска не удалилась"
+        assert message == 'Сохраненный поиск "Для удаления" удален', "Не появилось уведомление об удалении поиска"

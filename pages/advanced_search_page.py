@@ -313,3 +313,8 @@ class AdvancedSearchPage(BasePage):
     def check_search_not_change(self, name):
         self.action_double_click(self.element_is_visible(self.locators.chips_by_name(name)))
         return self.get_all_fields()
+
+    @testit.step("Проверка наличия чипсы поиска на странице")
+    @allure.step("Проверка наличия чипсы поиска на странице")
+    def check_chips_on_page(self, name):
+        return self.element_is_displayed(self.locators.chips_by_name(name), 1)
