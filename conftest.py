@@ -17,6 +17,7 @@ from endpoints.auth_endpoint import AuthEndpoint
 from endpoints.labor_reports_endpoint import LaborReportEndpoint
 from endpoints.logs_endpoint import LogsEndpoint
 from endpoints.project_endpoint import ProjectEndpoint
+from endpoints.search_profile_endpoint import SearchProfileEndpoint
 from endpoints.skills_endpoint import SkillsEndpoint
 from endpoints.tags_endpoint import TagsEndpoint
 from endpoints.users_endpoint import UserEndpoint
@@ -315,3 +316,16 @@ def create_fired_user():
 def write_user_creds_file():
     user_endpoint = UserEndpoint()
     user_endpoint.write_user_id_and_name_to_file(LOGIN)
+
+
+@pytest.fixture()
+def create_advanced_search():
+    advanced_search = SearchProfileEndpoint()
+    payload = dict(
+        userId=USER_ID,
+        title='Автопоиск',
+        query="{\"rules\":[{\"field\":\"status\",\"value\":\"WORK\",\"operator\":\"in\"}],\"combinator\":\"and\"}"
+    )
+    response = advanced_search.create_advanced_search_api(json=payload)
+    yield payload['title']
+    advanced_search.delete_advanced_search_api(str(response.json()['id']))

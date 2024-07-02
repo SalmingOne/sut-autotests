@@ -103,3 +103,15 @@ class TestAdvancedSearchPage:
         advanced_search_page.go_advanced_search_page()
         advanced_search_page.check_selecting_the_rule_empty_or_not_empty()
 
+    @testit.workItemIds(3235)
+    @testit.displayName("10.3.3. Просмотр страницы Расширенный поиск")
+    @pytest.mark.regress
+    @allure.title("id-3235 10.3.3. Просмотр страницы Расширенный поиск")
+    def test_view_page_advanced_search(self, login, create_advanced_search, driver):
+        advanced_search_page = AdvancedSearchPage(driver)
+        advanced_search_page.go_advanced_search_page()
+        advanced_search_page.check_search_chips()
+        advanced_search_page.check_new_search()
+        advanced_search_page.check_export_to_exel_button()
+        advanced_search_page.check_column_titles()
+        advanced_search_page.check_break_search_button(create_advanced_search)

@@ -218,4 +218,35 @@ class AdvancedSearchPage(BasePage):
         assert tooltip == 'Выбранное правило не предполагает заполнение данного поля', "Не отображается тултип"
         assert not self.element_is_clickable(self.locators.STATUS_VALUE_FIELD, 1), "Поле Значение не задизейблено"
 
+    @testit.step("Проверка наличия чипсы сохраненного поиска")
+    @allure.step("Проверка наличия чипсы сохраненного поиска")
+    def check_search_chips(self):
+        assert self.element_is_displayed(self.locators.SEARCH_CHIPS), "Нет чипсы сохраненного поиска"
+
+    @testit.step("Проверка наличия кнопки новый поиск")
+    @allure.step("Проверка наличия кнопки новый поиск")
+    def check_new_search(self):
+        assert self.element_is_displayed(self.locators.NEW_SEARCH_BUTTON), "Нет кнопки новый поиск"
+
+    @testit.step("Проверка наличия кнопки экспорта в эксель")
+    @allure.step("Проверка наличия кнопки экспорта в эксель")
+    def check_export_to_exel_button(self):
+        assert self.element_is_displayed(self.locators.EXPORT_TO_EXEL_BUTTON), "Нет кнопки экспорта в эксель"
+
+    @testit.step("Проверка заголовков столбцов таблицы")
+    @allure.step("Проверка заголовков столбцов таблицы")
+    def check_column_titles(self):
+        all_titles = self.elements_are_visible(self.locators.COLUMNS_TITLES)
+        columns_texts = []
+        for a in all_titles:
+            columns_texts.append(a.text)
+        assert columns_texts == ['Фото', 'ФИО', 'Отдел', 'Должность', 'Статус'], "Есть не все столбцы"
+
+    @testit.step("Проверка кнопки сбросить поиск")
+    @allure.step("Проверка кнопки сбросить поиск")
+    def check_break_search_button(self, name):
+        assert not self.element_is_clickable(self.locators.BREAK_SEARCH_BUTTON), "Кнопка кликабельна до выбора поиска"
+        self.element_is_visible(self.locators.chips_by_name(name)).click()
+        assert self.element_is_clickable(self.locators.BREAK_SEARCH_BUTTON), "Кнопка не кликабельна после выбора поиска"
+
 
