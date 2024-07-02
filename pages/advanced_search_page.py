@@ -283,3 +283,33 @@ class AdvancedSearchPage(BasePage):
         self.element_is_visible(self.locators.SEARCH_BUTTON).click()
         assert not self.element_is_displayed(self.locators.RESET_ALL_BUTTON, 1), "Модальное окно не закрылось"
 
+    @testit.step("Проверка отмены сохранения изменения поиска")
+    @allure.step("Проверка отмены сохранения изменения поиска")
+    def check_cancel_edition_search(self, name):
+        time.sleep(2)
+        self.action_double_click(self.element_is_visible(self.locators.chips_by_name(name)))
+        values_before = self.get_all_fields()
+        self.element_is_visible(self.locators.CRITERION_FIELD).send_keys(Keys.CONTROL + "a")
+        self.element_is_visible(self.locators.CRITERION_FIELD).send_keys('Отдел')
+        self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
+        self.element_is_visible(self.locators.RUL_FIELD).send_keys(Keys.CONTROL + "a")
+        self.element_is_visible(self.locators.RUL_FIELD).send_keys('Не равно')
+        self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
+        self.elements_are_visible(self.locators.OPEN_BUTTONS)[2].click()
+        try:
+            self.elements_are_visible(self.locators.LI_MENU_ITEM, 1)[1].click()
+        except TimeoutException:
+            self.elements_are_visible(self.locators.OPEN_BUTTONS)[2].click()
+            self.elements_are_visible(self.locators.LI_MENU_ITEM)[1].click()
+
+        values_after = self.get_all_fields()
+        self.element_is_visible(self.locators.ABORT_BUTTON).click()
+        assert not self.element_is_displayed(self.locators.RESET_ALL_BUTTON, 1), "Модальное окно не закрылось"
+        assert values_before != values_after, "Изменения не внесены"
+        return values_before
+
+    @testit.step("Проверка поиска после отмены сохранения изменения")
+    @allure.step("Проверка поиска после отмены сохранения изменения")
+    def check_search_not_change(self, name):
+        self.action_double_click(self.element_is_visible(self.locators.chips_by_name(name)))
+        return self.get_all_fields()

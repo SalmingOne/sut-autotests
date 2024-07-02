@@ -127,4 +127,17 @@ class TestAdvancedSearchPage:
         advanced_search_page.check_editing_search(create_advanced_search)
         message = advanced_search_page.get_massage()
         advanced_search_page.check_search_button()
-        assert message == 'Поиск "Автопоиск" сохранен'
+        assert message == 'Поиск "Автопоиск" сохранен', "Не появилось уведомление об успешном сохранении изменении"
+
+    @testit.workItemIds(3238)
+    @testit.displayName("10.3.4. Отмена редактирования сохраненного поиска")
+    @pytest.mark.regress
+    @allure.title("id-3238 10.3.4. Отмена редактирования сохраненного поиска")
+    def test_cansel_editing_a_saved_search(self, login, create_advanced_search, driver):
+        advanced_search_page = AdvancedSearchPage(driver)
+        time.sleep(0.5)
+        advanced_search_page.go_advanced_search_page()
+        before = advanced_search_page.check_cancel_edition_search(create_advanced_search)
+        after = advanced_search_page.check_search_not_change(create_advanced_search)
+        assert before == after, "Изменения сохранились"
+
