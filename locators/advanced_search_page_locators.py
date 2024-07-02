@@ -17,6 +17,7 @@ class AdvancedSearchPageLocators:
     SAVE_SEARCH_BUTTON = (By.XPATH, '//button[text()="Сохранить поиск"]')
     DELETE_SEARCH_BUTTON = (By.XPATH, '//button[text()="Удалить сохраненный поиск"]')
     RESET_ALL_BUTTON = (By.XPATH, '//button[text()="Сбросить все"]')
+    SEARCH_BUTTON = (By.XPATH, '//button[text()="Найти"]')
 
     SEARCH_NAME_FIELD = (By.CSS_SELECTOR, 'input[name="textValue"]')
     CHECK_ICON = (By.CSS_SELECTOR, 'svg[data-testid="CheckIcon"]')
@@ -45,3 +46,5 @@ class AdvancedSearchPageLocators:
 
     AND_SWITCH = (By.CSS_SELECTOR, 'button[value="and"]')
     OR_SWITCH = (By.CSS_SELECTOR, 'button[value="or"]')
+
+    ALERT_MESSAGE = (By.XPATH, '//div[contains(@class, "MuiAlert-message")]')

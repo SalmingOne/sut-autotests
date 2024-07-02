@@ -115,3 +115,16 @@ class TestAdvancedSearchPage:
         advanced_search_page.check_export_to_exel_button()
         advanced_search_page.check_column_titles()
         advanced_search_page.check_break_search_button(create_advanced_search)
+
+    @testit.workItemIds(3237)
+    @testit.displayName("10.3.4. Редактирование сохраненного поиска")
+    @pytest.mark.regress
+    @allure.title("id-3237 10.3.4. Редактирование сохраненного поиска")
+    def test_editing_a_saved_search(self, login, create_advanced_search, driver):
+        advanced_search_page = AdvancedSearchPage(driver)
+        time.sleep(0.5)
+        advanced_search_page.go_advanced_search_page()
+        advanced_search_page.check_editing_search(create_advanced_search)
+        message = advanced_search_page.get_massage()
+        advanced_search_page.check_search_button()
+        assert message == 'Поиск "Автопоиск" сохранен'

@@ -249,4 +249,37 @@ class AdvancedSearchPage(BasePage):
         self.element_is_visible(self.locators.chips_by_name(name)).click()
         assert self.element_is_clickable(self.locators.BREAK_SEARCH_BUTTON), "Кнопка не кликабельна после выбора поиска"
 
+    @testit.step("Проверка изменения сохраненного поиска")
+    @allure.step("Проверка изменения сохраненного поиска")
+    def check_editing_search(self, name):
+        time.sleep(2)
+        self.action_double_click(self.element_is_visible(self.locators.chips_by_name(name)))
+        values_before = self.get_all_fields()
+        self.element_is_visible(self.locators.CRITERION_FIELD).send_keys(Keys.CONTROL + "a")
+        self.element_is_visible(self.locators.CRITERION_FIELD).send_keys('Отдел')
+        self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
+        self.element_is_visible(self.locators.RUL_FIELD).send_keys(Keys.CONTROL + "a")
+        self.element_is_visible(self.locators.RUL_FIELD).send_keys('Не равно')
+        self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
+        self.elements_are_visible(self.locators.OPEN_BUTTONS)[2].click()
+        try:
+            self.elements_are_visible(self.locators.LI_MENU_ITEM, 1)[1].click()
+        except TimeoutException:
+            self.elements_are_visible(self.locators.OPEN_BUTTONS)[2].click()
+            self.elements_are_visible(self.locators.LI_MENU_ITEM)[1].click()
+
+        values_after = self.get_all_fields()
+        self.element_is_visible(self.locators.SAVE_SEARCH_BUTTON).click()
+        assert values_before != values_after, "Поиск не изменился"
+
+    @testit.step("Берем текст сообщения системы")
+    @allure.step("Берем текст сообщения системы")
+    def get_massage(self):
+        return self.element_is_visible(self.locators.ALERT_MESSAGE).text
+
+    @testit.step("Проверка кнопки Найти")
+    @allure.step("Проверка кнопки Найти")
+    def check_search_button(self):
+        self.element_is_visible(self.locators.SEARCH_BUTTON).click()
+        assert not self.element_is_displayed(self.locators.RESET_ALL_BUTTON, 1), "Модальное окно не закрылось"
 
