@@ -318,3 +318,38 @@ class AdvancedSearchPage(BasePage):
     @allure.step("Проверка наличия чипсы поиска на странице")
     def check_chips_on_page(self, name):
         return self.element_is_displayed(self.locators.chips_by_name(name), 1)
+
+    @testit.step("Проверка поля названия поиска")
+    @allure.step("Проверка поля названия поиска")
+    def check_search_name_field(self):
+        long_text = ('Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt'
+                     ' ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci'
+                     ' tation ullamcorper suscipit lobortis nisl ut aliquip ex ea cd')
+        self.element_is_visible(self.locators.SEARCH_NAME_FIELD).send_keys(long_text)
+        self.element_is_visible(self.locators.CHECK_ICON).click()
+        message = self.get_massage()
+        assert message == 'value too long for type character varying(255)', "Не появилось сообщение о превышении длины"
+
+    @testit.step("Проверка отмены сохранения расширенного поиска")
+    @allure.step("Проверка отмены сохранения расширенного поиска")
+    def check_cancel_saving(self):
+        self.element_is_visible(self.locators.NEW_SEARCH_BUTTON).click()
+        time.sleep(1)
+        self.element_is_visible(self.locators.CRITERION_FIELD).send_keys('Статус')
+        self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
+        self.element_is_visible(self.locators.RUL_FIELD).send_keys(Keys.CONTROL + "a")
+        self.element_is_visible(self.locators.RUL_FIELD).send_keys('Пусто')
+        self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
+        self.element_is_visible(self.locators.SAVE_SEARCH_BUTTON).click()
+        values_before = self.get_all_fields()
+        self.check_search_name_field()
+        self.element_is_visible(self.locators.SEARCH_NAME_FIELD).send_keys(Keys.CONTROL + "a")
+        self.element_is_visible(self.locators.SEARCH_NAME_FIELD).send_keys('Авто-поиск')
+        self.element_is_visible(self.locators.CLOSE_ICON).click()
+        values_after = self.get_all_fields()
+        time.sleep(1)
+        assert not self.element_is_displayed(self.locators.CLOSE_ICON, 1), "Модальное окно сохранения поиска не закрылось"
+        assert self.element_is_displayed(self.locators.CRITERION_FIELD, 1), "Не отображается окно расширенного поиска"
+        assert values_before == values_after, "Не отображаются выбранные параметры"
+
+

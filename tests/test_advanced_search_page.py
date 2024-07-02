@@ -153,3 +153,13 @@ class TestAdvancedSearchPage:
         message = advanced_search_page.get_massage()
         assert not advanced_search_page.check_chips_on_page(advanced_search_page), "Чипса сохраненного поиска не удалилась"
         assert message == 'Сохраненный поиск "Для удаления" удален', "Не появилось уведомление об удалении поиска"
+
+    @testit.workItemIds(3249)
+    @testit.displayName("10.3.6 Отмена сохранения расширенного поиска")
+    @pytest.mark.regress
+    @allure.title("id-3249 10.3.6 Отмена сохранения расширенного поиска")
+    def test_cancel_saving_advanced_search(self, login, driver):
+        advanced_search_page = AdvancedSearchPage(driver)
+        time.sleep(1)
+        advanced_search_page.go_advanced_search_page()
+        advanced_search_page.check_cancel_saving()

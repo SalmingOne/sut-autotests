@@ -21,6 +21,7 @@ class AdvancedSearchPageLocators:
 
     SEARCH_NAME_FIELD = (By.CSS_SELECTOR, 'input[name="textValue"]')
     CHECK_ICON = (By.CSS_SELECTOR, 'svg[data-testid="CheckIcon"]')
+    CLOSE_ICON = (By.XPATH, '//label[text()="Название поиска"]/../..//*[@data-testid="CloseIcon"]')
 
     SEARCH_CHIPS = (By.XPATH, '//button[@role="tab"]//div')
 
