@@ -17,6 +17,7 @@ class SkillsPageLocators:
     # Дровер добавления знания
     NAME_FIELD = (By.CSS_SELECTOR, 'input[name="name"]')
     TAG_FIELD = (By.CSS_SELECTOR, 'input[placeholder="Выберите группу знаний"]')
+    CANSEL_ICON = (By.CSS_SELECTOR, 'svg[data-testid="CancelIcon"]')
     SUBMIT_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
     BREAK_BUTTON = (By.XPATH, '//div[contains(@class,"MuiDrawer-paper")]//button[text()="Отменить"]')
 

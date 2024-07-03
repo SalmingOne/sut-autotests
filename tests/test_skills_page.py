@@ -47,8 +47,23 @@ class TestSkillsPage:
         skills_endpoint = SkillsEndpoint()
         skills_page.go_to_skills_page()
         skills_page.sort_skills()
-        skills_page.create_skill('AAAДобавленное знание', create_tag)
+        skills_page.create_skill('AAAДобавленное знание', create_tag[0])
         skills_page.check_skill_name_on_page('AAAДобавленное знание')
         skills_page.check_skill_name_on_tag_tab('AAAДобавленное знание')
 
         skills_endpoint.delete_skill_by_name_api('AAAДобавленное знание')
+
+    @testit.workItemIds(10591)
+    @testit.displayName("10.4.1.2 Добавление данных в справочник Знания с несколькими группами знаний")
+    @pytest.mark.regress
+    @allure.title("id-10591 10.4.1.2 Добавление данных в справочник Знания с несколькими группами знаний")
+    def test_adding_the_two_knowledge_directory(self, create_tag, login, driver):
+        skills_page = SkillsPage(driver)
+        skills_endpoint = SkillsEndpoint()
+        skills_page.go_to_skills_page()
+        skills_page.sort_skills()
+        len_tags = skills_page.create_skill('AAAДобавленное знание', create_tag[0], create_tag[1])
+        skills_page.check_skill_name_on_page('AAAДобавленное знание')
+        skills_page.check_skill_name_on_tag_tab('AAAДобавленное знание')
+        skills_endpoint.delete_skill_by_name_api('AAAДобавленное знание')
+        assert len_tags == 2, "В поле не отобразилось несколько групп знаний"

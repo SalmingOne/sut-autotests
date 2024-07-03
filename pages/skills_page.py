@@ -103,13 +103,19 @@ class SkillsPage(BasePage):
 
     @testit.step("Добавление Знания")
     @allure.step("Добавление Знания")
-    def create_skill(self, name, tag_name):
+    def create_skill(self, name, tag_name, second_tag_name=None):
         self.element_is_visible(self.locators.ADD_SKILLS_BUTTON).click()
         self.element_is_visible(self.locators.NAME_FIELD).send_keys(name)
         self.element_is_visible(self.locators.TAG_FIELD).click()
         self.element_is_visible(self.locators.check_li_item_by_text(tag_name)).click()
+        if second_tag_name is None:
+            pass
+        else:
+            self.element_is_visible(self.locators.check_li_item_by_text(second_tag_name)).click()
+        tags_count = len(self.elements_are_visible(self.locators.CANSEL_ICON))
         self.action_esc()
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+        return tags_count
 
 
 

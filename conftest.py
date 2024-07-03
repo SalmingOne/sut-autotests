@@ -241,8 +241,11 @@ def create_tag():
     tags_endpoint = TagsEndpoint()
     payload = dict(name='ABSENT', skills=[])
     response = tags_endpoint.create_tag_api(json=payload)
-    yield payload['name']
+    payload2 = dict(name='Asbestt', skills=[])
+    response2 = tags_endpoint.create_tag_api(json=payload2)
+    yield payload['name'], payload2['name']
     tags_endpoint.delete_tag_api(str(response.json()['id']))
+    tags_endpoint.delete_tag_api(str(response2.json()['id']))
 
 
 @pytest.fixture()
