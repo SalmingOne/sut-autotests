@@ -231,6 +231,14 @@ class TestUserProfilePage:
         user_profile_page.go_to_user_profile()
         time.sleep(2)
         user_profile_page.go_to_certificate_tab()
+        if user_profile_page.check_certificate_title():
+            user_profile_page.press_redact_button()
+            time.sleep(1)
+            user_profile_page.press_delete_icon()
+            user_profile_page.press_save_button()
+        else:
+            pass
+
         user_profile_page.press_redact_button()
         time.sleep(1)
         # Добавляем сертификат
@@ -251,6 +259,7 @@ class TestUserProfilePage:
         user_profile_page.press_redact_button()
         time.sleep(1)
         user_profile_page.press_delete_icon()
+        user_profile_page.press_save_button()
         user_profile_page.delete_file('сертификат.pdf')
         assert 'Файл сохранен' in message, "Не появилось сообщение файл сохранен"
 

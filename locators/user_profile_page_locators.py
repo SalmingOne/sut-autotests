@@ -5,7 +5,7 @@ class UserProfilePageLocators:
     # Переход на страницу профиля
     PROFILE_BUTTON = (By.CSS_SELECTOR, 'button[id="profile"]')
     MY_PROFILE_MENU_ITEM = (By.XPATH, '//a[text()="Мой профиль"]')
-    MY_PROFILE_TAB_BUTTON = (By.XPATH, '//button[text()="Информация о сотруднике"]')
+    MY_PROFILE_TAB_BUTTON = (By.XPATH, '//div[text()="Информация о сотруднике"]/..')
     PROFILE_TITLE = (By.CSS_SELECTOR, 'h6[class^="MuiTypography-root MuiTypography-subtitle1"]')
     START_WORK = (By.XPATH, '//label[text()="Прием в компанию"]/..//input')
     CHILDREN_TEXT_AREA = (By.CSS_SELECTOR, 'textarea[name="children"]')
@@ -21,7 +21,7 @@ class UserProfilePageLocators:
 
     CANSEL_BUTTON = (By.XPATH, '//p[@id="alert-dialog-description"]/..//button[text()="Отменить"]')
     # Вкладка Образование
-    EDUCATION_TAB_BUTTON = (By.XPATH, '//button[text()="Образование"]')
+    EDUCATION_TAB_BUTTON = (By.XPATH, '//div[text()="Образование"]/..')
     REDACT_BUTTON = (By.XPATH, '//button[text()="Редактировать"]')
     SAVE_BUTTON = (By.XPATH, '//button[text()="Сохранить"]')
     BREAK_BUTTON = (By.XPATH, '//button[text()="Отменить"]')
@@ -44,13 +44,13 @@ class UserProfilePageLocators:
     MUI_ERROR = (By.XPATH, '//p[contains(@class, "Mui-error")]')
     ALERT_TEXT = (By.XPATH, '//div[contains(@class, "MuiAlert-message")]')
     # Вкладка Сертификаты
-    CERTIFICATE_TAB_BUTTON = (By.XPATH, '//button[text()="Сертификаты"]')
+    CERTIFICATE_TAB_BUTTON = (By.XPATH, '//div[text()="Сертификаты"]/..')
     CERTIFICATE_NAME = (By.CSS_SELECTOR, 'input[placeholder="Введите название"]')
     CERTIFICATE_DATA_PICKER = (By.CSS_SELECTOR, 'svg[data-testid="CalendarTodayOutlinedIcon"]')
     DAY_AFTER_THIS_DAY_PICKER = (By.XPATH, '//button[contains(@class, "MuiPickersDay-today")]//following::button[1]')
     CERTIFICATE_TITLE = (By.XPATH, '//a[contains(@class,"MuiTypography-root MuiTypography-body2 MuiLink-root MuiLink-underlineHover")]//h6')
     # Вкладка Опыт работы
-    EXPERIENCES_TAB_BUTTON = (By.XPATH, '//button[text()="Опыт работы"]')
+    EXPERIENCES_TAB_BUTTON = (By.XPATH, '//div[text()="Опыт работы"]/..')
     EXPERIENCES_EMPLOYER_FIELD = (By.CSS_SELECTOR, 'input[placeholder="Выберите работодателя"]')
     EXPERIENCES_PROJECT_FIELD = (By.CSS_SELECTOR, 'input[placeholder="Выберите проект"]')
     EXPERIENCES_CUSTOM_PROJECT_FIELD = (By.CSS_SELECTOR, 'input[placeholder="Введите проект"]')
@@ -65,7 +65,7 @@ class UserProfilePageLocators:
     EXPERIENCES_BEGIN_DATA_INPUT = (By.XPATH, '//label[text()="Дата начала работы"]/..//input')
     EXPERIENCES_KNOWLEDGE_FIELD = (By.CSS_SELECTOR, 'input[placeholder="Выберите уровни"]')
     # Вкладка Резюме
-    RESUME_TAB_BUTTON = (By.XPATH, '//button[text()="Резюме"]')
+    RESUME_TAB_BUTTON = (By.XPATH, '//div[text()="Резюме"]/..')
     CREATE_RESUME_BUTTON = (By.XPATH, '//a[text()="Создать"]')
     START_WORK_IN_RESUME = (By.XPATH, '//p[@id="experienceDate"]/..//input')
     READY_TO_WORK_DROPDOWN = (By.CSS_SELECTOR, 'input[role="combobox"]')

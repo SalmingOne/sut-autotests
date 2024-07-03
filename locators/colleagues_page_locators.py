@@ -8,6 +8,7 @@ class ColleaguesPageLocators:
     # Поля и элементы страницы
     COLLEAGUES_TITLE = (By.CSS_SELECTOR, 'h6[class^="MuiTypography-root MuiTypography-subtitle1"]')
     ALL_COLLEAGUES_TABS_BUTTONS = (By.CSS_SELECTOR, 'button[role="tab"]')
+    ALL_COLLEAGUES_TAB = (By.XPATH, '//button[text()="Все"]')
     SEARCH_FIELD = (By.CSS_SELECTOR, 'input[class^="MuiOutlinedInput-input MuiInputBase-input"]')
     TO_ADVANCED_SEARCH = (By.XPATH, '//button[text()="Перейти к расширенному поиску"]')
     SUBTITLE = (By.XPATH, '//div[contains(@class,"MuiPaper-elevation0" )]//h6')

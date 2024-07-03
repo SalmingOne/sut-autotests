@@ -18,6 +18,7 @@ class CreateProjectDrawerLocators:
     REASON_CHECKBOX = (By.XPATH, '//span[text()="Обязательно указание причины списания трудозатрат"]')
     DRAFT_CHECKBOX = (By.XPATH, '//span[text()="Черновик"]')
     CHOSE_ADMIN = (By.XPATH, f'//p[text()="{data.USER_NAME}"]')
+    LI_MENU_ITEM = (By.CSS_SELECTOR, 'li[role="option"]')
     SUBMIT_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
     # Локатор проверки, что мы оказались на вкладке команда после создания проекта
     CHECK_CREATE_PROJECT = (By.XPATH, '//h6[text()="Команда"]')

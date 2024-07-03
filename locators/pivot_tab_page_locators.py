@@ -22,7 +22,7 @@ class PivotTabPageLocators:
     RIGHT_SCROLL = (By.CSS_SELECTOR, 'div[class="ag-horizontal-right-spacer ag-scroller-corner"]')
     # Отображение по пользователю
     BY_USER_BUTTON = (By.XPATH, '//button[text()="По пользователям"]')
-    OPEN_PROJECT_LIST = (By.XPATH, f'//h6[@aria-label="{USER_NAME}"]//ancestor::span[1]//preceding::span[2]')
+    OPEN_PROJECT_LIST = (By.XPATH, f'//h6[contains(@aria-label,"{USER_NAME}")]//ancestor::span[1]//preceding::span[2]')
     # Кнопка фильтрации
     FILTER_BUTTON = (By.XPATH,
                      '//button[contains(@class, "MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-disableElevation")]')
