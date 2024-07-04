@@ -35,7 +35,7 @@ class TestSkillsPage:
         skills_page.redact_skill_by_name(create_skill)
         skills_page.change_the_skill('AAABBB')
         time.sleep(1)
-        skills_page.check_skill_name_on_page('AAABBB')
+        assert skills_page.check_skill_name_on_page('AAABBB'), "В справочнике Знания не сохранились изменения"
         skills_page.check_skill_name_on_tag_tab('AAABBB')
 
     @testit.workItemIds(10464)
@@ -48,7 +48,7 @@ class TestSkillsPage:
         skills_page.go_to_skills_page()
         skills_page.sort_skills()
         skills_page.create_skill('AAAДобавленное знание', create_tag[0])
-        skills_page.check_skill_name_on_page('AAAДобавленное знание')
+        assert skills_page.check_skill_name_on_page('AAAДобавленное знание'), "В справочнике Знания не сохранились изменения"
         skills_page.check_skill_name_on_tag_tab('AAAДобавленное знание')
 
         skills_endpoint.delete_skill_by_name_api('AAAДобавленное знание')
@@ -63,7 +63,19 @@ class TestSkillsPage:
         skills_page.go_to_skills_page()
         skills_page.sort_skills()
         len_tags = skills_page.create_skill('AAAДобавленное знание', create_tag[0], create_tag[1])
-        skills_page.check_skill_name_on_page('AAAДобавленное знание')
+        assert skills_page.check_skill_name_on_page('AAAДобавленное знание'), "В справочнике Знания не сохранились изменения"
         skills_page.check_skill_name_on_tag_tab('AAAДобавленное знание')
         skills_endpoint.delete_skill_by_name_api('AAAДобавленное знание')
         assert len_tags == 2, "В поле не отобразилось несколько групп знаний"
+
+    @testit.workItemIds(10467)
+    @testit.displayName("10.4.1.2 Отмена добавления знания в справочник Знания")
+    @pytest.mark.regress
+    @allure.title("id-10467 10.4.1.2 Отмена добавления знания в справочник Знания")
+    def test_cancel_adding_the_skill(self, login, driver):
+        skills_page = SkillsPage(driver)
+        skills_page.go_to_skills_page()
+        skills_page.sort_skills()
+        skills_page.check_cancel_add_skill('AAAДобавленное знание')
+        assert not skills_page.check_skill_name_on_page('AAAДобавленное знание'), "Знание сохранилось"
+

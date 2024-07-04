@@ -77,8 +77,7 @@ class SkillsPage(BasePage):
     @testit.step("Проверка знания на табе Знания")
     @allure.step("Проверка знания на табе Знания")
     def check_skill_name_on_page(self, name):
-        assert self.element_is_displayed(self.locators.text_on_page(name)),\
-            "В справочнике Знания не сохранились изменения"
+        return self.element_is_displayed(self.locators.text_on_page(name), 1)
 
     @testit.step("Проверка знания в дровере добавления значений в справочниках Группы знаний")
     @allure.step("Проверка знания в дровере добавления значений в справочниках Группы знаний")
@@ -116,6 +115,13 @@ class SkillsPage(BasePage):
         self.action_esc()
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
         return tags_count
+
+    @testit.step("Отмена добавления Знания")
+    @allure.step("Отмена добавления Знания")
+    def check_cancel_add_skill(self, name):
+        self.element_is_visible(self.locators.ADD_SKILLS_BUTTON).click()
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(name)
+        self.element_is_visible(self.locators.BREAK_BUTTON).click()
 
 
 
