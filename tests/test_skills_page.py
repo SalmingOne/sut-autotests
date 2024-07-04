@@ -89,3 +89,14 @@ class TestSkillsPage:
         skills_page.sort_skills()
         skills_page.check_empty_filling_in_the_required_fields()
 
+    @testit.workItemIds(10548)
+    @testit.displayName("10.4.1.2 Неуникальное значение поля при добавлении знания в справочник Знания")
+    @pytest.mark.regress
+    @allure.title("id-10548 10.4.1.2 Неуникальное значение поля при добавлении знания в справочник Знания")
+    def test_non_unique_field_value_when_adding_skill(self, create_skill, login, driver):
+        skills_page = SkillsPage(driver)
+        skills_page.go_to_skills_page()
+        skills_page.sort_skills()
+        skills_page.check_add_skill_not_unique_name(create_skill)
+
+

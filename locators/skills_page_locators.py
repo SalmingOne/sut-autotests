@@ -23,6 +23,7 @@ class SkillsPageLocators:
 
     MUI_ERROR = (By.XPATH, '//p[contains(@class, "MuiFormHelperText-root Mui-error")]')
     ARROW_DOWN = (By.CSS_SELECTOR, 'svg[data-testid="ArrowDropDownIcon"]')
+    ALERT_TEXT = (By.XPATH, '//div[contains(@class, "MuiAlert-message")]')
     def kebab_by_skill_name(self, name):
         return (By.XPATH, f'//*[text()="{name}"]//ancestor::div[@role="gridcell"]//following-sibling::div[@aria-colindex="4"]//button')
     def text_on_page(self, name):

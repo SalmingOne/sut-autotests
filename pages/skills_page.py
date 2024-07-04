@@ -131,4 +131,23 @@ class SkillsPage(BasePage):
         self.element_is_visible(self.locators.NAME_FIELD).send_keys("Имя")
         assert self.element_is_clickable(self.locators.SUBMIT_BUTTON, 1), "Кнопка сохранения задизейблена"
 
+    @testit.step("Добавление Знания с неуникальным именем")
+    @allure.step("Добавление Знания с неуникальным именем")
+    def check_add_skill_not_unique_name(self, name):
+        self.element_is_visible(self.locators.ADD_SKILLS_BUTTON).click()
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(name)
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+        error = self.element_is_visible(self.locators.MUI_ERROR).text
+        alert = self.get_alert_message()
+        assert error == 'Укажите уникальноe название знания', "Не появилось сообщение с предупреждением"
+        assert alert == ['Значение уже добавлено'], "Не появился тост с предупреждением"
+
+    @testit.step("Берем текст всех сообщений системы")
+    @allure.step("Берем текст всех сообщений системы")
+    def get_alert_message(self):
+        all_alerts = self.elements_are_visible(self.locators.ALERT_TEXT)
+        data = []
+        for alert in all_alerts:
+            data.append(alert.text)
+        return data
 
