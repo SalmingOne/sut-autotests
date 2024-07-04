@@ -123,5 +123,12 @@ class SkillsPage(BasePage):
         self.element_is_visible(self.locators.NAME_FIELD).send_keys(name)
         self.element_is_visible(self.locators.BREAK_BUTTON).click()
 
+    @testit.step("Проверка кнопки сохранить при пустом вводе")
+    @allure.step("Проверка кнопки сохранить при пустом вводе")
+    def check_empty_filling_in_the_required_fields(self):
+        self.element_is_visible(self.locators.ADD_SKILLS_BUTTON).click()
+        assert not self.element_is_clickable(self.locators.SUBMIT_BUTTON, 1), "Кнопка сохранения не задизейблена"
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys("Имя")
+        assert self.element_is_clickable(self.locators.SUBMIT_BUTTON, 1), "Кнопка сохранения задизейблена"
 
 

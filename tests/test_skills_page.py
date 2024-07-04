@@ -79,3 +79,13 @@ class TestSkillsPage:
         skills_page.check_cancel_add_skill('AAAДобавленное знание')
         assert not skills_page.check_skill_name_on_page('AAAДобавленное знание'), "Знание сохранилось"
 
+    @testit.workItemIds(10481)
+    @testit.displayName("10.4.1.2 Добавление знания в справочник Знания без заполнения обязательных полей")
+    @pytest.mark.regress
+    @allure.title("id-10481 10.4.1.2 Добавление знания в справочник Знания без заполнения обязательных полей")
+    def test_adding_skill_without_filling_in_the_required_fields(self, login, driver):
+        skills_page = SkillsPage(driver)
+        skills_page.go_to_skills_page()
+        skills_page.sort_skills()
+        skills_page.check_empty_filling_in_the_required_fields()
+
