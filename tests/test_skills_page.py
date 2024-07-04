@@ -109,3 +109,15 @@ class TestSkillsPage:
         skills_page.sort_skills()
         skills_page.check_drawer_fields_max_length()
 
+    @testit.workItemIds(10558)
+    @testit.displayName("10.4.1.3 Редактирование данных в справочнике Знания с неуникальным значением знания")
+    @pytest.mark.regress
+    @allure.title("id-10558 10.4.1.3 Редактирование данных в справочнике Знания с неуникальным значением знания")
+    def test_editing_skill_non_unique_knowledge_value(self, create_skill, create_second_skill, login, driver):
+        skills_page = SkillsPage(driver)
+        skills_page.go_to_skills_page()
+        skills_page.sort_skills()
+        skills_page.redact_skill_by_name(create_skill)
+        skills_page.change_the_skill(create_second_skill)
+        assert skills_page.get_error() == 'Укажите уникальноe название знания',\
+            "Нет сообщения о не уникальности названия знания"

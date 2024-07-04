@@ -216,6 +216,15 @@ def create_skill():
 
 
 @pytest.fixture()
+def create_second_skill():
+    skills_endpoint = SkillsEndpoint()
+    payload = dict(name='AABBCCDD', tags=[])
+    response = skills_endpoint.create_skills_api(json=payload)
+    yield payload['name']
+    skills_endpoint.delete_skill_api(str(response.json()['id']))
+
+
+@pytest.fixture()
 def project_with_assignment():
     assignment_endpoint = AssignmentEndpoint()
     project_endpoint = ProjectEndpoint()

@@ -169,5 +169,7 @@ class SkillsPage(BasePage):
         self.element_is_visible(self.locators.TAG_FIELD).send_keys('a' * 128)
         assert not self.element_is_displayed(self.locators.MAX_LENGTH_PRESENTATION, 1), "Появилось сообщение об ошибке при корректной длине"
 
-
-
+    @testit.step("Получение текста ошибки")
+    @allure.step("Получение текста ошибки")
+    def get_error(self):
+        return self.element_is_visible(self.locators.MUI_ERROR).text
