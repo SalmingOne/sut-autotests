@@ -173,3 +173,10 @@ class SkillsPage(BasePage):
     @allure.step("Получение текста ошибки")
     def get_error(self):
         return self.element_is_visible(self.locators.MUI_ERROR).text
+
+    @testit.step("Редактирование без заполнения обязательных полей")
+    @allure.step("Редактирование без заполнения обязательных полей")
+    def check_redact_with_empty_fields(self):
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(Keys.BACK_SPACE)
+        self.element_is_visible(self.locators.TAG_FIELD).click()

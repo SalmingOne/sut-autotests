@@ -121,3 +121,15 @@ class TestSkillsPage:
         skills_page.change_the_skill(create_second_skill)
         assert skills_page.get_error() == 'Укажите уникальноe название знания',\
             "Нет сообщения о не уникальности названия знания"
+
+    @testit.workItemIds(10559)
+    @testit.displayName("10.4.1.3 Редактирование данных в справочнике Знания  без заполнения обязательного поля")
+    @pytest.mark.regress
+    @allure.title("id-10559 10.4.1.3 Редактирование данных в справочнике Знания  без заполнения обязательного поля")
+    def test_editing_skill_without_filling_in_a_required_field(self, create_skill, login, driver):
+        skills_page = SkillsPage(driver)
+        skills_page.go_to_skills_page()
+        skills_page.sort_skills()
+        skills_page.redact_skill_by_name(create_skill)
+        skills_page.check_redact_with_empty_fields()
+        assert skills_page.get_error() == 'Поле обязательно', "Не отображается сообщение с предупреждением"
