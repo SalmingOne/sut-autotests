@@ -5,7 +5,6 @@ import pytest
 import testit
 
 from endpoints.users_endpoint import UserEndpoint
-from pages.create_local_user_drawer_page import CreateLocalUserDrawerPage
 from pages.user_page import UserPage
 
 
@@ -19,12 +18,7 @@ class TestUsersPage:
     def test_viewing_a_user_card_in_the_users_section(self, create_work_user, login, driver):
         user_page = UserPage(driver)
         user_page.go_to_user_page()
-        if not user_page.check_user_is_not_in_table('АвтоСПроектом'):
-            create_local_user_page = CreateLocalUserDrawerPage(driver)
-            create_local_user_page.go_to_create_local_user_drawer()
-            create_local_user_page.field_required_fields('AutoTester1', 'АвтоСПроектом', 'auto_testt@mail.rruu', 'yes')
-        else:
-            pass
+        user_page.check_user_is_not_in_table('АвтоСПроектом')
         user_page.go_to_user_card()
         user_page.check_user_card_title()
         user_page.check_clear_button()
@@ -44,20 +38,10 @@ class TestUsersPage:
     @testit.displayName("4.8 Подтверждение восстановления пользователя")
     @pytest.mark.regress
     @allure.title("id-134 4.8 Подтверждение восстановления пользователя")
-    def test_user_recovery_confirmation(self, login, driver):
+    def test_user_recovery_confirmation(self, create_fired_user, login, driver):
         user_page = UserPage(driver)
         user_page.go_to_user_page()
-        # Проверяем, что есть нужный пользователь
-        if not user_page.check_user_is_not_in_table('Автотестов'):
-            create_local_user_page = CreateLocalUserDrawerPage(driver)
-            create_local_user_page.go_to_create_local_user_drawer()
-            create_local_user_page.field_required_fields('AutoTester', 'Автотестов', 'auto_test@mail.ruru', 'yes')
-        else:
-            pass
-        if user_page.get_user_status() == 'Уволeн':
-            pass
-        else:
-            user_page.fired_user()
+        user_page.check_user_is_not_in_table('Автотестов')
         # Проверяем восстановление пользователя
         user_page.restore_user()
         assert user_page.get_user_status() == 'Работает', "Пользователь не восстановлен"
@@ -68,7 +52,7 @@ class TestUsersPage:
     @testit.displayName("4.9 Содержание страницы Пользователи")
     @pytest.mark.smoke
     @allure.title("id-30 4.9 Содержание страницы Пользователи")
-    def test_contents_of_the_users_page(self, login, driver):
+    def test_contents_of_the_users_page(self, create_work_user, create_fired_user, login, driver):
         user_page = UserPage(driver)
         user_page.go_to_user_page()
         user_page.check_user_page_title()
@@ -82,7 +66,8 @@ class TestUsersPage:
 
         user_page.check_user_is_not_in_table('АвтоСПроектом')
         work_kebab_menu = user_page.get_kebab_menu_item()
-        assert fired_kebab_menu == ['Полная информация', 'Редактировать', 'Восстановить'], "Есть не все элементы в кебаб меню"
+        assert fired_kebab_menu == ['Полная информация', 'Редактировать',
+                                    'Восстановить'], "Есть не все элементы в кебаб меню"
         assert work_kebab_menu == ['Полная информация', 'Редактировать', 'Уволить'], "Есть не все элементы в кебаб меню"
 
     @testit.workItemIds(129)
@@ -92,17 +77,10 @@ class TestUsersPage:
     def test_select_the_dismissal_date_before_the_hiring_date(self, create_work_user, login, driver):
         user_page = UserPage(driver)
         user_page.go_to_user_page()
-        # Проверяем, что есть нужный пользователь
-        if not user_page.check_user_is_not_in_table('АвтоСПроектом'):
-            create_local_user_page = CreateLocalUserDrawerPage(driver)
-            create_local_user_page.go_to_create_local_user_drawer()
-            create_local_user_page.field_required_fields('AutoTester1', 'АвтоСПроектом', 'auto_testt@mail.rruu', 'yes')
-        else:
-            pass
+        user_page.check_user_is_not_in_table('АвтоСПроектом')
         hiring_date = user_page.get_the_hiring_date()
         # Проводим тест
         user_page.check_fired_data_on_date_picker(hiring_date)
-
 
     @testit.workItemIds(482)
     @testit.displayName("7.1.1 Назначение системной роли пользователю")
@@ -111,13 +89,7 @@ class TestUsersPage:
     def test_assigning_a_system_role_to_a_user(self, create_work_user, login, driver):
         user_page = UserPage(driver)
         user_page.go_to_user_page()
-        # Проверяем, что есть нужный пользователь
-        if not user_page.check_user_is_not_in_table('АвтоСПроектом'):
-            create_local_user_page = CreateLocalUserDrawerPage(driver)
-            create_local_user_page.go_to_create_local_user_drawer()
-            create_local_user_page.field_required_fields('AutoTester1', 'АвтоСПроектом', 'auto_testt@mail.rruu', 'yes')
-        else:
-            pass
+        user_page.check_user_is_not_in_table('АвтоСПроектом')
         # Проводим тест
         user_page.check_assigning_system_role_to_user()
 

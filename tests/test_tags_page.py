@@ -45,7 +45,7 @@ class TestTagsPage:
         time.sleep(2)  # Нужно время на анимацию
         tags_page.sort_tags()
         time.sleep(1)
-        tags_page.edit_tag(create_tag, 'ASBEST', create_skill)
+        tags_page.edit_tag(create_tag[0], 'ASBEST', create_skill)
         tags_page.check_tag_on_tag_tab('ASBEST')
         skills_page.go_to_skill_tab()
         time.sleep(1)

@@ -17,11 +17,15 @@ class SkillsPageLocators:
     # Дровер добавления знания
     NAME_FIELD = (By.CSS_SELECTOR, 'input[name="name"]')
     TAG_FIELD = (By.CSS_SELECTOR, 'input[placeholder="Выберите группу знаний"]')
+    CANSEL_ICON = (By.CSS_SELECTOR, 'svg[data-testid="CancelIcon"]')
     SUBMIT_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
     BREAK_BUTTON = (By.XPATH, '//div[contains(@class,"MuiDrawer-paper")]//button[text()="Отменить"]')
+    LI_MENU_ITEM = (By.CSS_SELECTOR, 'li[role="option"]')
+    MAX_LENGTH_PRESENTATION = (By.XPATH, '//div[text()="Превышено допустимое количество символов"]')
 
     MUI_ERROR = (By.XPATH, '//p[contains(@class, "MuiFormHelperText-root Mui-error")]')
     ARROW_DOWN = (By.CSS_SELECTOR, 'svg[data-testid="ArrowDropDownIcon"]')
+    ALERT_TEXT = (By.XPATH, '//div[contains(@class, "MuiAlert-message")]')
     def kebab_by_skill_name(self, name):
         return (By.XPATH, f'//*[text()="{name}"]//ancestor::div[@role="gridcell"]//following-sibling::div[@aria-colindex="4"]//button')
     def text_on_page(self, name):

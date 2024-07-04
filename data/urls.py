@@ -24,3 +24,6 @@ class Urls:
     tags_url = f'{api_url}' + 'tags/'
     skills_url = f'{api_url}' + 'skills/'
     system_settings_url = f'{api_url}' + 'system-settings/'
+    advanced_search_url = f'{api_url}' + 'search/'
+    create_advanced_search_url = f'{advanced_search_url}' + 'create/'
+

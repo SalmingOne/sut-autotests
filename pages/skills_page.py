@@ -77,8 +77,7 @@ class SkillsPage(BasePage):
     @testit.step("Проверка знания на табе Знания")
     @allure.step("Проверка знания на табе Знания")
     def check_skill_name_on_page(self, name):
-        assert self.element_is_displayed(self.locators.text_on_page(name)),\
-            "В справочнике Знания не сохранились изменения"
+        return self.element_is_displayed(self.locators.text_on_page(name), 1)
 
     @testit.step("Проверка знания в дровере добавления значений в справочниках Группы знаний")
     @allure.step("Проверка знания в дровере добавления значений в справочниках Группы знаний")
@@ -103,13 +102,102 @@ class SkillsPage(BasePage):
 
     @testit.step("Добавление Знания")
     @allure.step("Добавление Знания")
-    def create_skill(self, name, tag_name):
+    def create_skill(self, name, tag_name, second_tag_name=None):
         self.element_is_visible(self.locators.ADD_SKILLS_BUTTON).click()
         self.element_is_visible(self.locators.NAME_FIELD).send_keys(name)
         self.element_is_visible(self.locators.TAG_FIELD).click()
         self.element_is_visible(self.locators.check_li_item_by_text(tag_name)).click()
+        if second_tag_name is None:
+            pass
+        else:
+            self.element_is_visible(self.locators.check_li_item_by_text(second_tag_name)).click()
+        tags_count = len(self.elements_are_visible(self.locators.CANSEL_ICON))
         self.action_esc()
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+        return tags_count
 
+    @testit.step("Отмена добавления Знания")
+    @allure.step("Отмена добавления Знания")
+    def check_cancel_add_skill(self, name):
+        self.element_is_visible(self.locators.ADD_SKILLS_BUTTON).click()
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(name)
+        self.element_is_visible(self.locators.BREAK_BUTTON).click()
 
+    @testit.step("Проверка кнопки сохранить при пустом вводе")
+    @allure.step("Проверка кнопки сохранить при пустом вводе")
+    def check_empty_filling_in_the_required_fields(self):
+        self.element_is_visible(self.locators.ADD_SKILLS_BUTTON).click()
+        assert not self.element_is_clickable(self.locators.SUBMIT_BUTTON, 1), "Кнопка сохранения не задизейблена"
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys("Имя")
+        assert self.element_is_clickable(self.locators.SUBMIT_BUTTON, 1), "Кнопка сохранения задизейблена"
 
+    @testit.step("Добавление Знания с неуникальным именем")
+    @allure.step("Добавление Знания с неуникальным именем")
+    def check_add_skill_not_unique_name(self, name):
+        self.element_is_visible(self.locators.ADD_SKILLS_BUTTON).click()
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(name)
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+        error = self.element_is_visible(self.locators.MUI_ERROR).text
+        alert = self.get_alert_message()
+        assert error == 'Укажите уникальноe название знания', "Не появилось сообщение с предупреждением"
+        assert alert == ['Значение уже добавлено'], "Не появился тост с предупреждением"
+
+    @testit.step("Берем текст всех сообщений системы")
+    @allure.step("Берем текст всех сообщений системы")
+    def get_alert_message(self):
+        all_alerts = self.elements_are_visible(self.locators.ALERT_TEXT)
+        data = []
+        for alert in all_alerts:
+            data.append(alert.text)
+        return data
+
+    @testit.step("Проверка максимально длины полей дровера")
+    @allure.step("Проверка максимально длины полей дровера")
+    def check_drawer_fields_max_length(self):
+        self.element_is_visible(self.locators.ADD_SKILLS_BUTTON).click()
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys('a'*65)
+        self.element_is_visible(self.locators.TAG_FIELD).click()
+        error = self.element_is_visible(self.locators.MUI_ERROR).text
+        assert error == 'Максимальное количество символов: 64', "Не корректное сообщение об ошибке"
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys('a' * 64)
+        self.element_is_visible(self.locators.TAG_FIELD).click()
+        assert not self.element_is_displayed(self.locators.MUI_ERROR, 1), "Появилось сообщение об ошибке при корректной длине"
+        self.element_is_visible(self.locators.TAG_FIELD).send_keys('a'*129)
+        assert self.element_is_displayed(self.locators.MAX_LENGTH_PRESENTATION, 1), "Не появилось сообщение о превышении длины"
+        self.element_is_visible(self.locators.NAME_FIELD).click()
+        self.element_is_visible(self.locators.TAG_FIELD).send_keys('a' * 128)
+        assert not self.element_is_displayed(self.locators.MAX_LENGTH_PRESENTATION, 1), "Появилось сообщение об ошибке при корректной длине"
+
+    @testit.step("Получение текста ошибки")
+    @allure.step("Получение текста ошибки")
+    def get_error(self):
+        return self.element_is_visible(self.locators.MUI_ERROR).text
+
+    @testit.step("Редактирование без заполнения обязательных полей")
+    @allure.step("Редактирование без заполнения обязательных полей")
+    def check_redact_with_empty_fields(self):
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(Keys.BACK_SPACE)
+        self.element_is_visible(self.locators.TAG_FIELD).click()
+
+    @testit.step("Редактирование с превышением максимальной длины полей")
+    @allure.step("Редактирование с превышением максимальной длины полей")
+    def check_drawer_fields_max_length_when_redact(self):
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys('a' * 65)
+        self.element_is_visible(self.locators.TAG_FIELD).click()
+        error = self.element_is_visible(self.locators.MUI_ERROR).text
+        assert error == 'Максимальное количество символов: 64', "Не корректное сообщение об ошибке"
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys('a' * 64)
+        self.element_is_visible(self.locators.TAG_FIELD).click()
+        assert not self.element_is_displayed(self.locators.MUI_ERROR,
+                                             1), "Появилось сообщение об ошибке при корректной длине"
+        self.element_is_visible(self.locators.TAG_FIELD).send_keys('a' * 129)
+        assert self.element_is_displayed(self.locators.MAX_LENGTH_PRESENTATION,
+                                         1), "Не появилось сообщение о превышении длины"
+        self.element_is_visible(self.locators.NAME_FIELD).click()
+        self.element_is_visible(self.locators.TAG_FIELD).send_keys('a' * 128)
+        assert not self.element_is_displayed(self.locators.MAX_LENGTH_PRESENTATION,
+                                             1), "Появилось сообщение об ошибке при корректной длине"

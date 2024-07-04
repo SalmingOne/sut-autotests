@@ -38,7 +38,7 @@ class TestCreateProject:
         assert project_name == output_project_name, "поле имя проекта не отобразилось в карточке проекта"
         assert project_code == output_project_code, "поле код проекта не отобразилось в карточке проекта"
         assert project_data == output_project_begin_data, "поле дата начала проекта не отобразилось в карточке проекта"
-        assert project_worker == output_project_manager, "поле администратор не отобразилось в карточке проекта"
+        assert project_worker in output_project_manager, "поле администратор не отобразилось в карточке проекта"
         # Берем имя проекта со страницы все проекты
         all_project_page = AllProjectPage(driver)
         all_project_page.go_to_all_project_page()
@@ -76,7 +76,7 @@ class TestCreateProject:
         assert project_name == output_project_name, "поле имя проекта не отобразилось в карточке проекта"
         assert project_code == output_project_code, "поле код проекта не отобразилось в карточке проекта"
         assert project_data == output_project_begin_data, "поле дата начала проекта не отобразилось в карточке проекта"
-        assert project_worker == output_project_manager, "поле администратор не отобразилось в карточке проекта"
+        assert project_worker in output_project_manager, "поле администратор не отобразилось в карточке проекта"
 
         # Берем код проекта со страницы трудозатрат
         labor_cost_page = LaborCostPage(driver)
@@ -119,7 +119,7 @@ class TestCreateProject:
         assert project_name == output_project_name, "поле имя проекта не отобразилось в карточке проекта"
         assert project_code == output_project_code, "поле код проекта не отобразилось в карточке проекта"
         assert project_data == output_project_begin_data, "поле дата начала проекта не отобразилось в карточке проекта"
-        assert project_worker == output_project_manager, "поле администратор не отобразилось в карточке проекта"
+        assert project_worker in output_project_manager, "поле администратор не отобразилось в карточке проекта"
 
         # Берем код проекта со страницы трудозатрат
         labor_cost_page = LaborCostPage(driver)

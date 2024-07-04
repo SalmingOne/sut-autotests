@@ -71,6 +71,7 @@ class ColleaguesPage(BasePage):
     @testit.step("Поиск пользователя по фамилии")
     @allure.step("Поиск пользователя по фамилии")
     def search_user(self, second_name):
+        self.element_is_visible(self.locators.ALL_COLLEAGUES_TAB).click()
         self.element_is_visible(self.locators.SEARCH_FIELD).send_keys(second_name)
 
     @testit.step("Просмотр системы глазами пользователя")

@@ -17,6 +17,7 @@ from endpoints.auth_endpoint import AuthEndpoint
 from endpoints.labor_reports_endpoint import LaborReportEndpoint
 from endpoints.logs_endpoint import LogsEndpoint
 from endpoints.project_endpoint import ProjectEndpoint
+from endpoints.search_profile_endpoint import SearchProfileEndpoint
 from endpoints.skills_endpoint import SkillsEndpoint
 from endpoints.tags_endpoint import TagsEndpoint
 from endpoints.users_endpoint import UserEndpoint
@@ -215,6 +216,15 @@ def create_skill():
 
 
 @pytest.fixture()
+def create_second_skill():
+    skills_endpoint = SkillsEndpoint()
+    payload = dict(name='AABBCCDD', tags=[])
+    response = skills_endpoint.create_skills_api(json=payload)
+    yield payload['name']
+    skills_endpoint.delete_skill_api(str(response.json()['id']))
+
+
+@pytest.fixture()
 def project_with_assignment():
     assignment_endpoint = AssignmentEndpoint()
     project_endpoint = ProjectEndpoint()
@@ -240,8 +250,11 @@ def create_tag():
     tags_endpoint = TagsEndpoint()
     payload = dict(name='ABSENT', skills=[])
     response = tags_endpoint.create_tag_api(json=payload)
-    yield payload['name']
+    payload2 = dict(name='Asbestt', skills=[])
+    response2 = tags_endpoint.create_tag_api(json=payload2)
+    yield payload['name'], payload2['name']
     tags_endpoint.delete_tag_api(str(response.json()['id']))
+    tags_endpoint.delete_tag_api(str(response2.json()['id']))
 
 
 @pytest.fixture()
@@ -256,29 +269,89 @@ def create_filial():
 @pytest.fixture()
 def create_work_user():
     user_endpoint = UserEndpoint()
+    project_endpoint = ProjectEndpoint()
+    first_project_id = project_endpoint.get_all_project().json()[0]['id']
     user_id = user_endpoint.get_user_id_by_email('auto_testt@mail.rruu')
+    payload = dict(username="AutoTester1",
+                   name="Автомат",
+                   secondName="АвтоСПроектом",
+                   gender="MALE",
+                   phone="",
+                   email="auto_testt@mail.rruu",
+                   hourlyWage=False,
+                   startWorkDate="2024-04-11",
+                   userAssignments=[dict(
+                       projectId=first_project_id,
+                       projectRoleId=1,
+                       isProjectManager=False
+                   )
+                   ],
+                   projectRoleIds=[1],
+                   postId=1,
+                   departmentId=1,
+                   systemRoleIds=[1]
+                   )
     if user_id is None:
-        payload = dict(username="AutoTester1",
-                       name="Автомат",
-                       secondName="АвтоСПроектом",
-                       gender="MALE",
-                       phone="",
-                       email="auto_testt@mail.rruu",
-                       hourlyWage=False,
-                       startWorkDate="2024-04-11",
-                       userAssignments=[],
-                       projectRoleIds=[1],
-                       postId=1,
-                       departmentId=1,
-                       systemRoleIds=[1]
-                       )
         response = user_endpoint.create_user_api(json=payload)
         print(response.status_code)
     else:
-        pass
+        response = user_endpoint.change_user(user_id=str(user_id), json=payload)
+        print(response.status_code)
+
+
+@pytest.fixture()
+def create_fired_user():
+    user_endpoint = UserEndpoint()
+    user_id = user_endpoint.get_user_id_by_email('auto_test@mail.ruru')
+    payload = dict(username="AutoTester",
+                   name="Автомат",
+                   secondName="Автотестов",
+                   gender="MALE",
+                   phone="",
+                   email="auto_test@mail.ruru",
+                   hourlyWage=False,
+                   startWorkDate="2024-04-11",
+                   dismissalDate="2024-05-11",
+                   userAssignments=[],
+                   projectRoleIds=[1],
+                   postId=1,
+                   departmentId=1,
+                   systemRoleIds=[1]
+                   )
+    if user_id is None:
+        response = user_endpoint.create_user_api(json=payload)
+        print(response.status_code)
+    else:
+        response = user_endpoint.change_user(user_id=str(user_id), json=payload)
+        print(response.status_code)
 
 
 @pytest.fixture(scope='session', autouse=True)
 def write_user_creds_file():
     user_endpoint = UserEndpoint()
     user_endpoint.write_user_id_and_name_to_file(LOGIN)
+
+
+@pytest.fixture()
+def create_advanced_search():
+    advanced_search = SearchProfileEndpoint()
+    payload = dict(
+        userId=USER_ID,
+        title='Автопоиск',
+        query="{\"rules\":[{\"field\":\"status\",\"value\":\"WORK\",\"operator\":\"in\"}],\"combinator\":\"and\"}"
+    )
+    response = advanced_search.create_advanced_search_api(json=payload)
+    yield payload['title']
+    advanced_search.delete_advanced_search_api(str(response.json()['id']))
+
+
+@pytest.fixture()
+def advanced_search_to_delete():
+    advanced_search = SearchProfileEndpoint()
+    payload = dict(
+        userId=USER_ID,
+        title='Для удаления',
+        query="{\"rules\":[{\"field\":\"status\",\"value\":\"WORK\",\"operator\":\"in\"}],\"combinator\":\"and\"}"
+    )
+    advanced_search.create_advanced_search_api(json=payload)
+    yield payload['title']

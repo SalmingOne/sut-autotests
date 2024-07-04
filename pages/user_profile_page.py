@@ -508,6 +508,15 @@ class UserProfilePage(BasePage):
         day_before = datetime.strptime(f_date, "%d.%m.%Y") - timedelta(days=1)
         return day_before.strftime("%d.%m.%Y")
 
+    @testit.step("Получение даты после создания проекта")
+    @allure.step("Получение даты после создания проекта")
+    def get_day_after_create_project(self, project_name):
+        project_endpoint = ProjectEndpoint()
+        date = project_endpoint.get_project_start_date_by_name(project_name)
+        f_date = date[8:10] + '.' + date[5:7] + '.' + date[0:4]
+        day_before = datetime.strptime(f_date, "%d.%m.%Y") + timedelta(days=1)
+        return day_before.strftime("%d.%m.%Y")
+
     @testit.step("Проверка поля Дата начала проекта")
     @allure.step("Проверка поля Дата начала проекта")
     def check_start_date_field(self):
@@ -518,7 +527,7 @@ class UserProfilePage(BasePage):
         error_text = self.element_is_visible(self.locators.MUI_ERROR).text
         time.sleep(2)
         self.element_is_visible(self.locators.EXPERIENCES_BEGIN_DATA_INPUT).send_keys(Keys.CONTROL + 'a')
-        self.element_is_visible(self.locators.EXPERIENCES_BEGIN_DATA_INPUT).send_keys(self.get_day_before(0))
+        self.element_is_visible(self.locators.EXPERIENCES_BEGIN_DATA_INPUT).send_keys(self.get_day_after_create_project(project_name))
         self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_SLOT).click()
         assert error_text == 'Дата начала работы некорректна', "Не появилось сообщение о некорректной дате"
 

@@ -42,9 +42,9 @@ class CreateProjectDrawerPage(BasePage):
             print('no checkboxes')
 
         self.element_is_visible(self.locators.PROJECT_MANAGER_FIELD).send_keys(project_worker)
-        self.element_is_visible(self.locators.CHOSE_ADMIN).click()
+        self.element_is_visible(self.locators.LI_MENU_ITEM).click()
         self.element_is_visible(self.locators.PROJECT_RECOURSE_FIELD).send_keys(project_worker)
-        self.element_is_visible(self.locators.CHOSE_ADMIN).click()
+        self.element_is_visible(self.locators.LI_MENU_ITEM).click()
 
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
         return project_name, project_code, project_data, project_worker
