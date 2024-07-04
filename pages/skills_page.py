@@ -151,3 +151,23 @@ class SkillsPage(BasePage):
             data.append(alert.text)
         return data
 
+    @testit.step("Проверка максимально длины полей дровера")
+    @allure.step("Проверка максимально длины полей дровера")
+    def check_drawer_fields_max_length(self):
+        self.element_is_visible(self.locators.ADD_SKILLS_BUTTON).click()
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys('a'*65)
+        self.element_is_visible(self.locators.TAG_FIELD).click()
+        error = self.element_is_visible(self.locators.MUI_ERROR).text
+        assert error == 'Максимальное количество символов: 64', "Не корректное сообщение об ошибке"
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys('a' * 64)
+        self.element_is_visible(self.locators.TAG_FIELD).click()
+        assert not self.element_is_displayed(self.locators.MUI_ERROR, 1), "Появилось сообщение об ошибке при корректной длине"
+        self.element_is_visible(self.locators.TAG_FIELD).send_keys('a'*129)
+        assert self.element_is_displayed(self.locators.MAX_LENGTH_PRESENTATION, 1), "Не появилось сообщение о превышении длины"
+        self.element_is_visible(self.locators.NAME_FIELD).click()
+        self.element_is_visible(self.locators.TAG_FIELD).send_keys('a' * 128)
+        assert not self.element_is_displayed(self.locators.MAX_LENGTH_PRESENTATION, 1), "Появилось сообщение об ошибке при корректной длине"
+
+
+

@@ -99,4 +99,13 @@ class TestSkillsPage:
         skills_page.sort_skills()
         skills_page.check_add_skill_not_unique_name(create_skill)
 
+    @testit.workItemIds(10482)
+    @testit.displayName("10.4.1.2 Превышение допустимого количества символов в полях при добавлении знания в справочник Знания")
+    @pytest.mark.regress
+    @allure.title("id-10482 10.4.1.2 Превышение допустимого количества символов в полях при добавлении знания в справочник Знания")
+    def test_maximum_field_length_when_adding_skill(self, login, driver):
+        skills_page = SkillsPage(driver)
+        skills_page.go_to_skills_page()
+        skills_page.sort_skills()
+        skills_page.check_drawer_fields_max_length()
 
