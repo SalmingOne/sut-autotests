@@ -133,3 +133,16 @@ class TestSkillsPage:
         skills_page.redact_skill_by_name(create_skill)
         skills_page.check_redact_with_empty_fields()
         assert skills_page.get_error() == 'Поле обязательно', "Не отображается сообщение с предупреждением"
+
+    @testit.workItemIds(10560)
+    @testit.displayName(
+        "10.4.1.3 Редактирование данных в справочнике Знания с превышением максимального количества символов")
+    @pytest.mark.regress
+    @allure.title(
+        "id-10560 10.4.1.3 Редактирование данных в справочнике Знания с превышением максимального количества символов")
+    def test_maximum_field_length_when_editing_skill(self, create_skill, login, driver):
+        skills_page = SkillsPage(driver)
+        skills_page.go_to_skills_page()
+        skills_page.sort_skills()
+        skills_page.redact_skill_by_name(create_skill)
+        skills_page.check_drawer_fields_max_length_when_redact()
