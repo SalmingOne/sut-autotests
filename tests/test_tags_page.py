@@ -84,3 +84,13 @@ class TestTagsPage:
         skills_page.check_tag_on_skill_tab(create_skill, 'AA Два скила')
         skills_page.check_tag_on_skill_tab(create_second_skill, 'AA Два скила')
         tags_endpoint.delete_tag_by_name_api('AA Два скила')
+
+    @testit.workItemIds(10587)
+    @testit.displayName("10.4.2.2 Отмена добавления значения в справочник Группы знаний")
+    @pytest.mark.regress
+    @allure.title("id-10587 10.4.2.2 Отмена добавления значения в справочник Группы знаний")
+    def test_cansel_adding_tag(self, login, driver):
+        tags_page = TagsPage(driver)
+        tags_page.go_to_tags_page()
+        time.sleep(2)  # Нужно время на анимацию
+        tags_page.check_cancel_adding_tag('aaa Для отмены')

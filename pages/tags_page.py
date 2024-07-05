@@ -109,3 +109,12 @@ class TagsPage(BasePage):
         self.action_esc()
         assert len(self.elements_are_visible(self.locators.CANSEL_ICON)) == 2, "В поле не два скила"
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+
+    @testit.step("Проверка отмены добавления группы знаний")
+    @allure.step("Проверка отмены добавления группы знаний")
+    def check_cancel_adding_tag(self, name):
+        self.element_is_visible(self.locators.ADD_TAG_BUTTON).click()
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(name)
+        self.element_is_visible(self.locators.ABORT_BUTTON).click()
+        self.sort_tags()
+        assert not self.element_is_displayed(self.locators.text_on_page(name), 1), "Группа знаний сохранилась"
