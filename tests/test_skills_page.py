@@ -158,3 +158,16 @@ class TestSkillsPage:
         skills_page.redact_skill_by_name(create_skill)
         skills_page.check_cancel_redact_skill('АА Отредактированное знание')
         assert not skills_page.check_skill_name_on_page('АА Отредактированное знание'), "Знание изменилось"
+
+    @testit.workItemIds(10549)
+    @testit.displayName("10.4.1.4 Удаление неиспользуемых в профиле значений из справочника Знания")
+    @pytest.mark.regress
+    @allure.title("id-10549 10.4.1.4 Удаление неиспользуемых в профиле значений из справочника Знания")
+    def test_deleting_unused_in_the_profile_skill(self, create_skill_to_delete, login, driver):
+        skills_page = SkillsPage(driver)
+        skills_page.go_to_skills_page()
+        skills_page.sort_skills()
+        assert skills_page.check_skill_name_on_page(create_skill_to_delete), "Знания нет на странице"
+        skills_page.delete_skill_by_name(create_skill_to_delete)
+        time.sleep(1)
+        assert not skills_page.check_skill_name_on_page(create_skill_to_delete), "Знание не удалилось"

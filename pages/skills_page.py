@@ -208,3 +208,9 @@ class SkillsPage(BasePage):
         self.element_is_visible(self.locators.NAME_FIELD).send_keys(Keys.CONTROL + 'a')
         self.element_is_visible(self.locators.NAME_FIELD).send_keys(name)
         self.element_is_visible(self.locators.BREAK_BUTTON).click()
+
+    @testit.step("Удаление знания по имени")
+    @allure.step("Удаление знания по имени")
+    def delete_skill_by_name(self, name):
+        self.element_is_visible(self.locators.kebab_by_skill_name(name)).click()
+        self.element_is_visible(self.locators.KEBABS_DELETE_MENU_ITEM).click()

@@ -14,6 +14,7 @@ class SkillsPageLocators:
     KEBAB_MENU = (By.CSS_SELECTOR, 'svg[data-testid="MoreHorizIcon"]')
     KEBAB_MENU_ITEM = (By.CSS_SELECTOR, 'span[class^="MuiTypography-root MuiTypography-caption"]')
     KEBABS_REDACT_MENU_ITEM = (By.XPATH, '//span[text()="Редактировать"]')
+    KEBABS_DELETE_MENU_ITEM = (By.XPATH, '//span[text()="Удалить"]')
     # Дровер добавления знания
     NAME_FIELD = (By.CSS_SELECTOR, 'input[name="name"]')
     TAG_FIELD = (By.CSS_SELECTOR, 'input[placeholder="Выберите группу знаний"]')
