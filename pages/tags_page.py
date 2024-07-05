@@ -1,3 +1,5 @@
+import time
+
 import allure
 import testit
 from selenium.webdriver import Keys
@@ -69,3 +71,29 @@ class TagsPage(BasePage):
         self.element_is_visible(self.locators.check_li_item_by_text(skill_name)).click()
         self.action_esc()
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+
+    @testit.step("Проверка кнопки добавления группы знаний")
+    @allure.step("Проверка кнопки добавления группы знаний")
+    def check_add_teg_button(self):
+        assert self.element_is_displayed(self.locators.ADD_TAG_BUTTON), "Нет кнопки добавления группы знаний"
+
+    @testit.step("Проверка заголовков столбцов таблицы")
+    @allure.step("Проверка заголовков столбцов таблицы")
+    def check_columns_headers(self):
+        time.sleep(1)
+        columns_headers = self.elements_are_visible(self.locators.COLUMN_TITLES)
+        headers_text = []
+        for element in columns_headers:
+            headers_text.append(element.text)
+        assert headers_text == ['Группы знаний', 'Знания', 'Действия'], 'В таблице есть не все столбцы'
+
+    @testit.step("Проверка пунктов кебаб меню")
+    @allure.step("Проверка пунктов кебаб меню")
+    def check_kebab_menu_item(self):
+        time.sleep(1)
+        self.elements_are_visible(self.locators.KEBAB_MENU)[0].click()
+        menu_item = self.elements_are_visible(self.locators.KEBAB_MENU_ITEM)
+        items_text = []
+        for element in menu_item:
+            items_text.append(element.text)
+        assert items_text == ['Редактировать', 'Удалить'], 'В кебаб меню есть не все пункты'

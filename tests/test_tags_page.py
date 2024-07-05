@@ -52,3 +52,15 @@ class TestTagsPage:
         skills_page.sort_skills()
         time.sleep(1)
         skills_page.check_tag_on_skill_tab(create_skill, 'ASBEST')
+
+    @testit.workItemIds(10563)
+    @testit.displayName("10.4.2.1 Просмотр страницы справочника Группы знаний")
+    @pytest.mark.regress
+    @allure.title("id-10563 10.4.2.1 Просмотр страницы справочника Группы знаний")
+    def test_viewing_the_tags_page(self, create_tag, login, driver):
+        tags_page = TagsPage(driver)
+        tags_page.go_to_tags_page()
+        time.sleep(2)  # Нужно время на анимацию
+        tags_page.check_add_teg_button()
+        tags_page.check_columns_headers()
+        tags_page.check_kebab_menu_item()
