@@ -146,3 +146,15 @@ class TestSkillsPage:
         skills_page.sort_skills()
         skills_page.redact_skill_by_name(create_skill)
         skills_page.check_drawer_fields_max_length_when_redact()
+
+    @testit.workItemIds(10597)
+    @testit.displayName("10.4.1.3 Отмена редактирования данных в справочнике Знания")
+    @pytest.mark.regress
+    @allure.title("id-10597 10.4.1.3 Отмена редактирования данных в справочнике Знания")
+    def test_cancel_editing_the_skill(self, create_skill, login, driver):
+        skills_page = SkillsPage(driver)
+        skills_page.go_to_skills_page()
+        skills_page.sort_skills()
+        skills_page.redact_skill_by_name(create_skill)
+        skills_page.check_cancel_redact_skill('АА Отредактированное знание')
+        assert not skills_page.check_skill_name_on_page('АА Отредактированное знание'), "Знание изменилось"
