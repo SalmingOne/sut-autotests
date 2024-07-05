@@ -64,3 +64,23 @@ class TestTagsPage:
         tags_page.check_add_teg_button()
         tags_page.check_columns_headers()
         tags_page.check_kebab_menu_item()
+
+    @testit.workItemIds(10592)
+    @testit.displayName("10.4.2.2 Добавление данных в справочник Группы знаний с несколькими знаниями")
+    @pytest.mark.regress
+    @allure.title("id-10592 10.4.2.2 Добавление данных в справочник Группы знаний с несколькими знаниями")
+    def test_adding_the_tag_with_multiple_skills(self, create_skill, create_second_skill, login, driver):
+        tags_page = TagsPage(driver)
+        tags_endpoint = TagsEndpoint()
+        skills_page = SkillsPage(driver)
+        tags_page.go_to_tags_page()
+        time.sleep(2)  # Нужно время на анимацию
+        tags_page.check_create_tag_with_two_skills('AA Два скила', create_skill, create_second_skill)
+        tags_page.sort_tags()
+        tags_page.check_tag_on_tag_tab('AA Два скила')
+        skills_page.go_to_skill_tab()
+        time.sleep(1)
+        skills_page.sort_skills()
+        skills_page.check_tag_on_skill_tab(create_skill, 'AA Два скила')
+        skills_page.check_tag_on_skill_tab(create_second_skill, 'AA Два скила')
+        tags_endpoint.delete_tag_by_name_api('AA Два скила')

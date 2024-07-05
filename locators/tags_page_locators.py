@@ -18,6 +18,7 @@ class TagsPageLocators:
     SKILL_FIELD = (By.CSS_SELECTOR, 'input[placeholder="Выберите знания"]')
     SUBMIT_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
     ABORT_BUTTON = (By.XPATH, '//button[text()="Отменить"]')
+    CANSEL_ICON = (By.CSS_SELECTOR, 'svg[data-testid="CancelIcon"]')
     # Ошибки
     MUI_ERROR = (By.XPATH, '//p[contains(@class, "Mui-error")]')
     def check_li_item_by_text(self, name):

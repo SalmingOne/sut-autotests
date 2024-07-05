@@ -97,3 +97,15 @@ class TagsPage(BasePage):
         for element in menu_item:
             items_text.append(element.text)
         assert items_text == ['Редактировать', 'Удалить'], 'В кебаб меню есть не все пункты'
+
+    @testit.step("Добавление группы знаний с двумя скилами")
+    @allure.step("Добавление группы знаний с двумя скилами")
+    def check_create_tag_with_two_skills(self, name, skill_name, second_skill_name):
+        self.element_is_visible(self.locators.ADD_TAG_BUTTON).click()
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(name)
+        self.element_is_visible(self.locators.SKILL_FIELD).click()
+        self.element_is_visible(self.locators.check_li_item_by_text(skill_name)).click()
+        self.element_is_visible(self.locators.check_li_item_by_text(second_skill_name)).click()
+        self.action_esc()
+        assert len(self.elements_are_visible(self.locators.CANSEL_ICON)) == 2, "В поле не два скила"
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
