@@ -22,6 +22,7 @@ class TagsPageLocators:
     # Ошибки
     MUI_ERROR = (By.XPATH, '//p[contains(@class, "Mui-error")]')
     ALERT_TEXT = (By.XPATH, '//div[contains(@class, "MuiAlert-message")]')
+    MAX_LENGTH_PRESENTATION = (By.XPATH, '//div[text()="Превышено допустимое количество символов"]')
     def check_li_item_by_text(self, name):
         return (By.XPATH, f'//li[text()="{name}"]')
 

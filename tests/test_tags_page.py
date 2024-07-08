@@ -114,3 +114,14 @@ class TestTagsPage:
         tags_page.go_to_tags_page()
         time.sleep(2)  # Нужно время на анимацию
         tags_page.check_add_tag_not_unique_name(create_tag[0])
+
+    @testit.workItemIds(10590)
+    @testit.displayName("10.4.2.2 Превышение допустимого количества символов в полях при добавлении знания в справочник Группы знаний")
+    @pytest.mark.regress
+    @allure.title("id-10590 10.4.2.2 Превышение допустимого количества символов в полях при добавлении знания в справочник Группы знаний")
+    def test_maximum_field_length_when_adding_the_tag(self, login, driver):
+        tags_page = TagsPage(driver)
+        tags_page.go_to_tags_page()
+        time.sleep(2)  # Нужно время на анимацию
+        tags_page.press_add_tag_button()
+        tags_page.check_drawer_fields_max_length()

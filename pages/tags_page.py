@@ -146,3 +146,24 @@ class TagsPage(BasePage):
         alert = self.get_alert_message()
         assert error == 'Укажите уникальноe название группы знаний', "Не появилось сообщение с предупреждением"
         assert alert == ['Группа уже добавлена'], "Не появился тост с предупреждением"
+
+    @testit.step("Проверка максимально длины полей дровера")
+    @allure.step("Проверка максимально длины полей дровера")
+    def check_drawer_fields_max_length(self):
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys('a' * 129)
+        self.element_is_visible(self.locators.SKILL_FIELD).click()
+        error = self.element_is_visible(self.locators.MUI_ERROR).text
+        assert error == 'Максимальное количество символов: 128', "Не корректное сообщение об ошибке"
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys('a' * 128)
+        self.element_is_visible(self.locators.SKILL_FIELD).click()
+        assert not self.element_is_displayed(self.locators.MUI_ERROR,
+                                             1), "Появилось сообщение об ошибке при корректной длине"
+        self.element_is_visible(self.locators.SKILL_FIELD).send_keys('a' * 65)
+        assert self.element_is_displayed(self.locators.MAX_LENGTH_PRESENTATION,
+                                         1), "Не появилось сообщение о превышении длины"
+        self.element_is_visible(self.locators.NAME_FIELD).click()
+        self.element_is_visible(self.locators.SKILL_FIELD).send_keys('a' * 64)
+        assert not self.element_is_displayed(self.locators.MAX_LENGTH_PRESENTATION,
+                                             1), "Появилось сообщение об ошибке при корректной длине"
