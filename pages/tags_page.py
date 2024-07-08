@@ -185,3 +185,13 @@ class TagsPage(BasePage):
     @allure.step("Получение текста ошибки")
     def get_error(self):
         return self.element_is_visible(self.locators.MUI_ERROR).text
+
+    @testit.step("Проверка редактирования с пустым вводом в поле имя")
+    @allure.step("Проверка редактирования с пустым вводом в поле имя")
+    def check_redact_tag_empty_field(self):
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(Keys.BACK_SPACE)
+        self.element_is_visible(self.locators.SKILL_FIELD).click()
+        assert self.get_error() == 'Поле обязательно', "Не появилось сообщение с предупреждением"
+
+
