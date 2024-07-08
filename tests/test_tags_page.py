@@ -94,3 +94,13 @@ class TestTagsPage:
         tags_page.go_to_tags_page()
         time.sleep(2)  # Нужно время на анимацию
         tags_page.check_cancel_adding_tag('aaa Для отмены')
+
+    @testit.workItemIds(10588)
+    @testit.displayName("10.4.2.2 Добавление знания в справочник Группы знаний без заполнения обязательных полей")
+    @pytest.mark.regress
+    @allure.title("id-10588 10.4.2.2 Добавление знания в справочник Группы знаний без заполнения обязательных полей")
+    def test_adding_tag_without_filling_in_a_required_field(self, login, driver):
+        tags_page = TagsPage(driver)
+        tags_page.go_to_tags_page()
+        time.sleep(2)  # Нужно время на анимацию
+        tags_page.check_adding_tag_without_filling_in_a_required_field()

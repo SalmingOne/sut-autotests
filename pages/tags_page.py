@@ -118,3 +118,11 @@ class TagsPage(BasePage):
         self.element_is_visible(self.locators.ABORT_BUTTON).click()
         self.sort_tags()
         assert not self.element_is_displayed(self.locators.text_on_page(name), 1), "Группа знаний сохранилась"
+
+    @testit.step("Проверка добавления Группы знаний без заполнения обязательных полей")
+    @allure.step("Проверка добавления Группы знаний без заполнения обязательных полей")
+    def check_adding_tag_without_filling_in_a_required_field(self):
+        self.element_is_visible(self.locators.ADD_TAG_BUTTON).click()
+        assert not self.element_is_clickable(self.locators.SUBMIT_BUTTON, 1), "Кнопка сохранения не задизейблена"
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys("Имя")
+        assert self.element_is_clickable(self.locators.SUBMIT_BUTTON, 1), "Кнопка сохранения задизейблена"
