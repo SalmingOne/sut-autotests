@@ -167,3 +167,21 @@ class TagsPage(BasePage):
         self.element_is_visible(self.locators.SKILL_FIELD).send_keys('a' * 64)
         assert not self.element_is_displayed(self.locators.MAX_LENGTH_PRESENTATION,
                                              1), "Появилось сообщение об ошибке при корректной длине"
+
+    @testit.step("Редактирование Группы знаний по имени")
+    @allure.step("Редактирование Группы знаний по имени")
+    def redact_tag_by_name(self, name):
+        self.element_is_visible(self.locators.kebab_by_tag_name(name)).click()
+        self.element_is_visible(self.locators.KEBABS_REDACT_MENU_ITEM).click()
+
+    @testit.step("Проверка ввода не уникального имени при редактирование Группы")
+    @allure.step("Проверка ввода не уникального имени при редактирование Группы")
+    def check_redact_tag_no_unique_name(self, name):
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(name)
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+
+    @testit.step("Получение текста ошибки")
+    @allure.step("Получение текста ошибки")
+    def get_error(self):
+        return self.element_is_visible(self.locators.MUI_ERROR).text

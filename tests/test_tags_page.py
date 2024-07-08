@@ -125,3 +125,20 @@ class TestTagsPage:
         time.sleep(2)  # Нужно время на анимацию
         tags_page.press_add_tag_button()
         tags_page.check_drawer_fields_max_length()
+
+    @testit.workItemIds(10594)
+    @testit.displayName("10.4.2.3 Редактирование данных в справочнике Группы знаний с неуникальным значением")
+    @pytest.mark.regress
+    @allure.title("id-10594 10.4.2.3 Редактирование данных в справочнике Группы знаний с неуникальным значением")
+    def test_editing_the_tag_with_non_unique_name(self, create_tag, login, driver):
+        tags_page = TagsPage(driver)
+        tags_page.go_to_tags_page()
+        time.sleep(2)  # Нужно время на анимацию
+        tags_page.sort_tags()
+        time.sleep(1)
+        tags_page.redact_tag_by_name(create_tag[0])
+        tags_page.check_redact_tag_no_unique_name(create_tag[1])
+        error = tags_page.get_error()
+        toast = tags_page.get_alert_message()
+        assert toast == ['Группа уже добавлена'], "Нет сообщения"
+        assert error == 'Укажите уникальноe название группы знаний', "Нет предупреждения"
