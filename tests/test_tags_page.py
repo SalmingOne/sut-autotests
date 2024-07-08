@@ -169,3 +169,16 @@ class TestTagsPage:
         time.sleep(1)
         tags_page.redact_tag_by_name(create_tag[0])
         tags_page.check_drawer_fields_max_length()
+
+    @testit.workItemIds(10598)
+    @testit.displayName("10.4.2.3 Отмена редактирования данных в справочнике Группы знаний")
+    @pytest.mark.regress
+    @allure.title("id-10598 10.4.2.3 Отмена редактирования данных в справочнике Группы знаний")
+    def test_cancel_editing_the_tag(self, create_tag, login, driver):
+        tags_page = TagsPage(driver)
+        tags_page.go_to_tags_page()
+        time.sleep(2)  # Нужно время на анимацию
+        tags_page.sort_tags()
+        time.sleep(1)
+        tags_page.redact_tag_by_name(create_tag[0])
+        tags_page.check_cancel_editing_tag('AA Измененное имя')

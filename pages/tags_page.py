@@ -194,4 +194,11 @@ class TagsPage(BasePage):
         self.element_is_visible(self.locators.SKILL_FIELD).click()
         assert self.get_error() == 'Поле обязательно', "Не появилось сообщение с предупреждением"
 
+    @testit.step("Проверка отмены редактирования")
+    @allure.step("Проверка отмены редактирования")
+    def check_cancel_editing_tag(self, new_name):
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(new_name)
+        self.element_is_visible(self.locators.ABORT_BUTTON).click()
+        assert not self.element_is_displayed(self.locators.text_on_page(new_name), 1), "Группа знаний изменилась"
+
 
