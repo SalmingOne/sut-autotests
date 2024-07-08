@@ -126,3 +126,23 @@ class TagsPage(BasePage):
         assert not self.element_is_clickable(self.locators.SUBMIT_BUTTON, 1), "Кнопка сохранения не задизейблена"
         self.element_is_visible(self.locators.NAME_FIELD).send_keys("Имя")
         assert self.element_is_clickable(self.locators.SUBMIT_BUTTON, 1), "Кнопка сохранения задизейблена"
+
+    @testit.step("Берем текст всех сообщений системы")
+    @allure.step("Берем текст всех сообщений системы")
+    def get_alert_message(self):
+        all_alerts = self.elements_are_visible(self.locators.ALERT_TEXT)
+        data = []
+        for alert in all_alerts:
+            data.append(alert.text)
+        return data
+
+    @testit.step("Добавление Группы знаний с неуникальным именем")
+    @allure.step("Добавление Группы знаний с неуникальным именем")
+    def check_add_tag_not_unique_name(self, name):
+        self.element_is_visible(self.locators.ADD_TAG_BUTTON).click()
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(name)
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+        error = self.element_is_visible(self.locators.MUI_ERROR).text
+        alert = self.get_alert_message()
+        assert error == 'Укажите уникальноe название группы знаний', "Не появилось сообщение с предупреждением"
+        assert alert == ['Группа уже добавлена'], "Не появился тост с предупреждением"

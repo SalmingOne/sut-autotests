@@ -21,6 +21,7 @@ class TagsPageLocators:
     CANSEL_ICON = (By.CSS_SELECTOR, 'svg[data-testid="CancelIcon"]')
     # Ошибки
     MUI_ERROR = (By.XPATH, '//p[contains(@class, "Mui-error")]')
+    ALERT_TEXT = (By.XPATH, '//div[contains(@class, "MuiAlert-message")]')
     def check_li_item_by_text(self, name):
         return (By.XPATH, f'//li[text()="{name}"]')
 

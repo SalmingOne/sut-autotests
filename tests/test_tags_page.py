@@ -104,3 +104,13 @@ class TestTagsPage:
         tags_page.go_to_tags_page()
         time.sleep(2)  # Нужно время на анимацию
         tags_page.check_adding_tag_without_filling_in_a_required_field()
+
+    @testit.workItemIds(10589)
+    @testit.displayName("10.4.2.2 Неуникальное значение поля при добавлении знания в справочник Группы знаний")
+    @pytest.mark.regress
+    @allure.title("id-10589 10.4.2.2 Неуникальное значение поля при добавлении знания в справочник Группы знаний")
+    def test_adding_tag_with_non_unique_name(self, create_tag, login, driver):
+        tags_page = TagsPage(driver)
+        tags_page.go_to_tags_page()
+        time.sleep(2)  # Нужно время на анимацию
+        tags_page.check_add_tag_not_unique_name(create_tag[0])
