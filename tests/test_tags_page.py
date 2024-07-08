@@ -155,3 +155,17 @@ class TestTagsPage:
         time.sleep(1)
         tags_page.redact_tag_by_name(create_tag[0])
         tags_page.check_redact_tag_empty_field()
+
+    @testit.workItemIds(10596)
+    @testit.displayName("10.4.2.3 Редактирование данных в справочнике Группы знаний с превышением максимального количества символов")
+    @pytest.mark.regress
+    @allure.title(
+        "id-10596 10.4.2.3 Редактирование данных в справочнике Группы знаний с превышением максимального количества символов")
+    def test_maximum_field_length_when_editing_the_tag(self, create_tag, login, driver):
+        tags_page = TagsPage(driver)
+        tags_page.go_to_tags_page()
+        time.sleep(2)  # Нужно время на анимацию
+        tags_page.sort_tags()
+        time.sleep(1)
+        tags_page.redact_tag_by_name(create_tag[0])
+        tags_page.check_drawer_fields_max_length()
