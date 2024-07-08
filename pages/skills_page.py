@@ -201,3 +201,16 @@ class SkillsPage(BasePage):
         self.element_is_visible(self.locators.TAG_FIELD).send_keys('a' * 128)
         assert not self.element_is_displayed(self.locators.MAX_LENGTH_PRESENTATION,
                                              1), "Появилось сообщение об ошибке при корректной длине"
+
+    @testit.step("Отмена редактирования Знания")
+    @allure.step("Отмена редактирования Знания")
+    def check_cancel_redact_skill(self, name):
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(name)
+        self.element_is_visible(self.locators.BREAK_BUTTON).click()
+
+    @testit.step("Удаление знания по имени")
+    @allure.step("Удаление знания по имени")
+    def delete_skill_by_name(self, name):
+        self.element_is_visible(self.locators.kebab_by_skill_name(name)).click()
+        self.element_is_visible(self.locators.KEBABS_DELETE_MENU_ITEM).click()
