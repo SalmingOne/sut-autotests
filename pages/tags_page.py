@@ -57,8 +57,7 @@ class TagsPage(BasePage):
     @testit.step("Проверка наличия группы знаний на вкладке группы знаний")
     @allure.step("Проверка наличия группы знаний на вкладке группы знаний")
     def check_tag_on_tag_tab(self, name):
-        assert self.element_is_displayed(self.locators.text_on_page(name)),\
-            "Имени группы знаний нет на вкладке группы знаний"
+        return self.element_is_displayed(self.locators.text_on_page(name))
 
     @testit.step("Изменение группы знаний")
     @allure.step("Изменение группы знаний")
@@ -194,4 +193,15 @@ class TagsPage(BasePage):
         self.element_is_visible(self.locators.SKILL_FIELD).click()
         assert self.get_error() == 'Поле обязательно', "Не появилось сообщение с предупреждением"
 
+    @testit.step("Проверка отмены редактирования")
+    @allure.step("Проверка отмены редактирования")
+    def check_cancel_editing_tag(self, new_name):
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(new_name)
+        self.element_is_visible(self.locators.ABORT_BUTTON).click()
+        assert not self.element_is_displayed(self.locators.text_on_page(new_name), 1), "Группа знаний изменилась"
 
+    @testit.step("Удаление Группы знаний")
+    @allure.step("Удаление Группы знаний")
+    def delete_tag(self, name):
+        self.element_is_visible(self.locators.kebab_by_tag_name(name)).click()
+        self.element_is_visible(self.locators.KEBABS_DELETE_MENU_ITEM).click()

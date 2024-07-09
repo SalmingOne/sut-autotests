@@ -26,7 +26,7 @@ class TestTagsPage:
         tags_page.check_name_field()
         tags_page.create_tag('AAABBB', create_skill)
         tags_page.sort_tags()
-        tags_page.check_tag_on_tag_tab('AAABBB')
+        assert tags_page.check_tag_on_tag_tab('AAABBB'), "Имени группы знаний нет на вкладке группы знаний"
         skills_page.go_to_skill_tab()
         time.sleep(1)
         skills_page.sort_skills()
@@ -46,7 +46,7 @@ class TestTagsPage:
         tags_page.sort_tags()
         time.sleep(1)
         tags_page.edit_tag(create_tag[0], 'ASBEST', create_skill)
-        tags_page.check_tag_on_tag_tab('ASBEST')
+        assert tags_page.check_tag_on_tag_tab('ASBEST'), "Имени группы знаний нет на вкладке группы знаний"
         skills_page.go_to_skill_tab()
         time.sleep(1)
         skills_page.sort_skills()
@@ -77,7 +77,7 @@ class TestTagsPage:
         time.sleep(2)  # Нужно время на анимацию
         tags_page.check_create_tag_with_two_skills('AA Два скила', create_skill, create_second_skill)
         tags_page.sort_tags()
-        tags_page.check_tag_on_tag_tab('AA Два скила')
+        assert tags_page.check_tag_on_tag_tab('AA Два скила'), "Имени группы знаний нет на вкладке группы знаний"
         skills_page.go_to_skill_tab()
         time.sleep(1)
         skills_page.sort_skills()
@@ -169,3 +169,32 @@ class TestTagsPage:
         time.sleep(1)
         tags_page.redact_tag_by_name(create_tag[0])
         tags_page.check_drawer_fields_max_length()
+
+    @testit.workItemIds(10598)
+    @testit.displayName("10.4.2.3 Отмена редактирования данных в справочнике Группы знаний")
+    @pytest.mark.regress
+    @allure.title("id-10598 10.4.2.3 Отмена редактирования данных в справочнике Группы знаний")
+    def test_cancel_editing_the_tag(self, create_tag, login, driver):
+        tags_page = TagsPage(driver)
+        tags_page.go_to_tags_page()
+        time.sleep(2)  # Нужно время на анимацию
+        tags_page.sort_tags()
+        time.sleep(1)
+        tags_page.redact_tag_by_name(create_tag[0])
+        tags_page.check_cancel_editing_tag('AA Измененное имя')
+
+    @testit.workItemIds(10599)
+    @testit.displayName("10.4.2.4 Удаление неиспользуемых в профиле значений из справочника Группы знаний")
+    @pytest.mark.regress
+    @allure.title("id-10599 10.4.2.4 Удаление неиспользуемых в профиле значений из справочника Группы знаний")
+    def test_delete_unused_in_the_profile_tag(self, create_tag_to_delete, login, driver):
+        tags_page = TagsPage(driver)
+        tags_page.go_to_tags_page()
+        time.sleep(2)  # Нужно время на анимацию
+        tags_page.sort_tags()
+        time.sleep(1)
+        assert tags_page.check_tag_on_tag_tab(create_tag_to_delete), "Группы знаний нет на вкладке группы знаний"
+        tags_page.delete_tag(create_tag_to_delete)
+        time.sleep(1)
+        assert not tags_page.check_tag_on_tag_tab(create_tag_to_delete), "Группа знаний не удалилась"
+
