@@ -266,6 +266,14 @@ def create_tag():
 
 
 @pytest.fixture()
+def create_tag_to_delete():
+    tags_endpoint = TagsEndpoint()
+    payload = dict(name='AA для удаления', skills=[])
+    response = tags_endpoint.create_tag_api(json=payload)
+    yield payload['name']
+
+
+@pytest.fixture()
 def create_filial():
     filial_endpoint = AffiliatesEndpoint()
     payload = dict(name='Для редактирования', address='г. Москва')

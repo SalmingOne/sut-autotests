@@ -9,6 +9,7 @@ class TagsPageLocators:
     # Таб группа знаний
     ADD_TAG_BUTTON = (By.XPATH, '//button[contains(@class,"MuiButton-root MuiButton-text MuiButton-textPrimary")]')
     KEBABS_REDACT_MENU_ITEM = (By.XPATH, '//span[text()="Редактировать"]')
+    KEBABS_DELETE_MENU_ITEM = (By.XPATH, '//span[text()="Удалить"]')
     KEBAB_MENU_ITEM = (By.CSS_SELECTOR, 'span[class^="MuiTypography-root MuiTypography-caption"]')
     KEBAB_MENU = (By.CSS_SELECTOR, 'svg[data-testid="MoreHorizIcon"]')
     SORT_TAGS_BUTTON = (By.XPATH, '//span[@class="ag-header-cell-text"][text()="Группы знаний"]')
