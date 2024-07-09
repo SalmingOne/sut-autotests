@@ -29,6 +29,7 @@ class TestLaborCostPage:
     def test_mapping_labor_cost_page(self, project_with_assignment, login, driver):
         labor_cost_page = LaborCostPage(driver)
         labor_cost_page.go_to_labor_cost_page()
+        time.sleep(1)
         labor_cost_page.check_title()
         labor_cost_page.check_add_to_project_button()
         labor_cost_page.check_period_select()
