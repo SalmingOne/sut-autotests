@@ -73,7 +73,7 @@ class SchedulePage(BasePage):
     @testit.step("Проверка наличия кнопки очистки дровера")
     @allure.step("Проверка наличия кнопки очистки дровера")
     def check_x_button(self):
-        assert self.element_is_displayed(self.locators.CLEAR_ICON), 'Нет кнопки очистки дровера'
+        assert self.element_is_displayed(self.locators.CLEAR_ICON_IN_REDACT_DRAWER), 'Нет кнопки очистки дровера'
 
     @testit.step("Проверка наличия чекбоксов с днями недели и свича")
     @allure.step("Проверка наличия чекбоксов с днями недели и свича")

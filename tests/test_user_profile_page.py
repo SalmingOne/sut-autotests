@@ -5,8 +5,6 @@ import pytest
 import testit
 
 from pages.colleagues_page import ColleaguesPage
-from pages.create_local_user_drawer_page import CreateLocalUserDrawerPage
-from pages.user_page import UserPage
 from pages.user_profile_page import UserProfilePage
 
 
@@ -30,7 +28,6 @@ class TestUserProfilePage:
             user_profile_page.go_to_education_tab()
         else:
             pass
-
         user_profile_page.press_redact_button()
         user_profile_page.press_add_icon_button()
         user_profile_page.press_save_button()
@@ -39,7 +36,7 @@ class TestUserProfilePage:
         alert_messages = user_profile_page.get_alert_message()
         tab_color = user_profile_page.get_education_tab_color()
         errors = user_profile_page.get_mui_errors_text()
-        assert 'Не все поля были заполнены корректно на табе "Образование"' in alert_messages, "Не появилось сообщение об ошибке"
+        assert 'На табе "Образование" не все поля были заполнены корректно' in alert_messages, "Не появилось сообщение об ошибке"
         assert tab_color == 'rgba(255, 236, 229, 1)', "Цвет вкладки не красный"
         assert 'Поле обязательно' in errors, "Нет сообщений об обязательности поля"
 
@@ -50,6 +47,7 @@ class TestUserProfilePage:
     def test_blank_entry_on_certificate_tab(self, login, driver):
         user_profile_page = UserProfilePage(driver)
         user_profile_page.go_to_user_profile()
+        time.sleep(2)
         user_profile_page.go_to_certificate_tab()
         user_profile_page.press_redact_button()
         time.sleep(1)
@@ -58,8 +56,9 @@ class TestUserProfilePage:
         user_profile_page.go_to_certificate_tab()
         alert_message = user_profile_page.get_alert_message()
         tab_color = user_profile_page.get_certificate_tab_color()
+        time.sleep(1)
         errors = user_profile_page.get_mui_errors_text()
-        assert 'Не все поля были заполнены корректно на табе "Сертификаты"' in alert_message, "Не появилось сообщение об ошибке"
+        assert 'На табе "Сертификаты" не все поля были заполнены корректно' in alert_message, "Не появилось сообщение об ошибке"
         assert tab_color == 'rgba(255, 236, 229, 1)', "Цвет вкладки не красный"
         assert 'Поле обязательно' in errors, "Нет сообщений об обязательности поля"
 
@@ -70,6 +69,7 @@ class TestUserProfilePage:
     def test_blank_entry_on_experience_tab(self, login, driver):
         user_profile_page = UserProfilePage(driver)
         user_profile_page.go_to_user_profile()
+        time.sleep(2)
         user_profile_page.go_to_experience_tab()
         user_profile_page.press_redact_button()
         time.sleep(1)
@@ -80,7 +80,7 @@ class TestUserProfilePage:
         tab_color = user_profile_page.get_experience_tab_color()
         errors = user_profile_page.get_mui_errors_text()
 
-        assert 'Не все поля были заполнены корректно на табе "Опыт работы"' in alert_message, "Не появилось сообщение об ошибке"
+        assert 'На табе "Опыт работы" не все поля были заполнены корректно' in alert_message, "Не появилось сообщение об ошибке"
         assert tab_color == 'rgba(255, 236, 229, 1)', "Цвет вкладки не красный"
         assert 'Поле обязательно' in errors, "Нет сообщений об обязательности поля"
 

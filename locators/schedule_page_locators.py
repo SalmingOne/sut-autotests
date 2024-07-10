@@ -32,6 +32,7 @@ class SchedulePageLocators:
 
     DELETE_BREAK_BUTTON = (By.CSS_SELECTOR, 'svg[data-testid="DeleteIcon"]')
     CLEAR_ICON = (By.CSS_SELECTOR, 'svg[data-testid="ClearIcon"]')
+    CLEAR_ICON_IN_REDACT_DRAWER = (By.XPATH, '//h6[text()="Редактирование стандартного графика"]//..//*[@data-testid="ClearIcon"]')
     # Дровер добавления отгула
     SWITCH_BY_DAY = (By.XPATH, '//span[contains(@class,"MuiSwitch-switchBase MuiSwitch-colorSecondary")]')
     TAKE_OFF_DATA_PICKER = (By.XPATH, '//label[text()="Дата отгула"]//..//descendant::button')
