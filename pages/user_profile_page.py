@@ -613,3 +613,12 @@ class UserProfilePage(BasePage):
         time.sleep(1)
         self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
         self.press_save_button()
+
+    @testit.step("Проверка удаления блока опыт работы в резюме")
+    @allure.step("Проверка удаления блока опыт работы в резюме")
+    def check_delete_block_experience_in_resume(self):
+        self.action_move_to_element(self.elements_are_visible(self.locators.WYSIWYG_TITLES)[3])
+        self.element_is_visible(self.locators.ADD_EXPERIENCE_BUTTON).click()
+        assert self.element_is_displayed(self.locators.EXPERIENCE_PROJECT_NAME), "Не добавлен блок опыт работы"
+        self.element_is_visible(self.locators.DELETE_ICON).click()
+        assert not self.element_is_displayed(self.locators.EXPERIENCE_PROJECT_NAME, 1), "Блок опыт работы не удалился"

@@ -580,3 +580,16 @@ class TestUserProfilePage:
         # Проверяем удаление карточки
         assert not user_profile_page.check_experience_title(), "Карточка проекта не удалилась"
         assert 'АвтоСПроектом' in user_name, "Не произошел переход на страницу пользователя"
+
+    @testit.workItemIds(3200)
+    @testit.displayName("10.6.1.4. Удаление блока с опытом работы")
+    @pytest.mark.regress
+    @allure.title("id-3200 10.6.1.4. Удаление блока с опытом работы")
+    def test_delete_a_block_with_work_experience_in_resume(self, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        time.sleep(2)
+        user_profile_page.go_to_resume_tab()
+        user_profile_page.press_create_resume_button()
+        time.sleep(1)
+        user_profile_page.check_delete_block_experience_in_resume()
