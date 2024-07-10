@@ -606,3 +606,16 @@ class TestUserProfilePage:
         user_profile_page.press_create_resume_button()
         error = user_profile_page.check_resume_with_non_unique_name(create_resume)
         assert error == 'Название резюме должно быть уникальным', "Не отображается сообщение об неуникальности резюме"
+
+    @testit.workItemIds(3243)
+    @testit.displayName("10.6.1.4. Пустой ввод в обязательные поля")
+    @pytest.mark.regress
+    @allure.title("id-3243 10.6.1.4. Пустой ввод в обязательные поля")
+    def test_adding_the_resume_without_filling_in_a_required_field(self, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        time.sleep(2)
+        user_profile_page.go_to_resume_tab()
+        user_profile_page.press_create_resume_button()
+        time.sleep(1)
+        user_profile_page.check_adding_the_resume_without_filling_in_a_required_field()

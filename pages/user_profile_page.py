@@ -635,3 +635,17 @@ class UserProfilePage(BasePage):
         self.elements_are_visible(self.locators.DATE_PIKERS)[2].send_keys(self.get_day_before(0))
         self.element_is_visible(self.locators.SAVE_BUTTON).click()
         return self.element_is_visible(self.locators.MUI_ERROR).text
+
+    @testit.step("Проверка создания резюме без заполнения обязательных полей")
+    @allure.step("Проверка создания резюме без заполнения обязательных полей")
+    def check_adding_the_resume_without_filling_in_a_required_field(self):
+        assert not self.element_is_clickable(self.locators.SAVE_BUTTON, 1), "Кнопка сохранить не задизейблена"
+        self.element_is_visible(self.locators.RESUME_DIRECTION_FIELD).send_keys('1')
+        assert self.element_is_clickable(self.locators.SAVE_BUTTON, 1), "Кнопка сохранить задизейблена"
+        self.element_is_visible(self.locators.SAVE_BUTTON).click()
+        assert len(self.elements_are_visible(self.locators.MUI_ERROR)) == 2,\
+            "Под обязательными полями не отображаются сообщения"
+        assert self.elements_are_visible(self.locators.MUI_ERROR)[0].text == 'Поле обязательно',\
+            "Не корректные сообщения под обязательными полями"
+        assert 'Заполнены не все обязательные поля' in self.get_alert_message(),\
+            "Не появился тост об обязательности полей"
