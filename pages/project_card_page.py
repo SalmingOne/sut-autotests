@@ -33,10 +33,10 @@ class ProjectCardPage(BasePage):
         output_project_manager = self.element_is_visible(self.locators.MANAGER_LABEL).text
         return output_project_name, output_project_code, output_project_status, output_project_begin_data, output_project_manager
 
-    @testit.step("Получаем роль, ресурс и ставку на первой строке команды до редактирования")
-    @allure.step("Получаем роль, ресурс и ставку на первой строке команды до редактирования")
-    def get_first_team_member(self):
-        member_list = self.elements_are_present(self.locators.FIRST_MEMBER_TEXT)
+    @testit.step("Получаем роли, ресурсы и ставки команды до редактирования")
+    @allure.step("Получаем роли, ресурсы и ставки команды до редактирования")
+    def get_all_team_members(self):
+        member_list = self.elements_are_present(self.locators.ALL_MEMBERS_TEXT)
         data = []
         for member in member_list:
             data.append(member.text)
@@ -72,3 +72,25 @@ class ProjectCardPage(BasePage):
     @allure.step("Переход на вкладку команды проекта")
     def go_to_team_tab(self):
         self.element_is_visible(self.locators.TEAM_TAB).click()
+
+    @testit.step("Получаем роли, ресурсы и ставки команды в режиме редактирования")
+    @allure.step("Получаем роли, ресурсы и ставки команды в режиме редактирования")
+    def get_all_team_member_on_redact(self):
+        member_list = self.elements_are_present(self.locators.ALL_MEMBERS_TEXT_ON_REDACT)
+        data = []
+        for member in member_list:
+            data.append(member.get_attribute("value"))
+        return data
+
+    @testit.step("Добавляем новый ресурс")
+    @allure.step("Добавляем новый ресурс")
+    def add_new_member(self):
+        self.element_is_visible(self.locators.ADD_BUTTON).click()
+        member_list = self.elements_are_present(self.locators.FIRST_MEMBER_TEXT_ON_REDACT)
+        for member in member_list:
+            try:
+                member.click()
+                self.element_is_visible(self.locators.FIRST_NOT_CHOOSE).click()
+            except StaleElementReferenceException:
+                pass
+        self.element_is_visible(self.locators.SAVE_BUTTON).click()
