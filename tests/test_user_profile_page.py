@@ -593,3 +593,16 @@ class TestUserProfilePage:
         user_profile_page.press_create_resume_button()
         time.sleep(1)
         user_profile_page.check_delete_block_experience_in_resume()
+
+    @testit.workItemIds(3241)
+    @testit.displayName("10.6.1.4. Неуникальное название резюме")
+    @pytest.mark.regress
+    @allure.title("id-3241 10.6.1.4. Неуникальное название резюме")
+    def test_create_non_unique_resume_name(self, create_resume, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        time.sleep(2)
+        user_profile_page.go_to_resume_tab()
+        user_profile_page.press_create_resume_button()
+        error = user_profile_page.check_resume_with_non_unique_name(create_resume)
+        assert error == 'Название резюме должно быть уникальным', "Не отображается сообщение об неуникальности резюме"

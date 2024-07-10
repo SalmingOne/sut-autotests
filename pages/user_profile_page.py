@@ -622,3 +622,16 @@ class UserProfilePage(BasePage):
         assert self.element_is_displayed(self.locators.EXPERIENCE_PROJECT_NAME), "Не добавлен блок опыт работы"
         self.element_is_visible(self.locators.DELETE_ICON).click()
         assert not self.element_is_displayed(self.locators.EXPERIENCE_PROJECT_NAME, 1), "Блок опыт работы не удалился"
+
+    @testit.step("Проверка создания резюме с неуникальным именем")
+    @allure.step("Проверка создания резюме с неуникальным именем")
+    def check_resume_with_non_unique_name(self, name):
+        self.element_is_visible(self.locators.RESUME_TITLE_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.RESUME_TITLE_FIELD).send_keys(name)
+        self.element_is_visible(self.locators.RESUME_POST_FIELD).send_keys('Администратор')
+        self.elements_are_visible(self.locators.DATE_PIKERS)[1].send_keys(Keys.CONTROL + 'a')
+        self.elements_are_visible(self.locators.DATE_PIKERS)[1].send_keys('01.02.1990')
+        self.elements_are_visible(self.locators.DATE_PIKERS)[2].send_keys(Keys.CONTROL + 'a')
+        self.elements_are_visible(self.locators.DATE_PIKERS)[2].send_keys(self.get_day_before(0))
+        self.element_is_visible(self.locators.SAVE_BUTTON).click()
+        return self.element_is_visible(self.locators.MUI_ERROR).text
