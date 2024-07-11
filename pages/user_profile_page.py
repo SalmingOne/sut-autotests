@@ -128,9 +128,7 @@ class UserProfilePage(BasePage):
     @testit.step("Проверка ограничения в 255 символов для поля")
     @allure.step("Проверка ограничения в 255 символов для поля")
     def check_255_symbol_in_field(self, locator):
-        bed_value = ('Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt'
-                     ' ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci'
-                     ' tation ullamcorper suscipit lobortis nisl ut aliquip ex ea co')
+        bed_value = 'a' * 256
         self.element_is_visible(locator).send_keys(Keys.CONTROL + 'a')
         self.element_is_visible(locator).send_keys(bed_value)
         self.element_is_visible(self.locators.START_WORK_IN_RESUME).click()
@@ -140,7 +138,7 @@ class UserProfilePage(BasePage):
         self.element_is_visible(locator).send_keys('1')
         self.element_is_visible(self.locators.START_WORK_IN_RESUME).click()
         assert error_text == 'Максимальное количество символов: 255', \
-            "Не появилось сообщение о превышении максимального количества символов"
+            "Не появилось сообщение о превышении максимального количества символов" + locator
 
     @testit.step("Проверка всех полей с ограничением в 255 символов")
     @allure.step("Проверка всех полей с ограничением в 255 символов")
@@ -184,6 +182,7 @@ class UserProfilePage(BasePage):
     @testit.step("Проверка дата-пикеров в дровере")
     @allure.step("Проверка дата-пикеров в дровере")
     def check_date_pikers(self):
+        self.element_is_visible(self.locators.ADD_EXPERIENCE_BUTTON).click()
         assert len(self.elements_are_visible(self.locators.DATE_PIKERS)) == 5, "В дровере не пять дата-пикеров"
 
     @testit.step("Проверка визивигов в дровере")

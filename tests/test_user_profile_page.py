@@ -99,7 +99,6 @@ class TestUserProfilePage:
         time.sleep(2)
         user_profile_page.check_disable_save_button()
         user_profile_page.check_default_values(user_name, start_work)
-        user_profile_page.check_max_symbol()
         user_profile_page.check_post_tooltip()
         user_profile_page.check_direction_tooltip()
         user_profile_page.check_ready_to_work_dropdown()
@@ -632,4 +631,16 @@ class TestUserProfilePage:
         user_profile_page.press_create_resume_button()
         resume_name = user_profile_page.check_cancel_adding_resume()
         assert not user_profile_page.check_resume_name(resume_name), "Резюме сохранилось"
+
+    @testit.workItemIds(3269)
+    @testit.displayName("10.6.1.4. (Чек-лист)Превышение допустимого количества символов в полях")
+    @pytest.mark.regress
+    @allure.title("id-3269 10.6.1.4. (Чек-лист)Превышение допустимого количества символов в полях")
+    def test_check_fields_max_length(self, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        time.sleep(2)
+        user_profile_page.go_to_resume_tab()
+        user_profile_page.press_create_resume_button()
+        user_profile_page.check_max_symbol()
 
