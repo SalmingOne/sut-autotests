@@ -649,3 +649,19 @@ class UserProfilePage(BasePage):
             "Не корректные сообщения под обязательными полями"
         assert 'Заполнены не все обязательные поля' in self.get_alert_message(),\
             "Не появился тост об обязательности полей"
+
+    @testit.step("Проверка отмены создания резюме")
+    @allure.step("Проверка отмены создания резюме")
+    def check_cancel_adding_resume(self):
+        resume_title = self.element_is_visible(self.locators.RESUME_TITLE_FIELD).get_attribute('value')
+        self.element_is_visible(self.locators.BREAK_BUTTON).click()
+        assert self.element_is_displayed(self.locators.check_text('Резюме не сохранится. Закрыть режим создания?')), \
+            "Отсутствует сообщение о несохранении резюме"
+        assert self.element_is_displayed(self.locators.BREAK_IN_MODAL), "Отсутствует кнопка отменить"
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+        return resume_title
+
+    @testit.step("Проверка наличия имени резюме")
+    @allure.step("Проверка наличия имени резюме")
+    def check_resume_name(self, name):
+        return self.element_is_displayed(self.locators.check_text(name), 2)

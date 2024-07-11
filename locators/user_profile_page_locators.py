@@ -85,6 +85,7 @@ class UserProfilePageLocators:
 
     RESUME_TITLES_ON_TAB = (By.CSS_SELECTOR, 'div[col-id="title"][role="gridcell"]')
     SEARCH_FIELDS = (By.CSS_SELECTOR, 'input[placeholder="Поиск"]')
+    BREAK_IN_MODAL = (By.XPATH, '//div[@aria-label="Выйти без сохранения"]//button[text()="Отменить"]')
 
     # Тултип
     TOOLTIP = (By.XPATH, '//div[contains(@class, "MuiTooltip-tooltipPlacementTop")]')
@@ -93,3 +94,6 @@ class UserProfilePageLocators:
     KEBABS_DEL_MENU_ITEM = (By.XPATH, '//span[text()="Удалить"]')
     KEBAB_MENU_ITEM = (By.XPATH, '//li//span[contains(@class,"MuiTypography-root MuiTypography-caption")]')
     SUBMIT_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
+
+    def check_text(self, text):
+        return (By.XPATH, f'//*[text()="{text}"]')

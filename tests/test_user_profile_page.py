@@ -619,3 +619,17 @@ class TestUserProfilePage:
         user_profile_page.press_create_resume_button()
         time.sleep(1)
         user_profile_page.check_adding_the_resume_without_filling_in_a_required_field()
+
+    @testit.workItemIds(3204)
+    @testit.displayName("10.6.1.4. Отмена сохранения резюме")
+    @pytest.mark.regress
+    @allure.title("id-3204 10.6.1.4. Отмена сохранения резюме")
+    def test_cancel_adding_the_resume(self, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        time.sleep(2)
+        user_profile_page.go_to_resume_tab()
+        user_profile_page.press_create_resume_button()
+        resume_name = user_profile_page.check_cancel_adding_resume()
+        assert not user_profile_page.check_resume_name(resume_name), "Резюме сохранилось"
+
