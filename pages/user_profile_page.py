@@ -690,3 +690,15 @@ class UserProfilePage(BasePage):
         self.elements_are_visible(self.locators.DATE_PIKERS_ICON)[0].click()
         assert not self.element_is_clickable(self.locators.NEXT_DAY_IN_PICKER, 1), \
             "Модно выбрать будущую дату в дата-пикере"
+
+    @testit.step("Проверка выхода из просмотра резюме")
+    @allure.step("Проверка выхода из просмотра резюме")
+    def check_exit_resume_viewing_mode(self, resume_name):
+        time.sleep(1)
+        self.elements_are_visible(self.locators.SEARCH_FIELDS)[1].send_keys(resume_name)
+        time.sleep(1)
+        self.elements_are_visible(self.locators.KEBAB_MENU)[0].click()
+        self.element_is_visible(self.locators.KEBABS_VIEW_ITEM).click()
+        assert self.element_is_displayed(self.locators.PRINT_BUTTON), "Не произошел переход на страницу просмотра резюме"
+        self.element_is_visible(self.locators.BREAK_VIEW_BUTTON).click()
+        assert self.element_is_displayed(self.locators.CREATE_RESUME_BUTTON), "Не произошло возвращение в таб резюме"

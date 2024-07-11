@@ -89,12 +89,15 @@ class UserProfilePageLocators:
     RESUME_TITLES_ON_TAB = (By.CSS_SELECTOR, 'div[col-id="title"][role="gridcell"]')
     SEARCH_FIELDS = (By.CSS_SELECTOR, 'input[placeholder="Поиск"]')
     BREAK_IN_MODAL = (By.XPATH, '//div[@aria-label="Выйти без сохранения"]//button[text()="Отменить"]')
+    PRINT_BUTTON = (By.XPATH, '//button[text()="Печать"]')
+    BREAK_VIEW_BUTTON = (By.XPATH, '//button[text()="Отмена"]')
 
     # Тултип
     TOOLTIP = (By.XPATH, '//div[contains(@class, "MuiTooltip-tooltipPlacementTop")]')
 
     KEBAB_MENU = (By.CSS_SELECTOR, 'svg[data-testid="MoreHorizIcon"]')
     KEBABS_DEL_MENU_ITEM = (By.XPATH, '//span[text()="Удалить"]')
+    KEBABS_VIEW_ITEM = (By.XPATH, '//span[text()="Просмотр резюме"]')
     KEBAB_MENU_ITEM = (By.XPATH, '//li//span[contains(@class,"MuiTypography-root MuiTypography-caption")]')
     SUBMIT_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
 

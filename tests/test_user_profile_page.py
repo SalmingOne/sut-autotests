@@ -680,3 +680,13 @@ class TestUserProfilePage:
         user_profile_page.press_create_resume_button()
         user_profile_page.check_entering_a_date_after_that_day_in_the_start_date_of_work_at_the_company_field()
 
+    @testit.workItemIds(3247)
+    @testit.displayName("10.6.1.5. Выход из режима просмотра резюме")
+    @pytest.mark.regress
+    @allure.title("id-3247 10.6.1.5. Выход из режима просмотра резюме")
+    def test_exit_resume_viewing_mode(self, create_resume, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        time.sleep(2)
+        user_profile_page.go_to_resume_tab()
+        user_profile_page.check_exit_resume_viewing_mode(create_resume)

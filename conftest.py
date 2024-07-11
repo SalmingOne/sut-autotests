@@ -379,7 +379,7 @@ def create_resume():
     resume_endpoint = ResumeEndpoint()
     payload = dict(
         userId=USER_ID,
-        title='резюме',
+        title='резюме для авто',
         version=1,
         data=dict(
             fullName=USER_NAME,
