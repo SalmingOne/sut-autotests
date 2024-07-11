@@ -74,6 +74,8 @@ class UserProfilePageLocators:
     RESUME_POST_FIELD = (By.CSS_SELECTOR, 'input[name="post"]')
     RESUME_DIRECTION_FIELD = (By.CSS_SELECTOR, 'input[name="direction"]')
     EXPERIENCE_PROJECT_NAME = (By.XPATH, '//input[contains(@name,"projectName")]')
+    RESUME_EXPERIENCE_START_DATE = (By.XPATH, '//p[text()="Начало работы"]/..//input')
+    RESUME_EXPERIENCE_END_DATE = (By.XPATH, '//p[text()="Окончание работы"]/..//input')
     EXPERIENCE_CUSTOMER = (By.XPATH, '//input[contains(@name,"customer")]')
     EXPERIENCE_PROJECT_POST = (By.XPATH, '//input[contains(@name,"projectPost")]')
     ADD_EXPERIENCE_BUTTON = (By.XPATH, '//button[text()="Добавить"]')

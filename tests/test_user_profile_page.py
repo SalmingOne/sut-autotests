@@ -644,3 +644,14 @@ class TestUserProfilePage:
         user_profile_page.press_create_resume_button()
         user_profile_page.check_max_symbol()
 
+    @testit.workItemIds(4296)
+    @testit.displayName("10.6.1.4. Реакция системы при выборе даты окончания раньше даты начала в блоке Опыт работы")
+    @pytest.mark.regress
+    @allure.title("id-4296 10.6.1.4. Реакция системы при выборе даты окончания раньше даты начала в блоке Опыт работы")
+    def test_selecting_an_end_date_earlier_than_the_start_date(self, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        time.sleep(2)
+        user_profile_page.go_to_resume_tab()
+        user_profile_page.press_create_resume_button()
+        user_profile_page.check_selecting_an_end_date_earlier_than_the_start_date()

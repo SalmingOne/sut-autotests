@@ -664,3 +664,18 @@ class UserProfilePage(BasePage):
     @allure.step("Проверка наличия имени резюме")
     def check_resume_name(self, name):
         return self.element_is_displayed(self.locators.check_text(name), 2)
+
+    @testit.step("Проверка выборы даты окончания работы на проекте раньше даты начала")
+    @allure.step("Проверка выборы даты окончания работы на проекте раньше даты начала")
+    def check_selecting_an_end_date_earlier_than_the_start_date(self):
+        self.element_is_visible(self.locators.ADD_EXPERIENCE_BUTTON).click()
+        self.element_is_visible(self.locators.RESUME_EXPERIENCE_START_DATE).send_keys(self.get_day_before(0))
+        self.element_is_visible(self.locators.RESUME_EXPERIENCE_END_DATE).send_keys(self.get_day_before(1))
+        self.element_is_visible(self.locators.EXPERIENCE_PROJECT_NAME).click()
+        assert (self.elements_are_visible(self.locators.MUI_ERROR)[0].text ==
+                'Дата начала работы на проекте не должна быть позже даты завершения'), \
+            "Нет сообщения о не корректной дате начала работы на проекте"
+        assert (self.elements_are_visible(self.locators.MUI_ERROR)[1].text ==
+                'Дата окончания работы на проекте не должна быть раньше даты начала'), \
+            "Нет сообщения о не корректной дате окончания работы на проекте"
+
