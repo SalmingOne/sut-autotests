@@ -81,6 +81,7 @@ class UserProfilePageLocators:
     ADD_EXPERIENCE_BUTTON = (By.XPATH, '//button[text()="Добавить"]')
     LI_MENU_ITEM = (By.CSS_SELECTOR, 'li[role="option"]')
     DATE_PIKERS = (By.CSS_SELECTOR, 'input[type="tel"]')
+    DATE_PIKERS_ICON = (By.XPATH, '//input[@type="tel"]/..//*[@data-testid="CalendarTodayOutlinedIcon"]')
     WYSIWYG_TITLES = (By.XPATH, '//div[contains(@class,"MuiPaper-rounded MuiPaper-elevation0")]//div[@id]/*[contains(@class, "MuiTypography")]')
     WYSIWYG_INCLUDES_FUNCTION_TITLES = (By.XPATH, '//div[@id="workStack"]//div[@style="visibility: visible;"]//*[@title]')
     CURRENT_EMPLOYER_CHECKBOX = (By.XPATH, '//span[text()="Текущий работодатель"]')

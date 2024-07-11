@@ -679,3 +679,14 @@ class UserProfilePage(BasePage):
                 'Дата окончания работы на проекте не должна быть раньше даты начала'), \
             "Нет сообщения о не корректной дате окончания работы на проекте"
 
+    @testit.step("Проверка выбора даты начала работы в компании после текущего дня")
+    @allure.step("Проверка выбора даты начала работы в компании после текущего дня")
+    def check_entering_a_date_after_that_day_in_the_start_date_of_work_at_the_company_field(self):
+        self.element_is_visible(self.locators.START_WORK_IN_RESUME).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.START_WORK_IN_RESUME).send_keys(self.get_day_before(-1))
+        self.element_is_visible(self.locators.RESUME_DIRECTION_FIELD).click()
+        assert self.element_is_visible(self.locators.MUI_ERROR).text == 'Нельзя выбрать будущую дату', \
+            "Нет сообщения о невозможности выбора будущей даты"
+        self.elements_are_visible(self.locators.DATE_PIKERS_ICON)[0].click()
+        assert not self.element_is_clickable(self.locators.NEXT_DAY_IN_PICKER, 1), \
+            "Модно выбрать будущую дату в дата-пикере"

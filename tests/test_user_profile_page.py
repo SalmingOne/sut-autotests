@@ -667,3 +667,16 @@ class TestUserProfilePage:
         user_profile_page.go_to_resume_tab()
         user_profile_page.press_create_resume_button()
         user_profile_page.check_selecting_an_end_date_earlier_than_the_start_date()
+
+    @testit.workItemIds(4298)
+    @testit.displayName("10.6.1.4. Ввод даты позже текущего дня в поле Дата начала работы в компании")
+    @pytest.mark.regress
+    @allure.title("id-4298 10.6.1.4. Ввод даты позже текущего дня в поле Дата начала работы в компании")
+    def test_entering_a_date_after_that_day_in_the_start_date_of_work_at_the_company_field(self, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        time.sleep(2)
+        user_profile_page.go_to_resume_tab()
+        user_profile_page.press_create_resume_button()
+        user_profile_page.check_entering_a_date_after_that_day_in_the_start_date_of_work_at_the_company_field()
+
