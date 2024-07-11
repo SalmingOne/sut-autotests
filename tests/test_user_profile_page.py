@@ -655,3 +655,15 @@ class TestUserProfilePage:
         user_profile_page.go_to_resume_tab()
         user_profile_page.press_create_resume_button()
         user_profile_page.check_selecting_an_end_date_earlier_than_the_start_date()
+
+    @testit.workItemIds(4297)
+    @testit.displayName("10.6.1.4. Выбор даты начала позже даты окончания в блоке Опыт работы")
+    @pytest.mark.regress
+    @allure.title("id-4297 10.6.1.4. Выбор даты начала позже даты окончания в блоке Опыт работы")
+    def test_selecting_an_start_date_after_than_the_end_date(self, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        time.sleep(2)
+        user_profile_page.go_to_resume_tab()
+        user_profile_page.press_create_resume_button()
+        user_profile_page.check_selecting_an_end_date_earlier_than_the_start_date()
