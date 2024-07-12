@@ -74,22 +74,34 @@ class UserProfilePageLocators:
     RESUME_POST_FIELD = (By.CSS_SELECTOR, 'input[name="post"]')
     RESUME_DIRECTION_FIELD = (By.CSS_SELECTOR, 'input[name="direction"]')
     EXPERIENCE_PROJECT_NAME = (By.XPATH, '//input[contains(@name,"projectName")]')
+    RESUME_EXPERIENCE_START_DATE = (By.XPATH, '//p[text()="Начало работы"]/..//input')
+    RESUME_EXPERIENCE_END_DATE = (By.XPATH, '//p[text()="Окончание работы"]/..//input')
     EXPERIENCE_CUSTOMER = (By.XPATH, '//input[contains(@name,"customer")]')
     EXPERIENCE_PROJECT_POST = (By.XPATH, '//input[contains(@name,"projectPost")]')
     ADD_EXPERIENCE_BUTTON = (By.XPATH, '//button[text()="Добавить"]')
     LI_MENU_ITEM = (By.CSS_SELECTOR, 'li[role="option"]')
     DATE_PIKERS = (By.CSS_SELECTOR, 'input[type="tel"]')
+    DATE_PIKERS_ICON = (By.XPATH, '//input[@type="tel"]/..//*[@data-testid="CalendarTodayOutlinedIcon"]')
     WYSIWYG_TITLES = (By.XPATH, '//div[contains(@class,"MuiPaper-rounded MuiPaper-elevation0")]//div[@id]/*[contains(@class, "MuiTypography")]')
     WYSIWYG_INCLUDES_FUNCTION_TITLES = (By.XPATH, '//div[@id="workStack"]//div[@style="visibility: visible;"]//*[@title]')
     CURRENT_EMPLOYER_CHECKBOX = (By.XPATH, '//span[text()="Текущий работодатель"]')
 
     RESUME_TITLES_ON_TAB = (By.CSS_SELECTOR, 'div[col-id="title"][role="gridcell"]')
     SEARCH_FIELDS = (By.CSS_SELECTOR, 'input[placeholder="Поиск"]')
+    BREAK_IN_MODAL = (By.XPATH, '//div[@aria-label="Выйти без сохранения"]//button[text()="Отменить"]')
+    PRINT_BUTTON = (By.XPATH, '//button[text()="Печать"]')
+    BREAK_VIEW_BUTTON = (By.XPATH, '//button[text()="Отмена"]')
 
     # Тултип
     TOOLTIP = (By.XPATH, '//div[contains(@class, "MuiTooltip-tooltipPlacementTop")]')
 
     KEBAB_MENU = (By.CSS_SELECTOR, 'svg[data-testid="MoreHorizIcon"]')
     KEBABS_DEL_MENU_ITEM = (By.XPATH, '//span[text()="Удалить"]')
+    KEBABS_VIEW_ITEM = (By.XPATH, '//span[text()="Просмотр резюме"]')
+    KEBABS_COPY_ITEM = (By.XPATH, '//span[text()="Копировать"]')
+    KEBABS_REDACT_ITEM = (By.XPATH, '//span[text()="Редактирование"]')
     KEBAB_MENU_ITEM = (By.XPATH, '//li//span[contains(@class,"MuiTypography-root MuiTypography-caption")]')
     SUBMIT_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
+
+    def check_text(self, text):
+        return (By.XPATH, f'//*[text()="{text}"]')

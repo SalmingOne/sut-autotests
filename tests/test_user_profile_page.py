@@ -5,8 +5,6 @@ import pytest
 import testit
 
 from pages.colleagues_page import ColleaguesPage
-from pages.create_local_user_drawer_page import CreateLocalUserDrawerPage
-from pages.user_page import UserPage
 from pages.user_profile_page import UserProfilePage
 
 
@@ -30,7 +28,6 @@ class TestUserProfilePage:
             user_profile_page.go_to_education_tab()
         else:
             pass
-
         user_profile_page.press_redact_button()
         user_profile_page.press_add_icon_button()
         user_profile_page.press_save_button()
@@ -39,7 +36,7 @@ class TestUserProfilePage:
         alert_messages = user_profile_page.get_alert_message()
         tab_color = user_profile_page.get_education_tab_color()
         errors = user_profile_page.get_mui_errors_text()
-        assert 'Не все поля были заполнены корректно на табе "Образование"' in alert_messages, "Не появилось сообщение об ошибке"
+        assert 'На табе "Образование" не все поля были заполнены корректно' in alert_messages, "Не появилось сообщение об ошибке"
         assert tab_color == 'rgba(255, 236, 229, 1)', "Цвет вкладки не красный"
         assert 'Поле обязательно' in errors, "Нет сообщений об обязательности поля"
 
@@ -50,6 +47,7 @@ class TestUserProfilePage:
     def test_blank_entry_on_certificate_tab(self, login, driver):
         user_profile_page = UserProfilePage(driver)
         user_profile_page.go_to_user_profile()
+        time.sleep(2)
         user_profile_page.go_to_certificate_tab()
         user_profile_page.press_redact_button()
         time.sleep(1)
@@ -58,8 +56,9 @@ class TestUserProfilePage:
         user_profile_page.go_to_certificate_tab()
         alert_message = user_profile_page.get_alert_message()
         tab_color = user_profile_page.get_certificate_tab_color()
+        time.sleep(1)
         errors = user_profile_page.get_mui_errors_text()
-        assert 'Не все поля были заполнены корректно на табе "Сертификаты"' in alert_message, "Не появилось сообщение об ошибке"
+        assert 'На табе "Сертификаты" не все поля были заполнены корректно' in alert_message, "Не появилось сообщение об ошибке"
         assert tab_color == 'rgba(255, 236, 229, 1)', "Цвет вкладки не красный"
         assert 'Поле обязательно' in errors, "Нет сообщений об обязательности поля"
 
@@ -70,6 +69,7 @@ class TestUserProfilePage:
     def test_blank_entry_on_experience_tab(self, login, driver):
         user_profile_page = UserProfilePage(driver)
         user_profile_page.go_to_user_profile()
+        time.sleep(2)
         user_profile_page.go_to_experience_tab()
         user_profile_page.press_redact_button()
         time.sleep(1)
@@ -80,7 +80,7 @@ class TestUserProfilePage:
         tab_color = user_profile_page.get_experience_tab_color()
         errors = user_profile_page.get_mui_errors_text()
 
-        assert 'Не все поля были заполнены корректно на табе "Опыт работы"' in alert_message, "Не появилось сообщение об ошибке"
+        assert 'На табе "Опыт работы" не все поля были заполнены корректно' in alert_message, "Не появилось сообщение об ошибке"
         assert tab_color == 'rgba(255, 236, 229, 1)', "Цвет вкладки не красный"
         assert 'Поле обязательно' in errors, "Нет сообщений об обязательности поля"
 
@@ -99,7 +99,6 @@ class TestUserProfilePage:
         time.sleep(2)
         user_profile_page.check_disable_save_button()
         user_profile_page.check_default_values(user_name, start_work)
-        user_profile_page.check_max_symbol()
         user_profile_page.check_post_tooltip()
         user_profile_page.check_direction_tooltip()
         user_profile_page.check_ready_to_work_dropdown()
@@ -580,3 +579,176 @@ class TestUserProfilePage:
         # Проверяем удаление карточки
         assert not user_profile_page.check_experience_title(), "Карточка проекта не удалилась"
         assert 'АвтоСПроектом' in user_name, "Не произошел переход на страницу пользователя"
+
+    @testit.workItemIds(3200)
+    @testit.displayName("10.6.1.4. Удаление блока с опытом работы")
+    @pytest.mark.regress
+    @allure.title("id-3200 10.6.1.4. Удаление блока с опытом работы")
+    def test_delete_a_block_with_work_experience_in_resume(self, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        time.sleep(2)
+        user_profile_page.go_to_resume_tab()
+        user_profile_page.press_create_resume_button()
+        time.sleep(1)
+        user_profile_page.check_delete_block_experience_in_resume()
+
+    @testit.workItemIds(3241)
+    @testit.displayName("10.6.1.4. Неуникальное название резюме")
+    @pytest.mark.regress
+    @allure.title("id-3241 10.6.1.4. Неуникальное название резюме")
+    def test_create_non_unique_resume_name(self, create_resume, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        time.sleep(2)
+        user_profile_page.go_to_resume_tab()
+        user_profile_page.press_create_resume_button()
+        error = user_profile_page.check_resume_with_non_unique_name(create_resume)
+        assert error == 'Название резюме должно быть уникальным', "Не отображается сообщение об неуникальности резюме"
+
+    @testit.workItemIds(3243)
+    @testit.displayName("10.6.1.4. Пустой ввод в обязательные поля")
+    @pytest.mark.regress
+    @allure.title("id-3243 10.6.1.4. Пустой ввод в обязательные поля")
+    def test_adding_the_resume_without_filling_in_a_required_field(self, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        time.sleep(2)
+        user_profile_page.go_to_resume_tab()
+        user_profile_page.press_create_resume_button()
+        time.sleep(1)
+        user_profile_page.check_adding_the_resume_without_filling_in_a_required_field()
+
+    @testit.workItemIds(3204)
+    @testit.displayName("10.6.1.4. Отмена сохранения резюме")
+    @pytest.mark.regress
+    @allure.title("id-3204 10.6.1.4. Отмена сохранения резюме")
+    def test_cancel_adding_the_resume(self, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        time.sleep(2)
+        user_profile_page.go_to_resume_tab()
+        user_profile_page.press_create_resume_button()
+        resume_name = user_profile_page.check_cancel_adding_resume()
+        assert not user_profile_page.check_resume_name(resume_name), "Резюме сохранилось"
+
+    @testit.workItemIds(3269)
+    @testit.displayName("10.6.1.4. (Чек-лист)Превышение допустимого количества символов в полях")
+    @pytest.mark.regress
+    @allure.title("id-3269 10.6.1.4. (Чек-лист)Превышение допустимого количества символов в полях")
+    def test_check_fields_max_length(self, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        time.sleep(2)
+        user_profile_page.go_to_resume_tab()
+        user_profile_page.press_create_resume_button()
+        user_profile_page.check_max_symbol()
+
+    @testit.workItemIds(4296)
+    @testit.displayName("10.6.1.4. Реакция системы при выборе даты окончания раньше даты начала в блоке Опыт работы")
+    @pytest.mark.regress
+    @allure.title("id-4296 10.6.1.4. Реакция системы при выборе даты окончания раньше даты начала в блоке Опыт работы")
+    def test_selecting_an_end_date_earlier_than_the_start_date(self, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        time.sleep(2)
+        user_profile_page.go_to_resume_tab()
+        user_profile_page.press_create_resume_button()
+        user_profile_page.check_selecting_an_end_date_earlier_than_the_start_date()
+
+    @testit.workItemIds(4297)
+    @testit.displayName("10.6.1.4. Выбор даты начала позже даты окончания в блоке Опыт работы")
+    @pytest.mark.regress
+    @allure.title("id-4297 10.6.1.4. Выбор даты начала позже даты окончания в блоке Опыт работы")
+    def test_selecting_an_start_date_after_than_the_end_date(self, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        time.sleep(2)
+        user_profile_page.go_to_resume_tab()
+        user_profile_page.press_create_resume_button()
+        user_profile_page.check_selecting_an_end_date_earlier_than_the_start_date()
+
+    @testit.workItemIds(4298)
+    @testit.displayName("10.6.1.4. Ввод даты позже текущего дня в поле Дата начала работы в компании")
+    @pytest.mark.regress
+    @allure.title("id-4298 10.6.1.4. Ввод даты позже текущего дня в поле Дата начала работы в компании")
+    def test_entering_a_date_after_that_day_in_the_start_date_of_work_at_the_company_field(self, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        time.sleep(2)
+        user_profile_page.go_to_resume_tab()
+        user_profile_page.press_create_resume_button()
+        user_profile_page.check_entering_a_date_after_that_day_in_the_start_date_of_work_at_the_company_field()
+
+    @testit.workItemIds(3247)
+    @testit.displayName("10.6.1.5. Выход из режима просмотра резюме")
+    @pytest.mark.regress
+    @allure.title("id-3247 10.6.1.5. Выход из режима просмотра резюме")
+    def test_exit_resume_viewing_mode(self, create_resume, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        time.sleep(2)
+        user_profile_page.go_to_resume_tab()
+        user_profile_page.check_exit_resume_viewing_mode(create_resume)
+
+    @testit.workItemIds(3210)
+    @testit.displayName("10.6.1.6. Копирование резюме")
+    @pytest.mark.regress
+    @allure.title("id-3210 10.6.1.6. Копирование резюме")
+    def test_copy_resume(self, create_resume, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        time.sleep(2)
+        user_profile_page.go_to_resume_tab()
+        user_profile_page.copy_resume(create_resume)
+        assert user_profile_page.check_resume_name('Копия 1 ' + create_resume), "Копия резюме не сохранилась"
+        time.sleep(1)
+        assert 'Резюме скопировано' in user_profile_page.get_alert_message(), \
+            "Не отображается сообщение: Резюме скопировано"
+        kebab_menu_titles = user_profile_page.delete_resume('Копия 1 ' + create_resume)
+        assert kebab_menu_titles == ['Редактирование', 'Просмотр резюме', 'Копировать', 'Удалить'], \
+            "Не все действия доступны для работы в резюме "
+
+    @testit.workItemIds(3251)
+    @testit.displayName("10.6.1.7. Удаление резюме")
+    @pytest.mark.regress
+    @allure.title("id-3251 10.6.1.7. Удаление резюме")
+    def test_delete_resume(self, create_resume_to_delete, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        time.sleep(2)
+        user_profile_page.go_to_resume_tab()
+        time.sleep(1)
+        user_profile_page.delete_resume(create_resume_to_delete)
+        assert not user_profile_page.check_resume_name(create_resume_to_delete), "Резюме не удалилось"
+        time.sleep(1)
+        assert 'Резюме удалено' in user_profile_page.get_alert_message(), "Не отображается сообщение: Резюме удалено"
+
+    @testit.workItemIds(3212)
+    @testit.displayName("10.6.1.7. Отмена удаления резюме")
+    @pytest.mark.regress
+    @allure.title("id-3212 10.6.1.7. Отмена удаления резюме")
+    def test_cancel_delete_resume(self, create_resume, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        time.sleep(2)
+        user_profile_page.go_to_resume_tab()
+        time.sleep(1)
+        user_profile_page.cancel_delete_resume(create_resume)
+        assert user_profile_page.check_resume_name(create_resume), "Резюме удалилось"
+
+    @testit.workItemIds(3213)
+    @testit.displayName("10.6.1.8. Сохранение изменений в резюме")
+    @pytest.mark.regress
+    @allure.title("id-3213 10.6.1.8. Сохранение изменений в резюме")
+    def test_saving_changes_to_your_resume(self, create_resume, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        time.sleep(2)
+        user_profile_page.go_to_resume_tab()
+        time.sleep(0.5)
+        user_profile_page.redact_resume(create_resume)
+        user_profile_page.change_resume('Новое имя резюме')
+        assert user_profile_page.check_resume_name('Новое имя резюме'), "Имя резюме не изменилось"
+
+

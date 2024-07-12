@@ -8,7 +8,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from api_methods.departmens import DepartmentsApi
 from api_methods.position import PositionsApi
 from api_methods.project_roles import ProjectRolesApi
-from data.data import LOGIN, PASSWORD, USER_ID
+from data.data import LOGIN, PASSWORD, USER_ID, USER_NAME
 from data.models.create_project_model import CreateProject
 from data.urls import Urls
 from endpoints.affiliates_endpoint import AffiliatesEndpoint
@@ -17,6 +17,7 @@ from endpoints.auth_endpoint import AuthEndpoint
 from endpoints.labor_reports_endpoint import LaborReportEndpoint
 from endpoints.logs_endpoint import LogsEndpoint
 from endpoints.project_endpoint import ProjectEndpoint
+from endpoints.resume_endpoint import ResumeEndpoint
 from endpoints.search_profile_endpoint import SearchProfileEndpoint
 from endpoints.skills_endpoint import SkillsEndpoint
 from endpoints.tags_endpoint import TagsEndpoint
@@ -370,4 +371,39 @@ def advanced_search_to_delete():
         query="{\"rules\":[{\"field\":\"status\",\"value\":\"WORK\",\"operator\":\"in\"}],\"combinator\":\"and\"}"
     )
     advanced_search.create_advanced_search_api(json=payload)
+    yield payload['title']
+
+
+@pytest.fixture()
+def create_resume():
+    resume_endpoint = ResumeEndpoint()
+    payload = dict(
+        userId=USER_ID,
+        title='резюме для авто',
+        version=1,
+        data=dict(
+            fullName=USER_NAME,
+            post='Автоматизатор',
+            experienceDate=BasePage(driver=None).get_day_before_m_d_y(2)
+        )
+    )
+    response = resume_endpoint.create_resume_api(json=payload)
+    yield payload['title']
+    resume_endpoint.delete_resume_api(str(response.json()['id']))
+
+
+@pytest.fixture()
+def create_resume_to_delete():
+    resume_endpoint = ResumeEndpoint()
+    payload = dict(
+        userId=USER_ID,
+        title='резюме для удаления',
+        version=1,
+        data=dict(
+            fullName=USER_NAME,
+            post='Автоматизатор',
+            experienceDate=BasePage(driver=None).get_day_before_m_d_y(2)
+        )
+    )
+    response = resume_endpoint.create_resume_api(json=payload)
     yield payload['title']

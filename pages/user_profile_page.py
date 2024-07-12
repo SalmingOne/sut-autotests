@@ -128,9 +128,7 @@ class UserProfilePage(BasePage):
     @testit.step("Проверка ограничения в 255 символов для поля")
     @allure.step("Проверка ограничения в 255 символов для поля")
     def check_255_symbol_in_field(self, locator):
-        bed_value = ('Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt'
-                     ' ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci'
-                     ' tation ullamcorper suscipit lobortis nisl ut aliquip ex ea co')
+        bed_value = 'a' * 256
         self.element_is_visible(locator).send_keys(Keys.CONTROL + 'a')
         self.element_is_visible(locator).send_keys(bed_value)
         self.element_is_visible(self.locators.START_WORK_IN_RESUME).click()
@@ -140,7 +138,7 @@ class UserProfilePage(BasePage):
         self.element_is_visible(locator).send_keys('1')
         self.element_is_visible(self.locators.START_WORK_IN_RESUME).click()
         assert error_text == 'Максимальное количество символов: 255', \
-            "Не появилось сообщение о превышении максимального количества символов"
+            "Не появилось сообщение о превышении максимального количества символов" + locator
 
     @testit.step("Проверка всех полей с ограничением в 255 символов")
     @allure.step("Проверка всех полей с ограничением в 255 символов")
@@ -184,6 +182,7 @@ class UserProfilePage(BasePage):
     @testit.step("Проверка дата-пикеров в дровере")
     @allure.step("Проверка дата-пикеров в дровере")
     def check_date_pikers(self):
+        self.element_is_visible(self.locators.ADD_EXPERIENCE_BUTTON).click()
         assert len(self.elements_are_visible(self.locators.DATE_PIKERS)) == 5, "В дровере не пять дата-пикеров"
 
     @testit.step("Проверка визивигов в дровере")
@@ -246,6 +245,7 @@ class UserProfilePage(BasePage):
     @testit.step("Удаление резюме")
     @allure.step("Удаление резюме")
     def delete_resume(self, name):
+        self.elements_are_visible(self.locators.SEARCH_FIELDS)[1].send_keys(Keys.CONTROL + 'a')
         self.elements_are_visible(self.locators.SEARCH_FIELDS)[1].send_keys(name)
         time.sleep(1)
         self.elements_are_visible(self.locators.KEBAB_MENU)[0].click()
@@ -613,3 +613,134 @@ class UserProfilePage(BasePage):
         time.sleep(1)
         self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
         self.press_save_button()
+
+    @testit.step("Проверка удаления блока опыт работы в резюме")
+    @allure.step("Проверка удаления блока опыт работы в резюме")
+    def check_delete_block_experience_in_resume(self):
+        self.action_move_to_element(self.elements_are_visible(self.locators.WYSIWYG_TITLES)[3])
+        self.element_is_visible(self.locators.ADD_EXPERIENCE_BUTTON).click()
+        assert self.element_is_displayed(self.locators.EXPERIENCE_PROJECT_NAME), "Не добавлен блок опыт работы"
+        self.element_is_visible(self.locators.DELETE_ICON).click()
+        assert not self.element_is_displayed(self.locators.EXPERIENCE_PROJECT_NAME, 1), "Блок опыт работы не удалился"
+
+    @testit.step("Проверка создания резюме с неуникальным именем")
+    @allure.step("Проверка создания резюме с неуникальным именем")
+    def check_resume_with_non_unique_name(self, name):
+        self.element_is_visible(self.locators.RESUME_TITLE_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.RESUME_TITLE_FIELD).send_keys(name)
+        self.element_is_visible(self.locators.RESUME_POST_FIELD).send_keys('Администратор')
+        self.elements_are_visible(self.locators.DATE_PIKERS)[1].send_keys(Keys.CONTROL + 'a')
+        self.elements_are_visible(self.locators.DATE_PIKERS)[1].send_keys('01.02.1990')
+        self.elements_are_visible(self.locators.DATE_PIKERS)[2].send_keys(Keys.CONTROL + 'a')
+        self.elements_are_visible(self.locators.DATE_PIKERS)[2].send_keys(self.get_day_before(0))
+        self.element_is_visible(self.locators.SAVE_BUTTON).click()
+        return self.element_is_visible(self.locators.MUI_ERROR).text
+
+    @testit.step("Проверка создания резюме без заполнения обязательных полей")
+    @allure.step("Проверка создания резюме без заполнения обязательных полей")
+    def check_adding_the_resume_without_filling_in_a_required_field(self):
+        assert not self.element_is_clickable(self.locators.SAVE_BUTTON, 1), "Кнопка сохранить не задизейблена"
+        self.element_is_visible(self.locators.RESUME_DIRECTION_FIELD).send_keys('1')
+        assert self.element_is_clickable(self.locators.SAVE_BUTTON, 1), "Кнопка сохранить задизейблена"
+        self.element_is_visible(self.locators.SAVE_BUTTON).click()
+        assert len(self.elements_are_visible(self.locators.MUI_ERROR)) == 2,\
+            "Под обязательными полями не отображаются сообщения"
+        assert self.elements_are_visible(self.locators.MUI_ERROR)[0].text == 'Поле обязательно',\
+            "Не корректные сообщения под обязательными полями"
+        assert 'Заполнены не все обязательные поля' in self.get_alert_message(),\
+            "Не появился тост об обязательности полей"
+
+    @testit.step("Проверка отмены создания резюме")
+    @allure.step("Проверка отмены создания резюме")
+    def check_cancel_adding_resume(self):
+        resume_title = self.element_is_visible(self.locators.RESUME_TITLE_FIELD).get_attribute('value')
+        self.element_is_visible(self.locators.BREAK_BUTTON).click()
+        assert self.element_is_displayed(self.locators.check_text('Резюме не сохранится. Закрыть режим создания?')), \
+            "Отсутствует сообщение о несохранении резюме"
+        assert self.element_is_displayed(self.locators.BREAK_IN_MODAL), "Отсутствует кнопка отменить"
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+        return resume_title
+
+    @testit.step("Проверка наличия имени резюме")
+    @allure.step("Проверка наличия имени резюме")
+    def check_resume_name(self, name):
+        return self.element_is_displayed(self.locators.check_text(name), 2)
+
+    @testit.step("Проверка выборы даты окончания работы на проекте раньше даты начала")
+    @allure.step("Проверка выборы даты окончания работы на проекте раньше даты начала")
+    def check_selecting_an_end_date_earlier_than_the_start_date(self):
+        self.element_is_visible(self.locators.ADD_EXPERIENCE_BUTTON).click()
+        self.element_is_visible(self.locators.RESUME_EXPERIENCE_START_DATE).send_keys(self.get_day_before(0))
+        self.element_is_visible(self.locators.RESUME_EXPERIENCE_END_DATE).send_keys(self.get_day_before(1))
+        self.element_is_visible(self.locators.EXPERIENCE_PROJECT_NAME).click()
+        assert (self.elements_are_visible(self.locators.MUI_ERROR)[0].text ==
+                'Дата начала работы на проекте не должна быть позже даты завершения'), \
+            "Нет сообщения о не корректной дате начала работы на проекте"
+        assert (self.elements_are_visible(self.locators.MUI_ERROR)[1].text ==
+                'Дата окончания работы на проекте не должна быть раньше даты начала'), \
+            "Нет сообщения о не корректной дате окончания работы на проекте"
+
+    @testit.step("Проверка выбора даты начала работы в компании после текущего дня")
+    @allure.step("Проверка выбора даты начала работы в компании после текущего дня")
+    def check_entering_a_date_after_that_day_in_the_start_date_of_work_at_the_company_field(self):
+        self.element_is_visible(self.locators.START_WORK_IN_RESUME).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.START_WORK_IN_RESUME).send_keys(self.get_day_before(-1))
+        self.element_is_visible(self.locators.RESUME_DIRECTION_FIELD).click()
+        assert self.element_is_visible(self.locators.MUI_ERROR).text == 'Нельзя выбрать будущую дату', \
+            "Нет сообщения о невозможности выбора будущей даты"
+        self.elements_are_visible(self.locators.DATE_PIKERS_ICON)[0].click()
+        assert not self.element_is_clickable(self.locators.NEXT_DAY_IN_PICKER, 1), \
+            "Модно выбрать будущую дату в дата-пикере"
+
+    @testit.step("Проверка выхода из просмотра резюме")
+    @allure.step("Проверка выхода из просмотра резюме")
+    def check_exit_resume_viewing_mode(self, resume_name):
+        time.sleep(1)
+        self.elements_are_visible(self.locators.SEARCH_FIELDS)[1].send_keys(resume_name)
+        time.sleep(1)
+        self.elements_are_visible(self.locators.KEBAB_MENU)[0].click()
+        self.element_is_visible(self.locators.KEBABS_VIEW_ITEM).click()
+        assert self.element_is_displayed(self.locators.PRINT_BUTTON), "Не произошел переход на страницу просмотра резюме"
+        self.element_is_visible(self.locators.BREAK_VIEW_BUTTON).click()
+        assert self.element_is_displayed(self.locators.CREATE_RESUME_BUTTON), "Не произошло возвращение в таб резюме"
+
+    @testit.step("Копирование резюме")
+    @allure.step("Копирование резюме")
+    def copy_resume(self, name):
+        time.sleep(1)
+        self.elements_are_visible(self.locators.SEARCH_FIELDS)[1].send_keys(name)
+        time.sleep(1)
+        self.elements_are_visible(self.locators.KEBAB_MENU)[0].click()
+        self.element_is_visible(self.locators.KEBABS_COPY_ITEM).click()
+
+    @testit.step("Отмена удаления резюме")
+    @allure.step("Отмена удаления резюме")
+    def cancel_delete_resume(self, name):
+        self.elements_are_visible(self.locators.SEARCH_FIELDS)[1].send_keys(Keys.CONTROL + 'a')
+        self.elements_are_visible(self.locators.SEARCH_FIELDS)[1].send_keys(name)
+        time.sleep(0.5)
+        self.elements_are_visible(self.locators.KEBAB_MENU)[0].click()
+        time.sleep(0.5)
+        self.element_is_visible(self.locators.KEBABS_DEL_MENU_ITEM).click()
+        self.element_is_visible(self.locators.BREAK_BUTTON).click()
+
+    @testit.step("Редактирование резюме")
+    @allure.step("Редактирование резюме")
+    def redact_resume(self, name):
+        self.elements_are_visible(self.locators.SEARCH_FIELDS)[1].send_keys(Keys.CONTROL + 'a')
+        self.elements_are_visible(self.locators.SEARCH_FIELDS)[1].send_keys(name)
+        time.sleep(0.5)
+        self.elements_are_visible(self.locators.KEBAB_MENU)[0].click()
+        time.sleep(0.5)
+        self.element_is_visible(self.locators.KEBABS_REDACT_ITEM).click()
+
+    @testit.step("Изменение данных в резюме")
+    @allure.step("Изменение данных в резюме")
+    def change_resume(self, new_name):
+        self.element_is_visible(self.locators.RESUME_TITLE_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.RESUME_TITLE_FIELD).send_keys(new_name)
+        self.elements_are_visible(self.locators.DATE_PIKERS)[1].send_keys(Keys.CONTROL + 'a')
+        self.elements_are_visible(self.locators.DATE_PIKERS)[1].send_keys('01.02.1990')
+        self.elements_are_visible(self.locators.DATE_PIKERS)[2].send_keys(Keys.CONTROL + 'a')
+        self.elements_are_visible(self.locators.DATE_PIKERS)[2].send_keys(self.get_day_before(0))
+        self.element_is_visible(self.locators.SAVE_BUTTON).click()
