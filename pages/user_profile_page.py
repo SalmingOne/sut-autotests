@@ -245,6 +245,7 @@ class UserProfilePage(BasePage):
     @testit.step("Удаление резюме")
     @allure.step("Удаление резюме")
     def delete_resume(self, name):
+        self.elements_are_visible(self.locators.SEARCH_FIELDS)[1].send_keys(Keys.CONTROL + 'a')
         self.elements_are_visible(self.locators.SEARCH_FIELDS)[1].send_keys(name)
         time.sleep(1)
         self.elements_are_visible(self.locators.KEBAB_MENU)[0].click()
@@ -702,3 +703,12 @@ class UserProfilePage(BasePage):
         assert self.element_is_displayed(self.locators.PRINT_BUTTON), "Не произошел переход на страницу просмотра резюме"
         self.element_is_visible(self.locators.BREAK_VIEW_BUTTON).click()
         assert self.element_is_displayed(self.locators.CREATE_RESUME_BUTTON), "Не произошло возвращение в таб резюме"
+
+    @testit.step("Копирование резюме")
+    @allure.step("Копирование резюме")
+    def copy_resume(self, name):
+        time.sleep(1)
+        self.elements_are_visible(self.locators.SEARCH_FIELDS)[1].send_keys(name)
+        time.sleep(1)
+        self.elements_are_visible(self.locators.KEBAB_MENU)[0].click()
+        self.element_is_visible(self.locators.KEBABS_COPY_ITEM).click()

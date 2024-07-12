@@ -690,3 +690,23 @@ class TestUserProfilePage:
         time.sleep(2)
         user_profile_page.go_to_resume_tab()
         user_profile_page.check_exit_resume_viewing_mode(create_resume)
+
+    @testit.workItemIds(3210)
+    @testit.displayName("10.6.1.6. Копирование резюме")
+    @pytest.mark.regress
+    @allure.title("id-3210 10.6.1.6. Копирование резюме")
+    def test_copy_resume(self, create_resume, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        time.sleep(2)
+        user_profile_page.go_to_resume_tab()
+        user_profile_page.copy_resume(create_resume)
+        assert user_profile_page.check_resume_name('Копия 1 ' + create_resume), "Копия резюме не сохранилась"
+        time.sleep(1)
+        assert 'Резюме скопировано' in user_profile_page.get_alert_message(), \
+            "Не отображается сообщение: Резюме скопировано"
+        kebab_menu_titles = user_profile_page.delete_resume('Копия 1 ' + create_resume)
+        assert kebab_menu_titles == ['Редактирование', 'Просмотр резюме', 'Копировать', 'Удалить'], \
+            "Не все действия доступны для работы в резюме "
+
+
