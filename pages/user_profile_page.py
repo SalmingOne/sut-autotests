@@ -744,3 +744,32 @@ class UserProfilePage(BasePage):
         self.elements_are_visible(self.locators.DATE_PIKERS)[2].send_keys(Keys.CONTROL + 'a')
         self.elements_are_visible(self.locators.DATE_PIKERS)[2].send_keys(self.get_day_before(0))
         self.element_is_visible(self.locators.SAVE_BUTTON).click()
+
+    @testit.step("Очистка обязательных полей в резюме")
+    @allure.step("Очистка обязательных полей в резюме")
+    def clear_required_fields(self):
+        self.element_is_visible(self.locators.RESUME_TITLE_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.RESUME_TITLE_FIELD).send_keys(Keys.BACK_SPACE)
+        self.element_is_visible(self.locators.RESUME_FULL_NAME_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.RESUME_FULL_NAME_FIELD).send_keys(Keys.BACK_SPACE)
+        self.element_is_visible(self.locators.RESUME_POST_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.RESUME_POST_FIELD).send_keys(Keys.BACK_SPACE)
+        self.element_is_visible(self.locators.START_WORK_IN_RESUME).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.START_WORK_IN_RESUME).send_keys(Keys.BACK_SPACE)
+        self.elements_are_visible(self.locators.DATE_PIKERS)[1].send_keys(Keys.CONTROL + 'a')
+        self.elements_are_visible(self.locators.DATE_PIKERS)[1].send_keys(Keys.BACK_SPACE)
+        self.elements_are_visible(self.locators.DATE_PIKERS)[2].send_keys(Keys.CONTROL + 'a')
+        self.elements_are_visible(self.locators.DATE_PIKERS)[2].send_keys(Keys.BACK_SPACE)
+        self.element_is_visible(self.locators.RESUME_FULL_NAME_FIELD).click()
+        self.element_is_visible(self.locators.SAVE_BUTTON).click()
+        time.sleep(3)
+
+    @testit.step("Получение количества предупреждения об обязательности поля")
+    @allure.step("Получение количества предупреждения об обязательности поля")
+    def len_required_errors(self):
+        return len(self.elements_are_visible(self.locators.REQUIRED_FIELD_ERROR))
+
+    @testit.step("Получение текста ошибки")
+    @allure.step("Получение текста ошибки")
+    def get_mui_error(self):
+        return self.element_is_visible(self.locators.MUI_ERROR).text

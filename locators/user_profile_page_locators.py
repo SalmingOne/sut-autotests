@@ -43,6 +43,7 @@ class UserProfilePageLocators:
     # Ошибки
     MUI_ERROR = (By.XPATH, '//p[contains(@class, "Mui-error")]')
     ALERT_TEXT = (By.XPATH, '//div[contains(@class, "MuiAlert-message")]')
+    REQUIRED_FIELD_ERROR = (By.XPATH, '//p[text()="Поле обязательно"]')
     # Вкладка Сертификаты
     CERTIFICATE_TAB_BUTTON = (By.XPATH, '//div[text()="Сертификаты"]/..')
     CERTIFICATE_NAME = (By.CSS_SELECTOR, 'input[placeholder="Введите название"]')

@@ -751,4 +751,34 @@ class TestUserProfilePage:
         user_profile_page.change_resume('Новое имя резюме')
         assert user_profile_page.check_resume_name('Новое имя резюме'), "Имя резюме не изменилось"
 
+    @testit.workItemIds(3214)
+    @testit.displayName("10.6.1.8. Пустой ввод при редактировании резюме")
+    @pytest.mark.regress
+    @allure.title("id-3214 10.6.1.8. Пустой ввод при редактировании резюме")
+    def test_blank_input_when_editing_resume(self, create_resume, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        time.sleep(2)
+        user_profile_page.go_to_resume_tab()
+        time.sleep(0.5)
+        user_profile_page.redact_resume(create_resume)
+        user_profile_page.clear_required_fields()
+        len_errors = user_profile_page.len_required_errors()
+        alert = user_profile_page.get_alert_message()
+        assert 'Заполнены не все обязательные поля' in alert, "Не появился алерт"
+        assert len_errors == 6, "Отображаются не все сообщения Поле обязательно"
 
+    @testit.workItemIds(3215)
+    @testit.displayName("10.6.1.8. Изменение названия резюме на неуникальное")
+    @pytest.mark.regress
+    @allure.title("id-3215 10.6.1.8. Изменение названия резюме на неуникальное")
+    def test_changing_the_resume_title_to_something_non_unique(self, create_resume, create_second_resume, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        time.sleep(2)
+        user_profile_page.go_to_resume_tab()
+        time.sleep(0.5)
+        user_profile_page.redact_resume(create_resume)
+        user_profile_page.change_resume(create_second_resume)
+        error = user_profile_page.get_mui_error()
+        assert error == 'Название резюме должно быть уникальным', "Не отображается сообщение о не уникальности названия"
