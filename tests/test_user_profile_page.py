@@ -724,4 +724,17 @@ class TestUserProfilePage:
         time.sleep(1)
         assert 'Резюме удалено' in user_profile_page.get_alert_message(), "Не отображается сообщение: Резюме удалено"
 
+    @testit.workItemIds(3212)
+    @testit.displayName("10.6.1.7. Отмена удаления резюме")
+    @pytest.mark.regress
+    @allure.title("id-3212 10.6.1.7. Отмена удаления резюме")
+    def test_cancel_delete_resume(self, create_resume, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        time.sleep(2)
+        user_profile_page.go_to_resume_tab()
+        time.sleep(1)
+        user_profile_page.cancel_delete_resume(create_resume)
+        assert user_profile_page.check_resume_name(create_resume), "Резюме удалилось"
+
 

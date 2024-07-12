@@ -712,3 +712,14 @@ class UserProfilePage(BasePage):
         time.sleep(1)
         self.elements_are_visible(self.locators.KEBAB_MENU)[0].click()
         self.element_is_visible(self.locators.KEBABS_COPY_ITEM).click()
+
+    @testit.step("Отмена удаления резюме")
+    @allure.step("Отмена удаления резюме")
+    def cancel_delete_resume(self, name):
+        self.elements_are_visible(self.locators.SEARCH_FIELDS)[1].send_keys(Keys.CONTROL + 'a')
+        self.elements_are_visible(self.locators.SEARCH_FIELDS)[1].send_keys(name)
+        time.sleep(0.5)
+        self.elements_are_visible(self.locators.KEBAB_MENU)[0].click()
+        time.sleep(0.5)
+        self.element_is_visible(self.locators.KEBABS_DEL_MENU_ITEM).click()
+        self.element_is_visible(self.locators.BREAK_BUTTON).click()
