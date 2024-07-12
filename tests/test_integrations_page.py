@@ -41,7 +41,7 @@ class TestIntegrationsPage:
         integration_page.delete_all_jira_integration()
         integration_page.add_jira_integration('https://jira.web-bee.ru',
                                               os.getenv('LOGIN'),
-                                              os.getenv('PASSWORD'))
+                                              os.getenv('INTEGRATION_PASSWORD'))
         time.sleep(1)  # Необходимо время для прогрузки анимации
         message = integration_page.get_alert_message()
         time.sleep(1)  # Необходимо время для прогрузки анимации
