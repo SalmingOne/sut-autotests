@@ -723,3 +723,24 @@ class UserProfilePage(BasePage):
         time.sleep(0.5)
         self.element_is_visible(self.locators.KEBABS_DEL_MENU_ITEM).click()
         self.element_is_visible(self.locators.BREAK_BUTTON).click()
+
+    @testit.step("Редактирование резюме")
+    @allure.step("Редактирование резюме")
+    def redact_resume(self, name):
+        self.elements_are_visible(self.locators.SEARCH_FIELDS)[1].send_keys(Keys.CONTROL + 'a')
+        self.elements_are_visible(self.locators.SEARCH_FIELDS)[1].send_keys(name)
+        time.sleep(0.5)
+        self.elements_are_visible(self.locators.KEBAB_MENU)[0].click()
+        time.sleep(0.5)
+        self.element_is_visible(self.locators.KEBABS_REDACT_ITEM).click()
+
+    @testit.step("Изменение данных в резюме")
+    @allure.step("Изменение данных в резюме")
+    def change_resume(self, new_name):
+        self.element_is_visible(self.locators.RESUME_TITLE_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.RESUME_TITLE_FIELD).send_keys(new_name)
+        self.elements_are_visible(self.locators.DATE_PIKERS)[1].send_keys(Keys.CONTROL + 'a')
+        self.elements_are_visible(self.locators.DATE_PIKERS)[1].send_keys('01.02.1990')
+        self.elements_are_visible(self.locators.DATE_PIKERS)[2].send_keys(Keys.CONTROL + 'a')
+        self.elements_are_visible(self.locators.DATE_PIKERS)[2].send_keys(self.get_day_before(0))
+        self.element_is_visible(self.locators.SAVE_BUTTON).click()

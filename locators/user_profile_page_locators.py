@@ -99,6 +99,7 @@ class UserProfilePageLocators:
     KEBABS_DEL_MENU_ITEM = (By.XPATH, '//span[text()="Удалить"]')
     KEBABS_VIEW_ITEM = (By.XPATH, '//span[text()="Просмотр резюме"]')
     KEBABS_COPY_ITEM = (By.XPATH, '//span[text()="Копировать"]')
+    KEBABS_REDACT_ITEM = (By.XPATH, '//span[text()="Редактирование"]')
     KEBAB_MENU_ITEM = (By.XPATH, '//li//span[contains(@class,"MuiTypography-root MuiTypography-caption")]')
     SUBMIT_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
 

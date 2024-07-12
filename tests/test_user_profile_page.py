@@ -737,4 +737,18 @@ class TestUserProfilePage:
         user_profile_page.cancel_delete_resume(create_resume)
         assert user_profile_page.check_resume_name(create_resume), "Резюме удалилось"
 
+    @testit.workItemIds(3213)
+    @testit.displayName("10.6.1.8. Сохранение изменений в резюме")
+    @pytest.mark.regress
+    @allure.title("id-3213 10.6.1.8. Сохранение изменений в резюме")
+    def test_saving_changes_to_your_resume(self, create_resume, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        time.sleep(2)
+        user_profile_page.go_to_resume_tab()
+        time.sleep(0.5)
+        user_profile_page.redact_resume(create_resume)
+        user_profile_page.change_resume('Новое имя резюме')
+        assert user_profile_page.check_resume_name('Новое имя резюме'), "Имя резюме не изменилось"
+
 
