@@ -768,3 +768,8 @@ class UserProfilePage(BasePage):
     @allure.step("Получение количества предупреждения об обязательности поля")
     def len_required_errors(self):
         return len(self.elements_are_visible(self.locators.REQUIRED_FIELD_ERROR))
+
+    @testit.step("Получение текста ошибки")
+    @allure.step("Получение текста ошибки")
+    def get_mui_error(self):
+        return self.element_is_visible(self.locators.MUI_ERROR).text
