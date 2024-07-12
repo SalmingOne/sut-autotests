@@ -709,4 +709,19 @@ class TestUserProfilePage:
         assert kebab_menu_titles == ['Редактирование', 'Просмотр резюме', 'Копировать', 'Удалить'], \
             "Не все действия доступны для работы в резюме "
 
+    @testit.workItemIds(3251)
+    @testit.displayName("10.6.1.7. Удаление резюме")
+    @pytest.mark.regress
+    @allure.title("id-3251 10.6.1.7. Удаление резюме")
+    def test_delete_resume(self, create_resume_to_delete, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        time.sleep(2)
+        user_profile_page.go_to_resume_tab()
+        time.sleep(1)
+        user_profile_page.delete_resume(create_resume_to_delete)
+        assert not user_profile_page.check_resume_name(create_resume_to_delete), "Резюме не удалилось"
+        time.sleep(1)
+        assert 'Резюме удалено' in user_profile_page.get_alert_message(), "Не отображается сообщение: Резюме удалено"
+
 

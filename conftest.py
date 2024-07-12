@@ -390,3 +390,20 @@ def create_resume():
     response = resume_endpoint.create_resume_api(json=payload)
     yield payload['title']
     resume_endpoint.delete_resume_api(str(response.json()['id']))
+
+
+@pytest.fixture()
+def create_resume_to_delete():
+    resume_endpoint = ResumeEndpoint()
+    payload = dict(
+        userId=USER_ID,
+        title='резюме для удаления',
+        version=1,
+        data=dict(
+            fullName=USER_NAME,
+            post='Автоматизатор',
+            experienceDate=BasePage(driver=None).get_day_before_m_d_y(2)
+        )
+    )
+    response = resume_endpoint.create_resume_api(json=payload)
+    yield payload['title']
