@@ -483,18 +483,15 @@ class LaborCostPage(BasePage):
         self.element_is_visible(self.locators.END_LEAVE_DATA_INPUT).send_keys(this_day_text)
         time.sleep(1.5)
         self.element_is_visible(self.locators.END_LEAVE_DATA_INPUT).send_keys(Keys.RETURN)
-        # При запуске нескольких тестов через пайтест работает только с абсолютным путем
         try:
-            self.element_is_present(self.locators.FILE_INPUT, 2).send_keys(
-                os.path.abspath(r'../data/административный.docx'))
-        except InvalidArgumentException:
-            self.element_is_present(self.locators.FILE_INPUT, 2).send_keys(
-                r'C:\Users\ASUS\PycharmProjects\sut-autotests\data\административный.docx')
+            self.add_file('отсутствие.docx', 'Отсутствие')
+            self.element_is_present(self.locators.FILE_INPUT, 2).send_keys(os.path.abspath(r'../отсутствие.docx'))
         except TimeoutException:
             self.element_is_visible(self.locators.BEGIN_LEAVE_DATA_INPUT).click()
         self.element_is_visible(self.locators.DRAWER_SAVE_BUTTON).click()
         self.element_is_visible(self.locators.DRAWER_SAVE_BUTTON).click()
         time.sleep(1.5)
+        self.delete_file('отсутствие.docx')
 
     @testit.step("Проверяем наличие всех отсутствий в таблице")
     @allure.step("Проверяем наличие всех отсутствий в таблице")
@@ -564,17 +561,15 @@ class LaborCostPage(BasePage):
             self.elements_are_visible(self.locators.ALL_PROJECT_ON_DRAWER_INPUT)[0].click()
         self.element_is_visible(self.locators.OVERTIME_WORK_INPUT).send_keys(overtime_work_hours)
         self.element_is_visible(self.locators.OVERTIME_WORK_INPUT).send_keys(Keys.RETURN)
-        # При запуске нескольких тестов через пайтест работает только с абсолютным путем
         try:
-            self.element_is_present(self.locators.FILE_INPUT).send_keys(
-                os.path.abspath(r'../data/административный.docx'))
-        except InvalidArgumentException:
-            self.element_is_present(self.locators.FILE_INPUT).send_keys(
-                r'C:\Users\ASUS\PycharmProjects\sut-autotests\data\административный.docx')
+            self.add_file('отсутствие.docx', 'Отсутствие')
+            self.element_is_present(self.locators.FILE_INPUT, 2).send_keys(os.path.abspath(r'../отсутствие.docx'))
         except TimeoutException:
             pass
         self.action_move_to_element(self.element_is_present(self.locators.OVERTIME_WORK_SAVE_BUTTON))
         self.element_is_present(self.locators.OVERTIME_WORK_SAVE_BUTTON).click()
+        time.sleep(1)
+        self.delete_file('отсутствие.docx')
 
     @testit.step("Получаем текст ошибки")
     @allure.step("Получаем текст ошибки")
@@ -597,19 +592,16 @@ class LaborCostPage(BasePage):
         self.elements_are_visible(self.locators.ALL_PROJECT_ON_DRAWER_INPUT)[0].click()
 
         self.element_is_visible(self.locators.OVERTIME_REASON_INPUT).send_keys(reason)
-
         try:
-            self.element_is_present(self.locators.FILE_INPUT).send_keys(
-                os.path.abspath(r'../data/административный.docx'))
-        except InvalidArgumentException:
-            self.element_is_present(self.locators.FILE_INPUT).send_keys(
-                r'C:\Users\ASUS\PycharmProjects\sut-autotests\data\административный.docx')
+            self.add_file('отсутствие.docx', 'Отсутствие')
+            self.element_is_present(self.locators.FILE_INPUT, 2).send_keys(os.path.abspath(r'../отсутствие.docx'))
         except TimeoutException:
             pass
         self.action_move_to_element(self.element_is_present(self.locators.OVERTIME_WORK_SAVE_BUTTON))
         self.element_is_present(self.locators.OVERTIME_WORK_SAVE_BUTTON).click()
         output_text = self.element_is_visible(self.locators.MUI_ERROR).text
         self.element_is_present(self.locators.DRAWER_ABORT_BUTTON).click()
+        self.delete_file('отсутствие.docx')
         return output_text
 
     @testit.step("Проверяем, что кнопка сохранения задизейблена и возвращаем текст тултипа")
@@ -778,22 +770,27 @@ class LaborCostPage(BasePage):
         self.element_is_visible(self.locators.chose_project_on_overtime_work_drawer(CreateProject().name)).click()
         self.element_is_visible(self.locators.OVERTIME_WORK_INPUT).send_keys('1')
         self.element_is_visible(self.locators.OVERTIME_WORK_INPUT).send_keys(Keys.RETURN)
-        # При запуске нескольких тестов через пайтест работает только с абсолютным путем
         try:
-            self.element_is_present(self.locators.FILE_INPUT).send_keys(
-                os.path.abspath(r'../data/административный.docx'))
-        except InvalidArgumentException:
-            self.element_is_present(self.locators.FILE_INPUT).send_keys(
-                r'C:\Users\ASUS\PycharmProjects\sut-autotests\data\административный.docx')
+            self.add_file('отсутствие.docx', 'Отсутствие')
+            self.element_is_present(self.locators.FILE_INPUT, 2).send_keys(os.path.abspath(r'../отсутствие.docx'))
         except TimeoutException:
             pass
         self.element_is_visible(self.locators.OVERTIME_WORK_DATA_INPUT).send_keys(Keys.CONTROL + 'a')
         self.element_is_visible(self.locators.OVERTIME_WORK_DATA_INPUT).send_keys(self.get_day_before(0))
         attribute = self.element_is_visible(self.locators.PROJECT_NAME_DRAWER_INPUT_FIELD).get_attribute("value")
+        self.delete_file('отсутствие.docx')
         assert attribute == '', 'Поле проект не очистилось'
         assert not self.element_is_clickable(self.locators.OVERTIME_WORK_SAVE_BUTTON,
                                              1), 'Кнопка применить не задизейблена'
 
+    @testit.step("Добавление файла")
+    @allure.step("Добавление файла")
+    def add_file(self, name, text):
+        file = open(os.path.abspath(rf'../{name}'), 'w+')
+        file.write(f'{text}')
+        file.close()
 
-
-
+    @testit.step("Удаление файла")
+    @allure.step("Удаление файла")
+    def delete_file(self, name):
+        os.remove(rf'../{name}')
