@@ -1,25 +1,23 @@
 import pytest
-import requests
-from requests import Response
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 
-from api_methods.departmens import DepartmentsApi
-from api_methods.position import PositionsApi
-from api_methods.project_roles import ProjectRolesApi
 from data.data import LOGIN, PASSWORD, USER_ID, USER_NAME
 from data.models.create_project_model import CreateProject
 from data.urls import Urls
 from endpoints.affiliates_endpoint import AffiliatesEndpoint
 from endpoints.assignments_endpoint import AssignmentEndpoint
-from endpoints.auth_endpoint import AuthEndpoint
+from endpoints.departmens_endpoint import DepartmentsEndpoint
 from endpoints.labor_reports_endpoint import LaborReportEndpoint
 from endpoints.logs_endpoint import LogsEndpoint
+from endpoints.posts_endpoint import PostsEndpoint
 from endpoints.project_endpoint import ProjectEndpoint
+from endpoints.project_roles_endpoint import ProjectRolesEndpoint
 from endpoints.resume_endpoint import ResumeEndpoint
 from endpoints.search_profile_endpoint import SearchProfileEndpoint
 from endpoints.skills_endpoint import SkillsEndpoint
+from endpoints.system_roles_endpoint import SystemRolesEndpoint
 from endpoints.tags_endpoint import TagsEndpoint
 from endpoints.users_endpoint import UserEndpoint
 from endpoints.variables_endpoint import VariablesEndpoint
@@ -109,35 +107,6 @@ def f_notifications():
     sys_settings.turn_on_notifications()
     yield
     sys_settings.turn_off_notifications()
-
-
-@pytest.fixture(scope='session')
-def script():
-    project_roles = ProjectRolesApi()
-    header = AuthEndpoint().get_header_token_api()
-    logs_endpoint = LogsEndpoint()
-    payload = dict(status=True, level="ALL", depthDateQuantity=0, depthDateType="YEAR")
-    logs_endpoint.post_logs_settings(json=payload)
-    if project_roles.get_project_roles_api(header) == 0:
-        project_roles.post_project_roles_api(header)
-    else:
-        pass
-    departments = DepartmentsApi()
-    if departments.get_departments_api(header) == 0:
-        departments.post_department_api(header)
-    else:
-        pass
-    positions = PositionsApi()
-    if positions.get_positions_api(header) == 0:
-        positions.post_positions_api(header)
-    else:
-        pass
-    filial_endpoint = AffiliatesEndpoint()
-    if len(filial_endpoint.get_all_affiliates_api().json()) == 0:
-        payload = dict(name="Саратовский филиал", address='г. Саратов')
-        filial_endpoint.create_affiliates_api(json=payload)
-    else:
-        pass
 
 
 @pytest.fixture()
@@ -287,6 +256,14 @@ def create_filial():
 def create_work_user():
     user_endpoint = UserEndpoint()
     project_endpoint = ProjectEndpoint()
+    department_endpoint = DepartmentsEndpoint()
+    post_endpoint = PostsEndpoint()
+    project_roles_endpoint = ProjectRolesEndpoint()
+    system_roles_endpoint = SystemRolesEndpoint()
+    first_system_role_id = system_roles_endpoint.get_all_system_roles_id()[2]
+    first_project_role_id = project_roles_endpoint.get_all_project_roles_id()[1]
+    first_post_id = post_endpoint.get_all_posts_id()[0]
+    first_department_id = department_endpoint.get_all_departments_id()[1]
     first_project_id = project_endpoint.get_all_project().json()[0]['id']
     user_id = user_endpoint.get_user_id_by_email('auto_testt@mail.rruu')
     payload = dict(username="AutoTester1",
@@ -299,14 +276,15 @@ def create_work_user():
                    startWorkDate="2024-04-11",
                    userAssignments=[dict(
                        projectId=first_project_id,
-                       projectRoleId=1,
+                       projectRoleId=first_project_role_id,
                        isProjectManager=False
                    )
                    ],
-                   projectRoleIds=[1],
-                   postId=1,
-                   departmentId=1,
-                   systemRoleIds=[1]
+
+                   projectRoleIds=[first_project_role_id],
+                   postId=first_post_id,
+                   departmentId=first_department_id,
+                   systemRoleIds=[first_system_role_id]
                    )
     if user_id is None:
         response = user_endpoint.create_user_api(json=payload)
@@ -319,6 +297,15 @@ def create_work_user():
 @pytest.fixture()
 def create_fired_user():
     user_endpoint = UserEndpoint()
+    project_endpoint = ProjectEndpoint()
+    department_endpoint = DepartmentsEndpoint()
+    post_endpoint = PostsEndpoint()
+    project_roles_endpoint = ProjectRolesEndpoint()
+    system_roles_endpoint = SystemRolesEndpoint()
+    first_system_role_id = system_roles_endpoint.get_all_system_roles_id()[2]
+    first_project_role_id = project_roles_endpoint.get_all_project_roles_id()[1]
+    first_post_id = post_endpoint.get_all_posts_id()[0]
+    first_department_id = department_endpoint.get_all_departments_id()[1]
     user_id = user_endpoint.get_user_id_by_email('auto_test@mail.ruru')
     payload = dict(username="AutoTester",
                    name="Автомат",
@@ -330,10 +317,10 @@ def create_fired_user():
                    startWorkDate="2024-04-11",
                    dismissalDate="2024-05-11",
                    userAssignments=[],
-                   projectRoleIds=[1],
-                   postId=1,
-                   departmentId=1,
-                   systemRoleIds=[1]
+                   projectRoleIds=[first_project_role_id],
+                   postId=first_post_id,
+                   departmentId=first_department_id,
+                   systemRoleIds=[first_system_role_id]
                    )
     if user_id is None:
         response = user_endpoint.create_user_api(json=payload)
