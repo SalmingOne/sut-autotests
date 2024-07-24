@@ -28,4 +28,9 @@ class HeaderSearchPage(BasePage):
         self.element_is_visible(self.locators.SEARCH_HEADER_FIELD).send_keys('ацывжы')
         assert self.element_is_visible(self.locators.NOTHING_FOUND_TEXT).text == 'Ничего не найдено', "Не появилось сообщение"
 
+    @testit.step("Ввод пробела в поле поиска")
+    @allure.step("Ввод пробела в поле поиска")
+    def entering_a_space_in_the_header_search(self):
+        self.element_is_visible(self.locators.SEARCH_HEADER_FIELD).send_keys(' ')
+
 

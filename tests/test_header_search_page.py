@@ -27,3 +27,12 @@ class TestHeaderSearchPage:
         header_search_page.select_search_field_header()
         header_search_page.check_nothing_found_text()
 
+    @testit.workItemIds(4286)
+    @testit.displayName("10.12.1. Ввод пробела в строку поиска")
+    @pytest.mark.regress
+    @allure.title("id-4286 10.12.1. Ввод пробела в строку поиска")
+    def test_entering_a_space_in_the_header_search(self, login, driver):
+        header_search_page = HeaderSearchPage(driver)
+        header_search_page.select_search_field_header()
+        header_search_page.entering_a_space_in_the_header_search()
+        header_search_page.check_tooltip_in_header_search()
