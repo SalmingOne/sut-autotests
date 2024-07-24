@@ -45,7 +45,7 @@ class UserPageLocators:
     SYSTEM_ROLE_FIELD = (By.CSS_SELECTOR, 'input[placeholder="Начните вводить системную роль"]')
     SELECTED_SYSTEM_ROLE = (By.CSS_SELECTOR, 'li[aria-label][aria-selected="true"]')
     NOT_SELECTED_SYSTEM_ROLE = (By.CSS_SELECTOR, 'li[aria-label][aria-selected="false"]')
-    USER_SYSTEM_ROLE_DISABLE_INDICATOR = (By.XPATH, '//div[@name="systemRoleIds"]//span[text()="Пользователь"]/..')
+    USER_SYSTEM_ROLE_DISABLE_INDICATOR = (By.XPATH, '//div[@name="systemRoleIds"]//span[contains(@class,"MuiChip-label MuiChip-labelMedium")]/..')
     DELETE_PROJECT_ROLE_ICONS = (By.XPATH, '//div[@name="projectRoles"]//*[local-name()="svg"][@data-testid="CancelIcon"]')
 
     def delete_system_role_button(self, system_role_name):
