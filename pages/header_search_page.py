@@ -22,4 +22,10 @@ class HeaderSearchPage(BasePage):
         self.element_is_visible(self.locators.SEARCH_HEADER_FIELD).send_keys(Keys.RETURN)
         assert self.element_is_visible(self.locators.TOOLTIP).text == 'Введите значение для поиска', "Не появился тултип или его текст не корректен"
 
+    @testit.step("Проверка сообщения Ничего не найдено")
+    @allure.step("Проверка сообщения Ничего не найдено")
+    def check_nothing_found_text(self):
+        self.element_is_visible(self.locators.SEARCH_HEADER_FIELD).send_keys('ацывжы')
+        assert self.element_is_visible(self.locators.NOTHING_FOUND_TEXT).text == 'Ничего не найдено', "Не появилось сообщение"
+
 

@@ -13,8 +13,17 @@ class TestHeaderSearchPage:
     @testit.displayName("10.12.1. Отображение тултипа при незаполненной строке поиска")
     @pytest.mark.regress
     @allure.title("id-3696 10.12.1. Отображение тултипа при незаполненной строке поиска")
-    def test_go_to_user_from_search(self, login, driver):
+    def test_displaying_tooltip_in_header_search(self, login, driver):
         header_search_page = HeaderSearchPage(driver)
         header_search_page.select_search_field_header()
         header_search_page.check_tooltip_in_header_search()
+
+    @testit.workItemIds(3669)
+    @testit.displayName("10.12.1. Данные по запросу через строку поиска отсутствуют")
+    @pytest.mark.regress
+    @allure.title("id-3669 10.12.1. Данные по запросу через строку поиска отсутствуют")
+    def test_displaying_no_data_in_the_header_search(self, login, driver):
+        header_search_page = HeaderSearchPage(driver)
+        header_search_page.select_search_field_header()
+        header_search_page.check_nothing_found_text()
 

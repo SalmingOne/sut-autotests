@@ -10,3 +10,4 @@ class HeaderSearchLocators:
 
     # Тултип
     TOOLTIP = (By.XPATH, '//div[contains(@class, "MuiTooltip-tooltipPlacementBottom")]')
+    NOTHING_FOUND_TEXT = (By.XPATH, '//div[@role="tooltip"]//p')
