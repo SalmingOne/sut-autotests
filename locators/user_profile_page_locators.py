@@ -98,6 +98,7 @@ class UserProfilePageLocators:
 
     KEBAB_MENU = (By.CSS_SELECTOR, 'svg[data-testid="MoreHorizIcon"]')
     KEBABS_DEL_MENU_ITEM = (By.XPATH, '//span[text()="Удалить"]')
+    KEBABS_EDIT_MENU_ITEM = (By.XPATH, '//span[text()="Редактирование"]')
     KEBABS_VIEW_ITEM = (By.XPATH, '//span[text()="Просмотр резюме"]')
     KEBABS_COPY_ITEM = (By.XPATH, '//span[text()="Копировать"]')
     KEBABS_REDACT_ITEM = (By.XPATH, '//span[text()="Редактирование"]')
