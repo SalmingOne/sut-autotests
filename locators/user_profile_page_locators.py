@@ -16,6 +16,7 @@ class UserProfilePageLocators:
     EMAIL_FIELD = (By.CSS_SELECTOR, 'input[name="email"]')
     PHONE_TEXT_AREA = (By.CSS_SELECTOR, 'textarea[name="phone"]')
     PHONE_FIELD = (By.CSS_SELECTOR, 'input[name="phone"]')
+    MODAL_TITLE = (By.CSS_SELECTOR, 'h6[class^="MuiTypography-root MuiTypography-subtitle1 css-slzcdp"]')
     # Модальное окно с диалогом
     ALERT_DIALOG_DESCRIPTION = (By.CSS_SELECTOR, 'p[id="alert-dialog-description"]')
 
@@ -86,6 +87,8 @@ class UserProfilePageLocators:
     WYSIWYG_TITLES = (By.XPATH, '//div[contains(@class,"MuiPaper-rounded MuiPaper-elevation0")]//div[@id]/*[contains(@class, "MuiTypography")]')
     WYSIWYG_INCLUDES_FUNCTION_TITLES = (By.XPATH, '//div[@id="workStack"]//div[@style="visibility: visible;"]//*[@title]')
     CURRENT_EMPLOYER_CHECKBOX = (By.XPATH, '//span[text()="Текущий работодатель"]')
+    SAVE_AS_NEW_BUTTON = (By.XPATH, '//button[text()="Сохранить как новое"]')
+    SAVE_AS_NEW_NAME_FIELD = (By.CSS_SELECTOR, 'input[name="textValue"]')
 
     RESUME_TITLES_ON_TAB = (By.CSS_SELECTOR, 'div[col-id="title"][role="gridcell"]')
     SEARCH_FIELDS = (By.CSS_SELECTOR, 'input[placeholder="Поиск"]')
@@ -95,6 +98,9 @@ class UserProfilePageLocators:
 
     # Тултип
     TOOLTIP = (By.XPATH, '//div[contains(@class, "MuiTooltip-tooltipPlacementTop")]')
+
+    # Плейсхолдер
+    PLACEHOLDER_RESUME_SAVE_AS = (By.CSS_SELECTOR, 'input[placeholder="Введите название резюме"]')
 
     KEBAB_MENU = (By.CSS_SELECTOR, 'svg[data-testid="MoreHorizIcon"]')
     KEBABS_DEL_MENU_ITEM = (By.XPATH, '//span[text()="Удалить"]')

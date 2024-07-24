@@ -103,6 +103,12 @@ class UserProfilePage(BasePage):
     def get_title(self):
         return self.element_is_visible(self.locators.PROFILE_TITLE).text
 
+    @testit.step("Получение текста заголовка модального окна")
+    @allure.step("Получение текста заголовка модального окна")
+    def get_modal_title(self):
+        return self.element_is_visible(self.locators.MODAL_TITLE).text
+
+
     @testit.step("Получение даты начала работы")
     @allure.step("Получение даты начала работы")
     def get_start_work_date(self):
@@ -112,6 +118,16 @@ class UserProfilePage(BasePage):
     @allure.step("Нажатие кнопки создать резюме")
     def press_create_resume_button(self):
         self.element_is_visible(self.locators.CREATE_RESUME_BUTTON).click()
+
+    @testit.step("Нажатие кнопки Сохранить как новое")
+    @allure.step("Нажатие кнопки Сохранить как новое")
+    def press_save_as_new_button(self):
+        self.element_is_visible(self.locators.SAVE_AS_NEW_BUTTON).click()
+
+    @testit.step("Проверка плейсхолдера поля Название резюме")
+    @allure.step("Проверка плейсхолдера поля Название резюме")
+    def check_resume_name_placeholder(self):
+        assert self.element_is_displayed(self.locators.PLACEHOLDER_RESUME_SAVE_AS), 'Название плейсхолдера отличается'
 
     @testit.step("Проверка значений по умолчанию")
     @allure.step("Проверка значений по умолчанию")
@@ -205,10 +221,26 @@ class UserProfilePage(BasePage):
         assert titles == ['Жирный', 'Курсив', 'Неупорядоченный', 'Упорядоченный', 'Форматирование', 'Ссылка',
                           'Убрать ссылку'], 'В визивиге есть не все функции'
 
-    @testit.step("Проверка кнопки Сохранить")
-    @allure.step("Проверка кнопки Сохранить")
+    @testit.step("Проверка кнопки Сохранить задизейбленна")
+    @allure.step("Проверка кнопки Сохранить задизейбленна")
     def check_disable_save_button(self):
-        assert not self.element_is_clickable(self.locators.SAVE_BUTTON), 'Кнопка сохранить не задизейблена'
+        assert not self.element_is_clickable(self.locators.SAVE_BUTTON, 1), 'Кнопка сохранить не задизейблена'
+
+    @testit.step("Проверка кнопки Сохранить доступна")
+    @allure.step("Проверка кнопки Сохранить доступна")
+    def check_disable_save_button_able(self):
+        assert self.element_is_clickable(self.locators.SAVE_BUTTON), 'Кнопка сохранить задизейблена'
+
+    @testit.step("Проверка кнопки Сохранить как новое задизейбленна")
+    @allure.step("Проверка кнопки Сохранить как новое задизейбленна")
+    def check_disable_save_as_new_button(self):
+        assert not self.element_is_clickable(self.locators.SAVE_AS_NEW_BUTTON, 1), 'Кнопка сохранить как новое не задизейблена'
+
+    @testit.step("Проверка кнопки Сохранить как новое доступна")
+    @allure.step("Проверка кнопки Сохранить как новое доступна")
+    def check_disable_save_as_new_button_able(self):
+        assert self.element_is_clickable(self.locators.SAVE_AS_NEW_BUTTON), 'Кнопка сохранить как новое задизейблена'
+
 
     @testit.step("Проверка кнопки отменить")
     @allure.step("Проверка кнопки отменить")
@@ -267,10 +299,9 @@ class UserProfilePage(BasePage):
 
     @testit.step("Внесение изменений в резюме")
     @allure.step("Внесение изменений в резюме")
-    def change_resume(self):
-        resume_title = self.element_is_visible(self.locators.RESUME_TITLE_FIELD).send_keys(' new')
+    def change_resume_title(self):
+        self.element_is_visible(self.locators.RESUME_TITLE_FIELD).send_keys(' new')
         time.sleep(1)
-        return resume_title
 
     @testit.step("Получение текста с поля дети")
     @allure.step("Получение текста с поля дети")

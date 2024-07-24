@@ -794,3 +794,23 @@ class TestUserProfilePage:
         user_profile_page.go_to_resume_tab()
         user_profile_page.editing_resume()
         user_profile_page.check_cansel_changes()
+
+    @testit.workItemIds(3217)
+    @testit.displayName("10.6.1.8. Реакция системы при нажатии на кнопку Сохранить как новое")
+    @pytest.mark.regress
+    @allure.title("id-3217 10.6.1.8. Реакция системы при нажатии на кнопку Сохранить как новое")
+    def test_save_as_new_resume(self, create_resume, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        user_profile_page.go_to_resume_tab()
+        user_profile_page.editing_resume()
+        user_profile_page.check_disable_save_button()
+        user_profile_page.check_disable_save_as_new_button()
+        user_profile_page.change_resume_title()
+        user_profile_page.check_disable_save_button_able()
+        user_profile_page.check_disable_save_as_new_button_able()
+        user_profile_page.press_save_as_new_button()
+        assert user_profile_page.get_modal_title() == "Введите название нового резюме", 'Заголовк некорректный'
+        user_profile_page.check_resume_name_placeholder()
+        user_profile_page.check_disable_save_button_able()
+        user_profile_page.check_break_button()
