@@ -114,3 +114,22 @@ class TestSchedulePage:
         after_edit = schedule_page.get_text_on_chips(0)
         assert after_edit != before_edit, 'Изменения не сохранились'
         assert after_edit == '07:00 - 12:00', 'Не корректно сохранились изменения'
+
+    @testit.workItemIds(11661)
+    @testit.displayName("10.2.1.2. Снятие выбора со всех чекбоксов дней недели")
+    @pytest.mark.smoke
+    @allure.title("id-11661 10.2.1.2. Снятие выбора со всех чекбоксов дней недели")
+    def test_unselecting_all_weekday_checkboxes(self, login, driver):
+        schedule_page = SchedulePage(driver)
+        schedule_page.go_to_schedule_page()
+        if schedule_page.check_text_on_modal():
+            schedule_page.press_submit_button_in_modal()
+        else:
+            pass
+        schedule_page.open_editing_schedule_for_a_standard_chart_drawer()
+        schedule_page.unselecting_all_weekday_checkboxes()
+        schedule_page.press_submit_button_in_drawer()
+        errors = schedule_page.get_all_errors_in_checkboxes()
+        assert errors == ['Хотя бы один день недели должен быть выбран'], \
+            "Не появилось сообщение о необходимости выбрать чекбокс"
+

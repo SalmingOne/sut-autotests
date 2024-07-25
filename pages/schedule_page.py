@@ -178,9 +178,31 @@ class SchedulePage(BasePage):
     @testit.step("Проверка наличия модального окна первого запуска")
     @allure.step("Проверка наличия модального окна первого запуска")
     def check_text_on_modal(self):
-        return self.element_is_displayed(self.locators.TEXT_IN_MODAL)
+        return self.element_is_displayed(self.locators.TEXT_IN_MODAL, 2)
 
     @testit.step("Нажатие кнопки сохранить модального окна первого запуска")
     @allure.step("Нажатие кнопки сохранить модального окна первого запуска")
     def press_submit_button_in_modal(self):
         self.element_is_visible(self.locators.SUBMIT_IN_MODAL).click()
+
+    @testit.step("Снятие выбора со всех чекбоксов")
+    @allure.step("Снятие выбора со всех чекбоксов")
+    def unselecting_all_weekday_checkboxes(self):
+        time.sleep(0.2)
+        selected_checkboxes = self.elements_are_present(self.locators.ALL_WEEK_CHECKED_CHECKBOXES)
+        for checkbox in selected_checkboxes:
+            checkbox.click()
+
+    @testit.step("Нажатие кнопки сохранить в дровере")
+    @allure.step("Нажатие кнопки сохранить в дровере")
+    def press_submit_button_in_drawer(self):
+        self.element_is_visible(self.locators.DRAWER_SUBMIT_BUTTON).click()
+
+    @testit.step("Получение текста ошибок чекбоксов дней недели")
+    @allure.step("Получение текста ошибок чекбоксов дней недели")
+    def get_all_errors_in_checkboxes(self):
+        all_errors = self.elements_are_present(self.locators.ERROR_IN_CHECKBOXES)
+        errors_texts = []
+        for error in all_errors:
+            errors_texts.append(error.text)
+        return errors_texts
