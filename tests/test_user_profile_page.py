@@ -99,6 +99,7 @@ class TestUserProfilePage:
         time.sleep(2)
         user_profile_page.check_disable_save_button()
         user_profile_page.check_default_values(user_name, start_work)
+        user_profile_page.check_max_symbol()
         user_profile_page.check_post_tooltip()
         user_profile_page.check_direction_tooltip()
         user_profile_page.check_ready_to_work_dropdown()
@@ -810,7 +811,7 @@ class TestUserProfilePage:
         user_profile_page.check_disable_save_button_able()
         user_profile_page.check_disable_save_as_new_button_able()
         user_profile_page.press_save_as_new_button()
-        assert user_profile_page.get_modal_title() == "Введите название нового резюме", 'Заголовк некорректный'
+        assert user_profile_page.get_modal_title() == "Введите название нового резюме", 'Заголовок некорректный'
         user_profile_page.check_resume_name_placeholder()
         user_profile_page.check_disable_save_button_able()
         user_profile_page.check_break_button()
