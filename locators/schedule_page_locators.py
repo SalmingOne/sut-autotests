@@ -23,6 +23,8 @@ class SchedulePageLocators:
     DRAWER_SUBMIT_BUTTON = (By.XPATH, '//div[contains(@class,"MuiDrawer-paper")]//button[@type="submit"]')
     DRAWER_BREAK_BUTTON = (By.XPATH, '//div[contains(@class,"MuiDrawer-paper")]//button[text()="Отменить"]')
     WEEK_CHECKBOXES = (By.CSS_SELECTOR, 'input[type="checkbox"]')
+    ALL_WEEK_CHECKED_CHECKBOXES = (By.CSS_SELECTOR, 'input[checked][type="checkbox"]')
+    ERROR_IN_CHECKBOXES = (By.XPATH, '//p/..//span[contains(@class, "MuiTypography-root MuiTypography-caption")]')
 
     LI_MENU_ITEM = (By.CSS_SELECTOR, 'li[role="option"]')
     START_WORK = (By.XPATH, '//label[text()="Начало рабочего дня"]/..//input')
@@ -42,3 +44,6 @@ class SchedulePageLocators:
     # Модальное окно первичного задания рабочих дней
     TEXT_IN_MODAL = (By.XPATH, '//button[text()="Добавить дату отработки"]')
     SUBMIT_IN_MODAL = (By.XPATH, '//button[text()="Сохранить"]')
+
+    # Ошибки
+    MUI_ERROR = (By.XPATH, '//p[contains(@class, "Mui-error")]')
