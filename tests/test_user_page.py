@@ -102,5 +102,5 @@ class TestUsersPage:
         user_page.go_to_user_page()
         user_endpoint = UserEndpoint()
         users = user_endpoint.get_users_whit_one_project_role_and_no_assignments()
-        user_page.check_user_is_not_in_table(users[0])
+        user_page.check_user_is_not_in_table(users[1])
         user_page.check_removing_a_single_project_role_from_a_user()

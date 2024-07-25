@@ -15,6 +15,7 @@ class AdvancedSearchPage(BasePage):
     @testit.step("Переход на страницу расширенного поиска")
     @allure.step("Переход на страницу расширенного поиска")
     def go_advanced_search_page(self):
+        time.sleep(1)
         self.element_is_visible(self.locators.COLLEAGUES_TAB).click()
         self.element_is_visible(self.locators.ALL_COLLEAGUES).click()
         time.sleep(1)

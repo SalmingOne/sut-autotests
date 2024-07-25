@@ -260,7 +260,7 @@ def create_work_user():
     post_endpoint = PostsEndpoint()
     project_roles_endpoint = ProjectRolesEndpoint()
     system_roles_endpoint = SystemRolesEndpoint()
-    first_system_role_id = system_roles_endpoint.get_all_system_roles_id()[2]
+    first_system_role_id = system_roles_endpoint.get_all_system_roles_id()[0]
     first_project_role_id = project_roles_endpoint.get_all_project_roles_id()[1]
     first_post_id = post_endpoint.get_all_posts_id()[0]
     first_department_id = department_endpoint.get_all_departments_id()[1]
@@ -297,12 +297,11 @@ def create_work_user():
 @pytest.fixture()
 def create_fired_user():
     user_endpoint = UserEndpoint()
-    project_endpoint = ProjectEndpoint()
     department_endpoint = DepartmentsEndpoint()
     post_endpoint = PostsEndpoint()
     project_roles_endpoint = ProjectRolesEndpoint()
     system_roles_endpoint = SystemRolesEndpoint()
-    first_system_role_id = system_roles_endpoint.get_all_system_roles_id()[2]
+    first_system_role_id = system_roles_endpoint.get_all_system_roles_id()[0]
     first_project_role_id = project_roles_endpoint.get_all_project_roles_id()[1]
     first_post_id = post_endpoint.get_all_posts_id()[0]
     first_department_id = department_endpoint.get_all_departments_id()[1]

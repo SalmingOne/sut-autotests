@@ -22,4 +22,4 @@ class SystemRolesEndpoint:
         system_roles_id = []
         for role in all_system_roles:
             system_roles_id.append(role['id'])
-        return system_roles_id
+        return sorted(system_roles_id)
