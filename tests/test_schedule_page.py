@@ -182,3 +182,21 @@ class TestSchedulePage:
         assert first_day_chips_redacted == ('09:00 - 13:00', '14:00 - 18:30'), "Значения в графике не изменились на заданные"
         assert first_day_chips_redacted != first_day_chips, "График не изменился"
         assert first_day_chips_redacted == first_day_chips_saved, "График не сохранился"
+
+    @testit.workItemIds(2265)
+    @testit.displayName("10.2.1.2. Отмена редактирования стандартного рабочего графика")
+    @pytest.mark.regress
+    @allure.title("id-2265 10.2.1.2. Отмена редактирования стандартного рабочего графика")
+    def test_cancel_editing_of_a_standard_work_schedule(self, login, driver):
+        schedule_page = SchedulePage(driver)
+        schedule_page.go_to_schedule_page()
+        if schedule_page.check_text_on_modal():
+            schedule_page.press_submit_button_in_modal()
+        else:
+            pass
+        before_chips_text = schedule_page.get_all_chips_text()
+        schedule_page.open_editing_schedule_for_a_standard_chart_drawer()
+        schedule_page.change_end_work_time()
+        schedule_page.press_cancel_button()
+        after_chips_text = schedule_page.get_all_chips_text()
+        assert before_chips_text == after_chips_text, "Стандартный график изменился"

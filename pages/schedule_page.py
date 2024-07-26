@@ -286,3 +286,17 @@ class SchedulePage(BasePage):
         for element in number_elements:
             assert value == self.elements_are_visible(self.locators.CHIPS_TEXT)[element].text,\
                 f"Значение в чипсе {element} отличается"
+
+    @testit.step("Получение текста всех чипсов")
+    @allure.step("Получение текста всех чипсов")
+    def get_all_chips_text(self):
+        all_chips = self.elements_are_visible(self.locators.CHIPS_TEXT)
+        chips_text = []
+        for chips in all_chips:
+            chips_text.append(chips.text)
+        return chips_text
+
+    @testit.step("Нажатие кнопки Отменить в дровере")
+    @allure.step("Нажатие кнопки Отменить в дровере")
+    def press_cancel_button(self):
+        self.element_is_visible(self.locators.DRAWER_BREAK_BUTTON).click()
