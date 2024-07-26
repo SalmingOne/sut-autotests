@@ -38,7 +38,7 @@ class UserEndpoint:
     @allure.step("Получаем фамилии пользователей без проектов и с одной проектной ролью")
     def get_users_whit_one_project_role_and_no_assignments(self):
         header = AuthEndpoint().get_header_token_api()
-        self.response = requests.get(url=Urls.users_url, headers=header)
+        self.response = requests.get(url=Urls.users_url, headers=header, verify=False)
         self.response_json = self.response.json()
         data = []
         for user in self.response_json:
@@ -49,14 +49,14 @@ class UserEndpoint:
     @allure.step("Создание пользователя")
     def create_user_api(self, json):
         header = AuthEndpoint().get_header_token_api()
-        self.response = requests.post(url=Urls.users_url, headers=header, json=json)
+        self.response = requests.post(url=Urls.users_url, headers=header, json=json, verify=False)
         self.response_json = self.response.json()
         return self.response
 
     @allure.step("Получаем имя и id пользователя по логину")
     def get_user_id_and_name_by_login(self, login):
         header = AuthEndpoint().get_header_token_api()
-        self.response = requests.get(url=Urls.users_url, headers=header)
+        self.response = requests.get(url=Urls.users_url, headers=header, verify=False)
         self.response_json = self.response.json()
         for user in self.response_json:
             if user['username'] == login:

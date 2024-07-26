@@ -12,7 +12,7 @@ class PostsEndpoint:
     @allure.step("Получаем все должности")
     def get_all_posts(self):
         header = AuthEndpoint().get_header_token_api()
-        self.response = requests.get(url=Urls.post_url, headers=header)
+        self.response = requests.get(url=Urls.post_url, headers=header, verify=False)
         self.response_json = self.response.json()
         return self.response
 

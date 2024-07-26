@@ -13,28 +13,28 @@ class AffiliatesEndpoint:
     @allure.step("Получаем все филиалы")
     def get_all_affiliates_api(self):
         header = AuthEndpoint().get_header_token_api()
-        self.response = requests.get(url=Urls.affiliates_url, headers=header)
+        self.response = requests.get(url=Urls.affiliates_url, headers=header, verify=False)
         self.response_json = self.response.json()
         return self.response
 
     @allure.step("Создаем филиал")
     def create_affiliates_api(self, json):
         header = AuthEndpoint().get_header_token_api()
-        self.response = requests.post(url=Urls.affiliates_url, headers=header, json=json)
+        self.response = requests.post(url=Urls.affiliates_url, headers=header, json=json, verify=False)
         self.response_json = self.response.json()
         return self.response
 
     @allure.step("Удаляем филиал")
     def delete_affiliates_api(self, affiliates_id):
         header = AuthEndpoint().get_header_token_api()
-        self.response = requests.delete(url=Urls.affiliates_url + affiliates_id, headers=header)
+        self.response = requests.delete(url=Urls.affiliates_url + affiliates_id, headers=header, verify=False)
         assert self.response.status_code == 204
         return self.response
 
     @allure.step("Получение id филиала по имени")
     def get_filial_id_by_name_api(self, name):
         header = AuthEndpoint().get_header_token_api()
-        self.response = requests.get(url=Urls.affiliates_url, headers=header)
+        self.response = requests.get(url=Urls.affiliates_url, headers=header, verify=False)
         self.response_json = self.response.json()
         for filial in self.response_json:
             if filial['name'] == name:

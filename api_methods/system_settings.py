@@ -14,14 +14,16 @@ class SystemSettingsApi:
         header = AuthEndpoint().get_header_token_api()
         return requests.put(url=Urls.system_settings_url + SystemSettingsNames.required_overtime_reason.value,
                             headers=header,
-                            json={'enabled': True})
+                            json={'enabled': True},
+                            verify=False)
 
     @allure.step('Выключить чекбокс "Обязательно указание причин переработок"')
     def turn_off_required_overwork_reason(self):
         header = AuthEndpoint().get_header_token_api()
         return requests.put(url=Urls.system_settings_url + SystemSettingsNames.required_overtime_reason.value,
                             headers=header,
-                            json={'enabled': False})
+                            json={'enabled': False},
+                            verify=False)
 
     @allure.step('Включить чекбокс "Показывать режим обучения для новых сотрудников"')
     def turn_on_show_onboarding(self):
@@ -35,21 +37,24 @@ class SystemSettingsApi:
         header = AuthEndpoint().get_header_token_api()
         return requests.put(url=Urls.system_settings_url + SystemSettingsNames.showing_onboarding.value,
                             headers=header,
-                            json={'enabled': False})
+                            json={'enabled': False},
+                            verify=False)
 
     @allure.step('Включить чекбокс "Отправлять оповещения системы на почту"')
     def turn_on_notifications(self):
         header = AuthEndpoint().get_header_token_api()
         return requests.put(url=Urls.system_settings_url + SystemSettingsNames.sending_notifications.value,
                             headers=header,
-                            json={'enabled': True})
+                            json={'enabled': True},
+                            verify=False)
 
     @allure.step('Выключить чекбокс "Отправлять оповещения системы на почту"')
     def turn_off_notifications(self):
         header = AuthEndpoint().get_header_token_api()
         return requests.put(url=Urls.system_settings_url + SystemSettingsNames.sending_notifications.value,
                             headers=header,
-                            json={'enabled': False})
+                            json={'enabled': False},
+                            verify=False)
 
 
 class SystemSettingsNames(enum.Enum):
