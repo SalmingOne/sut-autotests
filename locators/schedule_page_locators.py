@@ -7,6 +7,7 @@ class SchedulePageLocators:
     TAB_SCHEDULE = (By.CSS_SELECTOR, 'a[href="/schedule"]')
 
     REDACT_BUTTON = (By.XPATH, '//button[text()="Редактировать"]')
+    SAVE_BUTTON = (By.XPATH, '//button[text()="Сохранить"]')
     TAKE_OFF_BUTTON = (By.XPATH, '//button[text()="Добавить отгул"]')
     THIS_WEEK_NUMBER = (By.XPATH, '//h6[contains(text(),"неделя")]')
 
@@ -17,6 +18,7 @@ class SchedulePageLocators:
     WORK_HOURS_IN_DAY = (By.XPATH, '//p[contains(@class,"MuiTypography-root MuiTypography-body1")]')
     ALL_CHIPS_BUTTON = (By.CSS_SELECTOR, 'div[aria-label="Нажмите, чтобы редактировать рабочие часы"]')
     ALL_PLUS_BUTTON = (By.CSS_SELECTOR, 'button[aria-label="Нажмите, чтобы указать рабочие часы"]')
+    CHIPS_TEXT = (By.CSS_SELECTOR, 'span[class^="MuiChip-label MuiChip-labelMedium"]')
     # Дровер редактирования графика работы
     DRAWER_TITLE = (By.XPATH, '//div[contains(@class,"MuiDrawer-paper")]//h6[contains(@class,"MuiTypography-root MuiTypography-subtitle1")]')
     DRAWER_FIELDS_LABELS = (By.XPATH, '//div[contains(@class,"MuiDrawer-paper")]//label')
@@ -30,6 +32,7 @@ class SchedulePageLocators:
     START_WORK = (By.XPATH, '//label[text()="Начало рабочего дня"]/..//input')
     START_BREAK = (By.XPATH, '//div[contains(@name,"breaks")][contains(@name,"startTime")]//input')
     END_BREAK = (By.XPATH, '//div[contains(@name,"breaks")][contains(@name,"endTime")]//input')
+    DURATION_FIELDS = (By.XPATH, '//label[text()="Длительность"]/..//input')
     ADD_BREAK_BUTTON = (By.XPATH, '//button[text()="Добавить перерыв"]')
 
     DELETE_BREAK_BUTTON = (By.CSS_SELECTOR, 'svg[data-testid="DeleteIcon"]')

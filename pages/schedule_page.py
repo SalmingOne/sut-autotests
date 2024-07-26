@@ -14,6 +14,7 @@ class SchedulePage(BasePage):
     @testit.step("Переход на страницу Режим работы")
     @allure.step("Переход на страницу Режим работы")
     def go_to_schedule_page(self):
+        time.sleep(1)
         self.action_move_to_element(self.element_is_visible(self.locators.TAB_ACTIVITY))
         self.element_is_visible(self.locators.TAB_SCHEDULE).click()
 
@@ -206,3 +207,50 @@ class SchedulePage(BasePage):
         for error in all_errors:
             errors_texts.append(error.text)
         return errors_texts
+
+    @testit.step("Проверка добавления одного перерыва")
+    @allure.step("Проверка добавления одного перерыва")
+    def check_add_one_break(self):
+        self.element_is_visible(self.locators.ADD_BREAK_BUTTON).click()
+        assert self.elements_are_visible(self.locators.START_BREAK)[1].get_attribute(
+            'value') == '13:00', 'Не корректное время начала перерыва по умолчанию'
+        assert self.elements_are_visible(self.locators.END_BREAK)[1].get_attribute(
+            'value') == '14:00', 'Не корректное время окончания перерыва по умолчанию'
+        assert len(self.elements_are_visible(self.locators.DURATION_FIELDS)) == 3, "Есть не все поля Длительность"
+
+    @testit.step("Изменение второго перерыва")
+    @allure.step("Изменение второго перерыва")
+    def change_second_break(self):
+        self.elements_are_visible(self.locators.START_BREAK)[1].send_keys(Keys.CONTROL + 'a')
+        self.elements_are_visible(self.locators.START_BREAK)[1].send_keys('14:00')
+        self.element_is_visible(self.locators.LI_MENU_ITEM).click()
+        self.elements_are_visible(self.locators.END_BREAK)[1].send_keys(Keys.CONTROL + 'a')
+        self.elements_are_visible(self.locators.END_BREAK)[1].send_keys('15:00')
+        self.element_is_visible(self.locators.LI_MENU_ITEM).click()
+        self.elements_are_visible(self.locators.DURATION_FIELDS)[0].send_keys(Keys.CONTROL + 'a')
+        self.elements_are_visible(self.locators.DURATION_FIELDS)[0].send_keys('8ч')
+        self.element_is_visible(self.locators.LI_MENU_ITEM).click()
+
+    @testit.step("Получение графика работы первого дня")
+    @allure.step("Получение графика работы первого дня")
+    def get_first_day_chips_text(self):
+        before_break = self.elements_are_visible(self.locators.CHIPS_TEXT)[0].text
+        after_break = self.elements_are_visible(self.locators.CHIPS_TEXT)[1].text
+        return before_break, after_break
+
+    @testit.step("Нажатие кнопки Сохранить на странице")
+    @allure.step("Нажатие кнопки Сохранить на странице")
+    def press_save_button_in_page(self):
+        self.element_is_visible(self.locators.SAVE_BUTTON).click()
+
+    @testit.step("Возвращение графика к первоначальным значениям")
+    @allure.step("Возвращение графика к первоначальным значениям")
+    def return_before_values(self):
+        self.open_editing_schedule_for_a_standard_chart_drawer()
+        self.element_is_visible(self.locators.DELETE_BREAK_BUTTON).click()
+        self.elements_are_visible(self.locators.DURATION_FIELDS)[0].send_keys(Keys.CONTROL + 'a')
+        self.elements_are_visible(self.locators.DURATION_FIELDS)[0].send_keys('8ч')
+        self.element_is_visible(self.locators.LI_MENU_ITEM).click()
+        self.press_submit_button_in_drawer()
+        self.press_save_button_in_page()
+        time.sleep(0.5)

@@ -133,3 +133,27 @@ class TestSchedulePage:
         assert errors == ['Хотя бы один день недели должен быть выбран'], \
             "Не появилось сообщение о необходимости выбрать чекбокс"
 
+    @testit.workItemIds(11600)
+    @testit.displayName("10.2.1.2. Добавление дополнительного перерыва")
+    @pytest.mark.regress
+    @allure.title("id-11600 10.2.1.2. Добавление дополнительного перерыва")
+    def test_adding_second_break(self, login, driver):
+        schedule_page = SchedulePage(driver)
+        schedule_page.go_to_schedule_page()
+        if schedule_page.check_text_on_modal():
+            schedule_page.press_submit_button_in_modal()
+        else:
+            pass
+        first_day_chips = schedule_page.get_first_day_chips_text()
+        schedule_page.open_editing_schedule_for_a_standard_chart_drawer()
+        schedule_page.check_add_one_break()
+        schedule_page.change_second_break()
+        schedule_page.press_submit_button_in_drawer()
+        first_day_chips_redacted = schedule_page.get_first_day_chips_text()
+        schedule_page.press_save_button_in_page()
+        first_day_chips_saved = schedule_page.get_first_day_chips_text()
+        # Возвращаем первоначальные значения
+        schedule_page.return_before_values()
+        assert first_day_chips_redacted == ('09:00 - 13:00', '15:00 - 19:00'), "Значения в графике не изменились на заданные"
+        assert first_day_chips_redacted != first_day_chips, "График не изменился"
+        assert first_day_chips_redacted == first_day_chips_saved, "График не сохранился"
