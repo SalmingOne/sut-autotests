@@ -16,7 +16,7 @@ class UserProfilePageLocators:
     EMAIL_FIELD = (By.CSS_SELECTOR, 'input[name="email"]')
     PHONE_TEXT_AREA = (By.CSS_SELECTOR, 'textarea[name="phone"]')
     PHONE_FIELD = (By.CSS_SELECTOR, 'input[name="phone"]')
-    MODAL_TITLE = (By.CSS_SELECTOR, 'h6[class^="MuiTypography-root MuiTypography-subtitle1 css-slzcdp"]')
+    MODAL_TITLE = (By.XPATH, '//h6[text()="Введите название нового резюме"]')
     # Модальное окно с диалогом
     ALERT_DIALOG_DESCRIPTION = (By.CSS_SELECTOR, 'p[id="alert-dialog-description"]')
 
