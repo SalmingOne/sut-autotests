@@ -258,6 +258,20 @@ class UserProfilePage(BasePage):
         time.sleep(1)
         return items_text
 
+    @testit.step("Открытие резюме в режиме редактирования")
+    @allure.step("Открытие резюме в режиме редактирования")
+    def editing_resume(self):
+        self.elements_are_visible(self.locators.KEBAB_MENU)[0].click()
+        self.element_is_visible(self.locators.KEBABS_EDIT_MENU_ITEM).click()
+        time.sleep(1)
+
+    @testit.step("Внесение изменений в резюме")
+    @allure.step("Внесение изменений в резюме")
+    def change_resume(self):
+        resume_title = self.element_is_visible(self.locators.RESUME_TITLE_FIELD).send_keys(' new')
+        time.sleep(1)
+        return resume_title
+
     @testit.step("Получение текста с поля дети")
     @allure.step("Получение текста с поля дети")
     def get_children_text(self):

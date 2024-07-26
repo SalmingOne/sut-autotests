@@ -782,3 +782,15 @@ class TestUserProfilePage:
         user_profile_page.change_resume(create_second_resume)
         error = user_profile_page.get_mui_error()
         assert error == 'Название резюме должно быть уникальным', "Не отображается сообщение о не уникальности названия"
+
+    @testit.workItemIds(3216)
+    @testit.displayName("10.6.1.8. Отмена редактирования резюме")
+    @pytest.mark.regress
+    @allure.title("id-3216 10.6.1.8. Отмена редактирования резюме")
+    def test_cancel_editing_resume(self, create_resume, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        time.sleep(2)
+        user_profile_page.go_to_resume_tab()
+        user_profile_page.editing_resume()
+        user_profile_page.check_cansel_changes()
