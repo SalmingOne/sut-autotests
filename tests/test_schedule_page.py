@@ -157,3 +157,28 @@ class TestSchedulePage:
         assert first_day_chips_redacted == ('09:00 - 13:00', '15:00 - 19:00'), "Значения в графике не изменились на заданные"
         assert first_day_chips_redacted != first_day_chips, "График не изменился"
         assert first_day_chips_redacted == first_day_chips_saved, "График не сохранился"
+
+    @testit.workItemIds(11664)
+    @testit.displayName("10.2.1.2. Редактирование стандартного рабочего графика")
+    @pytest.mark.regress
+    @allure.title("id-11664 10.2.1.2. Редактирование стандартного рабочего графика")
+    def test_editing_a_standard_work_schedule(self, login, driver):
+        schedule_page = SchedulePage(driver)
+        schedule_page.go_to_schedule_page()
+        if schedule_page.check_text_on_modal():
+            schedule_page.press_submit_button_in_modal()
+        else:
+            pass
+        first_day_chips = schedule_page.get_first_day_chips_text()
+        schedule_page.open_editing_schedule_for_a_standard_chart_drawer()
+        schedule_page.change_end_work_time()
+        schedule_page.press_submit_button_in_drawer()
+        first_day_chips_redacted = schedule_page.get_first_day_chips_text()
+        schedule_page.press_save_button_in_page()
+        first_day_chips_saved = schedule_page.get_first_day_chips_text()
+        # Возвращаем первоначальные значения
+        schedule_page.return_end_work_time()
+        schedule_page.check_change_all_days()
+        assert first_day_chips_redacted == ('09:00 - 13:00', '14:00 - 18:30'), "Значения в графике не изменились на заданные"
+        assert first_day_chips_redacted != first_day_chips, "График не изменился"
+        assert first_day_chips_redacted == first_day_chips_saved, "График не сохранился"

@@ -30,6 +30,7 @@ class SchedulePageLocators:
 
     LI_MENU_ITEM = (By.CSS_SELECTOR, 'li[role="option"]')
     START_WORK = (By.XPATH, '//label[text()="Начало рабочего дня"]/..//input')
+    END_WORK = (By.XPATH, '//label[text()="Окончание рабочего дня"]/..//input')
     START_BREAK = (By.XPATH, '//div[contains(@name,"breaks")][contains(@name,"startTime")]//input')
     END_BREAK = (By.XPATH, '//div[contains(@name,"breaks")][contains(@name,"endTime")]//input')
     DURATION_FIELDS = (By.XPATH, '//label[text()="Длительность"]/..//input')

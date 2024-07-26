@@ -254,3 +254,35 @@ class SchedulePage(BasePage):
         self.press_submit_button_in_drawer()
         self.press_save_button_in_page()
         time.sleep(0.5)
+
+    @testit.step("Изменение времени окончания работы")
+    @allure.step("Изменение времени окончания работы")
+    def change_end_work_time(self):
+        self.element_is_visible(self.locators.END_WORK).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.END_WORK).send_keys('18:30')
+        self.element_is_visible(self.locators.LI_MENU_ITEM).click()
+
+    @testit.step("Возвращение времени окончания работы к первоначальному значению")
+    @allure.step("Возвращение времени окончания работы к первоначальному значению")
+    def return_end_work_time(self):
+        self.open_editing_schedule_for_a_standard_chart_drawer()
+        self.element_is_visible(self.locators.END_WORK).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.END_WORK).send_keys('18:00')
+        self.element_is_visible(self.locators.LI_MENU_ITEM).click()
+        self.press_submit_button_in_drawer()
+        self.press_save_button_in_page()
+        time.sleep(0.5)
+
+    @testit.step("Проверка изменения всех дней в неделе")
+    @allure.step("Проверка изменения всех дней в неделе")
+    def check_change_all_days(self):
+        before_break, after_break = self.get_first_day_chips_text()
+        self.match_values(before_break, [2, 4, 6, 8])
+        self.match_values(after_break, [3, 5, 7, 9])
+
+    @testit.step("Сравнения значений в чипсах")
+    @allure.step("Сравнения значений в чипсах")
+    def match_values(self, value, number_elements):
+        for element in number_elements:
+            assert value == self.elements_are_visible(self.locators.CHIPS_TEXT)[element].text,\
+                f"Значение в чипсе {element} отличается"
