@@ -815,3 +815,17 @@ class TestUserProfilePage:
         user_profile_page.check_resume_name_placeholder()
         user_profile_page.check_disable_save_button_able()
         user_profile_page.check_break_button()
+
+    @testit.workItemIds(1512)
+    @testit.displayName("10.2.3. Заполнение полей дополнительных контактов в блоке Контакты")
+    @pytest.mark.regress
+    @allure.title("id-1512 10.2.3. Заполнение полей дополнительных контактов в блоке Контакты")
+    def test_filling_additional_contact_in_contacts(self, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        user_profile_page.press_redact_button()
+        time.sleep(2)       #без слип тайм не успевает прогрузиться
+        user_profile_page.add_contact_form(driver)
+        user_profile_page.filling_contact_form()
+        user_profile_page.press_save_button()
+        user_profile_page.check_added_contact()
