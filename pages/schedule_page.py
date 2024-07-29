@@ -344,3 +344,9 @@ class SchedulePage(BasePage):
         tabs_text = self.get_individual_tabs_text()
         checkboxes_text = self.get_checked_checkboxes_text()
         assert tabs_text == checkboxes_text, "Табы дней недели не равны выбранным чекбоксам дней недели"
+
+    @testit.step("Редактирование отдельного дня на следующей неделе")
+    @allure.step("Редактирование отдельного дня на следующей неделе")
+    def redact_next_week_day(self):
+        self.element_is_visible(self.locators.NEXT_PERIOD_BUTTON).click()
+        self.elements_are_visible(self.locators.ALL_CHIPS_BUTTON)[0].click()
