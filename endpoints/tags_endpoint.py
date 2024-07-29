@@ -13,21 +13,21 @@ class TagsEndpoint:
     @allure.step("Получаем все группы знаний")
     def get_all_tags_api(self):
         header = AuthEndpoint().get_header_token_api()
-        self.response = requests.get(url=Urls.tags_url, headers=header)
+        self.response = requests.get(url=Urls.tags_url, headers=header, verify=False)
         self.response_json = self.response.json()
         return self.response
 
     @allure.step("Создаем группу знаний")
     def create_tag_api(self, json):
         header = AuthEndpoint().get_header_token_api()
-        self.response = requests.post(url=Urls.tags_url, headers=header, json=json)
+        self.response = requests.post(url=Urls.tags_url, headers=header, json=json, verify=False)
         self.response_json = self.response.json()
         return self.response
 
     @allure.step("Удаление группу знаний")
     def delete_tag_api(self, tag_id):
         header = AuthEndpoint().get_header_token_api()
-        self.response = requests.delete(url=Urls.tags_url + tag_id, headers=header)
+        self.response = requests.delete(url=Urls.tags_url + tag_id, headers=header, verify=False)
         assert self.response.status_code == 204
         return self.response
 

@@ -14,6 +14,7 @@ class SchedulePage(BasePage):
     @testit.step("Переход на страницу Режим работы")
     @allure.step("Переход на страницу Режим работы")
     def go_to_schedule_page(self):
+        time.sleep(1)
         self.action_move_to_element(self.element_is_visible(self.locators.TAB_ACTIVITY))
         self.element_is_visible(self.locators.TAB_SCHEDULE).click()
 
@@ -206,3 +207,140 @@ class SchedulePage(BasePage):
         for error in all_errors:
             errors_texts.append(error.text)
         return errors_texts
+
+    @testit.step("Проверка добавления одного перерыва")
+    @allure.step("Проверка добавления одного перерыва")
+    def check_add_one_break(self):
+        self.element_is_visible(self.locators.ADD_BREAK_BUTTON).click()
+        assert self.elements_are_visible(self.locators.START_BREAK)[1].get_attribute(
+            'value') == '13:00', 'Не корректное время начала перерыва по умолчанию'
+        assert self.elements_are_visible(self.locators.END_BREAK)[1].get_attribute(
+            'value') == '14:00', 'Не корректное время окончания перерыва по умолчанию'
+        assert len(self.elements_are_visible(self.locators.DURATION_FIELDS)) == 3, "Есть не все поля Длительность"
+
+    @testit.step("Изменение второго перерыва")
+    @allure.step("Изменение второго перерыва")
+    def change_second_break(self):
+        self.elements_are_visible(self.locators.START_BREAK)[1].send_keys(Keys.CONTROL + 'a')
+        self.elements_are_visible(self.locators.START_BREAK)[1].send_keys('14:00')
+        self.element_is_visible(self.locators.LI_MENU_ITEM).click()
+        self.elements_are_visible(self.locators.END_BREAK)[1].send_keys(Keys.CONTROL + 'a')
+        self.elements_are_visible(self.locators.END_BREAK)[1].send_keys('15:00')
+        self.element_is_visible(self.locators.LI_MENU_ITEM).click()
+        self.elements_are_visible(self.locators.DURATION_FIELDS)[0].send_keys(Keys.CONTROL + 'a')
+        self.elements_are_visible(self.locators.DURATION_FIELDS)[0].send_keys('8ч')
+        self.element_is_visible(self.locators.LI_MENU_ITEM).click()
+
+    @testit.step("Получение графика работы первого дня")
+    @allure.step("Получение графика работы первого дня")
+    def get_first_day_chips_text(self):
+        before_break = self.elements_are_visible(self.locators.CHIPS_TEXT)[0].text
+        after_break = self.elements_are_visible(self.locators.CHIPS_TEXT)[1].text
+        return before_break, after_break
+
+    @testit.step("Нажатие кнопки Сохранить на странице")
+    @allure.step("Нажатие кнопки Сохранить на странице")
+    def press_save_button_in_page(self):
+        self.element_is_visible(self.locators.SAVE_BUTTON).click()
+
+    @testit.step("Возвращение графика к первоначальным значениям")
+    @allure.step("Возвращение графика к первоначальным значениям")
+    def return_before_values(self):
+        self.open_editing_schedule_for_a_standard_chart_drawer()
+        self.element_is_visible(self.locators.DELETE_BREAK_BUTTON).click()
+        self.elements_are_visible(self.locators.DURATION_FIELDS)[0].send_keys(Keys.CONTROL + 'a')
+        self.elements_are_visible(self.locators.DURATION_FIELDS)[0].send_keys('8ч')
+        self.element_is_visible(self.locators.LI_MENU_ITEM).click()
+        self.press_submit_button_in_drawer()
+        self.press_save_button_in_page()
+        time.sleep(0.5)
+
+    @testit.step("Изменение времени окончания работы")
+    @allure.step("Изменение времени окончания работы")
+    def change_end_work_time(self):
+        self.element_is_visible(self.locators.END_WORK).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.END_WORK).send_keys('18:30')
+        self.element_is_visible(self.locators.LI_MENU_ITEM).click()
+
+    @testit.step("Возвращение времени окончания работы к первоначальному значению")
+    @allure.step("Возвращение времени окончания работы к первоначальному значению")
+    def return_end_work_time(self):
+        self.open_editing_schedule_for_a_standard_chart_drawer()
+        self.element_is_visible(self.locators.END_WORK).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.END_WORK).send_keys('18:00')
+        self.element_is_visible(self.locators.LI_MENU_ITEM).click()
+        self.press_submit_button_in_drawer()
+        self.press_save_button_in_page()
+        time.sleep(0.5)
+
+    @testit.step("Проверка изменения всех дней в неделе")
+    @allure.step("Проверка изменения всех дней в неделе")
+    def check_change_all_days(self):
+        before_break, after_break = self.get_first_day_chips_text()
+        self.match_values(before_break, [2, 4, 6, 8])
+        self.match_values(after_break, [3, 5, 7, 9])
+
+    @testit.step("Сравнения значений в чипсах")
+    @allure.step("Сравнения значений в чипсах")
+    def match_values(self, value, number_elements):
+        for element in number_elements:
+            assert value == self.elements_are_visible(self.locators.CHIPS_TEXT)[element].text,\
+                f"Значение в чипсе {element} отличается"
+
+    @testit.step("Получение текста всех чипсов")
+    @allure.step("Получение текста всех чипсов")
+    def get_all_chips_text(self):
+        all_chips = self.elements_are_visible(self.locators.CHIPS_TEXT)
+        chips_text = []
+        for chips in all_chips:
+            chips_text.append(chips.text)
+        return chips_text
+
+    @testit.step("Нажатие кнопки Отменить в дровере")
+    @allure.step("Нажатие кнопки Отменить в дровере")
+    def press_cancel_button(self):
+        self.element_is_visible(self.locators.DRAWER_BREAK_BUTTON).click()
+
+    @testit.step("Переключение свича индивидуальный график для каждого дня")
+    @allure.step("Переключение свича индивидуальный график для каждого дня")
+    def press_individual_switch(self):
+        time.sleep(0.2)
+        self.element_is_present(self.locators.INDIVIDUAL_DAY_SWITCH).click()
+
+    @testit.step("Получение графика работы второго дня")
+    @allure.step("Получение графика работы второго дня")
+    def get_second_day_chips_text(self):
+        before_break = self.elements_are_visible(self.locators.CHIPS_TEXT)[2].text
+        after_break = self.elements_are_visible(self.locators.CHIPS_TEXT)[3].text
+        return before_break, after_break
+
+    @testit.step("Проверка отсутствия Табов дней недели")
+    @allure.step("Проверка отсутствия Табов дней недели")
+    def check_no_individual_tabs(self):
+        assert not self.element_is_displayed(self.locators.INDIVIDUAL_DAY_TABS, 1), \
+            "Присутствуют Табы дней недели"
+
+    @testit.step("Получение текста Табов дней недели")
+    @allure.step("Получение текста Табов дней недели")
+    def get_individual_tabs_text(self):
+        all_tabs = self.elements_are_visible(self.locators.INDIVIDUAL_DAY_TABS)
+        tabs_text = []
+        for tab in all_tabs:
+            tabs_text.append(tab.text)
+        return tabs_text
+
+    @testit.step("Получение текста дней недели с выбранным чекбоксам")
+    @allure.step("Получение текста дней недели с выбранным чекбоксам")
+    def get_checked_checkboxes_text(self):
+        all_checkboxes = self.elements_are_visible(self.locators.ALL_WEEK_CHECKED_CHECKBOXES_TEXT)
+        checkboxes_text = []
+        for checkbox in all_checkboxes:
+            checkboxes_text.append(checkbox.text)
+        return checkboxes_text
+
+    @testit.step("Проверка равенства Табов дней недели выбранным чекбоксам дней недели")
+    @allure.step("Проверка равенства Табов дней недели выбранным чекбоксам дней недели")
+    def match_checked_checkboxes_and_individual_tabs_text(self):
+        tabs_text = self.get_individual_tabs_text()
+        checkboxes_text = self.get_checked_checkboxes_text()
+        assert tabs_text == checkboxes_text, "Табы дней недели не равны выбранным чекбоксам дней недели"

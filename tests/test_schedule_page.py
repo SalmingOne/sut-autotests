@@ -133,3 +133,95 @@ class TestSchedulePage:
         assert errors == ['Хотя бы один день недели должен быть выбран'], \
             "Не появилось сообщение о необходимости выбрать чекбокс"
 
+    @testit.workItemIds(11600)
+    @testit.displayName("10.2.1.2. Добавление дополнительного перерыва")
+    @pytest.mark.regress
+    @allure.title("id-11600 10.2.1.2. Добавление дополнительного перерыва")
+    def test_adding_second_break(self, login, driver):
+        schedule_page = SchedulePage(driver)
+        schedule_page.go_to_schedule_page()
+        if schedule_page.check_text_on_modal():
+            schedule_page.press_submit_button_in_modal()
+        else:
+            pass
+        first_day_chips = schedule_page.get_first_day_chips_text()
+        schedule_page.open_editing_schedule_for_a_standard_chart_drawer()
+        schedule_page.check_add_one_break()
+        schedule_page.change_second_break()
+        schedule_page.press_submit_button_in_drawer()
+        first_day_chips_redacted = schedule_page.get_first_day_chips_text()
+        schedule_page.press_save_button_in_page()
+        first_day_chips_saved = schedule_page.get_first_day_chips_text()
+        # Возвращаем первоначальные значения
+        schedule_page.return_before_values()
+        assert first_day_chips_redacted == ('09:00 - 13:00', '15:00 - 19:00'), "Значения в графике не изменились на заданные"
+        assert first_day_chips_redacted != first_day_chips, "График не изменился"
+        assert first_day_chips_redacted == first_day_chips_saved, "График не сохранился"
+
+    @testit.workItemIds(11664)
+    @testit.displayName("10.2.1.2. Редактирование стандартного рабочего графика")
+    @pytest.mark.regress
+    @allure.title("id-11664 10.2.1.2. Редактирование стандартного рабочего графика")
+    def test_editing_a_standard_work_schedule(self, login, driver):
+        schedule_page = SchedulePage(driver)
+        schedule_page.go_to_schedule_page()
+        if schedule_page.check_text_on_modal():
+            schedule_page.press_submit_button_in_modal()
+        else:
+            pass
+        first_day_chips = schedule_page.get_first_day_chips_text()
+        schedule_page.open_editing_schedule_for_a_standard_chart_drawer()
+        schedule_page.change_end_work_time()
+        schedule_page.press_submit_button_in_drawer()
+        first_day_chips_redacted = schedule_page.get_first_day_chips_text()
+        schedule_page.press_save_button_in_page()
+        first_day_chips_saved = schedule_page.get_first_day_chips_text()
+        # Возвращаем первоначальные значения
+        schedule_page.return_end_work_time()
+        schedule_page.check_change_all_days()
+        assert first_day_chips_redacted == ('09:00 - 13:00', '14:00 - 18:30'), "Значения в графике не изменились на заданные"
+        assert first_day_chips_redacted != first_day_chips, "График не изменился"
+        assert first_day_chips_redacted == first_day_chips_saved, "График не сохранился"
+
+    @testit.workItemIds(2265)
+    @testit.displayName("10.2.1.2. Отмена редактирования стандартного рабочего графика")
+    @pytest.mark.regress
+    @allure.title("id-2265 10.2.1.2. Отмена редактирования стандартного рабочего графика")
+    def test_cancel_editing_of_a_standard_work_schedule(self, login, driver):
+        schedule_page = SchedulePage(driver)
+        schedule_page.go_to_schedule_page()
+        if schedule_page.check_text_on_modal():
+            schedule_page.press_submit_button_in_modal()
+        else:
+            pass
+        before_chips_text = schedule_page.get_all_chips_text()
+        schedule_page.open_editing_schedule_for_a_standard_chart_drawer()
+        schedule_page.change_end_work_time()
+        schedule_page.press_cancel_button()
+        after_chips_text = schedule_page.get_all_chips_text()
+        assert before_chips_text == after_chips_text, "Стандартный график изменился"
+
+    @testit.workItemIds(2264)
+    @testit.displayName("10.2.1.2. Редактирование стандартного рабочего графика индивидуально для каждого дня")
+    @pytest.mark.regress
+    @allure.title("id-2264 10.2.1.2. Редактирование стандартного рабочего графика индивидуально для каждого дня")
+    def test_editing_the_standard_work_schedule_individually_for_each_day(self, login, driver):
+        schedule_page = SchedulePage(driver)
+        schedule_page.go_to_schedule_page()
+        if schedule_page.check_text_on_modal():
+            schedule_page.press_submit_button_in_modal()
+        else:
+            pass
+        schedule_page.open_editing_schedule_for_a_standard_chart_drawer()
+        schedule_page.check_no_individual_tabs()
+        schedule_page.press_individual_switch()
+        schedule_page.match_checked_checkboxes_and_individual_tabs_text()
+        schedule_page.change_end_work_time()
+        schedule_page.press_submit_button_in_drawer()
+        schedule_page.press_save_button_in_page()
+        first_day_chips = schedule_page.get_first_day_chips_text()
+        second_day_chips = schedule_page.get_second_day_chips_text()
+        # Возвращаем первоначальные значения
+        schedule_page.return_end_work_time()
+        assert first_day_chips == ('09:00 - 13:00', '14:00 - 18:30'), "Значения в графике не изменились на заданные"
+        assert first_day_chips != second_day_chips, "День не отредактировался индивидуально"

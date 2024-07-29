@@ -12,7 +12,7 @@ class ProjectRolesEndpoint:
     @allure.step("Получаем все проектные роли")
     def get_all_project_roles(self):
         header = AuthEndpoint().get_header_token_api()
-        self.response = requests.get(url=Urls.project_role_url, headers=header)
+        self.response = requests.get(url=Urls.project_role_url, headers=header, verify=False)
         self.response_json = self.response.json()
         return self.response
 

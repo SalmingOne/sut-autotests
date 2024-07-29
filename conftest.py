@@ -28,7 +28,11 @@ from api_methods.system_settings import SystemSettingsApi
 
 @pytest.fixture(scope='function')
 def driver():
-    driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+    options = webdriver.ChromeOptions()
+    options.add_argument('ignore-certificate-errors')
+    # Раскомментировать при запуске втемную
+    #options.add_argument("--headless")
+    driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
     driver.maximize_window()
     yield driver
     driver.quit()

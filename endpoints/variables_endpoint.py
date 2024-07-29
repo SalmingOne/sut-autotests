@@ -13,20 +13,20 @@ class VariablesEndpoint:
     @allure.step("Получаем все переменные")
     def get_all_variables(self):
         header = AuthEndpoint().get_header_token_api()
-        self.response = requests.get(url=Urls.variables_url, headers=header)
+        self.response = requests.get(url=Urls.variables_url, headers=header, verify=False)
         self.response_json = self.response.json()
         return self.response
 
     @allure.step("Создаем переменную")
     def create_variables_api(self, json):
         header = AuthEndpoint().get_header_token_api()
-        self.response = requests.post(url=Urls.variables_url, headers=header, json=json)
+        self.response = requests.post(url=Urls.variables_url, headers=header, json=json, verify=False)
         self.response_json = self.response.json()
         return self.response
 
     @allure.step("Удаляем переменную")
     def delete_variables_api(self, variables_id):
         header = AuthEndpoint().get_header_token_api()
-        self.response = requests.delete(url=Urls.variables_url + variables_id, headers=header)
+        self.response = requests.delete(url=Urls.variables_url + variables_id, headers=header, verify=False)
         assert self.response.status_code == 204
         return self.response

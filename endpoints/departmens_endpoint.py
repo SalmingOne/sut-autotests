@@ -12,7 +12,7 @@ class DepartmentsEndpoint:
     @allure.step("Получаем все отделы")
     def get_all_departments(self):
         header = AuthEndpoint().get_header_token_api()
-        self.response = requests.get(url=Urls.department_url, headers=header)
+        self.response = requests.get(url=Urls.department_url, headers=header, verify=False)
         self.response_json = self.response.json()
         return self.response
 
