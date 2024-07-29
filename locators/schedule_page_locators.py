@@ -26,7 +26,10 @@ class SchedulePageLocators:
     DRAWER_BREAK_BUTTON = (By.XPATH, '//div[contains(@class,"MuiDrawer-paper")]//button[text()="Отменить"]')
     WEEK_CHECKBOXES = (By.CSS_SELECTOR, 'input[type="checkbox"]')
     ALL_WEEK_CHECKED_CHECKBOXES = (By.CSS_SELECTOR, 'input[checked][type="checkbox"]')
+    ALL_WEEK_CHECKED_CHECKBOXES_TEXT = (By.XPATH, '//input[@checked][@type="checkbox"]/../..//p')
+    INDIVIDUAL_DAY_SWITCH = (By.CSS_SELECTOR, 'input[class^="MuiSwitch-input PrivateSwitchBase-input"]')
     ERROR_IN_CHECKBOXES = (By.XPATH, '//p/..//span[contains(@class, "MuiTypography-root MuiTypography-caption")]')
+    INDIVIDUAL_DAY_TABS = (By.XPATH, '//label[contains(@class,"MuiFormControlLabel-labelPlacementEnd checked")]/..//label[contains(@class,"MuiFormControlLabel-labelPlacementEnd")]//p[text()]')
 
     LI_MENU_ITEM = (By.CSS_SELECTOR, 'li[role="option"]')
     START_WORK = (By.XPATH, '//label[text()="Начало рабочего дня"]/..//input')

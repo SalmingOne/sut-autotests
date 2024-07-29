@@ -300,3 +300,47 @@ class SchedulePage(BasePage):
     @allure.step("Нажатие кнопки Отменить в дровере")
     def press_cancel_button(self):
         self.element_is_visible(self.locators.DRAWER_BREAK_BUTTON).click()
+
+    @testit.step("Переключение свича индивидуальный график для каждого дня")
+    @allure.step("Переключение свича индивидуальный график для каждого дня")
+    def press_individual_switch(self):
+        time.sleep(0.2)
+        self.element_is_present(self.locators.INDIVIDUAL_DAY_SWITCH).click()
+
+    @testit.step("Получение графика работы второго дня")
+    @allure.step("Получение графика работы второго дня")
+    def get_second_day_chips_text(self):
+        before_break = self.elements_are_visible(self.locators.CHIPS_TEXT)[2].text
+        after_break = self.elements_are_visible(self.locators.CHIPS_TEXT)[3].text
+        return before_break, after_break
+
+    @testit.step("Проверка отсутствия Табов дней недели")
+    @allure.step("Проверка отсутствия Табов дней недели")
+    def check_no_individual_tabs(self):
+        assert not self.element_is_displayed(self.locators.INDIVIDUAL_DAY_TABS, 1), \
+            "Присутствуют Табы дней недели"
+
+    @testit.step("Получение текста Табов дней недели")
+    @allure.step("Получение текста Табов дней недели")
+    def get_individual_tabs_text(self):
+        all_tabs = self.elements_are_visible(self.locators.INDIVIDUAL_DAY_TABS)
+        tabs_text = []
+        for tab in all_tabs:
+            tabs_text.append(tab.text)
+        return tabs_text
+
+    @testit.step("Получение текста дней недели с выбранным чекбоксам")
+    @allure.step("Получение текста дней недели с выбранным чекбоксам")
+    def get_checked_checkboxes_text(self):
+        all_checkboxes = self.elements_are_visible(self.locators.ALL_WEEK_CHECKED_CHECKBOXES_TEXT)
+        checkboxes_text = []
+        for checkbox in all_checkboxes:
+            checkboxes_text.append(checkbox.text)
+        return checkboxes_text
+
+    @testit.step("Проверка равенства Табов дней недели выбранным чекбоксам дней недели")
+    @allure.step("Проверка равенства Табов дней недели выбранным чекбоксам дней недели")
+    def match_checked_checkboxes_and_individual_tabs_text(self):
+        tabs_text = self.get_individual_tabs_text()
+        checkboxes_text = self.get_checked_checkboxes_text()
+        assert tabs_text == checkboxes_text, "Табы дней недели не равны выбранным чекбоксам дней недели"
