@@ -51,7 +51,7 @@ class TestHeaderSearchPage:
         header_search_page.check_projects_in_dropdown_2_or_less()
         header_search_page.check_users_in_dropdown_2_or_less()
         header_search_page.go_to_quick_search_page()
-        header_search_page.quick_search_page()
+        header_search_page.quick_search_page_tab()
         header_search_page.check_users_in_alphabetical_order()
         header_search_page.check_projects_in_chronological_order()
         header_search_page.go_to_user_page_from_quick_search()

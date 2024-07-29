@@ -38,45 +38,37 @@ class HeaderSearchPage(BasePage):
     def entering_2_letters_in_header_search(self):
         self.element_is_visible(self.locators.SEARCH_HEADER_FIELD).send_keys('пр')
 
-    @testit.step("Выпадающего списка нет")
-    @allure.step("Выпадающего списка нет")
+    @testit.step("Проверка отсутствия дропдауна при введении менее 3 символов")
+    @allure.step("Проверка отсутствия дропдауна при введении менее 3 символов")
     def check_dropdown_not_visible(self):
-        self.element_is_not_visible(self.locators.SEARCH_RESULTS_LIST)
+        assert not self.element_is_displayed(self.locators.SEARCH_RESULTS_LIST), "Дропдаун отображается при введении менее 3 символов"
 
     @testit.step("Ввод третьего символа в поле поиска")
     @allure.step("Ввод третьего символа в поле поиска")
     def entering_3th_letter_in_header_search(self):
         self.element_is_visible(self.locators.SEARCH_HEADER_FIELD).send_keys('о')
 
-    @testit.step("Проектов в списке 2 и меньше")
-    @allure.step("Проектов в списке 2 и меньше")
+    @testit.step("Проверка наличия двух и менее проектов")
+    @allure.step("Проверка наличия двух и менее проектов")
     def check_projects_in_dropdown_2_or_less(self):
-        projects_list = self.elements_are_visible(self.locators.SEARCH_RESULTS_PROJECTS_LIST)
-        projects = []
-        for project in projects_list:
-            projects.append(project.text)
-        assert len(projects) <= 2, "Проектов в дропдауне больше двух"
+        assert len(self.elements_are_visible(self.locators.SEARCH_RESULTS_PROJECTS_LIST)) <= 2, "Проектов в дропдауне больше двух"
 
-    @testit.step("Пользователей в списке 2 и меньше")
-    @allure.step("Пользователей в списке 2 и меньше")
+    @testit.step("Проверка наличия двух и менее пользователей")
+    @allure.step("Проверка наличия двух и менее пользователей")
     def check_users_in_dropdown_2_or_less(self):
-        users_list = self.elements_are_visible(self.locators.SEARCH_RESULTS_USERS_LIST)
-        users = []
-        for user in users_list:
-            users.append(user.text)
-        assert len(users) <= 2, "Пользователей в дропдауне больше двух"
+        assert len(self.elements_are_visible(self.locators.SEARCH_RESULTS_USERS_LIST)) <= 2, "Пользователей в дропдауне больше двух"
 
     @testit.step("Переход на страницу Быстрый поиск")
     @allure.step("Переход на страницу Быстрый поиск")
     def go_to_quick_search_page(self):
         self.element_is_visible(self.locators.SEARCH_HEADER_FIELD).send_keys(Keys.ENTER)
 
-    @testit.step("Содержание страницы Быстрый поиск")
-    @allure.step("Содержание страницы Быстрый поиск")
-    def quick_search_page(self):
-        self.element_is_present(self.locators.TAB_ALL)
-        self.element_is_present(self.locators.TAB_USERS)
-        self.element_is_present(self.locators.TAB_PROJECTS)
+    @testit.step("Проверка наличия табов на странице Быстрый поиск")
+    @allure.step("Проверка наличия табов на странице Быстрый поиск")
+    def quick_search_page_tab(self):
+        assert self.element_is_displayed(self.locators.TAB_ALL), "Нет таба Все"
+        assert self.element_is_displayed(self.locators.TAB_USERS), "Нет таба Пользователи"
+        assert self.element_is_displayed(self.locators.TAB_PROJECTS), "Нет таба Проекты"
 
     @testit.step("Проверка отображения пользователей в алфавитном порядке")
     @allure.step("Проверка отображения пользователей в алфавитном порядке")
@@ -111,7 +103,7 @@ class HeaderSearchPage(BasePage):
     @testit.step("Проверка открытия страницы пользователя")
     @allure.step("Проверка открытия страницы пользователя")
     def check_page_after_redirect(self):
-        assert self.element_is_visible(self.locators.GO_TO_USER_PAGE), 'Страница пользователя не открылась'
+        assert self.element_is_displayed(self.locators.GO_TO_USER_PAGE), 'Страница пользователя не открылась'
 
 
 
