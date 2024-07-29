@@ -41,7 +41,7 @@ class HeaderSearchPage(BasePage):
     @testit.step("Проверка отсутствия дропдауна при введении менее 3 символов")
     @allure.step("Проверка отсутствия дропдауна при введении менее 3 символов")
     def check_dropdown_not_visible(self):
-        assert not self.element_is_displayed(self.locators.SEARCH_RESULTS_LIST), "Дропдаун отображается при введении менее 3 символов"
+        assert not self.element_is_displayed(self.locators.SEARCH_RESULTS_LIST, timeout=1), "Дропдаун отображается при введении менее 3 символов"
 
     @testit.step("Ввод третьего символа в поле поиска")
     @allure.step("Ввод третьего символа в поле поиска")
@@ -85,14 +85,10 @@ class HeaderSearchPage(BasePage):
         projects_list = self.elements_are_visible(self.locators.QUICK_SEARCH_PROJECTS_LIST)
         projects = []
         for project in projects_list:
-            projects.append(project.text)
-        list_prj = []
-        for x in projects:
-            list_prj.append(x[0:10])
+            projects.append(project.text[0:10])
         new = []
-        for a in list_prj:
-            x = datetime.strptime(a, '%d.%m.%Y')
-            new.append(x)
+        for a in projects:
+            new.append(datetime.strptime(a, '%d.%m.%Y'))
         assert new == sorted(new), 'Проекты не в хронологическом порядке'
 
     @testit.step("Переход на страницу пользователя")
