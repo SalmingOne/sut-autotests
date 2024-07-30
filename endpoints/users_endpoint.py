@@ -15,7 +15,7 @@ class UserEndpoint:
     @allure.step("Получаем id пользователя по электронной почте")
     def get_user_id_by_email(self, email):
         header = AuthEndpoint().get_header_token_api()
-        self.response = requests.get(url=Urls.users_url, headers=header)
+        self.response = requests.get(url=Urls.users_url, headers=header, verify=False)
         self.response_json = self.response.json()
         for user in self.response_json:
             if user['email'] == email:
@@ -24,14 +24,14 @@ class UserEndpoint:
     @allure.step("Изменяем пользователя")
     def change_user(self, user_id, json):
         header = AuthEndpoint().get_header_token_api()
-        self.response = requests.put(url=Urls.users_url + user_id, headers=header, json=json)
+        self.response = requests.put(url=Urls.users_url + user_id, headers=header, json=json, verify=False)
         self.response_json = self.response.json()
         return self.response
 
     @allure.step("Получаем пользователя по id")
     def get_user_by_id(self, user_id):
         header = AuthEndpoint().get_header_token_api()
-        self.response = requests.get(url=Urls.users_url + user_id, headers=header)
+        self.response = requests.get(url=Urls.users_url + user_id, headers=header, verify=False)
         self.response_json = self.response.json()
         return self.response
 
