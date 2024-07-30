@@ -77,17 +77,34 @@ class UserProfilePage(BasePage):
     @testit.step("Берем цвет вкладки Образование")
     @allure.step("Берем цвет вкладки Образование")
     def get_education_tab_color(self):
-        return self.element_is_visible(self.locators.EDUCATION_TAB_BUTTON).value_of_css_property('background-color')
+        self.element_is_visible(self.locators.EXPERIENCES_TAB_BUTTON).click()
+        color = self.element_is_visible(self.locators.EDUCATION_TAB_BUTTON).value_of_css_property('background-color')
+        self.element_is_visible(self.locators.EDUCATION_TAB_BUTTON).click()
+        return color
 
     @testit.step("Берем цвет вкладки Сертификаты")
     @allure.step("Берем цвет вкладки Сертификаты")
     def get_certificate_tab_color(self):
-        return self.element_is_visible(self.locators.CERTIFICATE_TAB_BUTTON).value_of_css_property('background-color')
+        self.element_is_visible(self.locators.EXPERIENCES_TAB_BUTTON).click()
+        color = self.element_is_visible(self.locators.CERTIFICATE_TAB_BUTTON).value_of_css_property('background-color')
+        self.element_is_visible(self.locators.CERTIFICATE_TAB_BUTTON).click()
+        return color
 
     @testit.step("Берем цвет вкладки Опыт работы")
     @allure.step("Берем цвет вкладки Опыт работы")
     def get_experience_tab_color(self):
-        return self.element_is_visible(self.locators.EXPERIENCES_TAB_BUTTON).value_of_css_property('background-color')
+        self.element_is_visible(self.locators.CERTIFICATE_TAB_BUTTON).click()
+        color = self.element_is_visible(self.locators.EXPERIENCES_TAB_BUTTON).value_of_css_property('background-color')
+        self.element_is_visible(self.locators.EXPERIENCES_TAB_BUTTON).click()
+        return color
+
+    @testit.step("Берем цвет вкладки Информация о сотруднике")
+    @allure.step("Берем цвет вкладки Информация о сотруднике")
+    def get_my_profile_tab_color(self):
+        self.element_is_visible(self.locators.CERTIFICATE_TAB_BUTTON).click()
+        color = self.element_is_visible(self.locators.MY_PROFILE_TAB_BUTTON).value_of_css_property('background-color')
+        self.element_is_visible(self.locators.MY_PROFILE_TAB_BUTTON).click()
+        return color
 
     @testit.step("Берем текст ошибок с незаполненных обязательных полей")
     @allure.step("Берем текст ошибок с незаполненных обязательных полей")
@@ -831,7 +848,7 @@ class UserProfilePage(BasePage):
 
     @testit.step("Добавление пустой формы заполнения контакта")
     @allure.step("Добавление пустой формы заполнения контакта")
-    def add_contact_form(self, driver):
+    def add_contact_form(self):
         self.element_is_visible(self.locators.ADD_BUTTON).click()
         assert self.element_is_displayed(self.locators.CONTACT_DETAILS_FIELD), "Нет поля реквизит контакта"
         assert self.element_is_displayed(self.locators.CONTACT_DELETE_BUTTON), "Нет кнопки удаления"
@@ -852,3 +869,12 @@ class UserProfilePage(BasePage):
     @allure.step("Удаление добавленного контакта")
     def delete_added_contact(self):
         self.element_is_visible(self.locators.CONTACT_DELETE_BUTTON).click()
+
+    @testit.step("Получение текстов всех ошибок")
+    @allure.step("Получение текстов всех ошибок")
+    def get_all_mui_errors(self):
+        mui_errors = self.elements_are_visible(self.locators.MUI_ERROR)
+        errors_text = []
+        for error in mui_errors:
+            errors_text.append(error.text)
+        return errors_text

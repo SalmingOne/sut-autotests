@@ -37,7 +37,7 @@ class TestUserProfilePage:
         tab_color = user_profile_page.get_education_tab_color()
         errors = user_profile_page.get_mui_errors_text()
         assert 'На табе "Образование" не все поля были заполнены корректно' in alert_messages, "Не появилось сообщение об ошибке"
-        #assert tab_color == 'rgba(255, 236, 229, 1)', "Цвет вкладки не красный"
+        assert tab_color == 'rgba(211, 47, 47, 1)', "Цвет вкладки не красный"
         assert 'Поле обязательно' in errors, "Нет сообщений об обязательности поля"
 
     @testit.workItemIds(4159)
@@ -59,7 +59,7 @@ class TestUserProfilePage:
         time.sleep(1)
         errors = user_profile_page.get_mui_errors_text()
         assert 'На табе "Сертификаты" не все поля были заполнены корректно' in alert_message, "Не появилось сообщение об ошибке"
-        #assert tab_color == 'rgba(255, 236, 229, 1)', "Цвет вкладки не красный"
+        assert tab_color == 'rgba(211, 47, 47, 1)', "Цвет вкладки не красный"
         assert 'Поле обязательно' in errors, "Нет сообщений об обязательности поля"
 
     @testit.workItemIds(4160)
@@ -81,7 +81,7 @@ class TestUserProfilePage:
         errors = user_profile_page.get_mui_errors_text()
 
         assert 'На табе "Опыт работы" не все поля были заполнены корректно' in alert_message, "Не появилось сообщение об ошибке"
-        #assert tab_color == 'rgba(255, 236, 229, 1)', "Цвет вкладки не красный"
+        assert tab_color == 'rgba(211, 47, 47, 1)', "Цвет вкладки не красный"
         assert 'Поле обязательно' in errors, "Нет сообщений об обязательности поля"
 
     @testit.workItemIds(3196)
@@ -824,12 +824,32 @@ class TestUserProfilePage:
         user_profile_page = UserProfilePage(driver)
         user_profile_page.go_to_user_profile()
         user_profile_page.press_redact_button()
-        time.sleep(2)       #без слип тайм не успевает прогрузиться
-        user_profile_page.add_contact_form(driver)
+        time.sleep(2)       # без слип тайм не успевает прогрузиться
+        user_profile_page.add_contact_form()
         user_profile_page.filling_contact_form()
         user_profile_page.press_save_button()
         user_profile_page.check_added_contact()
         user_profile_page.press_redact_button()
-        time.sleep(2)       #без слип тайм не успевает прогрузиться
+        time.sleep(2)       # без слип тайм не успевает прогрузиться
         user_profile_page.delete_added_contact()
         user_profile_page.press_save_button()
+
+    @testit.workItemIds(4161)
+    @testit.displayName("10.2.1. Пустой ввод в обязательные для заполнения поля при редактировании таба Информация о сотруднике")
+    @pytest.mark.regress
+    @allure.title("id-4161 10.2.1. Пустой ввод в обязательные для заполнения поля при редактировании таба Информация о сотруднике")
+    def test_blank_entry_into_required_fields_on_employee_information_tab(self, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        user_profile_page.press_redact_button()
+        time.sleep(1)
+        user_profile_page.add_contact_form()
+        user_profile_page.press_save_button()
+        mui_errors = user_profile_page.get_all_mui_errors()
+        alert_message = user_profile_page.get_alert_message()
+        color = user_profile_page.get_my_profile_tab_color()
+        assert color == 'rgba(211, 47, 47, 1)', "Таб Информация о сотруднике подсвечивается красным цветом."
+        assert alert_message == ['На табе "Информация о сотруднике" не все поля были заполнены корректно'], \
+            "Нет сообщения о некорректном заполнении полей"
+        assert mui_errors == ['Поле обязательно', 'Поле обязательно'], "Нет сообщения об обязательности полей"
+
