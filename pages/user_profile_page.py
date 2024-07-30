@@ -108,7 +108,6 @@ class UserProfilePage(BasePage):
     def get_modal_title(self):
         return self.element_is_visible(self.locators.MODAL_TITLE).text
 
-
     @testit.step("Получение даты начала работы")
     @allure.step("Получение даты начала работы")
     def get_start_work_date(self):
@@ -234,13 +233,13 @@ class UserProfilePage(BasePage):
     @testit.step("Проверка кнопки Сохранить как новое задизейбленна")
     @allure.step("Проверка кнопки Сохранить как новое задизейбленна")
     def check_disable_save_as_new_button(self):
-        assert not self.element_is_clickable(self.locators.SAVE_AS_NEW_BUTTON, 1), 'Кнопка сохранить как новое не задизейблена'
+        assert not self.element_is_clickable(self.locators.SAVE_AS_NEW_BUTTON,
+                                             1), 'Кнопка сохранить как новое не задизейблена'
 
     @testit.step("Проверка кнопки Сохранить как новое доступна")
     @allure.step("Проверка кнопки Сохранить как новое доступна")
     def check_disable_save_as_new_button_able(self):
         assert self.element_is_clickable(self.locators.SAVE_AS_NEW_BUTTON), 'Кнопка сохранить как новое задизейблена'
-
 
     @testit.step("Проверка кнопки отменить")
     @allure.step("Проверка кнопки отменить")
@@ -467,8 +466,10 @@ class UserProfilePage(BasePage):
         assert directions == ['Гуманитарное', 'Техническое'], 'Не корректный список в дропдауне Направление'
         assert levels == ['Студент', 'Среднее профессиональное', 'Повышение квалификации', 'Неполное высшее',
                           'Специалист', 'Начальное профессиональное образование', 'Бакалавр', 'Доктор наук',
-                          'Кандидат наук', 'Магистр'], 'Не корректный список в дропдауне Образовательно-квалификационный уровень'
-        assert self.element_is_displayed(self.locators.INSTITUTION_NAME), 'Нет поля Название образовательного учреждения'
+                          'Кандидат наук',
+                          'Магистр'], 'Не корректный список в дропдауне Образовательно-квалификационный уровень'
+        assert self.element_is_displayed(
+            self.locators.INSTITUTION_NAME), 'Нет поля Название образовательного учреждения'
         assert self.element_is_displayed(self.locators.DELETE_ICON), 'Нет иконки удаления'
         assert self.element_is_displayed(self.locators.ADD_ICON), 'Нет иконки добавления'
 
@@ -525,12 +526,17 @@ class UserProfilePage(BasePage):
     @testit.step("Проверка некликабельности полей до заполнения поля работодатель")
     @allure.step("Проверка некликабельности полей до заполнения поля работодатель")
     def check_disable_fields_in_work_experience_form(self):
-        assert not self.element_is_clickable(self.locators.EXPERIENCES_PROJECT_FIELD, 1), "Поле Название проекта кликабельно"
-        assert not self.element_is_clickable(self.locators.EXPERIENCES_SPECIALIZATION_ACTION, 1), "Поле Вид деятельности кликабельно"
-        assert not self.element_is_clickable(self.locators.EXPERIENCES_SPECIALIZATION_SLOT,1), "Поле Проектная роль кликабельно"
+        assert not self.element_is_clickable(self.locators.EXPERIENCES_PROJECT_FIELD,
+                                             1), "Поле Название проекта кликабельно"
+        assert not self.element_is_clickable(self.locators.EXPERIENCES_SPECIALIZATION_ACTION,
+                                             1), "Поле Вид деятельности кликабельно"
+        assert not self.element_is_clickable(self.locators.EXPERIENCES_SPECIALIZATION_SLOT,
+                                             1), "Поле Проектная роль кликабельно"
         assert not self.element_is_clickable(self.locators.EXPERIENCES_DESCRIPTION_TEXT, 1), "Поле Описание кликабельно"
-        assert not self.element_is_clickable(self.elements_are_visible(self.locators.EXPERIENCES_DATA_PICKER)[0], 1), "Поле Дата начала работы кликабельно"
-        assert not self.element_is_clickable(self.elements_are_visible(self.locators.EXPERIENCES_DATA_PICKER)[1], 1), "Поле Дата окончания работы кликабельно"
+        assert not self.element_is_clickable(self.elements_are_visible(self.locators.EXPERIENCES_DATA_PICKER)[0],
+                                             1), "Поле Дата начала работы кликабельно"
+        assert not self.element_is_clickable(self.elements_are_visible(self.locators.EXPERIENCES_DATA_PICKER)[1],
+                                             1), "Поле Дата окончания работы кликабельно"
         assert not self.element_is_clickable(self.locators.EXPERIENCES_KNOWLEDGE_FIELD, 1), "Поле Знание кликабельно"
 
     @testit.step("Проверка максимальной длины поля работодатель")
@@ -572,7 +578,8 @@ class UserProfilePage(BasePage):
         error_text = self.element_is_visible(self.locators.MUI_ERROR).text
         time.sleep(2)
         self.element_is_visible(self.locators.EXPERIENCES_BEGIN_DATA_INPUT).send_keys(Keys.CONTROL + 'a')
-        self.element_is_visible(self.locators.EXPERIENCES_BEGIN_DATA_INPUT).send_keys(self.get_day_after_create_project(project_name))
+        self.element_is_visible(self.locators.EXPERIENCES_BEGIN_DATA_INPUT).send_keys(
+            self.get_day_after_create_project(project_name))
         self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_SLOT).click()
         assert error_text == 'Дата начала работы некорректна', "Не появилось сообщение о некорректной дате"
 
@@ -589,7 +596,8 @@ class UserProfilePage(BasePage):
         self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
 
         specializations = self.get_dropdown_menu_items(self.locators.EXPERIENCES_SPECIALIZATION_ACTION)
-        assert specializations == ['Инжиниринг', 'Административно-управленческий персонал', 'Блок ИТ'], "Не все значения в дропдауне Вид деятельности"
+        assert specializations == ['Инжиниринг', 'Административно-управленческий персонал',
+                                   'Блок ИТ'], "Не все значения в дропдауне Вид деятельности"
         self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_ACTION).click()
         time.sleep(1)
         self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
@@ -651,7 +659,8 @@ class UserProfilePage(BasePage):
         self.press_add_icon_button()
         time.sleep(2)
         self.field_custom_employer_field()
-        self.check_128_symbol_in_field(self.locators.EXPERIENCES_CUSTOM_PROJECT_FIELD, self.locators.EXPERIENCES_KNOWLEDGE_FIELD)
+        self.check_128_symbol_in_field(self.locators.EXPERIENCES_CUSTOM_PROJECT_FIELD,
+                                       self.locators.EXPERIENCES_KNOWLEDGE_FIELD)
         self.check_64_symbol(self.locators.EXPERIENCES_SPECIALIZATION_SLOT, self.locators.EXPERIENCES_KNOWLEDGE_FIELD)
         self.check_custom_begin_data_field()
         self.element_is_visible(self.locators.EXPERIENCES_KNOWLEDGE_FIELD).click()
@@ -688,11 +697,11 @@ class UserProfilePage(BasePage):
         self.element_is_visible(self.locators.RESUME_DIRECTION_FIELD).send_keys('1')
         assert self.element_is_clickable(self.locators.SAVE_BUTTON, 1), "Кнопка сохранить задизейблена"
         self.element_is_visible(self.locators.SAVE_BUTTON).click()
-        assert len(self.elements_are_visible(self.locators.MUI_ERROR)) == 2,\
+        assert len(self.elements_are_visible(self.locators.MUI_ERROR)) == 2, \
             "Под обязательными полями не отображаются сообщения"
-        assert self.elements_are_visible(self.locators.MUI_ERROR)[0].text == 'Поле обязательно',\
+        assert self.elements_are_visible(self.locators.MUI_ERROR)[0].text == 'Поле обязательно', \
             "Не корректные сообщения под обязательными полями"
-        assert 'Заполнены не все обязательные поля' in self.get_alert_message(),\
+        assert 'Заполнены не все обязательные поля' in self.get_alert_message(), \
             "Не появился тост об обязательности полей"
 
     @testit.step("Проверка отмены создания резюме")
@@ -745,7 +754,8 @@ class UserProfilePage(BasePage):
         time.sleep(1)
         self.elements_are_visible(self.locators.KEBAB_MENU)[0].click()
         self.element_is_visible(self.locators.KEBABS_VIEW_ITEM).click()
-        assert self.element_is_displayed(self.locators.PRINT_BUTTON), "Не произошел переход на страницу просмотра резюме"
+        assert self.element_is_displayed(
+            self.locators.PRINT_BUTTON), "Не произошел переход на страницу просмотра резюме"
         self.element_is_visible(self.locators.BREAK_VIEW_BUTTON).click()
         assert self.element_is_displayed(self.locators.CREATE_RESUME_BUTTON), "Не произошло возвращение в таб резюме"
 
@@ -818,3 +828,27 @@ class UserProfilePage(BasePage):
     @allure.step("Получение текста ошибки")
     def get_mui_error(self):
         return self.element_is_visible(self.locators.MUI_ERROR).text
+
+    @testit.step("Добавление пустой формы заполнения контакта")
+    @allure.step("Добавление пустой формы заполнения контакта")
+    def add_contact_form(self, driver):
+        self.element_is_visible(self.locators.ADD_BUTTON).click()
+        assert self.element_is_displayed(self.locators.CONTACT_DETAILS_FIELD), "Нет поля реквизит контакта"
+        assert self.element_is_displayed(self.locators.CONTACT_DELETE_BUTTON), "Нет кнопки удаления"
+
+    @testit.step("Заполнение добавленной формы контакта")
+    @allure.step("Заполнение добавленной формы контакта")
+    def filling_contact_form(self):
+        self.element_is_visible(self.locators.CONTACT_TYPE_FIELD).send_keys('Контакт')
+        self.element_is_visible(self.locators.CONTACT_DETAILS_FIELD).send_keys('123')
+
+    @testit.step("Проверка отображения добавленного контакта")
+    @allure.step("Проверка отображения добавленного контакта")
+    def check_added_contact(self):
+        assert self.element_is_displayed(self.locators.CONTACT_TYPE_FIELD), "Тип контакта не сохранился"
+        assert self.element_is_displayed(self.locators.CONTACT_DETAILS_FIELD), "Реквизит контакта не сохранился"
+
+    @testit.step("Удаление добавленного контакта")
+    @allure.step("Удаление добавленного контакта")
+    def delete_added_contact(self):
+        self.element_is_visible(self.locators.CONTACT_DELETE_BUTTON).click()

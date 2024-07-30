@@ -17,6 +17,11 @@ class UserProfilePageLocators:
     PHONE_TEXT_AREA = (By.CSS_SELECTOR, 'textarea[name="phone"]')
     PHONE_FIELD = (By.CSS_SELECTOR, 'input[name="phone"]')
     MODAL_TITLE = (By.XPATH, '//h6[text()="Введите название нового резюме"]')
+    ADD_BUTTON = (By.XPATH, '//button[text()="Добавить"]')
+    CONTACT_TYPE_FIELD = (By.CSS_SELECTOR, 'input[name="contacts.0.name"]')
+    CONTACT_DETAILS_FIELD = (By.CSS_SELECTOR, 'input[name="contacts.0.value"]')
+    CONTACT_DELETE_BUTTON = (By.CSS_SELECTOR, 'svg[data-testid="DeleteIcon"]')
+
     # Модальное окно с диалогом
     ALERT_DIALOG_DESCRIPTION = (By.CSS_SELECTOR, 'p[id="alert-dialog-description"]')
 
