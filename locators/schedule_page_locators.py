@@ -30,6 +30,7 @@ class SchedulePageLocators:
     INDIVIDUAL_DAY_SWITCH = (By.CSS_SELECTOR, 'input[class^="MuiSwitch-input PrivateSwitchBase-input"]')
     ERROR_IN_CHECKBOXES = (By.XPATH, '//p/..//span[contains(@class, "MuiTypography-root MuiTypography-caption")]')
     INDIVIDUAL_DAY_TABS = (By.XPATH, '//label[contains(@class,"MuiFormControlLabel-labelPlacementEnd checked")]/..//label[contains(@class,"MuiFormControlLabel-labelPlacementEnd")]//p[text()]')
+    TOOLTIP_SUBMIT_BUTTON = (By.XPATH, '//div[text()="Время перерыва должно быть между границами рабочего дня"]')
 
     LI_MENU_ITEM = (By.CSS_SELECTOR, 'li[role="option"]')
     START_WORK = (By.XPATH, '//label[text()="Начало рабочего дня"]/..//input')
