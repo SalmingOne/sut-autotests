@@ -244,3 +244,20 @@ class TestSchedulePage:
         schedule_page.press_cancel_button()
         first_day_chips_after = schedule_page.get_first_day_chips_text()
         assert first_day_chips_after == first_day_chips_before, "В календаре произошли изменения"
+
+    @testit.workItemIds(11602)
+    @testit.displayName("10.2.1.2. Указание перерыва раньше начала/позже конца рабочего дня")
+    @pytest.mark.regress
+    @allure.title("id-11602 10.2.1.2. Указание перерыва раньше начала/позже конца рабочего дня")
+    def test_add_break_before_or_after_working_day(self, login, driver):
+        schedule_page = SchedulePage(driver)
+        schedule_page.go_to_schedule_page()
+        if schedule_page.check_text_on_modal():
+            schedule_page.press_submit_button_in_modal()
+        else:
+            pass
+        schedule_page.open_editing_schedule_for_a_standard_chart_drawer()
+        schedule_page.add_break_before_working_day()
+        schedule_page.press_cancel_button()
+        schedule_page.reopen_editing_schedule_for_a_standard_chart_drawer()
+        schedule_page.add_break_after_working_day()
