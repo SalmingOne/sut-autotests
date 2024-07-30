@@ -37,7 +37,7 @@ class TestUserProfilePage:
         tab_color = user_profile_page.get_education_tab_color()
         errors = user_profile_page.get_mui_errors_text()
         assert 'На табе "Образование" не все поля были заполнены корректно' in alert_messages, "Не появилось сообщение об ошибке"
-        #assert tab_color == 'rgba(255, 236, 229, 1)', "Цвет вкладки не красный"
+        assert tab_color == 'rgba(211, 47, 47, 1)', "Цвет вкладки не красный"
         assert 'Поле обязательно' in errors, "Нет сообщений об обязательности поля"
 
     @testit.workItemIds(4159)
@@ -59,7 +59,7 @@ class TestUserProfilePage:
         time.sleep(1)
         errors = user_profile_page.get_mui_errors_text()
         assert 'На табе "Сертификаты" не все поля были заполнены корректно' in alert_message, "Не появилось сообщение об ошибке"
-        #assert tab_color == 'rgba(255, 236, 229, 1)', "Цвет вкладки не красный"
+        assert tab_color == 'rgba(211, 47, 47, 1)', "Цвет вкладки не красный"
         assert 'Поле обязательно' in errors, "Нет сообщений об обязательности поля"
 
     @testit.workItemIds(4160)
@@ -81,7 +81,7 @@ class TestUserProfilePage:
         errors = user_profile_page.get_mui_errors_text()
 
         assert 'На табе "Опыт работы" не все поля были заполнены корректно' in alert_message, "Не появилось сообщение об ошибке"
-        #assert tab_color == 'rgba(255, 236, 229, 1)', "Цвет вкладки не красный"
+        assert tab_color == 'rgba(211, 47, 47, 1)', "Цвет вкладки не красный"
         assert 'Поле обязательно' in errors, "Нет сообщений об обязательности поля"
 
     @testit.workItemIds(3196)
