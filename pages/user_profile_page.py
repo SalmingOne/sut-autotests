@@ -7,8 +7,6 @@ import allure
 import testit
 from selenium.common import TimeoutException
 from selenium.webdriver import Keys
-from selenium.webdriver import ActionChains
-from selenium.webdriver.common.by import By
 
 from endpoints.project_endpoint import ProjectEndpoint
 from locators.user_profile_page_locators import UserProfilePageLocators
@@ -835,8 +833,6 @@ class UserProfilePage(BasePage):
     @allure.step("Добавление пустой формы заполнения контакта")
     def add_contact_form(self, driver):
         self.element_is_visible(self.locators.ADD_BUTTON).click()
-        action = ActionChains(driver)
-        action.scroll_to_element(driver.find_element(By.CSS_SELECTOR, 'input[name="contacts.0.value"]')).perform()
         assert self.element_is_displayed(self.locators.CONTACT_DETAILS_FIELD), "Нет поля реквизит контакта"
         assert self.element_is_displayed(self.locators.CONTACT_DELETE_BUTTON), "Нет кнопки удаления"
 
@@ -851,3 +847,8 @@ class UserProfilePage(BasePage):
     def check_added_contact(self):
         assert self.element_is_displayed(self.locators.CONTACT_TYPE_FIELD), "Тип контакта не сохранился"
         assert self.element_is_displayed(self.locators.CONTACT_DETAILS_FIELD), "Реквизит контакта не сохранился"
+
+    @testit.step("Удаление добавленного контакта")
+    @allure.step("Удаление добавленного контакта")
+    def delete_added_contact(self):
+        self.element_is_visible(self.locators.CONTACT_DELETE_BUTTON).click()

@@ -829,3 +829,7 @@ class TestUserProfilePage:
         user_profile_page.filling_contact_form()
         user_profile_page.press_save_button()
         user_profile_page.check_added_contact()
+        user_profile_page.press_redact_button()
+        time.sleep(2)       #без слип тайм не успевает прогрузиться
+        user_profile_page.delete_added_contact()
+        user_profile_page.press_save_button()
