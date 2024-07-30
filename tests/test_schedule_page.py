@@ -225,3 +225,22 @@ class TestSchedulePage:
         schedule_page.return_end_work_time()
         assert first_day_chips == ('09:00 - 13:00', '14:00 - 18:30'), "Значения в графике не изменились на заданные"
         assert first_day_chips != second_day_chips, "День не отредактировался индивидуально"
+
+    @testit.workItemIds(11607)
+    @testit.displayName("10.2.1.3 Отмена редактирования конкретного дня")
+    @pytest.mark.regress
+    @allure.title("id-11607 10.2.1.3 Отмена редактирования конкретного дня")
+    def test_cancel_editing_of_a_specific_day(self, login, driver):
+        schedule_page = SchedulePage(driver)
+        schedule_page.go_to_schedule_page()
+        if schedule_page.check_text_on_modal():
+            schedule_page.press_submit_button_in_modal()
+        else:
+            pass
+        first_day_chips_before = schedule_page.get_first_day_chips_text()
+        schedule_page.press_redact_button()
+        schedule_page.redact_next_week_day()
+        schedule_page.change_end_work_time()
+        schedule_page.press_cancel_button()
+        first_day_chips_after = schedule_page.get_first_day_chips_text()
+        assert first_day_chips_after == first_day_chips_before, "В календаре произошли изменения"
