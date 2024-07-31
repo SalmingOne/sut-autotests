@@ -32,7 +32,7 @@ def driver():
     options.add_argument('ignore-certificate-errors')
     # Раскомментировать при запуске втемную
     #options.add_argument("--headless")
-    driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
+    driver = webdriver.Chrome(service=ChromeService(), options=options)
     driver.maximize_window()
     yield driver
     driver.quit()

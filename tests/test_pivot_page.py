@@ -1,3 +1,4 @@
+import time
 
 import allure
 import pytest
@@ -67,6 +68,7 @@ class TestPivotPage:
         # Берем сумму на сводной таблице проектов за неделю
         pivot_tab_page = PivotTabPage(driver)
         pivot_tab_page.go_to_pivot_page()
+        time.sleep(1)
         pivot_tab_page.choose_period("year")
         sum_on_project = pivot_tab_page.get_sum_reason_on_project("year")
         # Берем сумму на сводной таблице пользователей за месяц по неделям

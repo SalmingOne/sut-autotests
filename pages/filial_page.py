@@ -31,11 +31,11 @@ class FilialPage(BasePage):
                      ' ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci'
                      ' tation ullamcorper suscipit lobortis nisl ut aliquip ex ea co')
         self.element_is_visible(locator).send_keys(bed_value)
-        self.element_is_visible(self.locators.ATTRACTION_RATE_FIELD).click()
+        self.element_is_visible(self.locators.EMAIL_FIELD).click()
         error_text = self.element_is_visible(self.locators.MUI_ERROR).text
         self.element_is_visible(locator).send_keys(Keys.CONTROL + 'a')
         self.element_is_visible(locator).send_keys('1')
-        self.element_is_visible(self.locators.ATTRACTION_RATE_FIELD).click()
+        self.element_is_visible(self.locators.EMAIL_FIELD).click()
         assert error_text == 'Максимальное количество символов: 255', \
             "Не появилось сообщение о превышении максимального количества символов"
 
@@ -110,7 +110,6 @@ class FilialPage(BasePage):
             self.elements_are_visible(self.locators.DROPDOWN_ITEMS, 2)[0].click()
         except TimeoutException:
             print('Нет родительских филиалов')
-        self.check_attraction_rate()
         self.element_is_visible(self.locators.PHONE_FIELD).send_keys(phone)
         self.element_is_visible(self.locators.EMAIL_FIELD).send_keys(email)
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()

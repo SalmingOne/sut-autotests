@@ -214,7 +214,6 @@ class UserProfilePage(BasePage):
     @testit.step("Проверка дата-пикеров в дровере")
     @allure.step("Проверка дата-пикеров в дровере")
     def check_date_pikers(self):
-        self.element_is_visible(self.locators.ADD_EXPERIENCE_BUTTON).click()
         assert len(self.elements_are_visible(self.locators.DATE_PIKERS)) == 5, "В дровере не пять дата-пикеров"
 
     @testit.step("Проверка визивигов в дровере")
@@ -657,7 +656,7 @@ class UserProfilePage(BasePage):
     @allure.step("Проверка поля Дата начала при самостоятельном заполнении")
     def check_custom_begin_data_field(self):
         self.elements_are_visible(self.locators.EXPERIENCES_DATA_PICKER)[0].click()
-        assert not self.element_is_clickable(self.locators.NEXT_DAY_IN_PICKER, 1)
+        assert not self.element_is_clickable(self.locators.NEXT_DAY_IN_PICKER, 1), "Можно выбрать следующую дату"
         self.elements_are_visible(self.locators.EXPERIENCES_DATA_PICKER)[0].click()
 
         self.element_is_visible(self.locators.EXPERIENCES_BEGIN_DATA_INPUT).send_keys(self.get_day_before(22000))
@@ -761,7 +760,7 @@ class UserProfilePage(BasePage):
             "Нет сообщения о невозможности выбора будущей даты"
         self.elements_are_visible(self.locators.DATE_PIKERS_ICON)[0].click()
         assert not self.element_is_clickable(self.locators.NEXT_DAY_IN_PICKER, 1), \
-            "Модно выбрать будущую дату в дата-пикере"
+            "Можно выбрать будущую дату в дата-пикере"
 
     @testit.step("Проверка выхода из просмотра резюме")
     @allure.step("Проверка выхода из просмотра резюме")

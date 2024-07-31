@@ -15,6 +15,7 @@ class PivotTabPage(BasePage):
     @testit.step("Переходим на сводную таблицу через меню")
     @allure.step("Переходим на сводную таблицу через меню")
     def go_to_pivot_page(self):
+        time.sleep(1)
         self.element_is_visible(self.locators.ANALYTIC_MENU_BUTTON).click()
         self.element_is_visible(self.locators.PIVOT_TAB_BUTTON).click()
 
