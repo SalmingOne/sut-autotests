@@ -86,11 +86,9 @@ class ProjectCardPage(BasePage):
     @allure.step("Добавляем новый ресурс")
     def add_new_member(self):
         self.element_is_visible(self.locators.ADD_BUTTON).click()
-        member_list = self.elements_are_present(self.locators.FIRST_MEMBER_TEXT_ON_REDACT)
-        for member in member_list:
-            try:
-                member.click()
-                self.element_is_visible(self.locators.FIRST_NOT_CHOOSE).click()
-            except StaleElementReferenceException:
-                pass
+        self.elements_are_present(self.locators.FIRST_MEMBER_TEXT_ON_REDACT)[0].click()
+        self.element_is_visible(self.locators.LI_MENU_ITEM).click()
+        self.elements_are_present(self.locators.FIRST_MEMBER_TEXT_ON_REDACT)[0].click()
+        self.element_is_visible(self.locators.LI_MENU_ITEM).click()
         self.element_is_visible(self.locators.SAVE_BUTTON).click()
+

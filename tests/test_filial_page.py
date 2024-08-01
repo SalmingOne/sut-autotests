@@ -23,6 +23,7 @@ class TestFilialPage:
         filial_page.open_add_filial_drawer()
         filial_page.check_clickable_save_button()
         filial_page.check_max_lait()
+        filial_page.check_attraction_rate()
         filial_page.check_affiliate_field()
         filial_page.check_phone_field()
         filial_page.check_email_field()

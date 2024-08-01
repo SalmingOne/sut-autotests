@@ -34,7 +34,7 @@ class TagsEndpoint:
     @allure.step("Получение id группы знаний по имени")
     def get_tag_id_by_name_api(self, name):
         header = AuthEndpoint().get_header_token_api()
-        self.response = requests.get(url=Urls.tags_url, headers=header)
+        self.response = requests.get(url=Urls.tags_url, headers=header, verify=False)
         self.response_json = self.response.json()
         for tag in self.response_json:
             if tag['name'] == name:

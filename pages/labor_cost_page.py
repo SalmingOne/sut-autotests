@@ -26,6 +26,7 @@ class LaborCostPage(BasePage):
     @testit.step("Проверка, что код проекта есть на странице")
     @allure.step("Проверка, что код проекта есть на странице")
     def check_project_code_at_labor(self, project_code):
+        self.element_is_visible(self.locators.NEXT_PERIOD_BUTTON).click()
         check_code_at_labor = self.element_is_present(self.locators.check_code_project(project_code)).text
         return check_code_at_labor
 

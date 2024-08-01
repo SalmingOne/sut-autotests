@@ -22,5 +22,6 @@ class ProjectCardLocators:
     SECOND_MEMBER_TEXT_ON_REDACT = (By.XPATH, '//div[@row-index="1"]//input[contains(@class, "MuiOutlinedInput-input")]')
     ALL_MEMBERS_TEXT_ON_REDACT = (By.XPATH, '//div[@row-index]//input[contains(@class, "MuiOutlinedInput-input")]')
     FIRST_NOT_CHOOSE = (By.XPATH, '//li[@aria-selected="false"][1]')
+    LI_MENU_ITEM = (By.CSS_SELECTOR, 'li[role="option"]')
 
     SAVE_BUTTON = (By.XPATH, '//button[text()="Сохранить"]')
