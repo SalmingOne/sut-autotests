@@ -381,3 +381,35 @@ class SchedulePage(BasePage):
         self.action_move_to_element(self.element_is_visible(self.locators.DRAWER_SUBMIT_BUTTON))
         assert not self.element_is_clickable(self.locators.DRAWER_SUBMIT_BUTTON, 1)
         assert self.element_is_visible(self.locators.TOOLTIP_SUBMIT_BUTTON, 1).text == "Время перерыва должно быть между границами рабочего дня", 'Некорректный тултип'
+
+    @testit.step("Проверка добавление перерыва на время начала рабочего дня")
+    @allure.step("Проверка добавление перерыва на время начала рабочего дня")
+    def check_add_break_in_start_work_time(self):
+        self.element_is_visible(self.locators.START_BREAK).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.START_BREAK).send_keys('09:00')
+        self.element_is_visible(self.locators.LI_MENU_ITEM).click()
+        self.element_is_visible(self.locators.END_BREAK).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.END_BREAK).send_keys('10:00')
+        self.element_is_visible(self.locators.LI_MENU_ITEM).click()
+        self.elements_are_visible(self.locators.DURATION_FIELDS)[0].send_keys(Keys.CONTROL + 'a')
+        self.elements_are_visible(self.locators.DURATION_FIELDS)[0].send_keys('8ч')
+        self.element_is_visible(self.locators.LI_MENU_ITEM).click()
+        self.action_move_to_element(self.element_is_visible(self.locators.DRAWER_SUBMIT_BUTTON))
+        assert not self.element_is_clickable(self.locators.DRAWER_SUBMIT_BUTTON, 1)
+        assert self.element_is_visible(self.locators.TOOLTIP_SUBMIT_BUTTON).text == "Время перерыва должно быть между границами рабочего дня", 'Некорректный тултип'
+
+    @testit.step("Проверка добавление перерыва в последний час рабочего дня")
+    @allure.step("Проверка добавление перерыва в последний час рабочего дня")
+    def check_add_break_for_hour_before_end_work_time(self):
+        self.element_is_visible(self.locators.START_BREAK).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.START_BREAK).send_keys('17:00')
+        self.element_is_visible(self.locators.LI_MENU_ITEM).click()
+        self.element_is_visible(self.locators.END_BREAK).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.END_BREAK).send_keys('18:00')
+        self.element_is_visible(self.locators.LI_MENU_ITEM).click()
+        self.elements_are_visible(self.locators.DURATION_FIELDS)[0].send_keys(Keys.CONTROL + 'a')
+        self.elements_are_visible(self.locators.DURATION_FIELDS)[0].send_keys('8ч')
+        self.element_is_visible(self.locators.LI_MENU_ITEM).click()
+        self.action_move_to_element(self.element_is_visible(self.locators.DRAWER_SUBMIT_BUTTON))
+        assert not self.element_is_clickable(self.locators.DRAWER_SUBMIT_BUTTON, 1)
+        assert self.element_is_visible(self.locators.TOOLTIP_SUBMIT_BUTTON).text == "Время перерыва должно быть между границами рабочего дня", 'Некорректный тултип'

@@ -32,6 +32,7 @@ def driver():
     options.add_argument('ignore-certificate-errors')
     # Раскомментировать при запуске втемную
     #options.add_argument("--headless")
+    #options.add_argument("--window-size=1920,1080")
     driver = webdriver.Chrome(service=ChromeService(), options=options)
     driver.maximize_window()
     yield driver
