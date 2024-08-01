@@ -261,3 +261,20 @@ class TestSchedulePage:
         schedule_page.press_cancel_button()
         schedule_page.reopen_editing_schedule_for_a_standard_chart_drawer()
         schedule_page.add_break_after_working_day()
+
+    @testit.workItemIds(11658)
+    @testit.displayName("10.2.1.3. Перенос перерыва за час до окончания РД/до начала РД")
+    @pytest.mark.regress
+    @allure.title("id-11658 10.2.1.3. Перенос перерыва за час до окончания РД/до начала РД")
+    def test_add_break_for_hour_before_end_or_after_start_working_day(self, login, driver):
+        schedule_page = SchedulePage(driver)
+        schedule_page.go_to_schedule_page()
+        if schedule_page.check_text_on_modal():
+            schedule_page.press_submit_button_in_modal()
+        else:
+            pass
+        schedule_page.open_editing_schedule_for_a_standard_chart_drawer()
+        schedule_page.check_add_break_in_start_work_time()
+        schedule_page.press_cancel_button()
+        schedule_page.reopen_editing_schedule_for_a_standard_chart_drawer()
+        schedule_page.check_add_break_for_hour_before_end_work_time()
