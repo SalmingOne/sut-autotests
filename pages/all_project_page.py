@@ -96,3 +96,17 @@ class AllProjectPage(BasePage):
         for item in menu_items:
             menu_items_names.append(item.text)
         assert menu_items_names == ['В архив', 'Удалить'], "Есть не все пункты меню Действия"
+
+    @testit.step("Получаем все имена проектов на странице")
+    @allure.step("Получаем все имена проектов на странице")
+    def get_all_project_names_on_page(self):
+        all_project = self.elements_are_visible(self.locators.ALL_PROJECTS_NAMES)
+        names = []
+        for name in all_project:
+            names.append(name.text)
+        return names
+
+    @testit.step("Выбираем чекбокс только мои проекты")
+    @allure.step("Выбираем чекбокс только мои проекты")
+    def press_only_my_projects_checkbox(self):
+        self.element_is_visible(self.locators.ONLY_MY_PROJECTS_CHECKBOX).click()

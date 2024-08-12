@@ -53,3 +53,13 @@ class ProjectEndpoint:
         for project in self.response_json:
             if project['name'] == name:
                 return project['startDate']
+
+    @allure.step("Получаем все имена проектов на которые назначен пользователь")
+    def get_project_name_for_current_user(self):
+        header = AuthEndpoint().get_header_token_api()
+        self.response = requests.get(url=Urls.project_for_current_user_url, headers=header, verify=False)
+        self.response_json = self.response.json()
+        project_names = []
+        for project in self.response_json:
+            project_names.append(project['name'])
+        return project_names
