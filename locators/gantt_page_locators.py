@@ -21,3 +21,21 @@ class GanttPageLocators:
         return (By.XPATH, f'//div[@aria-label="{phase_or_task_name}"]//following-sibling::*[@data-column-name="end_date"]')
     def status(self, phase_or_task_name):
         return (By.XPATH, f'//div[@aria-label="{phase_or_task_name}"]//following-sibling::*[@data-column-name="status"]')
+
+    CALENDAR = (By.CSS_SELECTOR, 'div[class="gantt_layout_cell gantt_layout gantt_layout_y "]')
+    PROJECT_LIVE_LINE = (By.CSS_SELECTOR, 'div[class="gantt_task_content"]')
+    TODAY_MARKER = (By.CSS_SELECTOR, 'div[class="gantt_marker today_marker"]')
+    TODAY_BUTTON = (By.XPATH, '//button[text()="Сегодня"]')
+
+    GANTT_GRID = (By.CSS_SELECTOR, 'div[class="gantt_grid"]')
+    TUNE_ICON = (By.CSS_SELECTOR, 'svg[data-testid="TuneIcon"]')
+    CHOSE_PERIOD_BUTTON = (By.CSS_SELECTOR, 'div[aria-haspopup="listbox"]')
+    BASE_PLAN_BUTTON = (By.CSS_SELECTOR, 'svg[data-testid="StraightenIcon"]')
+    FIELDS_FILTER = (By.XPATH, '//*[@data-testid="TuneIcon"]//following::*[@data-testid="SettingsIcon"]')
+    COLUMN_HEADER = (By.CSS_SELECTOR, 'div[role="columnheader"]')
+    CHECKBOXES_TEXT = (By.XPATH, '//span[contains(@class,"MuiCheckbox-root")]//following-sibling::span[contains(@class,"MuiTypography-body1")]')
+
+
+    LI_MENU_ITEM = (By.CSS_SELECTOR, 'li[role="option"]')
+
+

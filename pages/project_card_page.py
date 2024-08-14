@@ -92,3 +92,161 @@ class ProjectCardPage(BasePage):
         self.element_is_visible(self.locators.LI_MENU_ITEM).click()
         self.element_is_visible(self.locators.SAVE_BUTTON).click()
 
+    @testit.step("Проверка вкладки Описание")
+    @allure.step("Проверка вкладки Описание")
+    def check_description_tab(self):
+        self.check_description_tab_title()
+        self.check_description_tab_name_field()
+        self.check_description_tab_code_field()
+        self.check_description_tab_status_field()
+        self.check_description_tab_manager_field()
+        self.check_description_tab_start_field()
+        self.check_description_tab_end_field()
+        self.check_description_tab_description_field()
+        self.check_description_tab_file_description_field()
+        self.check_description_tab_save_button()
+        self.check_description_tab_break_button()
+        assert self.get_all_checkboxes_text() == ['Обязательно указание причины списания трудозатрат',
+                                                  'Обязательно приложение файлов при переработках и отсутствиях',
+                                                  'Самостоятельное добавление',
+                                                  'Автоматическое проставление трудозатрат']
+
+    @testit.step("Проверка заголовка вкладки Описание")
+    @allure.step("Проверка заголовка вкладки Описание")
+    def check_description_tab_title(self):
+        assert self.element_is_displayed(self.locators.DESCRIPTION_TAB_TITLE)
+
+    @testit.step("Проверка наличия поля Имя на вкладке Описание")
+    @allure.step("Проверка наличия поля Имя на вкладке Описание")
+    def check_description_tab_name_field(self):
+        assert self.element_is_displayed(self.locators.NAME_FIELD)
+
+    @testit.step("Проверка наличия поля Код на вкладке Описание")
+    @allure.step("Проверка наличия поля Код на вкладке Описание")
+    def check_description_tab_code_field(self):
+        assert self.element_is_displayed(self.locators.CODE_FIELD)
+
+    @testit.step("Проверка наличия поля Код на вкладке Описание")
+    @allure.step("Проверка наличия поля Код на вкладке Описание")
+    def check_description_tab_status_field(self):
+        assert self.element_is_displayed(self.locators.STATUS_FIELD)
+
+    def check_description_tab_manager_field(self):
+        assert self.element_is_displayed(self.locators.MANAGER_FIELD)
+
+    def check_description_tab_start_field(self):
+        assert self.element_is_displayed(self.locators.BEGIN_DATA_FIELD)
+
+    def check_description_tab_end_field(self):
+        assert self.element_is_displayed(self.locators.END_DATA_FIELD)
+
+    def check_description_tab_description_field(self):
+        assert self.element_is_displayed(self.locators.DESCRIPTION_FIELD)
+
+    def check_description_tab_file_description_field(self):
+        assert self.element_is_displayed(self.locators.FILE_DESCRIPTION_FIELD)
+
+    def check_description_tab_save_button(self):
+        assert self.element_is_displayed(self.locators.SAVE_BUTTON)
+
+    def check_description_tab_break_button(self):
+        assert self.element_is_displayed(self.locators.BREAK_BUTTON)
+
+    def get_all_checkboxes_text(self):
+        all_checkboxes = self.elements_are_visible(self.locators.CHECKBOXES_TEXT)
+        checkboxes_text = []
+        for checkbox in all_checkboxes:
+            checkboxes_text.append(checkbox.text)
+        return checkboxes_text
+
+    def go_to_project_hierarchy_tab(self):
+        self.element_is_visible(self.locators.PROJECT_HIERARCHY_TAB).click()
+
+    def check_project_hierarchy_tab(self):
+        time.sleep(1)
+        self.check_project_hierarchy_tab_title()
+        self.check_project_hierarchy_tab_switch()
+        self.check_project_hierarchy_tab_scope_field()
+        self.check_project_hierarchy_tab_centre_icon()
+        self.check_project_hierarchy_tab_project_node()
+        self.check_project_hierarchy_tab_source_icon()
+
+    def check_project_hierarchy_tab_title(self):
+        assert self.element_is_displayed(self.locators.PROJECT_HIERARCHY_TAB_TITLE)
+
+    def check_project_hierarchy_tab_switch(self):
+        assert self.element_is_displayed(self.locators.LEGEND_SWITCH)
+
+    def check_project_hierarchy_tab_scope_field(self):
+        assert self.element_is_displayed(self.locators.SCOPE_FIELD)
+
+    def check_project_hierarchy_tab_centre_icon(self):
+        assert self.element_is_displayed(self.locators.CENTER_FOCUS_ICON)
+
+    def check_project_hierarchy_tab_project_node(self):
+        assert self.element_is_displayed(self.locators.PROJECT_NODE_ICON)
+
+    def check_project_hierarchy_tab_source_icon(self):
+        assert self.element_is_displayed(self.locators.SOURCE_ICON)
+
+    def check_team_tab(self):
+        time.sleep(1)
+        self.check_team_tab_redact_button()
+        self.check_team_tab_to_excel_button()
+        self.check_team_tab_filter_button()
+        self.check_team_tab_number_of_recourses()
+        self.check_team_tab_next_previous_buttons()
+        self.check_team_tab_titles()
+
+    def check_team_tab_redact_button(self):
+        assert self.element_is_displayed(self.locators.REDACT_BUTTON)
+
+    def check_team_tab_to_excel_button(self):
+        assert self.element_is_displayed(self.locators.TO_EXCEL_BUTTON)
+
+    def check_team_tab_filter_button(self):
+        assert self.element_is_displayed(self.locators.TEAM_TAB_FILTER_BUTTON)
+
+    def check_team_tab_number_of_recourses(self):
+        assert self.element_is_displayed(self.locators.NUMBER_OF_RECOURSES)
+
+    def check_team_tab_next_previous_buttons(self):
+        assert self.element_is_displayed(self.locators.NEXT_PERIOD_BUTTON)
+        assert self.element_is_displayed(self.locators.PREVIOUS_PERIOD_BUTTON)
+        assert self.element_is_displayed(self.locators.THIS_DAY_BUTTON)
+
+    def check_team_tab_titles(self):
+        self.element_is_visible(self.locators.REDACT_BUTTON).click()
+        all_titles = self.elements_are_visible(self.locators.TEAM_TAB_TITLES)
+        titles_text = []
+        for titles in all_titles:
+            titles_text.append(titles.text)
+        self.element_is_visible(self.locators.ABORT_BUTTON).click()
+        time.sleep(2)
+        assert titles_text == ['Ресурс', 'Ставка привлечения', 'Дата назначения пользователя на слот',
+                               'Дата снятия пользователя со слота', 'Проектная роль', 'Действия']
+
+    def go_to_resource_plan_tab(self):
+        self.element_is_visible(self.locators.RESOURCE_PLAN_TAB).click()
+
+    def check_resource_plan_tab(self):
+        self.check_team_tab_next_previous_buttons()
+        self.check_default_period()
+        self.check_chose_period_list()
+
+    @testit.step("Проверка периода выбранного по умолчанию")
+    @allure.step("Проверка периода выбранного по умолчанию")
+    def check_default_period(self):
+        assert self.element_is_visible(self.locators.CHOSE_PERIOD_BUTTON).text == 'Квартал', \
+            "По умолчанию выбран период не Квартал"
+
+    @testit.step("Проверка списка выбора периодов")
+    @allure.step("Проверка списка выбора периодов")
+    def check_chose_period_list(self):
+        self.element_is_visible(self.locators.CHOSE_PERIOD_BUTTON).click()
+        all_items = self.elements_are_visible(self.locators.LI_MENU_ITEM)
+        text = []
+        for item in all_items:
+            text.append(item.text)
+        self.action_esc()
+        assert text == ['Квартал', 'Месяц (по дням)', 'Год']
