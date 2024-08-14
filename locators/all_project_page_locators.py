@@ -10,6 +10,7 @@ class AllProjectPageLocators:
     def check_project_name_on_tab(self, project_name):
         return By.XPATH, f'//div[text()="{project_name}"]'
 
+    ALL_PROJECTS_NAMES = (By.XPATH, '//div[@col-id="name"][@role="gridcell"]/div')
     CREATE_PROJECT_BUTTON = (By.XPATH, '//button[text()="Создать проект"]')
     SUBMIT_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
     ALL_ACTION_BUTTONS = (By.CSS_SELECTOR, 'svg[data-testid="MoreHorizIcon"]')

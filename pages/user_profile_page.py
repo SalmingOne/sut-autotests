@@ -877,3 +877,15 @@ class UserProfilePage(BasePage):
         for error in mui_errors:
             errors_text.append(error.text)
         return errors_text
+
+    @testit.step("Ввод пробела в поля формы контакта")
+    @allure.step("Ввод пробела в поля формы контакта")
+    def space_input_contact_form(self):
+        self.element_is_visible(self.locators.CONTACT_TYPE_FIELD).send_keys(' ')
+        self.element_is_visible(self.locators.CONTACT_DETAILS_FIELD).send_keys(' ')
+
+    @testit.step("Проверка что удаленный контакт удален")
+    @allure.step("Проверка что удаленный контакт удален")
+    def check_delete_contact(self):
+        assert not self.element_is_displayed(self.locators.CONTACT_TYPE_FIELD, 2), "Тип контакта не удалился"
+        assert not self.element_is_displayed(self.locators.CONTACT_DETAILS_FIELD,2), "Реквизит контакта не удалился"

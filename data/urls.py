@@ -10,6 +10,7 @@ class Urls:
     api_url = f'{base_url}' + 'api/'
     auth_url = f'{api_url}' + 'auth/'
     project_url = f'{api_url}' + 'projects/'
+    project_for_current_user_url = f'{api_url}' + 'projects/for-current-user?onlyCurrentProjects=true'
     system_roles_url = f'{api_url}' + 'system-roles/'
     department_url = f'{api_url}' + 'departments/'
     post_url = f'{api_url}' + 'posts/'
