@@ -41,9 +41,25 @@ class ProjectCardLocators:
     SECOND_MEMBER_TEXT_ON_REDACT = (By.XPATH, '//div[@row-index="1"]//input[contains(@class, "MuiOutlinedInput-input")]')
     ALL_MEMBERS_TEXT_ON_REDACT = (By.XPATH, '//div[@row-index]//input[contains(@class, "MuiOutlinedInput-input")]')
     FIRST_NOT_CHOOSE = (By.XPATH, '//li[@aria-selected="false"][1]')
+
     # Локаторы вкладки Ресурсный план
     RESOURCE_PLAN_TAB = (By.XPATH, '//button[text()="Ресурсный план"]')
     CHOSE_PERIOD_BUTTON = (By.CSS_SELECTOR, 'div[aria-haspopup="listbox"]')
+    RESOURCE_PLAN_RADIOGROUP = (By.CSS_SELECTOR, 'div[role="radiogroup"]')
+    CHECKED_RADIOGROUP = (By.XPATH, '//span[contains(@class, "Mui-checked")]//following-sibling::span[contains(@class, "MuiTypography-caption")]')
+    ADD_PERCENT_BUTTON = (By.CSS_SELECTOR, 'svg[data-testid="CalendarTodayOutlinedIcon"]')
+    RESOURCE_PLAN_TAB_HEADER = (By.CSS_SELECTOR, 'div[class="ag-header-cell-comp-wrapper"]')
+
+    # Локаторы вкладки Ресурсный план
+    PROGRESS_TAB = (By.XPATH, '//button[text()="Ход выполнения"]')
+    PROGRESS_TAB_HEADER = (By.CSS_SELECTOR, 'span[class="ag-header-cell-text"]')
+    DONE_ICON = (By.CSS_SELECTOR, 'svg[data-testid="DoneIcon"]')
+    CLEAR_ICON = (By.CSS_SELECTOR, 'svg[data-testid="ClearIcon"]')
+    KEBAB_MENU = (By.CSS_SELECTOR, 'svg[data-testid="MoreHorizIcon"]')
+    KEBAB_MENU_ITEM = (By.XPATH, '//li//span[contains(@class,"MuiTypography-root MuiTypography-caption")]')
+    # Тултип
+    TOOLTIP = (By.XPATH, '//div[contains(@class, "MuiTooltip-tooltipPlacementTop")]')
+
 
     LI_MENU_ITEM = (By.CSS_SELECTOR, 'li[role="option"]')
 
