@@ -1,4 +1,5 @@
 import time
+from datetime import datetime
 
 import allure
 import testit
@@ -445,3 +446,13 @@ class ProjectCardPage(BasePage):
         for element in elements:
             titles_text.append(element.text)
         return titles_text
+
+    @testit.step("Проверка заголовка таблицы ресурсного плана по месяцам")
+    @allure.step("Проверка заголовка таблицы ресурсного плана по месяцам")
+    def check_resource_plan_tab_title_format_month(self):
+        time.sleep(2)
+        assert self.element_is_visible(self.locators.PROGRESS_TAB_HEADER).text == 'Ресурсы', "Нет столбца ресурсы"
+        assert ('Январь' and 'Февраль' and 'Март' and 'Апрель' and 'Май' and 'Июнь' and 'Июль' and 'Август' and
+                'Сентябрь' and 'Октябрь' and 'Ноябрь' and 'Декабрь' in self.get_hire_string_in_header()), \
+            "Нет названий месяцев"
+        assert datetime.now().strftime("%Y") in self.get_low_string_in_header(), "Не указан год"
