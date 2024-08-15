@@ -62,3 +62,18 @@ class TestProjectCard:
 
         project_card_page.go_to_progress_tab()
         project_card_page.check_progress_tab()
+
+    @testit.workItemIds(10134)
+    @testit.displayName("1.2.9. Отображение таблицы Ресурсный план - по дням")
+    @pytest.mark.regress
+    @allure.title("id-10134 1.2.9. Отображение таблицы Ресурсный план - по дням")
+    def test_displaying_the_resource_plan_table_by_day(self, project_with_assignment, login, driver):
+        all_project_page = AllProjectPage(driver)
+        time.sleep(0.5)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(f"{PROJECT_NAME}")
+        project_card_page = ProjectCardPage(driver)
+        project_card_page.go_to_resource_plan_tab()
+        project_card_page.chose_period('Месяц (по дням)')
+        project_card_page.check_resource_plan_tab_title_format_day()
+        project_card_page.check_resource_plan_tab_add_percent_button()

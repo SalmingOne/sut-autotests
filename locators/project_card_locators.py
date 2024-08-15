@@ -49,10 +49,12 @@ class ProjectCardLocators:
     CHECKED_RADIOGROUP = (By.XPATH, '//span[contains(@class, "Mui-checked")]//following-sibling::span[contains(@class, "MuiTypography-caption")]')
     ADD_PERCENT_BUTTON = (By.CSS_SELECTOR, 'svg[data-testid="CalendarTodayOutlinedIcon"]')
     RESOURCE_PLAN_TAB_HEADER = (By.CSS_SELECTOR, 'div[class="ag-header-cell-comp-wrapper"]')
-
-    # Локаторы вкладки Ресурсный план
+    HIRE_HEADER = (By.XPATH, '//div[@class="ag-header-cell-comp-wrapper"]//h6')
+    LOW_HEADER = (By.XPATH, '//div[@class="ag-header-cell-comp-wrapper"]//span[contains(@class,"MuiTypography-caption")]')
+    # Локаторы вкладки Ход выполнения
     PROGRESS_TAB = (By.XPATH, '//button[text()="Ход выполнения"]')
     PROGRESS_TAB_HEADER = (By.CSS_SELECTOR, 'span[class="ag-header-cell-text"]')
+
     DONE_ICON = (By.CSS_SELECTOR, 'svg[data-testid="DoneIcon"]')
     CLEAR_ICON = (By.CSS_SELECTOR, 'svg[data-testid="ClearIcon"]')
     KEBAB_MENU = (By.CSS_SELECTOR, 'svg[data-testid="MoreHorizIcon"]')
@@ -62,6 +64,8 @@ class ProjectCardLocators:
 
 
     LI_MENU_ITEM = (By.CSS_SELECTOR, 'li[role="option"]')
+    def li_by_text(self, text):
+        return (By.XPATH, f'//li[text()="{text}"]')
 
     SAVE_BUTTON = (By.XPATH, '//button[text()="Сохранить"]')
     BREAK_BUTTON = (By.XPATH, '//button[text()="Отмена"]')

@@ -411,3 +411,37 @@ class ProjectCardPage(BasePage):
         for element in menu_item:
             items_text.append(element.text)
         assert items_text == ['Подтвердить', 'Отклонить'], "В кебаб меню не все пункты"
+
+    @testit.step("Выбор периода отображения")
+    @allure.step("Выбор периода отображения")
+    def chose_period(self, period_name):
+        self.element_is_visible(self.locators.CHOSE_PERIOD_BUTTON).click()
+        self.element_is_visible(self.locators.li_by_text(period_name)).click()
+
+    @testit.step("Получение верхней строки дат заголовков таблицы")
+    @allure.step("Получение верхней строки дат заголовков таблицы")
+    def get_hire_string_in_header(self):
+        time.sleep(1)
+        elements = self.elements_are_visible(self.locators.HIRE_HEADER)
+        titles_text = []
+        for element in elements:
+            titles_text.append(element.text)
+        return titles_text
+
+    @testit.step("Проверка заголовка таблицы ресурсного плана по дням")
+    @allure.step("Проверка заголовка таблицы ресурсного плана по дням")
+    def check_resource_plan_tab_title_format_day(self):
+        assert self.element_is_visible(self.locators.PROGRESS_TAB_HEADER).text == 'Ресурсы', "Нет столбца ресурсы"
+        assert '1' and '15' and '28' in self.get_hire_string_in_header(), "Не указаны даты"
+        assert 'пн' and 'вт' and 'ср' and 'чт' and 'пт' and 'сб' and 'вс' in self.get_low_string_in_header(), \
+            "Не указаны дни недели"
+
+    @testit.step("Получение нижней строки дат заголовков таблицы")
+    @allure.step("Получение нижней строки дат заголовков таблицы")
+    def get_low_string_in_header(self):
+        time.sleep(1)
+        elements = self.elements_are_visible(self.locators.LOW_HEADER)
+        titles_text = []
+        for element in elements:
+            titles_text.append(element.text)
+        return titles_text
