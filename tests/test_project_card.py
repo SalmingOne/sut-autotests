@@ -6,6 +6,7 @@ import testit
 
 from data.data import PROJECT_NAME
 from pages.all_project_page import AllProjectPage
+from pages.gantt_page import GanttPage
 from pages.project_card_page import ProjectCardPage
 
 
@@ -33,3 +34,61 @@ class TestProjectCard:
         member_after_redact = project_card_page.get_all_team_members()
         assert input_member[0] == member_before_redact[0], "Роль, ресурс и ставка изменились при нажатии кнопки редактирования"
         assert len(input_member) != len(member_after_redact), "Не добавился новый ресурс"
+
+    @testit.workItemIds(11847)
+    @testit.displayName("1.2.2 Содержание табов в карточке проекта.")
+    @pytest.mark.regress
+    @allure.title("id-11847 1.2.2 Содержание табов в карточке проекта.")
+    def test_contents_of_tabs_in_the_project_card(self, project_with_overtime_work, login, driver):
+        all_project_page = AllProjectPage(driver)
+        time.sleep(0.5)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(f"{PROJECT_NAME}")
+        project_card_page = ProjectCardPage(driver)
+        project_card_page.check_description_tab()
+
+        project_card_page.go_to_project_hierarchy_tab()
+        project_card_page.check_project_hierarchy_tab()
+
+        gantt_page = GanttPage(driver)
+        gantt_page.go_to_gantt_tab()
+        gantt_page.check_gantt_tab()
+
+        project_card_page.go_to_team_tab()
+        project_card_page.check_team_tab()
+
+        project_card_page.go_to_resource_plan_tab()
+        project_card_page.check_resource_plan_tab()
+
+        project_card_page.go_to_progress_tab()
+        project_card_page.check_progress_tab()
+
+    @testit.workItemIds(10134)
+    @testit.displayName("1.2.9. Отображение таблицы Ресурсный план - по дням")
+    @pytest.mark.regress
+    @allure.title("id-10134 1.2.9. Отображение таблицы Ресурсный план - по дням")
+    def test_displaying_the_resource_plan_table_by_day(self, project_with_assignment, login, driver):
+        all_project_page = AllProjectPage(driver)
+        time.sleep(0.5)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(f"{PROJECT_NAME}")
+        project_card_page = ProjectCardPage(driver)
+        project_card_page.go_to_resource_plan_tab()
+        project_card_page.chose_period('Месяц (по дням)')
+        project_card_page.check_resource_plan_tab_title_format_day()
+        project_card_page.check_resource_plan_tab_add_percent_button()
+
+    @testit.workItemIds(10135)
+    @testit.displayName("1.2.9. Отображение таблицы Ресурсный план - по месяцам")
+    @pytest.mark.regress
+    @allure.title("id-10135 1.2.9. Отображение таблицы Ресурсный план - по месяцам")
+    def test_displaying_the_resource_plan_table_by_month(self, project_with_assignment, login, driver):
+        all_project_page = AllProjectPage(driver)
+        time.sleep(0.5)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(f"{PROJECT_NAME}")
+        project_card_page = ProjectCardPage(driver)
+        project_card_page.go_to_resource_plan_tab()
+        project_card_page.chose_period('Год')
+        project_card_page.check_resource_plan_tab_title_format_month()
+        project_card_page.check_resource_plan_tab_add_percent_button()

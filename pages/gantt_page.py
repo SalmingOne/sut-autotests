@@ -41,3 +41,94 @@ class GanttPage(BasePage):
         time.sleep(0.5)
         assert self.element_is_visible(self.locators.status(phase_name)).get_attribute('aria-label') == 'Планирование', \
             "Статус фазы не Планирование"
+
+    @testit.step("Проверка вкладки Диаграмма Ганта")
+    @allure.step("Проверка вкладки Диаграмма Ганта")
+    def check_gantt_tab(self):
+        self.check_gantt_tab_calendar()
+        self.check_gantt_project_live_line()
+        self.check_gantt_today_marker_and_button()
+        self.check_gantt_grid()
+        self.check_gantt_tune_icon()
+        self.check_default_period()
+        self.check_chose_period_list()
+        self.check_gantt_base_plan_button()
+        assert self.get_column_header() == ['№', 'Фазы и задачи', 'Начало', 'Окончание', 'План. трудозатраты',
+                                            'Действия'], "Есть не все заголовки по умолчанию"
+        self.check_fields_filter()
+
+    @testit.step("Проверка наличия таблицы Календарь")
+    @allure.step("Проверка наличия таблицы Календарь")
+    def check_gantt_tab_calendar(self):
+        assert self.element_is_displayed(self.locators.CALENDAR), "Нет таблицы Календарь"
+
+    @testit.step("Проверка наличия линии жизни проекта")
+    @allure.step("Проверка наличия линии жизни проекта")
+    def check_gantt_project_live_line(self):
+        assert self.element_is_displayed(self.locators.PROJECT_LIVE_LINE), "Нет линии жизни проекта"
+
+    @testit.step("Проверка наличия кнопки и линии Сегодня")
+    @allure.step("Проверка наличия кнопки и линии Сегодня")
+    def check_gantt_today_marker_and_button(self):
+        self.element_is_visible(self.locators.TODAY_BUTTON).click()
+        assert self.element_is_displayed(self.locators.TODAY_MARKER), "Нет линии отмечающей сегодняшний день"
+
+    @testit.step("Проверка наличия таблицы задач и фаз")
+    @allure.step("Проверка наличия таблицы задач и фаз")
+    def check_gantt_grid(self):
+        assert self.element_is_displayed(self.locators.GANTT_GRID), "Нет таблицы задач и фаз"
+
+    @testit.step("Проверка кнопки Фильтр")
+    @allure.step("Проверка кнопки Фильтр")
+    def check_gantt_tune_icon(self):
+        assert self.element_is_displayed(self.locators.TUNE_ICON), "Нет иконки Фильтр"
+
+    @testit.step("Проверка кнопки создания базового плана")
+    @allure.step("Проверка кнопки создания базового плана")
+    def check_gantt_base_plan_button(self):
+        assert self.element_is_displayed(self.locators.BASE_PLAN_BUTTON), "Нет кнопки создания базового плана"
+
+    @testit.step("Проверка периода выбранного по умолчанию")
+    @allure.step("Проверка периода выбранного по умолчанию")
+    def check_default_period(self):
+        assert self.element_is_visible(self.locators.CHOSE_PERIOD_BUTTON).text == 'День', \
+            "По умолчанию выбран период не День"
+
+    @testit.step("Проверка списка выбора периодов")
+    @allure.step("Проверка списка выбора периодов")
+    def check_chose_period_list(self):
+        self.element_is_visible(self.locators.CHOSE_PERIOD_BUTTON).click()
+        all_items = self.elements_are_visible(self.locators.LI_MENU_ITEM)
+        text = []
+        for item in all_items:
+            text.append(item.text)
+        self.action_esc()
+        assert text == ['Год', 'Месяц', 'Неделя', 'День'], "Можно выбрать не все периоды"
+
+    @testit.step("Получение заголовков таблицы фаз")
+    @allure.step("Получение заголовков таблицы фаз")
+    def get_column_header(self):
+        all_headers = self.elements_are_visible(self.locators.COLUMN_HEADER)
+        header_text = []
+        for header in all_headers:
+            header_text.append(header.text)
+        return header_text
+
+    @testit.step("Проверка чекбоксов выбора полей")
+    @allure.step("Проверка чекбоксов выбора полей")
+    def check_fields_filter(self):
+        self.element_is_visible(self.locators.FIELDS_FILTER).click()
+        assert self.get_all_checkboxes_text() == ['Таблица', 'Диаграмма', 'Слоты/исполнители', 'Начало', 'Окончание',
+                                                  'Факт. начало', 'Факт. окончание', 'План. трудозатраты',
+                                                  'План. длительность задач', 'Затраченное время', 'Статус'], \
+            "Есть не все чекбоксы"
+        self.action_esc()
+
+    @testit.step("Получение текста всех чекбоксов")
+    @allure.step("Получение текста всех чекбоксов")
+    def get_all_checkboxes_text(self):
+        all_checkboxes = self.elements_are_visible(self.locators.CHECKBOXES_TEXT)
+        checkboxes_text = []
+        for checkbox in all_checkboxes:
+            checkboxes_text.append(checkbox.text)
+        return checkboxes_text
