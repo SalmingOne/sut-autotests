@@ -5,6 +5,8 @@ import pytest
 import testit
 
 from data.data import PROJECT_NAME
+from endpoints.project_roles_endpoint import ProjectRolesEndpoint
+from endpoints.users_endpoint import UserEndpoint
 from pages.all_project_page import AllProjectPage
 from pages.gantt_page import GanttPage
 from pages.project_card_page import ProjectCardPage
@@ -92,3 +94,45 @@ class TestProjectCard:
         project_card_page.chose_period('Год')
         project_card_page.check_resource_plan_tab_title_format_month()
         project_card_page.check_resource_plan_tab_add_percent_button()
+
+    @testit.workItemIds(12239)
+    @testit.displayName("1.3.1.1. Содержание выпадающих списков Проектная роль и Ресурс")
+    @pytest.mark.smoke
+    @allure.title("id-12239 1.3.1.1. Содержание выпадающих списков Проектная роль и Ресурс")
+    def test_contents_of_the_project_role_and_resource_drop_down_lists(self, simple_project, create_work_user, login, driver):
+        all_project_page = AllProjectPage(driver)
+        project_card_page = ProjectCardPage(driver)
+        time.sleep(0.5)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(f"{PROJECT_NAME}")
+        project_card_page.go_to_team_tab()
+        # Проверяем все роли и всех пользователей
+        user_on_project = project_card_page.get_all_user_before_redact_team_tab()
+        project_roles_endpoint = ProjectRolesEndpoint()
+        project_roles_system = project_roles_endpoint.get_all_project_roles_name()
+        project_card_page.go_to_redact_team()
+        project_card_page.press_add_button()
+        project_roles_ui = project_card_page.get_all_names_in_li_menu(0)
+        user_endpoint = UserEndpoint()
+        api_users = user_endpoint.get_names_all_users()
+        api_users.remove(user_on_project)
+        ui_users = project_card_page.get_all_names_in_li_menu(1)
+        # Проверяем проектные роли при заполненном ресурсе
+        project_card_page.field_resource_field(create_work_user)
+        user_roles_api = user_endpoint.get_user_roles_by_name(create_work_user)
+        user_roles_ui = project_card_page.get_all_names_in_li_menu(0)
+        project_card_page.press_delete_icon()
+        # Проверяем все ресурсы при заполненной проектной роли
+        project_card_page.press_add_button()
+        api_users_by_role = user_endpoint.get_users_by_project_role_name(user_roles_ui[0])
+        project_card_page.field_roles_field(user_roles_ui[0])
+        ui_users_by_role = project_card_page.get_all_names_in_li_menu(0)
+
+        assert project_roles_system == project_roles_ui, ("Отображается выпадающий список не со всеми существующими "
+                                                          "проектными ролями в системе")
+        assert api_users == ui_users, ("Отображается выпадающий список не со всеми существующими "
+                                       "пользователями системы которые не назначены на данный проект")
+        assert user_roles_api == user_roles_ui, ("Отображается выпадающий список, содержащий не только те проектные"
+                                                 " роли, которые доступны пользователю из поля Ресурс")
+        assert api_users_by_role == ui_users_by_role, ("Отображается выпадающий список, содержащий не только "
+                                                       "пользователей с выбранной проектной ролью")

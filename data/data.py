@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 
-from user_id_end_name import ID, USER_NAME
+from user_id_and_name import ID, USER_NAME
 
 load_dotenv()
 

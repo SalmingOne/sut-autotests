@@ -23,3 +23,11 @@ class ProjectRolesEndpoint:
         for role in all_get_all_project_roles:
             get_all_project_roles_id.append(role['id'])
         return get_all_project_roles_id
+
+    @allure.step("Получаем названия всех проектных ролей")
+    def get_all_project_roles_name(self):
+        all_get_all_project_roles = self.get_all_project_roles().json()
+        get_all_project_roles_name = []
+        for role in all_get_all_project_roles:
+            get_all_project_roles_name.append(role['name'])
+        return get_all_project_roles_name

@@ -456,3 +456,42 @@ class ProjectCardPage(BasePage):
                 'Сентябрь' and 'Октябрь' and 'Ноябрь' and 'Декабрь' in self.get_hire_string_in_header()), \
             "Нет названий месяцев"
         assert datetime.now().strftime("%Y") in self.get_low_string_in_header(), "Не указан год"
+
+    @testit.step("Нажатие кнопки добавить")
+    @allure.step("Нажатие кнопки добавить")
+    def press_add_button(self):
+        time.sleep(1)
+        self.element_is_visible(self.locators.ADD_BUTTON).click()
+
+    @testit.step("Получение списка элементов выпадающего меню")
+    @allure.step("Получение списка элементов выпадающего меню")
+    def get_all_names_in_li_menu(self, element_number):
+        time.sleep(1)
+        self.elements_are_present(self.locators.FIRST_MEMBER_TEXT_ON_REDACT)[element_number].click()
+        all_roles = self.elements_are_visible(self.locators.LI_MENU_ITEM)
+        names = []
+        for role in all_roles:
+            names.append(role.get_attribute('aria-label'))
+        return names
+
+    @testit.step("Получение списка пользователей уже назначенных на проект")
+    @allure.step("Получение списка пользователей уже назначенных на проект")
+    def get_all_user_before_redact_team_tab(self):
+        return self.element_is_visible(self.locators.USERS_TEXT).text
+
+    @testit.step("Заполнение поля ресурс")
+    @allure.step("Заполнение поля ресурс")
+    def field_resource_field(self, name):
+        self.elements_are_present(self.locators.FIRST_MEMBER_TEXT_ON_REDACT)[1].send_keys(name)
+        self.element_is_visible(self.locators.LI_MENU_ITEM).click()
+
+    @testit.step("Нажатие кнопки удалить слот")
+    @allure.step("Нажатие кнопки удалить слот")
+    def press_delete_icon(self):
+        self.element_is_visible(self.locators.DELETE_ICON).click()
+
+    @testit.step("Заполнение поля роль")
+    @allure.step("Заполнение поля роль")
+    def field_roles_field(self, name):
+        self.elements_are_present(self.locators.FIRST_MEMBER_TEXT_ON_REDACT)[0].send_keys(name)
+        self.element_is_visible(self.locators.LI_MENU_ITEM).click()

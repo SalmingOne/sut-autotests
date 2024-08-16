@@ -65,9 +65,46 @@ class UserEndpoint:
     @allure.step("Записываем имя и id пользователя по логину в файл")
     def write_user_id_and_name_to_file(self, login):
         user_id, name = self.get_user_id_and_name_by_login(login)
-        file = open(os.path.abspath('../user_id_end_name.py'), "w", encoding='utf-8')
+        file = open(os.path.abspath('../user_id_and_name.py'), "w", encoding='utf-8')
         file.write(
             'ID = ' + str(user_id) +
             '\nUSER_NAME = ' + f"'{str(name)}'"
         )
         file.close()
+
+    @allure.step("Получение имен всех пользователей")
+    def get_names_all_users(self):
+        header = AuthEndpoint().get_header_token_api()
+        self.response = requests.get(url=Urls.users_url, headers=header, verify=False)
+        self.response_json = self.response.json()
+        names = []
+        for user in self.response_json:
+            names.append(user["fullName"])
+        return names
+
+    @allure.step("Получение всех ролей пользователя")
+    def get_user_roles_by_name(self, name):
+        header = AuthEndpoint().get_header_token_api()
+        self.response = requests.get(url=Urls.users_url, headers=header, verify=False)
+        self.response_json = self.response.json()
+        for user in self.response_json:
+            if user["secondName"] == name:
+                roles = []
+                for item in user['projectRoles']:
+                    roles.append(item["name"])
+                return roles
+            else:
+                pass
+
+    @allure.step("Получение всех пользователей с проектной ролью")
+    def get_users_by_project_role_name(self, name):
+        header = AuthEndpoint().get_header_token_api()
+        self.response = requests.get(url=Urls.users_url, headers=header, verify=False)
+        self.response_json = self.response.json()
+        users = []
+        for user in self.response_json:
+            for role in user['projectRoles']:
+                if role['name'] == name:
+                    users.append(user["fullName"])
+        return users
+
