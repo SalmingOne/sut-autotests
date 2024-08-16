@@ -97,7 +97,7 @@ class TestProjectCard:
 
     @testit.workItemIds(12239)
     @testit.displayName("1.3.1.1. Содержание выпадающих списков Проектная роль и Ресурс")
-    @pytest.mark.smoke
+    @pytest.mark.regress
     @allure.title("id-12239 1.3.1.1. Содержание выпадающих списков Проектная роль и Ресурс")
     def test_contents_of_the_project_role_and_resource_drop_down_lists(self, simple_project, create_work_user, login, driver):
         all_project_page = AllProjectPage(driver)

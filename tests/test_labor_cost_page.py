@@ -401,3 +401,15 @@ class TestLaborCostPage:
         labor_cost_page.go_to_labor_cost_page()
         labor_cost_page.open_overtime_drover()
         labor_cost_page.check_adding_overtime_work_to_a_completed_project()
+
+    @testit.workItemIds(258)
+    @testit.displayName("1.3.1.7 Отмена добавления пользователем себя на проект")
+    @pytest.mark.regress
+    @allure.title("id-258 1.3.1.7 Отмена добавления пользователем себя на проект")
+    def test_canceling_a_user_from_adding_himself_to_a_project(self, no_resources_project, login, driver):
+        labor_cost_page = LaborCostPage(driver)
+        labor_cost_page.go_to_labor_cost_page()
+        labor_cost_page.press_add_to_project_button()
+        labor_cost_page.field_adding_himself_to_a_project(no_resources_project["name"])
+        labor_cost_page.press_cancel_button_adding_himself_to_a_project()
+        assert not labor_cost_page.get_project_on_tab(no_resources_project["name"]), "Пользователь добавился на проект"

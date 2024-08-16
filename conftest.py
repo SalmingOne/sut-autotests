@@ -57,6 +57,17 @@ def simple_project():
 
 
 @pytest.fixture()
+def no_resources_project():
+    project_endpoint = ProjectEndpoint()
+    payload = CreateProject(
+        resources=[]
+    ).model_dump()
+    response = project_endpoint.create_project_api(json=payload)
+    yield response.json()
+    project_endpoint.delete_project_api(str(response.json()['id']))
+
+
+@pytest.fixture()
 def project_with_labor_reason():
     project_endpoint = ProjectEndpoint()
     payload = CreateProject(
