@@ -82,6 +82,61 @@ class ColleaguesPage(BasePage):
         self.element_is_visible(self.locators.RETURN_TO_PROFILE_BUTTON).click()
         assert self.element_is_displayed(self.locators.check_text_on_page('Коллеги')), 'Мы не на странице коллеги'
 
+    @testit.step("Переход на таб заметки на странице коллеги")
+    @allure.step("Переход на таб заметки на странице коллеги")
+    def go_to_colleague_profile(self):
+        self.element_is_visible(self.locators.USER_NAME_LINK).click()
+        self.element_is_visible(self.locators.TAB_NOTE).click()
 
+    @testit.step("Проверка содержания таба заметки")
+    @allure.step("Проверка содержания таба заметки")
+    def check_note_tab(self):
+        assert self.element_is_displayed(self.locators.MESSAGE_ON_TAB, 1), "Нет сообщения на странице"
+        assert self.element_is_displayed(self.locators.TEXT_FIELD_WITH_VISIVIG, 1), "Нет визивига"
+        #Раскомментировать после решения вопроса об удалении заметки из бд
+        #assert not self.element_is_clickable(self.locators.SAVE_BUTTON, 1), "Кнопка сохранения не задизейблена"
 
+    @testit.step("Проверка что поле заметки пустое")
+    @allure.step("Проверка что поле заметки пустое")
+    def check_note_empty(self):
+        assert self.element_is_present(self.locators.NOTE_TEXT_EMPTY, 1), "Поле заметки не пустое"
+
+    @testit.step("Ввод текста в поле заметки")
+    @allure.step("Ввод текста в поле заметки")
+    def put_text_in_note(self, put_text):
+        self.element_is_present(self.locators.NOTE_TEXT_EMPTY).send_keys(put_text)
+
+    @testit.step("Сохранение заметки")
+    @allure.step("Сохранение заметки")
+    def save_note(self):
+        self.element_is_visible(self.locators.SAVE_BUTTON).click()
+
+    @testit.step("Проверка что заметка сохранилась")
+    @allure.step("Проверка что заметка сохранилась")
+    def check_save_note(self, put_text):
+        self.element_is_visible(self.locators.TAB_EXPERIENCE).click()
+        self.element_is_visible(self.locators.TAB_NOTE).click()
+        assert self.locators.check_text_on_page(put_text), 'Заметка не сохранилась'
+
+    @testit.step("Проверка что заметка не видна адресату")
+    @allure.step("Проверка что заметка не видна адресату")
+    def check_note_not_visible_addressee(self):
+        self.element_is_visible(self.locators.WATCH_USER_EYES_BUTTONS).click()
+        self.element_is_visible(self.locators.PROFILE_BUTTON).click()
+        self.element_is_visible(self.locators.MY_PROFILE_MENU_ITEM).click()
+        self.element_is_visible(self.locators.TAB_NOTE).click()
+        assert self.element_is_present(self.locators.NOTE_TEXT_EMPTY, 1), "Заметка видна адресату"
+        self.element_is_visible(self.locators.RETURN_TO_PROFILE_BUTTON).click()
+
+    @testit.step("Проверка что заметка не видна не автору")
+    @allure.step("Проверка что заметка не видна не автору")
+    def check_note_not_visible_non_author(self, name):
+        self.element_is_visible(self.locators.WATCH_USER_EYES_BUTTONS).click()
+        self.element_is_visible(self.locators.COLLEAGUES_TAB).click()
+        self.element_is_visible(self.locators.ALL_COLLEAGUES).click()
+        self.element_is_visible(self.locators.SEARCH_FIELD).send_keys(name)
+        self.element_is_visible(self.locators.USER_NAME_LINK).click()
+        self.element_is_visible(self.locators.TAB_NOTE).click()
+        assert self.element_is_present(self.locators.NOTE_TEXT_EMPTY, 1), "Заметка видна не автору"
+        self.element_is_visible(self.locators.RETURN_TO_PROFILE_BUTTON).click()
 

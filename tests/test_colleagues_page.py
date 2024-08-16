@@ -46,6 +46,25 @@ class TestUsersPage:
         colleagues_page.search_user('АвтоСПроектом')
         colleagues_page.check_watch_the_user_eyes()
 
+    @testit.workItemIds(1429)
+    @testit.displayName("10.10.1. Сохранение заметки")
+    @pytest.mark.regress
+    @allure.title("id-1429 10.10.1. Сохранение заметки")
+    def test_saving_note(self, login, driver):
+        colleagues_page = ColleaguesPage(driver)
+        colleagues_page.go_colleagues_page()
+        colleagues_page.search_user('АвтоСПроектом')
+        colleagues_page.go_to_colleague_profile()
+        colleagues_page.check_note_tab() #Раскомментировать строку после решения вопроса об удалении заметки из бд
+        colleagues_page.check_note_empty()
+        colleagues_page.put_text_in_note("Текст заметки")
+        colleagues_page.save_note()
+        colleagues_page.check_save_note("Текст заметки")
+        colleagues_page.go_colleagues_page()
+        colleagues_page.search_user('АвтоСПроектом')
+        colleagues_page.check_note_not_visible_addressee()
+        colleagues_page.search_user('Бык')
+        colleagues_page.check_note_not_visible_non_author('АвтоСПроектом')
 
 
 
