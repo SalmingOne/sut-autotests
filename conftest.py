@@ -297,6 +297,7 @@ def create_work_user():
     else:
         response = user_endpoint.change_user(user_id=str(user_id), json=payload)
         print(response.status_code)
+    return payload["secondName"]
 
 
 @pytest.fixture()
