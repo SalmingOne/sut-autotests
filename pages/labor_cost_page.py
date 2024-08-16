@@ -795,3 +795,27 @@ class LaborCostPage(BasePage):
     @allure.step("Удаление файла")
     def delete_file(self, name):
         os.remove(rf'../{name}')
+
+    @testit.step("Нажатие кнопки добавления себя на проект")
+    @allure.step("Нажатие кнопки добавления себя на проект")
+    def press_add_to_project_button(self):
+        self.element_is_visible(self.locators.ADD_TO_PROJECT_BUTTON).click()
+
+    @testit.step("Заполнение полей дровера добавления себя на проект")
+    @allure.step("Заполнение полей дровера добавления себя на проект")
+    def field_adding_himself_to_a_project(self, project_name):
+        self.element_is_visible(self.locators.ADD_TO_PROJECT_PROJECT_FIELD).send_keys(project_name)
+        self.element_is_visible(self.locators.LI_MENU_ITEM).click()
+        self.element_is_visible(self.locators.ADD_TO_PROJECT_ROLE_FIELD).click()
+        self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
+
+    @testit.step("Нажатие кнопки отмены в дровере добавления себя на проект")
+    @allure.step("Нажатие кнопки отмены в дровере добавления себя на проект")
+    def press_cancel_button_adding_himself_to_a_project(self):
+        self.element_is_visible(self.locators.ADD_TO_PROJECT_CANCEL).click()
+
+    @testit.step("Получение отображения проекта в таблице трудозатрат")
+    @allure.step("Получение отображения проекта в таблице трудозатрат")
+    def get_project_on_tab(self, project_name):
+        return self.element_is_displayed(self.locators.check_projeck_on_reason_tab(project_name), 2)
+

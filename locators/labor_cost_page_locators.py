@@ -52,6 +52,9 @@ class LaborCostPageLocators:
     TITLE_PAGE = (By.XPATH, '//h6[contains(@class,"MuiTypography-root MuiTypography-subtitle1")]')
     # Кнопка добавления себя на проект
     ADD_TO_PROJECT_BUTTON = (By.CSS_SELECTOR, 'button[aria-label="Добавление на новый проект"]')
+    ADD_TO_PROJECT_PROJECT_FIELD = (By.XPATH, '//div[@name="project"]//input')
+    ADD_TO_PROJECT_ROLE_FIELD = (By.XPATH, '//div[@name="projectRole"]//input')
+    ADD_TO_PROJECT_CANCEL = (By.XPATH, '//div[@name="projectRole"]//following::button[text()="Отменить"]')
     # Кнопка добавления переработки и отсутствий
     ADD_OVERTIME_WORK_BUTTON = (By.XPATH, '//button[text()="Переработка"]')
     ADD_ABSENSE_BUTTON = (By.XPATH, '//button[text()="Отсутствие"]')
@@ -176,3 +179,5 @@ class LaborCostPageLocators:
     REASON_TAB_TITLE = (By.XPATH, '//h6[text()="Причины"]')
     def check_projeck_on_reason_tab(self, project_mame):
         return By.XPATH, f'//div[@class="ag-cell ag-cell-not-inline-editing ag-cell-normal-height ag-cell-value"]//div[@aria-label="{project_mame}"]'
+
+    LI_MENU_ITEM = (By.CSS_SELECTOR, 'li[role="option"]')
