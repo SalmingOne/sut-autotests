@@ -80,3 +80,5 @@ class ProjectCardLocators:
     NEXT_PERIOD_BUTTON = (By.CSS_SELECTOR, 'svg[data-testid="ChevronRightIcon"]')
     PREVIOUS_PERIOD_BUTTON = (By.CSS_SELECTOR, 'svg[data-testid="ChevronLeftIcon"]')
     THIS_DAY_BUTTON = (By.XPATH, '//button[contains(@class, "DateInterval-setToday")]')
+
+    ALERT_MESSAGE = (By.XPATH, '//div[contains(@class, "MuiAlert-message")]')

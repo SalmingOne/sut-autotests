@@ -1,4 +1,5 @@
 import time
+from datetime import timedelta, datetime
 
 import allure
 import pytest
@@ -161,3 +162,24 @@ class TestProjectCard:
         member_after_redact = project_card_page.get_all_team_members()
         assert input_member[0] == member_before_redact[0], "Роль, ресурс и ставка изменились при нажатии кнопки редактирования"
         assert len(input_member) == len(member_after_redact), "Добавился новый ресурс"
+
+    @testit.workItemIds(54)
+    @testit.displayName("1.3.2.1 Редактирование даты начала проекта")
+    @pytest.mark.regress
+    @allure.title("id-54 1.3.2.1 Редактирование даты начала проекта")
+    def test_editing_the_project_start_date(self, project_with_assignment, login, driver):
+        all_project_page = AllProjectPage(driver)
+        time.sleep(0.5)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(f"{PROJECT_NAME}")
+        project_card_page = ProjectCardPage(driver)
+        before_start_date = project_card_page.get_project_start_date()
+        new_date = datetime.strptime(before_start_date, "%d.%m.%Y").date() - timedelta(1)
+        project_card_page.change_start_date(new_date.strftime("%d.%m.%Y"))
+        project_card_page.press_submit_button()
+        after_start_date = project_card_page.get_project_start_date()
+
+        assert project_card_page.get_alert_message() == 'Свойства проекта успешно изменены', \
+            "Не появилось сообщение об изменении проекта"
+        assert before_start_date != after_start_date, "Дата начала проекта не изменилась"
+        assert after_start_date == new_date.strftime("%d.%m.%Y"), "Дата начала проекта не изменилась на указанную"

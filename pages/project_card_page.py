@@ -4,6 +4,7 @@ from datetime import datetime
 import allure
 import testit
 from selenium.common import StaleElementReferenceException, TimeoutException
+from selenium.webdriver import Keys
 
 from locators.project_card_locators import ProjectCardLocators
 from pages.base_page import BasePage
@@ -522,3 +523,23 @@ class ProjectCardPage(BasePage):
     def press_modal_submit_button(self):
         self.element_is_visible(self.locators.MODAL_SUBMIT_BUTTON).click()
 
+    @testit.step("Получение даты начала проекта")
+    @allure.step("Получение даты начала проекта")
+    def get_project_start_date(self):
+        return self.element_is_visible(self.locators.BEGIN_DATA_FIELD).get_attribute("value")
+
+    @testit.step("Изменение даты начала проекта")
+    @allure.step("Изменение даты начала проекта")
+    def change_start_date(self, date):
+        self.element_is_visible(self.locators.BEGIN_DATA_FIELD).send_keys(Keys.CONTROL + "a")
+        self.element_is_visible(self.locators.BEGIN_DATA_FIELD).send_keys(date)
+
+    @testit.step("Нажатие кнопки Сохранить")
+    @allure.step("Нажатие кнопки Сохранить")
+    def press_submit_button(self):
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+
+    @testit.step("Получение сообщения системы")
+    @allure.step("Получение сообщения системы")
+    def get_alert_message(self):
+        return self.element_is_visible(self.locators.ALERT_MESSAGE).text
