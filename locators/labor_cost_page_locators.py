@@ -55,6 +55,7 @@ class LaborCostPageLocators:
     ADD_TO_PROJECT_PROJECT_FIELD = (By.XPATH, '//div[@name="project"]//input')
     ADD_TO_PROJECT_ROLE_FIELD = (By.XPATH, '//div[@name="projectRole"]//input')
     ADD_TO_PROJECT_CANCEL = (By.XPATH, '//div[@name="projectRole"]//following::button[text()="Отменить"]')
+    ADD_TO_PROJECT_SAVE = (By.XPATH, '//div[@name="projectRole"]//following::button[@type="submit"]')
     # Кнопка добавления переработки и отсутствий
     ADD_OVERTIME_WORK_BUTTON = (By.XPATH, '//button[text()="Переработка"]')
     ADD_ABSENSE_BUTTON = (By.XPATH, '//button[text()="Отсутствие"]')

@@ -819,3 +819,17 @@ class LaborCostPage(BasePage):
     def get_project_on_tab(self, project_name):
         return self.element_is_displayed(self.locators.check_projeck_on_reason_tab(project_name), 2)
 
+    @testit.step("Проверка кликабельности кнопки сохранить")
+    @allure.step("Проверка кликабельности кнопки сохранить")
+    def check_clickable_save_button_in_adding_himself_to_a_project_drawer(self, project_name):
+        assert not self.element_is_clickable(self.locators.ADD_TO_PROJECT_SAVE, 1), \
+            "Кнопка сохранить кликабельна до заполнения обязательных полей"
+        self.element_is_visible(self.locators.ADD_TO_PROJECT_PROJECT_FIELD).send_keys(project_name)
+        self.element_is_visible(self.locators.LI_MENU_ITEM).click()
+        assert not self.element_is_clickable(self.locators.ADD_TO_PROJECT_SAVE, 1), \
+            "Кнопка сохранить кликабельна после заполнения имени проекта"
+        self.element_is_visible(self.locators.ADD_TO_PROJECT_ROLE_FIELD).click()
+        self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
+        assert self.element_is_clickable(self.locators.ADD_TO_PROJECT_SAVE, 1), \
+            "Кнопка сохранить не кликабельна после заполнения обязательных полей"
+

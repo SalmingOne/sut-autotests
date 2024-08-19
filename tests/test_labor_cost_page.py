@@ -413,3 +413,13 @@ class TestLaborCostPage:
         labor_cost_page.field_adding_himself_to_a_project(no_resources_project["name"])
         labor_cost_page.press_cancel_button_adding_himself_to_a_project()
         assert not labor_cost_page.get_project_on_tab(no_resources_project["name"]), "Пользователь добавился на проект"
+
+    @testit.workItemIds(259)
+    @testit.displayName("1.3.1.7 Н. Обязательные поля не заполнены")
+    @pytest.mark.regress
+    @allure.title("id-259 1.3.1.7 Н. Обязательные поля не заполнены")
+    def test_adding_himself_to_a_project_required_fields_are_not_filled(self, no_resources_project, login, driver):
+        labor_cost_page = LaborCostPage(driver)
+        labor_cost_page.go_to_labor_cost_page()
+        labor_cost_page.press_add_to_project_button()
+        labor_cost_page.check_clickable_save_button_in_adding_himself_to_a_project_drawer(no_resources_project["name"])
