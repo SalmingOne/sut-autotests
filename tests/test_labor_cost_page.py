@@ -4,6 +4,7 @@ import allure
 import pytest
 import testit
 
+from endpoints.project_endpoint import ProjectEndpoint
 from pages.all_project_page import AllProjectPage
 from pages.labor_cost_page import LaborCostPage
 from locators.labor_cost_page_locators import LaborCostPageLocators
@@ -423,3 +424,19 @@ class TestLaborCostPage:
         labor_cost_page.go_to_labor_cost_page()
         labor_cost_page.press_add_to_project_button()
         labor_cost_page.check_clickable_save_button_in_adding_himself_to_a_project_drawer(no_resources_project["name"])
+
+    @testit.workItemIds(11932)
+    @testit.displayName("1.3.1.7 Проверка работы функционала Добавление себя на проект")
+    @pytest.mark.regress
+    @allure.title("id-11932 1.3.1.7 Проверка работы функционала Добавление себя на проект")
+    def test_checking_the_functionality_adding_himself_to_a_project(self, no_resources_project, login, driver):
+        labor_cost_page = LaborCostPage(driver)
+        labor_cost_page.go_to_labor_cost_page()
+        projects_on_tab = labor_cost_page.get_all_project_name_on_tab()
+        project_endpoint = ProjectEndpoint()
+        adding_himself, no_adding_himself = project_endpoint.get_name_projects_with_adding_himself_and_no_adding()
+        labor_cost_page.press_add_to_project_button()
+        projects_in_field = labor_cost_page.get_project_name_in_adding_himself_to_a_project_drawer()
+        labor_cost_page.remove_project_on_tab(projects_on_tab, adding_himself)
+        assert adding_himself == projects_in_field, \
+            "В дропдауне отображаются не все проекты с самостоятельным добавлением"

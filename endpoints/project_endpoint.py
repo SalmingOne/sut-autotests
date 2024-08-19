@@ -63,3 +63,15 @@ class ProjectEndpoint:
         for project in self.response_json:
             project_names.append(project['name'])
         return project_names
+
+    @allure.step("Получаем два списка с проектами с самостоятельным добавлением и без")
+    def get_name_projects_with_adding_himself_and_no_adding(self):
+        all_projects_json = self.get_all_project().json()
+        adding_himself = []
+        no_adding_himself = []
+        for project in all_projects_json:
+            if project['selfAdding'] is True:
+                adding_himself.append(project["name"])
+            else:
+                no_adding_himself.append(project["name"])
+        return adding_himself, no_adding_himself

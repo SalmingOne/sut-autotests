@@ -59,7 +59,6 @@ class LaborCostPageLocators:
     # Кнопка добавления переработки и отсутствий
     ADD_OVERTIME_WORK_BUTTON = (By.XPATH, '//button[text()="Переработка"]')
     ADD_ABSENSE_BUTTON = (By.XPATH, '//button[text()="Отсутствие"]')
-
     # Фильтрация
     FILTER_BUTTON = (By.XPATH, '//button[contains(@class, "MuiButton-text MuiButton-textPrimary")]')
     ELEMENTS_ON_FILTER = (By.XPATH, '//div[contains(@class, "MuiPaper-elevation8")]//span[contains(@class, "MuiTypography-body1")]')
@@ -102,6 +101,7 @@ class LaborCostPageLocators:
 
     def all_day_by_project(self, project_name):
         return By.XPATH, f'//div[@aria-label="{project_name}"]//ancestor::div[contains(@class,"project-row MuiBox-root")]//input'
+
     def total_by_project(self, project_name):
         return By.XPATH, f'//div[@aria-label="{project_name}"]//ancestor::div[contains(@class,"project-row MuiBox-root")]//div//p'
     # Локаторы окна уведомления о не сохранении данных
