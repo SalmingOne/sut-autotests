@@ -44,6 +44,10 @@ class ProjectCardLocators:
     USERS_TEXT = (By.XPATH, '//div[@col-id="userId"]//p')
     DELETE_ICON = (By.CSS_SELECTOR, 'svg[data-testid="DeleteIcon"]')
 
+    ALERT_DIALOG_DESCRIPTION = (By.CSS_SELECTOR, 'p[id="alert-dialog-description"]')
+    MODAL_SUBMIT_BUTTON = (By.XPATH, '//p[@id="alert-dialog-description"]//following::button[text()="Подтвердить"]')
+    MODAL_ABORT_BUTTON = (By.XPATH, '//p[@id="alert-dialog-description"]//following::button[text()="Отменить"]')
+
     # Локаторы вкладки Ресурсный план
     RESOURCE_PLAN_TAB = (By.XPATH, '//button[text()="Ресурсный план"]')
     CHOSE_PERIOD_BUTTON = (By.CSS_SELECTOR, 'div[aria-haspopup="listbox"]')
@@ -69,6 +73,7 @@ class ProjectCardLocators:
         return (By.XPATH, f'//li[text()="{text}"]')
 
     SAVE_BUTTON = (By.XPATH, '//button[text()="Сохранить"]')
+    SUBMIT_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
     BREAK_BUTTON = (By.XPATH, '//button[text()="Отмена"]')
     ABORT_BUTTON = (By.XPATH, '//button[text()="Отменить"]')
 

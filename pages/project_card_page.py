@@ -495,3 +495,30 @@ class ProjectCardPage(BasePage):
     def field_roles_field(self, name):
         self.elements_are_present(self.locators.FIRST_MEMBER_TEXT_ON_REDACT)[0].send_keys(name)
         self.element_is_visible(self.locators.LI_MENU_ITEM).click()
+
+    @testit.step("Заполнение полей добавления ресурса таб команда")
+    @allure.step("Заполнение полей добавления ресурса таб команда")
+    def field_add_new_member_string(self):
+        self.element_is_visible(self.locators.ADD_BUTTON).click()
+        self.elements_are_present(self.locators.FIRST_MEMBER_TEXT_ON_REDACT)[0].click()
+        self.element_is_visible(self.locators.LI_MENU_ITEM).click()
+        self.elements_are_present(self.locators.FIRST_MEMBER_TEXT_ON_REDACT)[0].click()
+        self.element_is_visible(self.locators.LI_MENU_ITEM).click()
+
+    @testit.step("Нажатие кнопки отменить")
+    @allure.step("Нажатие кнопки отменить")
+    def press_abort_button(self):
+        self.element_is_visible(self.locators.ABORT_BUTTON).click()
+
+    @testit.step("Проверка модального окна отмены редактирования")
+    @allure.step("Проверка модального окна отмены редактирования")
+    def check_abort_add_resource_window(self):
+        assert (self.element_is_visible(self.locators.ALERT_DIALOG_DESCRIPTION).text ==
+                'Внесенные изменения не сохранятся. Закрыть режим редактирования?'), "Нет сообщения об отмене изменений"
+        assert self.element_is_displayed(self.locators.MODAL_ABORT_BUTTON), "В модальном окне нет кнопки Отменить"
+
+    @testit.step("Нажатие кнопки подтвердить модального окна отмены редактирования")
+    @allure.step("Нажатие кнопки подтвердить модального окна отмены редактирования")
+    def press_modal_submit_button(self):
+        self.element_is_visible(self.locators.MODAL_SUBMIT_BUTTON).click()
+
