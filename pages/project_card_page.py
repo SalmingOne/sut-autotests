@@ -572,3 +572,10 @@ class ProjectCardPage(BasePage):
     @allure.step("Получение цвета поля имя проекта")
     def get_name_field_color(self):
         return self.element_is_visible(self.locators.NAME_FIELD_COLOR).value_of_css_property('border-color')
+
+    @testit.step("Изменение кода проекта")
+    @allure.step("Изменение кода проекта")
+    def change_project_code(self, code):
+        self.element_is_visible(self.locators.CODE_FIELD).send_keys(Keys.CONTROL + "a")
+        self.element_is_visible(self.locators.CODE_FIELD).send_keys(code)
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
