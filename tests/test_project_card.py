@@ -198,3 +198,18 @@ class TestProjectCard:
         assert project_card_page.get_mui_error() == 'Поле обязательно', \
             "Не отображается подсказка об обязательности поля"
         assert project_card_page.get_code_field_color() == 'rgb(211, 47, 47)', "Поле код не выделяется красным"
+
+    @testit.workItemIds(80)
+    @testit.displayName("1.3.2.1 Редактирование значения поля Названия проекта на уже имеющееся в системе")
+    @pytest.mark.regress
+    @allure.title("id-80 1.3.2.1 Редактирование значения поля Названия проекта на уже имеющееся в системе")
+    def test_editing_the_project_name_to_already_available_in_the_system(self, simple_project, second_project, login, driver):
+        all_project_page = AllProjectPage(driver)
+        time.sleep(0.5)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(simple_project['name'])
+        project_card_page = ProjectCardPage(driver)
+        project_card_page.change_project_name(second_project['name'])
+        assert project_card_page.get_mui_error() == 'Указанное название проекта уже используется в системе', \
+            "Не появилось сообщение о существовании проекта с данным именем"
+        assert project_card_page.get_name_field_color() == 'rgb(211, 47, 47)', "Поле имя проекта не выделяется красным"

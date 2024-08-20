@@ -7,6 +7,7 @@ class ProjectCardLocators:
     DESCRIPTION_TAB = (By.XPATH, '//button[text()="Описание"]')
     DESCRIPTION_TAB_TITLE = (By.XPATH, '//h6[text()="Описание"]')
     NAME_FIELD = (By.CSS_SELECTOR, 'input[name="name"]')
+    NAME_FIELD_COLOR = (By.XPATH, '//input[@name="name"]//following-sibling::fieldset')
     CODE_FIELD = (By.CSS_SELECTOR, 'input[name="code"]')
     CODE_FIELD_COLOR = (By.XPATH, '//input[@name="code"]//following-sibling::fieldset')
     MANAGER_FIELD = (By.XPATH, '//div[@name="projectManagers"]//input')
