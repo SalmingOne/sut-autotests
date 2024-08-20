@@ -8,6 +8,7 @@ class ProjectCardLocators:
     DESCRIPTION_TAB_TITLE = (By.XPATH, '//h6[text()="Описание"]')
     NAME_FIELD = (By.CSS_SELECTOR, 'input[name="name"]')
     CODE_FIELD = (By.CSS_SELECTOR, 'input[name="code"]')
+    CODE_FIELD_COLOR = (By.XPATH, '//input[@name="code"]//following-sibling::fieldset')
     MANAGER_FIELD = (By.XPATH, '//div[@name="projectManagers"]//input')
     BEGIN_DATA_FIELD = (By.XPATH, '//label[text()="Дата начала"]//following::input[1]')
     END_DATA_FIELD = (By.XPATH, '//label[text()="Дата окончания"]//following::input[1]')
@@ -80,5 +81,6 @@ class ProjectCardLocators:
     NEXT_PERIOD_BUTTON = (By.CSS_SELECTOR, 'svg[data-testid="ChevronRightIcon"]')
     PREVIOUS_PERIOD_BUTTON = (By.CSS_SELECTOR, 'svg[data-testid="ChevronLeftIcon"]')
     THIS_DAY_BUTTON = (By.XPATH, '//button[contains(@class, "DateInterval-setToday")]')
-
+    # Ошибки
+    MUI_ERROR = (By.XPATH, '//p[contains(@class, "Mui-error")]')
     ALERT_MESSAGE = (By.XPATH, '//div[contains(@class, "MuiAlert-message")]')

@@ -183,3 +183,18 @@ class TestProjectCard:
             "Не появилось сообщение об изменении проекта"
         assert before_start_date != after_start_date, "Дата начала проекта не изменилась"
         assert after_start_date == new_date.strftime("%d.%m.%Y"), "Дата начала проекта не изменилась на указанную"
+
+    @testit.workItemIds(78)
+    @testit.displayName("1.3.2.1 Пустой ввод в поле Код проекта")
+    @pytest.mark.regress
+    @allure.title("id-78 1.3.2.1 Пустой ввод в поле Код проекта")
+    def test_blank_entry_in_the_project_code_field(self, simple_project, login, driver):
+        all_project_page = AllProjectPage(driver)
+        time.sleep(0.5)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(f"{PROJECT_NAME}")
+        project_card_page = ProjectCardPage(driver)
+        project_card_page.clear_code_field()
+        assert project_card_page.get_mui_error() == 'Поле обязательно', \
+            "Не отображается подсказка об обязательности поля"
+        assert project_card_page.get_code_field_color() == 'rgb(211, 47, 47)', "Поле код не выделяется красным"

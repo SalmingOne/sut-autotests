@@ -543,3 +543,20 @@ class ProjectCardPage(BasePage):
     @allure.step("Получение сообщения системы")
     def get_alert_message(self):
         return self.element_is_visible(self.locators.ALERT_MESSAGE).text
+
+    @testit.step("Очистка поля код проекта")
+    @allure.step("Очистка поля код проекта")
+    def clear_code_field(self):
+        self.element_is_visible(self.locators.CODE_FIELD).send_keys(Keys.CONTROL + "a")
+        self.element_is_visible(self.locators.CODE_FIELD).send_keys(Keys.BACKSPACE)
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+
+    @testit.step("Получение текста сообщения об ошибке")
+    @allure.step("Получение текста сообщения об ошибке")
+    def get_mui_error(self):
+        return self.element_is_visible(self.locators.MUI_ERROR).text
+
+    @testit.step("Получение цвета поля код проекта")
+    @allure.step("Получение цвета поля код проекта")
+    def get_code_field_color(self):
+        return self.element_is_visible(self.locators.CODE_FIELD_COLOR).value_of_css_property('border-color')
