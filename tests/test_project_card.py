@@ -1,4 +1,5 @@
 import time
+from datetime import timedelta, datetime
 
 import allure
 import pytest
@@ -136,3 +137,95 @@ class TestProjectCard:
                                                  " роли, которые доступны пользователю из поля Ресурс")
         assert api_users_by_role == ui_users_by_role, ("Отображается выпадающий список, содержащий не только "
                                                        "пользователей с выбранной проектной ролью")
+
+    @testit.workItemIds(3186)
+    @testit.displayName("1.3.1.12 Отмена сохранения изменений на вкладке Команда")
+    @pytest.mark.regress
+    @allure.title("id-3186 1.3.1.12 Отмена сохранения изменений на вкладке Команда")
+    def test_cancel_save_changes_to_the_team_tab(self, simple_project, login, driver):
+        all_project_page = AllProjectPage(driver)
+        time.sleep(0.5)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(f"{PROJECT_NAME}")
+        project_card_page = ProjectCardPage(driver)
+        project_card_page.go_to_team_tab()
+        time.sleep(1)  # Без этого ожидания иногда не успевает прогрузиться проектная роль
+        input_member = project_card_page.get_all_team_members()
+        project_card_page.go_to_redact_team()
+        time.sleep(1)
+        member_before_redact = project_card_page.get_all_team_member_on_redact()
+        project_card_page.field_add_new_member_string()
+        project_card_page.press_abort_button()
+        project_card_page.check_abort_add_resource_window()
+        project_card_page.press_modal_submit_button()
+        time.sleep(1)  # Без этого ожидания иногда не успевает прогрузиться проектная роль
+        member_after_redact = project_card_page.get_all_team_members()
+        assert input_member[0] == member_before_redact[0], "Роль, ресурс и ставка изменились при нажатии кнопки редактирования"
+        assert len(input_member) == len(member_after_redact), "Добавился новый ресурс"
+
+    @testit.workItemIds(54)
+    @testit.displayName("1.3.2.1 Редактирование даты начала проекта")
+    @pytest.mark.regress
+    @allure.title("id-54 1.3.2.1 Редактирование даты начала проекта")
+    def test_editing_the_project_start_date(self, project_with_assignment, login, driver):
+        all_project_page = AllProjectPage(driver)
+        time.sleep(0.5)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(f"{PROJECT_NAME}")
+        project_card_page = ProjectCardPage(driver)
+        before_start_date = project_card_page.get_project_start_date()
+        new_date = datetime.strptime(before_start_date, "%d.%m.%Y").date() - timedelta(1)
+        project_card_page.change_start_date(new_date.strftime("%d.%m.%Y"))
+        project_card_page.press_submit_button()
+        after_start_date = project_card_page.get_project_start_date()
+
+        assert project_card_page.get_alert_message() == 'Свойства проекта успешно изменены', \
+            "Не появилось сообщение об изменении проекта"
+        assert before_start_date != after_start_date, "Дата начала проекта не изменилась"
+        assert after_start_date == new_date.strftime("%d.%m.%Y"), "Дата начала проекта не изменилась на указанную"
+
+    @testit.workItemIds(78)
+    @testit.displayName("1.3.2.1 Пустой ввод в поле Код проекта")
+    @pytest.mark.regress
+    @allure.title("id-78 1.3.2.1 Пустой ввод в поле Код проекта")
+    def test_blank_entry_in_the_project_code_field(self, simple_project, login, driver):
+        all_project_page = AllProjectPage(driver)
+        time.sleep(0.5)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(f"{PROJECT_NAME}")
+        project_card_page = ProjectCardPage(driver)
+        project_card_page.clear_code_field()
+        assert project_card_page.get_mui_error() == 'Поле обязательно', \
+            "Не отображается подсказка об обязательности поля"
+        assert project_card_page.get_code_field_color() == 'rgb(211, 47, 47)', "Поле код не выделяется красным"
+
+    @testit.workItemIds(80)
+    @testit.displayName("1.3.2.1 Редактирование значения поля Названия проекта на уже имеющееся в системе")
+    @pytest.mark.regress
+    @allure.title("id-80 1.3.2.1 Редактирование значения поля Названия проекта на уже имеющееся в системе")
+    def test_editing_the_project_name_to_already_available_in_the_system(self, simple_project, second_project, login, driver):
+        all_project_page = AllProjectPage(driver)
+        time.sleep(0.5)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(simple_project['name'])
+        project_card_page = ProjectCardPage(driver)
+        project_card_page.change_project_name(second_project['name'])
+        assert project_card_page.get_mui_error() == 'Указанное название проекта уже используется в системе', \
+            "Не появилось сообщение о существовании проекта с данным именем"
+        assert project_card_page.get_name_field_color() == 'rgb(211, 47, 47)', "Поле имя проекта не выделяется красным"
+
+    @testit.workItemIds(81)
+    @testit.displayName("1.3.2.1 Редактирование значения поля Код проекта на уже имеющееся в системе")
+    @pytest.mark.regress
+    @allure.title("id-81 1.3.2.1 Редактирование значения поля Код проекта на уже имеющееся в системе")
+    def test_editing_the_project_code_to_already_available_in_the_system(self, simple_project, second_project, login,
+                                                                         driver):
+        all_project_page = AllProjectPage(driver)
+        time.sleep(0.5)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(simple_project['name'])
+        project_card_page = ProjectCardPage(driver)
+        project_card_page.change_project_code(second_project['code'])
+        assert project_card_page.get_mui_error() == 'Указанный код проекта уже используется в системе', \
+            "Не появилось сообщение о существовании проекта с данным кодом"
+        assert project_card_page.get_code_field_color() == 'rgb(211, 47, 47)', "Поле код проекта не выделяется красным"

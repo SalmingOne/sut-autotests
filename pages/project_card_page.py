@@ -4,6 +4,7 @@ from datetime import datetime
 import allure
 import testit
 from selenium.common import StaleElementReferenceException, TimeoutException
+from selenium.webdriver import Keys
 
 from locators.project_card_locators import ProjectCardLocators
 from pages.base_page import BasePage
@@ -495,3 +496,86 @@ class ProjectCardPage(BasePage):
     def field_roles_field(self, name):
         self.elements_are_present(self.locators.FIRST_MEMBER_TEXT_ON_REDACT)[0].send_keys(name)
         self.element_is_visible(self.locators.LI_MENU_ITEM).click()
+
+    @testit.step("Заполнение полей добавления ресурса таб команда")
+    @allure.step("Заполнение полей добавления ресурса таб команда")
+    def field_add_new_member_string(self):
+        self.element_is_visible(self.locators.ADD_BUTTON).click()
+        self.elements_are_present(self.locators.FIRST_MEMBER_TEXT_ON_REDACT)[0].click()
+        self.element_is_visible(self.locators.LI_MENU_ITEM).click()
+        self.elements_are_present(self.locators.FIRST_MEMBER_TEXT_ON_REDACT)[0].click()
+        self.element_is_visible(self.locators.LI_MENU_ITEM).click()
+
+    @testit.step("Нажатие кнопки отменить")
+    @allure.step("Нажатие кнопки отменить")
+    def press_abort_button(self):
+        self.element_is_visible(self.locators.ABORT_BUTTON).click()
+
+    @testit.step("Проверка модального окна отмены редактирования")
+    @allure.step("Проверка модального окна отмены редактирования")
+    def check_abort_add_resource_window(self):
+        assert (self.element_is_visible(self.locators.ALERT_DIALOG_DESCRIPTION).text ==
+                'Внесенные изменения не сохранятся. Закрыть режим редактирования?'), "Нет сообщения об отмене изменений"
+        assert self.element_is_displayed(self.locators.MODAL_ABORT_BUTTON), "В модальном окне нет кнопки Отменить"
+
+    @testit.step("Нажатие кнопки подтвердить модального окна отмены редактирования")
+    @allure.step("Нажатие кнопки подтвердить модального окна отмены редактирования")
+    def press_modal_submit_button(self):
+        self.element_is_visible(self.locators.MODAL_SUBMIT_BUTTON).click()
+
+    @testit.step("Получение даты начала проекта")
+    @allure.step("Получение даты начала проекта")
+    def get_project_start_date(self):
+        return self.element_is_visible(self.locators.BEGIN_DATA_FIELD).get_attribute("value")
+
+    @testit.step("Изменение даты начала проекта")
+    @allure.step("Изменение даты начала проекта")
+    def change_start_date(self, date):
+        self.element_is_visible(self.locators.BEGIN_DATA_FIELD).send_keys(Keys.CONTROL + "a")
+        self.element_is_visible(self.locators.BEGIN_DATA_FIELD).send_keys(date)
+
+    @testit.step("Нажатие кнопки Сохранить")
+    @allure.step("Нажатие кнопки Сохранить")
+    def press_submit_button(self):
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+
+    @testit.step("Получение сообщения системы")
+    @allure.step("Получение сообщения системы")
+    def get_alert_message(self):
+        return self.element_is_visible(self.locators.ALERT_MESSAGE).text
+
+    @testit.step("Очистка поля код проекта")
+    @allure.step("Очистка поля код проекта")
+    def clear_code_field(self):
+        self.element_is_visible(self.locators.CODE_FIELD).send_keys(Keys.CONTROL + "a")
+        self.element_is_visible(self.locators.CODE_FIELD).send_keys(Keys.BACKSPACE)
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+
+    @testit.step("Получение текста сообщения об ошибке")
+    @allure.step("Получение текста сообщения об ошибке")
+    def get_mui_error(self):
+        return self.element_is_visible(self.locators.MUI_ERROR).text
+
+    @testit.step("Получение цвета поля код проекта")
+    @allure.step("Получение цвета поля код проекта")
+    def get_code_field_color(self):
+        return self.element_is_visible(self.locators.CODE_FIELD_COLOR).value_of_css_property('border-color')
+
+    @testit.step("Изменение имени проекта")
+    @allure.step("Изменение имени проекта")
+    def change_project_name(self, name):
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(Keys.CONTROL + "a")
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(name)
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+
+    @testit.step("Получение цвета поля имя проекта")
+    @allure.step("Получение цвета поля имя проекта")
+    def get_name_field_color(self):
+        return self.element_is_visible(self.locators.NAME_FIELD_COLOR).value_of_css_property('border-color')
+
+    @testit.step("Изменение кода проекта")
+    @allure.step("Изменение кода проекта")
+    def change_project_code(self, code):
+        self.element_is_visible(self.locators.CODE_FIELD).send_keys(Keys.CONTROL + "a")
+        self.element_is_visible(self.locators.CODE_FIELD).send_keys(code)
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()

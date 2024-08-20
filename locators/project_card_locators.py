@@ -7,7 +7,9 @@ class ProjectCardLocators:
     DESCRIPTION_TAB = (By.XPATH, '//button[text()="Описание"]')
     DESCRIPTION_TAB_TITLE = (By.XPATH, '//h6[text()="Описание"]')
     NAME_FIELD = (By.CSS_SELECTOR, 'input[name="name"]')
+    NAME_FIELD_COLOR = (By.XPATH, '//input[@name="name"]//following-sibling::fieldset')
     CODE_FIELD = (By.CSS_SELECTOR, 'input[name="code"]')
+    CODE_FIELD_COLOR = (By.XPATH, '//input[@name="code"]//following-sibling::fieldset')
     MANAGER_FIELD = (By.XPATH, '//div[@name="projectManagers"]//input')
     BEGIN_DATA_FIELD = (By.XPATH, '//label[text()="Дата начала"]//following::input[1]')
     END_DATA_FIELD = (By.XPATH, '//label[text()="Дата окончания"]//following::input[1]')
@@ -44,6 +46,10 @@ class ProjectCardLocators:
     USERS_TEXT = (By.XPATH, '//div[@col-id="userId"]//p')
     DELETE_ICON = (By.CSS_SELECTOR, 'svg[data-testid="DeleteIcon"]')
 
+    ALERT_DIALOG_DESCRIPTION = (By.CSS_SELECTOR, 'p[id="alert-dialog-description"]')
+    MODAL_SUBMIT_BUTTON = (By.XPATH, '//p[@id="alert-dialog-description"]//following::button[text()="Подтвердить"]')
+    MODAL_ABORT_BUTTON = (By.XPATH, '//p[@id="alert-dialog-description"]//following::button[text()="Отменить"]')
+
     # Локаторы вкладки Ресурсный план
     RESOURCE_PLAN_TAB = (By.XPATH, '//button[text()="Ресурсный план"]')
     CHOSE_PERIOD_BUTTON = (By.CSS_SELECTOR, 'div[aria-haspopup="listbox"]')
@@ -69,9 +75,13 @@ class ProjectCardLocators:
         return (By.XPATH, f'//li[text()="{text}"]')
 
     SAVE_BUTTON = (By.XPATH, '//button[text()="Сохранить"]')
+    SUBMIT_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
     BREAK_BUTTON = (By.XPATH, '//button[text()="Отмена"]')
     ABORT_BUTTON = (By.XPATH, '//button[text()="Отменить"]')
 
     NEXT_PERIOD_BUTTON = (By.CSS_SELECTOR, 'svg[data-testid="ChevronRightIcon"]')
     PREVIOUS_PERIOD_BUTTON = (By.CSS_SELECTOR, 'svg[data-testid="ChevronLeftIcon"]')
     THIS_DAY_BUTTON = (By.XPATH, '//button[contains(@class, "DateInterval-setToday")]')
+    # Ошибки
+    MUI_ERROR = (By.XPATH, '//p[contains(@class, "Mui-error")]')
+    ALERT_MESSAGE = (By.XPATH, '//div[contains(@class, "MuiAlert-message")]')
