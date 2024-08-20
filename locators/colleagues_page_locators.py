@@ -20,8 +20,6 @@ class ColleaguesPageLocators:
     CHECK_GO_TO_USER_PAGE = (By.XPATH, '//h6[text()="Общие данные"]')
     # Просмотр глазами пользователя
     RETURN_TO_PROFILE_BUTTON = (By.XPATH, '//button[text()="Вернуться в свой профиль"]')
-    PROFILE_BUTTON = (By.CSS_SELECTOR, 'button[id="profile"]')
-    MY_PROFILE_MENU_ITEM = (By.XPATH, '//a[text()="Мой профиль"]')
 
     @staticmethod
     def check_text_on_page(text):
