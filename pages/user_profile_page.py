@@ -326,6 +326,7 @@ class UserProfilePage(BasePage):
     @testit.step("Добавление текста в поле дети")
     @allure.step("Добавление текста в поле дети")
     def change_children_text(self, text):
+        time.sleep(1)
         self.element_is_visible(self.locators.CHILDREN_TEXT_AREA).send_keys(Keys.CONTROL + 'a')
         self.element_is_visible(self.locators.CHILDREN_TEXT_AREA).send_keys(text)
 
