@@ -579,3 +579,10 @@ class ProjectCardPage(BasePage):
         self.element_is_visible(self.locators.CODE_FIELD).send_keys(Keys.CONTROL + "a")
         self.element_is_visible(self.locators.CODE_FIELD).send_keys(code)
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+
+    @testit.step("Очистка поля имя проекта")
+    @allure.step("Очистка поля имя проекта")
+    def clear_name_field(self):
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(Keys.CONTROL + "a")
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(Keys.BACKSPACE)
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
