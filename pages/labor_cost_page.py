@@ -833,3 +833,34 @@ class LaborCostPage(BasePage):
         assert self.element_is_clickable(self.locators.ADD_TO_PROJECT_SAVE, 1), \
             "Кнопка сохранить не кликабельна после заполнения обязательных полей"
 
+    @testit.step("Получение имен проектов доступных в дровере самостоятельного добавления на проект")
+    @allure.step("Получение имен проектов доступных в дровере самостоятельного добавления на проект")
+    def get_project_name_in_adding_himself_to_a_project_drawer(self):
+        self.element_is_visible(self.locators.ADD_TO_PROJECT_PROJECT_FIELD).click()
+        return self.get_li_menu_items()
+
+    @testit.step("Получение списка элементов дротдауна")
+    @allure.step("Получение списка элементов дротдауна")
+    def get_li_menu_items(self):
+        all_items = self.elements_are_visible(self.locators.LI_MENU_ITEM)
+        text = []
+        for item in all_items:
+            text.append(item.get_attribute('aria-label'))
+        return text
+
+    @testit.step("Получение списка проектов отображенных на странице трудозатрат")
+    @allure.step("Получение списка проектов отображенных на странице трудозатрат")
+    def get_all_project_name_on_tab(self):
+        all_items = self.elements_are_visible(self.locators.ALL_PROJECT_NAMES)
+        text = []
+        for item in all_items:
+            text.append(item.get_attribute('aria-label'))
+        return text
+
+    @testit.step("Удаление из списка проектов на которые назначен пользователь")
+    @allure.step("Удаление из списка проектов на которые назначен пользователь")
+    def remove_project_on_tab(self, project_on_tad, adding_himself):
+        for project in project_on_tad:
+            if project in adding_himself:
+                adding_himself.remove(project)
+
