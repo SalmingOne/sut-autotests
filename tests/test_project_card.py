@@ -244,3 +244,19 @@ class TestProjectCard:
         assert project_card_page.get_mui_error() == 'Поле обязательно', \
             "Не отображается подсказка об обязательности поля"
         assert project_card_page.get_name_field_color() == 'rgb(211, 47, 47)', "Поле имя проекта не выделяется красным"
+
+    @testit.workItemIds(145)
+    @testit.displayName("1.3.2.1 Пустой ввод в поле Дата начала")
+    @pytest.mark.regress
+    @allure.title("id-145 1.3.2.1 Пустой ввод в поле Дата начала")
+    def test_blank_entry_in_the_start_project_date_field(self, simple_project, login, driver):
+        all_project_page = AllProjectPage(driver)
+        time.sleep(0.5)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(simple_project['name'])
+        project_card_page = ProjectCardPage(driver)
+        project_card_page.clear_start_project_date_field()
+        assert project_card_page.get_mui_error() == 'Поле обязательно', \
+            "Не отображается подсказка об обязательности поля"
+        assert project_card_page.get_start_project_date_field_color() == 'rgb(211, 47, 47)', \
+            "Поле дата начала проекта не выделяется красным"

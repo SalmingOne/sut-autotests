@@ -12,6 +12,7 @@ class ProjectCardLocators:
     CODE_FIELD_COLOR = (By.XPATH, '//input[@name="code"]//following-sibling::fieldset')
     MANAGER_FIELD = (By.XPATH, '//div[@name="projectManagers"]//input')
     BEGIN_DATA_FIELD = (By.XPATH, '//label[text()="Дата начала"]//following::input[1]')
+    BEGIN_DATA_FIELD_COLOR = (By.XPATH, '//label[text()="Дата начала"]//following::input[1]//following-sibling::fieldset')
     END_DATA_FIELD = (By.XPATH, '//label[text()="Дата окончания"]//following::input[1]')
     MANAGER_LABEL = (By.XPATH, '//span[contains(@class, "MuiChip-label MuiChip-labelMedium")]')
     STATUS_FIELD = (By.XPATH, '//div[@name="status"]//input')

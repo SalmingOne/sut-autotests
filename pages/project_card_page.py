@@ -586,3 +586,15 @@ class ProjectCardPage(BasePage):
         self.element_is_visible(self.locators.NAME_FIELD).send_keys(Keys.CONTROL + "a")
         self.element_is_visible(self.locators.NAME_FIELD).send_keys(Keys.BACKSPACE)
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+
+    @testit.step("Очистка поля дата начала проекта")
+    @allure.step("Очистка поля дата начала проекта")
+    def clear_start_project_date_field(self):
+        self.element_is_visible(self.locators.BEGIN_DATA_FIELD).send_keys(Keys.CONTROL + "a")
+        self.element_is_visible(self.locators.BEGIN_DATA_FIELD).send_keys(Keys.BACKSPACE)
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+
+    @testit.step("Получение цвета поля дата начала проекта")
+    @allure.step("Получение цвета поля дата начала проекта")
+    def get_start_project_date_field_color(self):
+        return self.element_is_visible(self.locators.BEGIN_DATA_FIELD_COLOR).value_of_css_property('border-color')
