@@ -260,3 +260,27 @@ class TestCreateProject:
         )
         error = create_project_drawer_page.get_mui_error_text()
         assert error == 'Максимальное количество символов: 10', 'Не появилась ошибка о превышении максимального количества символов'
+
+    @testit.workItemIds(284)
+    @testit.displayName("1.3.2.2 Назначение руководителя проекта при создании проекта")
+    @pytest.mark.regress
+    @allure.title("id-284 1.3.2.2 Назначение руководителя проекта при создании проекта")
+    def test_appointment_of_a_project_manager_when_creating_a_project(self, login, driver):
+        # Создаем проект
+        create_project_drawer_page = CreateProjectDrawerPage(driver)
+        create_project_drawer_page.go_to_create_project_drawer_from_menu()
+        create_project_drawer_page.create_project(
+            "AutoTestProject",
+            'AutoTest',
+            USER_NAME,
+            'no',
+            '01.10.2022'
+        )
+        project_card_page = ProjectCardPage(driver)
+        project_card_page.go_to_description_tab()
+        description_list = project_card_page.get_project_description()
+        # Удаляем проект
+        project_endpoint = ProjectEndpoint()
+        project_endpoint.delete_project_by_name_api("AutoTestProject")
+        assert USER_NAME in description_list[4], \
+            "Выбранный руководитель проекта не отображается в поле Руководитель проекта"
