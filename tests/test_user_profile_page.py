@@ -907,15 +907,14 @@ class TestUserProfilePage:
     @testit.displayName("10.10.1. Сохранение заметки")
     @pytest.mark.regress
     @allure.title("id-1429 10.10.1. Сохранение заметки")
-    def test_saving_note(self, login, create_work_user, create_user_whit_one_project_role_and_no_assignments, driver):
+    def test_saving_note(self, create_work_user, create_user_whit_one_project_role_and_no_assignments, login, driver):
         colleagues_page = ColleaguesPage(driver)
         user_profile_page = UserProfilePage(driver)
         colleagues_page.go_colleagues_page()
         colleagues_page.search_user(create_work_user)
         colleagues_page.check_user_name_link()
         user_profile_page.go_to_colleague_profile()
-        user_profile_page.check_note_tab()  # Раскомментировать строку после решения вопроса об удалении заметки из бд
-        user_profile_page.check_note_empty()  # Т.к. нельзя удалить заметку при повторном прогоне в ней будет прочерк
+        user_profile_page.check_note_tab()
         user_profile_page.put_text_in_note("Текст заметки")
         user_profile_page.save_note()
         user_profile_page.check_save_note("Текст заметки")
@@ -936,4 +935,5 @@ class TestUserProfilePage:
         time.sleep(2)  # если не успевает прогрузиться переходит по первому пользователю из списка
         colleagues_page.check_user_name_link()
         user_profile_page.go_to_colleague_profile()
-        user_profile_page.put_spase_in_note("Текст заметки", '-')
+        user_profile_page.put_text_in_note('-')
+        user_profile_page.save_note()

@@ -123,8 +123,7 @@ class UserProfilePageLocators:
     # Таб заметки
     MESSAGE_ON_TAB = (By.XPATH, '//p[text()="Введите текст"]')
     TEXT_FIELD_WITH_VISIVIG = (By.CSS_SELECTOR, 'div[class="rdw-editor-toolbar"]')
-    NOTE_TEXT_EMPTY = (By.CSS_SELECTOR, 'br[data-text="true"]')
-    NOTE_TEXT_SPACE = (By.XPATH, '//span[text()=" "]')
+    NOTE_TEXT = (By.CSS_SELECTOR, 'span[data text]')
     NOTE_TEXT_1 = (By.XPATH, '//span[text()="Текст заметки"]')
 
     def check_text(self, text):

@@ -897,37 +897,14 @@ class UserProfilePage(BasePage):
     @testit.step("Проверка содержания таба заметки")
     @allure.step("Проверка содержания таба заметки")
     def check_note_tab(self):
-        time.sleep(3)
-        assert self.element_is_displayed(self.locators.MESSAGE_ON_TAB, 2), "Нет сообщения на странице"
-        time.sleep(3)
-        assert self.element_is_displayed(self.locators.TEXT_FIELD_WITH_VISIVIG, 1), "Нет визивига"
-        # Раскомментировать после решения вопроса об удалении заметки из бд
-        # assert not self.element_is_clickable(self.locators.SAVE_BUTTON, 1), "Кнопка сохранения не задизейблена"
-
-    @testit.step("Проверка что поле заметки пустое")
-    @allure.step("Проверка что поле заметки пустое")
-    def check_note_empty(self):
-        try:
-            self.element_is_displayed(self.locators.NOTE_TEXT_EMPTY, 1)
-        except TimeoutException:
-            try:
-                self.element_is_displayed(self.locators.NOTE_TEXT_DASH)
-            except TimeoutException:
-                print('Поле заметки не пустое')
+        assert self.element_is_displayed(self.locators.MESSAGE_ON_TAB), "Нет сообщения на странице"
+        assert self.element_is_displayed(self.locators.TEXT_FIELD_WITH_VISIVIG), "Нет визивига"
 
     @testit.step("Ввод текста в пустое поле заметки")
     @allure.step("Ввод текста в пустое поле заметки")
     def put_text_in_note(self, put_text):
-        try:
-            self.element_is_present(self.locators.NOTE_TEXT_EMPTY).send_keys(put_text)
-        except TimeoutException:
-            try:
-                self.element_is_visible(self.locators.NOTE_TEXT_DASH).send_keys(Keys.CONTROL + 'a')
-                self.element_is_visible(self.locators.NOTE_TEXT_DASH).send_keys(put_text)
-            except TimeoutException:
-                print('Поле заметки не пустое')
-    # т.к. поле может быть или пустым при первом прогоне или с пробелом при последующих.
-    # Пока так, до решения вопроса об удалении заметки через БД
+        self.element_is_visible(self.locators.NOTE_TEXT).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.NOTE_TEXT).send_keys(put_text)
 
     @testit.step("Сохранение заметки")
     @allure.step("Сохранение заметки")
@@ -956,9 +933,3 @@ class UserProfilePage(BasePage):
         self.element_is_visible(self.locators.MY_PROFILE_MENU_ITEM).click()
         self.element_is_visible(self.locators.TAB_NOTE).click()
         assert not self.element_is_displayed(self.locators.check_text(put_text)), "Заметка видна не автору"
-
-    @testit.step("Замена текста в поле заметки на пробел")
-    @allure.step("Замена текста в поле заметки на пробел")
-    def put_spase_in_note(self, text, put_text):
-        self.element_is_visible(self.locators.check_text(text)).send_keys(Keys.CONTROL + 'a')
-        self.element_is_visible(self.locators.check_text(text)).send_keys(put_text)
