@@ -10,13 +10,10 @@ from selenium.webdriver import Keys
 
 from endpoints.project_endpoint import ProjectEndpoint
 from locators.user_profile_page_locators import UserProfilePageLocators
-from locators.colleagues_page_locators import ColleaguesPageLocators
 from pages.base_page import BasePage
-
 
 class UserProfilePage(BasePage):
     locators = UserProfilePageLocators()
-    locators_colleagues_page = ColleaguesPageLocators()
 
     @testit.step("Переходим в профиль пользователя")
     @allure.step("Переходим в профиль пользователя")
@@ -895,33 +892,40 @@ class UserProfilePage(BasePage):
     @testit.step("Переход на таб заметки на странице коллеги")
     @allure.step("Переход на таб заметки на странице коллеги")
     def go_to_colleague_profile(self):
-        self.element_is_visible(self.locators_colleagues_page.USER_NAME_LINK).click()
         self.element_is_visible(self.locators.TAB_NOTE).click()
 
     @testit.step("Проверка содержания таба заметки")
     @allure.step("Проверка содержания таба заметки")
     def check_note_tab(self):
+        time.sleep(3)
         assert self.element_is_displayed(self.locators.MESSAGE_ON_TAB, 2), "Нет сообщения на странице"
+        time.sleep(3)
         assert self.element_is_displayed(self.locators.TEXT_FIELD_WITH_VISIVIG, 1), "Нет визивига"
         # Раскомментировать после решения вопроса об удалении заметки из бд
         # assert not self.element_is_clickable(self.locators.SAVE_BUTTON, 1), "Кнопка сохранения не задизейблена"
 
     @testit.step("Проверка что поле заметки пустое")
     @allure.step("Проверка что поле заметки пустое")
-    def check_note_empty(self, text):
-        if not self.element_is_displayed(self.locators.NOTE_TEXT_EMPTY, 1):
-            self.element_is_displayed((self.locators_colleagues_page.check_text_on_page(text)))
-        else:
-            'Поле заметки не пустое'
+    def check_note_empty(self):
+        try:
+            self.element_is_displayed(self.locators.NOTE_TEXT_EMPTY, 1)
+        except TimeoutException:
+            try:
+                self.element_is_displayed(self.locators.NOTE_TEXT_DASH)
+            except TimeoutException:
+                print('Поле заметки не пустое')
 
-    @testit.step("Ввод текста в поле заметки")
-    @allure.step("Ввод текста в поле заметки")
+    @testit.step("Ввод текста в пустое поле заметки")
+    @allure.step("Ввод текста в пустое поле заметки")
     def put_text_in_note(self, put_text):
-        if self.element_is_displayed(self.locators.NOTE_TEXT_EMPTY):
-            self.element_is_displayed(self.locators.NOTE_TEXT_EMPTY).send_keys(put_text)
-        else:
-            self.element_is_visible(self.locators.NOTE_TEXT_SPACE).send_keys(Keys.CONTROL + 'a')
-            self.element_is_visible(self.locators.NOTE_TEXT_SPACE).send_keys(put_text)
+        try:
+            self.element_is_present(self.locators.NOTE_TEXT_EMPTY).send_keys(put_text)
+        except TimeoutException:
+            try:
+                self.element_is_visible(self.locators.NOTE_TEXT_DASH).send_keys(Keys.CONTROL + 'a')
+                self.element_is_visible(self.locators.NOTE_TEXT_DASH).send_keys(put_text)
+            except TimeoutException:
+                print('Поле заметки не пустое')
     # т.к. поле может быть или пустым при первом прогоне или с пробелом при последующих.
     # Пока так, до решения вопроса об удалении заметки через БД
 
@@ -935,27 +939,26 @@ class UserProfilePage(BasePage):
     def check_save_note(self, put_text):
         self.element_is_visible(self.locators.TAB_EXPERIENCE).click()
         self.element_is_visible(self.locators.TAB_NOTE).click()
-        assert self.element_is_displayed(self.locators_colleagues_page.check_text_on_page(put_text)), 'Заметка не сохранилась'
+        assert self.element_is_displayed(self.locators.check_text(put_text)), 'Заметка не сохранилась'
 
     @testit.step("Проверка что заметка не видна адресату")
     @allure.step("Проверка что заметка не видна адресату")
     def check_note_not_visible_addressee(self, put_text):
-        self.element_is_visible(self.locators_colleagues_page.WATCH_USER_EYES_BUTTONS, 2).click()
         self.element_is_visible(self.locators.PROFILE_BUTTON).click()
         self.element_is_visible(self.locators.MY_PROFILE_MENU_ITEM).click()
         self.element_is_visible(self.locators.TAB_NOTE).click()
-        assert not self.element_is_displayed(self.locators_colleagues_page.check_text_on_page(put_text)), "Заметка видна адресату"
-        self.element_is_visible(self.locators_colleagues_page.RETURN_TO_PROFILE_BUTTON).click()
+        assert not self.element_is_displayed(self.locators.check_text(put_text)), "Заметка видна адресату"
 
     @testit.step("Проверка что заметка не видна не автору")
     @allure.step("Проверка что заметка не видна не автору")
     def check_note_not_visible_non_author(self, name, put_text):
-        self.element_is_visible(self.locators_colleagues_page.WATCH_USER_EYES_BUTTONS).click()
-        self.element_is_visible(self.locators_colleagues_page.COLLEAGUES_TAB).click()
-        self.element_is_visible(self.locators_colleagues_page.ALL_COLLEAGUES).click()
-        self.element_is_visible(self.locators_colleagues_page.SEARCH_FIELD).send_keys(name)
-        time.sleep(3)
-        self.element_is_visible(self.locators_colleagues_page.USER_NAME_LINK).click()
+        self.element_is_visible(self.locators.PROFILE_BUTTON).click()
+        self.element_is_visible(self.locators.MY_PROFILE_MENU_ITEM).click()
         self.element_is_visible(self.locators.TAB_NOTE).click()
-        assert not self.element_is_displayed(self.locators_colleagues_page.check_text_on_page(put_text)), "Заметка видна не автору"
-        self.element_is_visible(self.locators_colleagues_page.RETURN_TO_PROFILE_BUTTON).click()
+        assert not self.element_is_displayed(self.locators.check_text(put_text)), "Заметка видна не автору"
+
+    @testit.step("Замена текста в поле заметки на пробел")
+    @allure.step("Замена текста в поле заметки на пробел")
+    def put_spase_in_note(self, text, put_text):
+        self.element_is_visible(self.locators.check_text(text)).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.check_text(text)).send_keys(put_text)

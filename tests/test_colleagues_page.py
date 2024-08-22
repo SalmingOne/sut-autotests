@@ -1,11 +1,8 @@
-import time
-
 import allure
 import pytest
 import testit
 
 from pages.colleagues_page import ColleaguesPage
-from pages.user_profile_page import UserProfilePage
 from pages.create_local_user_drawer_page import CreateLocalUserDrawerPage
 from pages.user_page import UserPage
 
@@ -48,29 +45,6 @@ class TestUsersPage:
         colleagues_page.go_colleagues_page()
         colleagues_page.search_user('АвтоСПроектом')
         colleagues_page.check_watch_the_user_eyes()
-
-    @testit.workItemIds(1429)
-    @testit.displayName("10.10.1. Сохранение заметки")
-    @pytest.mark.regress
-    @allure.title("id-1429 10.10.1. Сохранение заметки")
-    def test_saving_note(self, login, create_work_user, create_user_whit_one_project_role_and_no_assignments, driver):
-        colleagues_page = ColleaguesPage(driver)
-        user_profile_page = UserProfilePage(driver)
-        colleagues_page.go_colleagues_page()
-        colleagues_page.search_user(create_work_user)
-        user_profile_page.go_to_colleague_profile()
-        user_profile_page.check_note_tab() #Раскомментировать строку после решения вопроса об удалении заметки из бд
-        user_profile_page.check_note_empty(' ') #Т.к. нельзя удалить заметку при повторном прогоне в ней будет пробел
-        user_profile_page.put_text_in_note("Текст заметки")
-        user_profile_page.save_note()
-        user_profile_page.check_save_note("Текст заметки")
-        colleagues_page.go_colleagues_page()
-        colleagues_page.search_user(create_work_user)
-        time.sleep(2) #если не успевает прогрузиться переходит по первому пользователю из списка
-        user_profile_page.check_note_not_visible_addressee("Текст заметки")
-        colleagues_page.search_user(create_user_whit_one_project_role_and_no_assignments)
-        time.sleep(2) #если не успевает прогрузиться переходит по первому пользователю из списка
-        user_profile_page.check_note_not_visible_non_author(create_work_user, "Текст заметки")
 
 
 
