@@ -903,8 +903,8 @@ class UserProfilePage(BasePage):
     @testit.step("Ввод текста в пустое поле заметки")
     @allure.step("Ввод текста в пустое поле заметки")
     def put_text_in_note(self, put_text):
-        self.element_is_visible(self.locators.NOTE_TEXT).send_keys(Keys.CONTROL + 'a')
-        self.element_is_visible(self.locators.NOTE_TEXT).send_keys(put_text)
+        self.element_is_visible(self.locators.EDITOR_CONTENT).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.EDITOR_CONTENT).send_keys(put_text)
 
     @testit.step("Сохранение заметки")
     @allure.step("Сохранение заметки")

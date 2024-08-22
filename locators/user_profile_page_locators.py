@@ -123,6 +123,7 @@ class UserProfilePageLocators:
     # Таб заметки
     MESSAGE_ON_TAB = (By.XPATH, '//p[text()="Введите текст"]')
     TEXT_FIELD_WITH_VISIVIG = (By.CSS_SELECTOR, 'div[class="rdw-editor-toolbar"]')
+    EDITOR_CONTENT = (By.CSS_SELECTOR, 'div[class="notranslate public-DraftEditor-content"]')
     NOTE_TEXT = (By.CSS_SELECTOR, 'span[data text]')
     NOTE_TEXT_1 = (By.XPATH, '//span[text()="Текст заметки"]')
 
