@@ -12,7 +12,6 @@ from endpoints.project_endpoint import ProjectEndpoint
 from locators.user_profile_page_locators import UserProfilePageLocators
 from pages.base_page import BasePage
 
-
 class UserProfilePage(BasePage):
     locators = UserProfilePageLocators()
 
@@ -890,3 +889,48 @@ class UserProfilePage(BasePage):
     def check_delete_contact(self):
         assert not self.element_is_displayed(self.locators.CONTACT_TYPE_FIELD, 2), "Тип контакта не удалился"
         assert not self.element_is_displayed(self.locators.CONTACT_DETAILS_FIELD,2), "Реквизит контакта не удалился"
+
+    @testit.step("Переход на таб заметки на странице коллеги")
+    @allure.step("Переход на таб заметки на странице коллеги")
+    def go_to_colleague_profile(self):
+        self.element_is_visible(self.locators.TAB_NOTE).click()
+
+    @testit.step("Проверка содержания таба заметки")
+    @allure.step("Проверка содержания таба заметки")
+    def check_note_tab(self):
+        assert self.element_is_displayed(self.locators.MESSAGE_ON_TAB), "Нет сообщения на странице"
+        assert self.element_is_displayed(self.locators.TEXT_FIELD_WITH_VISIVIG), "Нет визивига"
+
+    @testit.step("Ввод текста в пустое поле заметки")
+    @allure.step("Ввод текста в пустое поле заметки")
+    def put_text_in_note(self, put_text):
+        self.element_is_visible(self.locators.EDITOR_CONTENT).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.EDITOR_CONTENT).send_keys(put_text)
+
+    @testit.step("Сохранение заметки")
+    @allure.step("Сохранение заметки")
+    def save_note(self):
+        self.element_is_visible(self.locators.SAVE_BUTTON).click()
+
+    @testit.step("Проверка что заметка сохранилась")
+    @allure.step("Проверка что заметка сохранилась")
+    def check_save_note(self, put_text):
+        self.element_is_visible(self.locators.TAB_EXPERIENCE).click()
+        self.element_is_visible(self.locators.TAB_NOTE).click()
+        assert self.element_is_displayed(self.locators.check_text(put_text)), 'Заметка не сохранилась'
+
+    @testit.step("Проверка что заметка не видна адресату")
+    @allure.step("Проверка что заметка не видна адресату")
+    def check_note_not_visible_addressee(self, put_text):
+        self.element_is_visible(self.locators.PROFILE_BUTTON).click()
+        self.element_is_visible(self.locators.MY_PROFILE_MENU_ITEM).click()
+        self.element_is_visible(self.locators.TAB_NOTE).click()
+        assert not self.element_is_displayed(self.locators.check_text(put_text)), "Заметка видна адресату"
+
+    @testit.step("Проверка что заметка не видна не автору")
+    @allure.step("Проверка что заметка не видна не автору")
+    def check_note_not_visible_non_author(self, name, put_text):
+        self.element_is_visible(self.locators.PROFILE_BUTTON).click()
+        self.element_is_visible(self.locators.MY_PROFILE_MENU_ITEM).click()
+        self.element_is_visible(self.locators.TAB_NOTE).click()
+        assert not self.element_is_displayed(self.locators.check_text(put_text)), "Заметка видна не автору"

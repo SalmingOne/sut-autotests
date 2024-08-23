@@ -82,6 +82,12 @@ class ColleaguesPage(BasePage):
         self.element_is_visible(self.locators.RETURN_TO_PROFILE_BUTTON).click()
         assert self.element_is_displayed(self.locators.check_text_on_page('Коллеги')), 'Мы не на странице коллеги'
 
+    @testit.step("Перейти в режим просмотра системы глазами пользователя")
+    @allure.step("Перейти в режим просмотра системы глазами пользователя")
+    def go_to_watch_the_user_eyes(self):
+        self.element_is_visible(self.locators.WATCH_USER_EYES_BUTTONS).click()
 
-
-
+    @testit.step("Нажать кнопку возврата в свой профиль")
+    @allure.step("Нажать кнопку возврата в свой профиль")
+    def go_back_to_profile(self):
+        self.element_is_visible(self.locators.RETURN_TO_PROFILE_BUTTON).click()
