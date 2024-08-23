@@ -4,7 +4,7 @@ from selenium.webdriver.common.by import By
 class AllProjectPageLocators:
     # Пункты меню для перехода на страницу все проекты
     TAB_PROJECTS = (By.CSS_SELECTOR, "div[id='projects']")
-    TAB_ALL_PROJECTS = (By.CSS_SELECTOR, 'a[href="/admin/projects?displayOnlyMyProjects=false&create=false"]')
+    TAB_ALL_PROJECTS = (By.XPATH, '//a[text()="Посмотреть все"]')
     ALL_PROJECTS_MENU_ITEMS = (By.XPATH, '//li[@role="menuitem"]/a')
     # Локатор проверки, что имя проекта есть на странице
     def check_project_name_on_tab(self, project_name):

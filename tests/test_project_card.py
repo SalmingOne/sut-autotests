@@ -9,6 +9,7 @@ from data.data import PROJECT_NAME
 from endpoints.project_roles_endpoint import ProjectRolesEndpoint
 from endpoints.users_endpoint import UserEndpoint
 from pages.all_project_page import AllProjectPage
+from pages.colleagues_page import ColleaguesPage
 from pages.gantt_page import GanttPage
 from pages.project_card_page import ProjectCardPage
 
@@ -260,3 +261,31 @@ class TestProjectCard:
             "Не отображается подсказка об обязательности поля"
         assert project_card_page.get_start_project_date_field_color() == 'rgb(211, 47, 47)', \
             "Поле дата начала проекта не выделяется красным"
+
+    @testit.workItemIds(313)
+    @testit.displayName("1.3.2.3 Удаление чипса с руководителем проекта")
+    @pytest.mark.regress
+    @allure.title("id-313 1.3.2.3 Удаление чипса с руководителем проекта")
+    def test_chip_removal_with_project_manager(self, project_with_assignment_not_current_manager, login, driver):
+        all_project_page = AllProjectPage(driver)
+        time.sleep(0.5)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(project_with_assignment_not_current_manager['name'])
+        project_card_page = ProjectCardPage(driver)
+        project_card_page.remove_manager_chips()
+        message = project_card_page.get_alert_message()
+        time.sleep(1)
+        project_card_page.check_manager_label()
+        project_card_page.go_to_team_tab()
+        time.sleep(1)
+        project_card_page.check_text_on_page('АвтоСПроектом')
+        colleagues_page = ColleaguesPage(driver)
+        colleagues_page.go_colleagues_page()
+        colleagues_page.search_user('АвтоСПроектом')
+        colleagues_page.go_to_watch_the_user_eyes()
+        time.sleep(1)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(project_with_assignment_not_current_manager['name'])
+        project_card_page.check_resource_plan_tab_on_page()
+        project_card_page.check_text_on_page('Нет данных')
+        assert message == 'Свойства проекта успешно изменены'
