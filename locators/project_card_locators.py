@@ -86,3 +86,8 @@ class ProjectCardLocators:
     # Ошибки
     MUI_ERROR = (By.XPATH, '//p[contains(@class, "Mui-error")]')
     ALERT_MESSAGE = (By.XPATH, '//div[contains(@class, "MuiAlert-message")]')
+
+    CANSEL_ICON = (By.CSS_SELECTOR, 'svg[data-testid="CancelIcon"]')
+
+    def text_on_page(self, text):
+        return (By.XPATH, f'//*[contains(text(), "{text}")]')

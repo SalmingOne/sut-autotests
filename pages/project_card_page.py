@@ -598,3 +598,24 @@ class ProjectCardPage(BasePage):
     @allure.step("Получение цвета поля дата начала проекта")
     def get_start_project_date_field_color(self):
         return self.element_is_visible(self.locators.BEGIN_DATA_FIELD_COLOR).value_of_css_property('border-color')
+
+    @testit.step("Удаление чипсы менеджера проекта")
+    @allure.step("Удаление чипсы менеджера проекта")
+    def remove_manager_chips(self):
+        self.element_is_visible(self.locators.CANSEL_ICON).click()
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+
+    @testit.step("Проверка удаления чипсы менеджера проекта")
+    @allure.step("Проверка удаления чипсы менеджера проекта")
+    def check_manager_label(self):
+        assert not self.element_is_displayed(self.locators.MANAGER_LABEL, 1), "Чипса менеджера проекта не удалилась"
+
+    @testit.step("Проверка наличия текста на странице")
+    @allure.step("Проверка наличия текста на странице")
+    def check_text_on_page(self, text):
+        assert self.element_is_displayed(self.locators.text_on_page(text)), f"На странице нет текста {text}"
+
+    @testit.step("Проверка отсутствия вкладки ресурсный план на странице")
+    @allure.step("Проверка отсутствия вкладки ресурсный план на странице")
+    def check_resource_plan_tab_on_page(self):
+        assert not self.element_is_displayed(self.locators.RESOURCE_PLAN_TAB, 1)
