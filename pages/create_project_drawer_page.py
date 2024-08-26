@@ -60,3 +60,8 @@ class CreateProjectDrawerPage(BasePage):
     def get_mui_error_text(self):
         return self.element_is_visible(self.locators.MUI_ERROR).text
 
+    @testit.step("Нажатие кнопки отмены добавления проекта")
+    @allure.step("Нажатие кнопки отмены добавления проекта")
+    def press_break_button(self):
+        self.element_is_visible(self.locators.BREAK_BUTTON).click()
+

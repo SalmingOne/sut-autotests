@@ -284,3 +284,113 @@ class TestCreateProject:
         project_endpoint.delete_project_by_name_api("AutoTestProject")
         assert USER_NAME in description_list[4], \
             "Выбранный руководитель проекта не отображается в поле Руководитель проекта"
+
+    @testit.workItemIds(11846)
+    @testit.displayName("1.1. Проверка ограничения полей при создании проекта")
+    @pytest.mark.regress
+    @allure.title("id-11846 1.1. Проверка ограничения полей при создании проекта")
+    def test_checking_field_restrictions_when_creating_a_project(self, simple_project, login, driver):
+        create_project_drawer_page = CreateProjectDrawerPage(driver)
+        # Неуникальное имя проекта
+        create_project_drawer_page.go_to_create_project_drawer_from_menu()
+        create_project_drawer_page.create_project(
+            "AutoTestProject",
+            'AUTO',
+            USER_NAME,
+            'no',
+            '01.10.2022'
+        )
+        error = create_project_drawer_page.get_mui_error_text()
+        assert error == 'Указанное название проекта уже используется в системе', \
+            'Не появилась ошибка о неуникальном названии проекта'
+        create_project_drawer_page.press_break_button()
+        # Неуникальный код проекта
+        create_project_drawer_page.go_to_create_project_drawer_from_menu()
+        create_project_drawer_page.create_project(
+            "TestProject",
+            'ATP',
+            USER_NAME,
+            'no',
+            '01.10.2022'
+        )
+        error = create_project_drawer_page.get_mui_error_text()
+        assert error == 'Указанный код проекта уже используется в системе', \
+            'Не появилась ошибка о неуникальном коде проекта'
+        create_project_drawer_page.press_break_button()
+        # Дата окончания раньше даты начала
+        create_project_drawer_page.go_to_create_project_drawer_from_menu()
+        create_project_drawer_page.create_project(
+            "AutoTestProj",
+            'ATPP',
+            USER_NAME,
+            'no',
+            '01.10.2022',
+            '01.09.2022'
+        )
+        error = create_project_drawer_page.get_mui_error_text()
+        assert error == 'Дата окончания проекта не должна быть раньше даты начала', \
+            'Не появилась ошибка о несоответствии даты начала и окончания проекта'
+        create_project_drawer_page.press_break_button()
+        # Превышение длины имени проекта
+        create_project_drawer_page.go_to_create_project_drawer_from_menu()
+        create_project_drawer_page.create_project(
+            "Lorem ipsum dolor sit amet consectetuer adipiscing elit sed diam nonummy nibh euismod tincidunt utttt",
+            'ATPR',
+            USER_NAME,
+            'no',
+            '01.10.2022'
+        )
+        error = create_project_drawer_page.get_mui_error_text()
+        assert error == 'Максимальное количество символов: 100', \
+            'Не появилась ошибка о превышении максимального количества символов'
+        create_project_drawer_page.press_break_button()
+        # Превышение длины кода проекта
+        create_project_drawer_page.go_to_create_project_drawer_from_menu()
+        create_project_drawer_page.create_project(
+            "AutoTestProjectw",
+            'AutoTestPro',
+            USER_NAME,
+            'no',
+            '01.10.2022'
+        )
+        error = create_project_drawer_page.get_mui_error_text()
+        assert error == 'Максимальное количество символов: 10', \
+            'Не появилась ошибка о превышении максимального количества символов'
+        create_project_drawer_page.press_break_button()
+        # Недопустимые символы в имени проекта
+        create_project_drawer_page.go_to_create_project_drawer_from_menu()
+        create_project_drawer_page.create_project(
+            "AutoTestProject)(,",
+            'ATPr',
+            USER_NAME,
+            'no',
+            '01.10.2022'
+        )
+        error = create_project_drawer_page.get_mui_error_text()
+        assert error == 'Значение в поле содержит недопустимые символы',\
+            'Не появилась ошибка о недопустимых символах'
+        create_project_drawer_page.press_break_button()
+        # "-" в конце коде проекта
+        create_project_drawer_page.go_to_create_project_drawer_from_menu()
+        create_project_drawer_page.create_project(
+            "AutoTestProjecrt",
+            'ATP-',
+            USER_NAME,
+            'no',
+            '01.10.2022'
+        )
+        error = create_project_drawer_page.get_mui_error_text()
+        assert error == 'Значение в поле содержит недопустимые символы', 'Не появилась ошибка о недопустимых символах'
+        create_project_drawer_page.press_break_button()
+        # Недопустимые символы в коде проекта
+        create_project_drawer_page.go_to_create_project_drawer_from_menu()
+        create_project_drawer_page.create_project(
+            "AutoTestProjecte",
+            'ATP)(,',
+            USER_NAME,
+            'no',
+            '01.10.2022'
+        )
+        error = create_project_drawer_page.get_mui_error_text()
+        assert error == 'Значение в поле содержит недопустимые символы', 'Не появилась ошибка о недопустимых символах'
+        create_project_drawer_page.press_break_button()
