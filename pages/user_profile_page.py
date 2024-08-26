@@ -911,6 +911,7 @@ class UserProfilePage(BasePage):
     @allure.step("Сохранение заметки")
     def save_note(self):
         self.element_is_visible(self.locators.SAVE_BUTTON).click()
+        time.sleep(1)
 
     @testit.step("Проверка что заметка сохранилась")
     @allure.step("Проверка что заметка сохранилась")
@@ -929,8 +930,18 @@ class UserProfilePage(BasePage):
 
     @testit.step("Проверка что заметка не видна не автору")
     @allure.step("Проверка что заметка не видна не автору")
-    def check_note_not_visible_non_author(self, name, put_text):
+    def check_note_not_visible_non_author(self, put_text):
         self.element_is_visible(self.locators.PROFILE_BUTTON).click()
         self.element_is_visible(self.locators.MY_PROFILE_MENU_ITEM).click()
         self.element_is_visible(self.locators.TAB_NOTE).click()
         assert not self.element_is_displayed(self.locators.check_text(put_text)), "Заметка видна не автору"
+
+    @testit.step("Взять текст ранее сохраненной заметки")
+    @allure.step("Взять текст ранее сохраненной заметки")
+    def take_previously_saved_note(self):
+        return self.element_is_visible(self.locators.EDITOR_CONTENT).text
+
+    @testit.step("Сравнение текстов заметок")
+    @allure.step("Сравнение текстов заметок")
+    def notes_comparison(self, put_text):
+        assert self.take_previously_saved_note != put_text, 'Заметка не изменилась'

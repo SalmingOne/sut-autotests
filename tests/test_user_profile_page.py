@@ -937,3 +937,23 @@ class TestUserProfilePage:
         user_profile_page.go_to_colleague_profile()
         user_profile_page.put_text_in_note('-')
         user_profile_page.save_note()
+
+    @testit.workItemIds(1428)
+    @testit.displayName("10.10.1. Редактирование заметки")
+    @pytest.mark.regress
+    @allure.title("id-1428 10.10.1. Редактирование заметки")
+    def test_editing_note(self, create_work_user, login, driver):
+        colleagues_page = ColleaguesPage(driver)
+        user_profile_page = UserProfilePage(driver)
+        colleagues_page.go_colleagues_page()
+        colleagues_page.search_user(create_work_user)
+        colleagues_page.check_user_name_link()
+        user_profile_page.go_to_colleague_profile()
+        user_profile_page.check_note_tab()
+        user_profile_page.take_previously_saved_note()
+        user_profile_page.put_text_in_note('Новый текст заметки')
+        user_profile_page.save_note()
+        user_profile_page.check_save_note("Новый текст заметки")
+        user_profile_page.notes_comparison("Новый текст заметки")
+        user_profile_page.put_text_in_note('-')
+        user_profile_page.save_note()
