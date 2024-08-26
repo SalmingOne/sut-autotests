@@ -957,3 +957,44 @@ class TestUserProfilePage:
         user_profile_page.notes_comparison("Новый текст заметки")
         user_profile_page.put_text_in_note('-')
         user_profile_page.save_note()
+
+    @testit.workItemIds(11924)
+    @testit.displayName("10.2.3. Редактирование полей если выбранный Работодатель не существует в системе")
+    @pytest.mark.regress
+    @allure.title("id-11924 10.2.3. Редактирование полей если выбранный Работодатель не существует в системе")
+    def test_editing_fields_if_the_selected_employer_does_not_exist(self, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        time.sleep(3)
+        user_profile_page.go_to_experience_tab()
+        time.sleep(1)
+        # Проверяем что есть карточка опыта
+        if user_profile_page.check_experience_title():
+            pass
+        else:
+            user_profile_page.field_work_experience_form_with_new_employer()
+        before_fields_text = user_profile_page.get_all_fields()
+        user_profile_page.press_redact_button()
+        time.sleep(1)
+        user_profile_page.field_custom_employer_field("Прошлый работодатель")
+        assert user_profile_page.get_employer_field_text() == "Прошлый работодатель", \
+            "В поле работодатель не отображается введенное значение"
+        user_profile_page.field_project_field('Интересный проект')
+        assert user_profile_page.get_project_field_text() == 'Интересный проект', \
+            "В поле проект не отображается введенное значение"
+        user_profile_page.field_project_role_field('Важная роль')
+        assert user_profile_page.get_project_role_field_text() == 'Важная роль', \
+            "В поле проектная роль не отображается введенное значение"
+        user_profile_page.check_custom_begin_data_field()
+        user_profile_page.check_custom_end_data_field()
+        user_profile_page.field_knowledge_field()
+        user_profile_page.press_save_button()
+        after_fields_text = user_profile_page.get_all_fields()
+        assert user_profile_page.check_experience_title(), "Карточка проекта отсутствует"
+        assert before_fields_text != after_fields_text, "Карточка опыта не изменилась"
+        # Удаляем карточку проекта
+        user_profile_page.press_redact_button()
+        time.sleep(1)
+        user_profile_page.press_delete_icon()
+        user_profile_page.press_save_button()
+        time.sleep(0.2)

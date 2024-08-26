@@ -645,11 +645,11 @@ class UserProfilePage(BasePage):
 
     @testit.step("Проверка поля Работодатель при самостоятельном заполнении")
     @allure.step("Проверка поля Работодатель при самостоятельном заполнении")
-    def field_custom_employer_field(self):
+    def field_custom_employer_field(self, employer_name):
         self.element_is_visible(self.locators.EXPERIENCES_EMPLOYER_FIELD).send_keys(Keys.CONTROL + "a")
-        self.element_is_visible(self.locators.EXPERIENCES_EMPLOYER_FIELD).send_keys('Новый работодатель')
+        self.element_is_visible(self.locators.EXPERIENCES_EMPLOYER_FIELD).send_keys(employer_name)
         li_text = self.element_is_visible(self.locators.LI_MENU_ITEM).get_attribute('aria-label')
-        assert li_text == 'Добавить работодателя "Новый работодатель"'
+        assert li_text == f'Добавить работодателя "{employer_name}"'
         self.element_is_visible(self.locators.LI_MENU_ITEM).click()
 
     @testit.step("Проверка поля Дата начала при самостоятельном заполнении")
@@ -658,13 +658,13 @@ class UserProfilePage(BasePage):
         self.elements_are_visible(self.locators.EXPERIENCES_DATA_PICKER)[0].click()
         assert not self.element_is_clickable(self.locators.NEXT_DAY_IN_PICKER, 1), "Можно выбрать следующую дату"
         self.elements_are_visible(self.locators.EXPERIENCES_DATA_PICKER)[0].click()
-
+        self.element_is_visible(self.locators.EXPERIENCES_BEGIN_DATA_INPUT).send_keys(Keys.CONTROL + 'a')
         self.element_is_visible(self.locators.EXPERIENCES_BEGIN_DATA_INPUT).send_keys(self.get_day_before(22000))
         self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_SLOT).click()
         error_text = self.element_is_visible(self.locators.MUI_ERROR).text
         time.sleep(2)
         self.element_is_visible(self.locators.EXPERIENCES_BEGIN_DATA_INPUT).send_keys(Keys.CONTROL + 'a')
-        self.element_is_visible(self.locators.EXPERIENCES_BEGIN_DATA_INPUT).send_keys(self.get_day_before(0))
+        self.element_is_visible(self.locators.EXPERIENCES_BEGIN_DATA_INPUT).send_keys(self.get_day_before(2))
         self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_SLOT).click()
         assert error_text == 'Дата начала работы некорректна', "Не появилось сообщение о некорректной дате"
 
@@ -674,7 +674,8 @@ class UserProfilePage(BasePage):
         self.press_redact_button()
         self.press_add_icon_button()
         time.sleep(2)
-        self.field_custom_employer_field()
+        self.field_custom_employer_field("Новый работодатель")
+        assert self.get_employer_field_text() == "Новый работодатель"
         self.check_128_symbol_in_field(self.locators.EXPERIENCES_CUSTOM_PROJECT_FIELD,
                                        self.locators.EXPERIENCES_KNOWLEDGE_FIELD)
         self.check_64_symbol(self.locators.EXPERIENCES_SPECIALIZATION_SLOT, self.locators.EXPERIENCES_KNOWLEDGE_FIELD)
@@ -945,3 +946,59 @@ class UserProfilePage(BasePage):
     @allure.step("Сравнение текстов заметок")
     def notes_comparison(self, put_text):
         assert self.take_previously_saved_note != put_text, 'Заметка не изменилась'
+
+    @testit.step("Получение текста поля работодатель")
+    @allure.step("Получение текста поля работодатель")
+    def get_employer_field_text(self):
+        return self.element_is_visible(self.locators.EXPERIENCES_EMPLOYER_FIELD).get_attribute('value')
+
+    @testit.step("Заполнение поля проект")
+    @allure.step("Заполнение поля проект")
+    def field_project_field(self, project_name):
+        self.element_is_visible(self.locators.EXPERIENCES_CUSTOM_PROJECT_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.EXPERIENCES_CUSTOM_PROJECT_FIELD).send_keys(project_name)
+
+    @testit.step("Получение текста поля проект")
+    @allure.step("Получение текста поля проект")
+    def get_project_field_text(self):
+        return self.element_is_visible(self.locators.EXPERIENCES_CUSTOM_PROJECT_FIELD).get_attribute('value')
+
+    @testit.step("Заполнение поля проектная роль")
+    @allure.step("Заполнение поля проектная роль")
+    def field_project_role_field(self, role_name):
+        self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_SLOT).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_SLOT).send_keys(role_name)
+
+    @testit.step("Получение текста поля проектная роль")
+    @allure.step("Получение текста поля проектная роль")
+    def get_project_role_field_text(self):
+        return self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_SLOT).get_attribute('value')
+
+    @testit.step("Заполнение поля знания")
+    @allure.step("Заполнение поля знания")
+    def field_knowledge_field(self):
+        self.element_is_visible(self.locators.EXPERIENCES_KNOWLEDGE_WHEN_FIELD).click()
+        time.sleep(1)
+        self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
+
+    @testit.step("Проверка поля Дата окончания работы при самостоятельном заполнении")
+    @allure.step("Проверка поля Дата окончания работы при самостоятельном заполнении")
+    def check_custom_end_data_field(self):
+        self.element_is_visible(self.locators.EXPERIENCES_END_DATA_INPUT).send_keys(self.get_day_before(3))
+        self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_SLOT).click()
+        error_text = self.element_is_visible(self.locators.MUI_ERROR).text
+        time.sleep(2)
+        self.element_is_visible(self.locators.EXPERIENCES_END_DATA_INPUT).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.EXPERIENCES_END_DATA_INPUT).send_keys(self.get_day_before(0))
+        self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_SLOT).click()
+        assert error_text == 'Дата окончания работы не может быть раньше начала', \
+            "Не появилось сообщение о некорректной дате"
+
+    @testit.step("Получение текста полей input")
+    @allure.step("Получение текста полей input")
+    def get_all_fields(self):
+        all_fields = self.elements_are_visible(self.locators.INPUT_PLACEHOLDER)
+        text_list = []
+        for field in all_fields:
+            text_list.append(field.get_attribute('value'))
+        return text_list
