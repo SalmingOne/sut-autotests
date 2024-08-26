@@ -944,4 +944,4 @@ class UserProfilePage(BasePage):
     @testit.step("Сравнение текстов заметок")
     @allure.step("Сравнение текстов заметок")
     def notes_comparison(self, put_text):
-        assert not self.take_previously_saved_note == put_text, 'Заметка не изменилась'
+        assert self.take_previously_saved_note != put_text, 'Заметка не изменилась'
