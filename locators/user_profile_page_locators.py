@@ -65,12 +65,16 @@ class UserProfilePageLocators:
     EXPERIENCES_SPECIALIZATION_SLOT = (By.CSS_SELECTOR, 'input[placeholder="Выберите роль"]')
     EXPERIENCES_DESCRIPTION = (By.CSS_SELECTOR, 'div[aria-label="rdw-wrapper"]')
     EXPERIENCES_DESCRIPTION_TEXT = (By.CSS_SELECTOR, 'span[data-text]')
+    EXPERIENCES_DESCRIPTION_INPUT = (By.CSS_SELECTOR, 'div[aria-label="rdw-editor"]')
 
     EXPERIENCES_DATA_PICKER = (By.CSS_SELECTOR, 'button[aria-label="Choose date"]')
     NEXT_DAY_IN_PICKER = (By.XPATH, '//button[contains(@class, "today")]//following::button[1]')
     EXPERIENCES_TITLE = (By.XPATH, '//div[contains(@name,"employer")]')
     EXPERIENCES_BEGIN_DATA_INPUT = (By.XPATH, '//label[text()="Дата начала работы"]/..//input')
+    EXPERIENCES_END_DATA_INPUT = (By.XPATH, '//label[text()="Дата окончания работы"]/..//input')
     EXPERIENCES_KNOWLEDGE_FIELD = (By.CSS_SELECTOR, 'input[placeholder="Выберите уровни"]')
+    EXPERIENCES_KNOWLEDGE_WHEN_FIELD = (By.CSS_SELECTOR, 'input[class^="MuiOutlinedInput-input MuiInputBase-input MuiInputBase-inputAdornedStart MuiInputBase-inputAdornedEnd"]')
+    INPUT_PLACEHOLDER = (By.CSS_SELECTOR, 'input[placeholder]')
     # Вкладка Резюме
     RESUME_TAB_BUTTON = (By.XPATH, '//div[text()="Резюме"]/..')
     CREATE_RESUME_BUTTON = (By.XPATH, '//a[text()="Создать"]')
