@@ -20,6 +20,7 @@ class CreateProjectDrawerLocators:
     CHOSE_ADMIN = (By.XPATH, f'//p[text()="{data.USER_NAME}"]')
     LI_MENU_ITEM = (By.CSS_SELECTOR, 'li[role="option"]')
     SUBMIT_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
+    BREAK_BUTTON = (By.XPATH, '//button[text()="Отменить"]')
     # Локатор проверки, что мы оказались на вкладке команда после создания проекта
     CHECK_CREATE_PROJECT = (By.XPATH, '//h6[text()="Команда"]')
 
