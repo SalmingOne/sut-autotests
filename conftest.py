@@ -57,6 +57,18 @@ def simple_project():
 
 
 @pytest.fixture()
+def simple_project_to_delete():
+    project_endpoint = ProjectEndpoint()
+    payload = CreateProject().model_dump()
+    response = project_endpoint.create_project_api(json=payload)
+    yield response.json()
+    if project_endpoint.check_project_by_id(str(response.json()['id'])):
+        project_endpoint.delete_project_api(str(response.json()['id']))
+    else:
+        pass
+
+
+@pytest.fixture()
 def second_project():
     project_endpoint = ProjectEndpoint()
     payload = CreateProject(

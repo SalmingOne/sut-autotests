@@ -134,9 +134,9 @@ class CreateLocalUserDrawerPage(BasePage):
         time.sleep(0.5)  # Без ожидания иногда скрипт срабатывает раньше анимации
         self.element_is_visible(self.locators.PROJECT_FIELD).click()
         try:
-            self.elements_are_visible(self.locators.DROPDOWN_ITEMS)[0].click()
+            self.elements_are_visible(self.locators.DROPDOWN_ITEMS, 1)[0].click()
         except TimeoutException:
-            pass
+            self.element_is_visible(self.locators.DELETE_PROJECTS_BUTTON).click()
         self.go_to_tab_contacts()
         self.element_is_visible(self.locators.EMAIL_FIELD).send_keys(email)
         if save == 'yes':

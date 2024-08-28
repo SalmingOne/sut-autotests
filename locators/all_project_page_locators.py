@@ -27,5 +27,11 @@ class AllProjectPageLocators:
     ONLY_MY_PROJECTS_CHECKBOX = (By.XPATH, '//p[text()="Отображать только мои проекты"]')
     TAT_COLUMN_TITLES = (By.CSS_SELECTOR, 'span[class="ag-header-cell-text"]')
 
+    ALERT_DIALOG_DESCRIPTION = (By.CSS_SELECTOR, 'p[id="alert-dialog-description"]')
+    MODAL_SUBMIT_BUTTON = (By.XPATH, '//p[@id="alert-dialog-description"]//following::button[text()="Подтвердить"]')
+    MODAL_ABORT_BUTTON = (By.XPATH, '//p[@id="alert-dialog-description"]//following::button[text()="Отменить"]')
+
+    ALERT_MESSAGE = (By.XPATH, '//div[contains(@class, "MuiAlert-message")]')
+
 
 

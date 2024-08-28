@@ -75,3 +75,13 @@ class ProjectEndpoint:
             else:
                 no_adding_himself.append(project["name"])
         return adding_himself, no_adding_himself
+
+    @allure.step("Проверяем наличие проекта")
+    def check_project_by_id(self, project_id):
+        header = AuthEndpoint().get_header_token_api()
+        self.response = requests.get(url=Urls.project_url + project_id, headers=header, verify=False)
+        self.response_json = self.response.json()
+        if self.response.status_code == 200:
+            return True
+        else:
+            return False
