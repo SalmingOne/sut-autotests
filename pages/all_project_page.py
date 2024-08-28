@@ -27,10 +27,11 @@ class AllProjectPage(BasePage):
     @testit.step("Удаляем проект")
     @allure.step("Удаляем проект")
     def delete_project(self, project_name):
-
+        time.sleep(0.5)
         self.element_is_visible(self.locators.project_action_button(project_name)).click()
+        time.sleep(1)
         self.element_is_visible(self.locators.PROJECT_DELETE_BUTTON).click()
-        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+        self.element_is_visible(self.locators.SUBMIT_BUTTON, 15).click()
         time.sleep(1)  # Если не поставить явное ожидание драйвер закроется раньше чем, удалится проект
 
     @testit.step("Включаем фильтр проект во всех статусах")
@@ -110,3 +111,30 @@ class AllProjectPage(BasePage):
     @allure.step("Выбираем чекбокс только мои проекты")
     def press_only_my_projects_checkbox(self):
         self.element_is_visible(self.locators.ONLY_MY_PROJECTS_CHECKBOX).click()
+
+    @testit.step("Проверка удаления проекта")
+    @allure.step("Проверка удаления проекта")
+    def check_delete_project(self, project_name):
+        time.sleep(4)
+        self.element_is_visible(self.locators.project_action_button(project_name)).click()
+        time.sleep(0.5)
+        self.element_is_visible(self.locators.PROJECT_DELETE_BUTTON).click()
+        dialog_text = self.element_is_visible(self.locators.ALERT_DIALOG_DESCRIPTION, 25).text
+        assert self.element_is_displayed(self.locators.MODAL_ABORT_BUTTON)
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+        assert dialog_text == f'Вы уверены, что хотите удалить проект "{project_name}"?'
+        time.sleep(1)  # Если не поставить явное ожидание драйвер закроется раньше чем, удалится проект
+
+    @testit.step("Берем текст всех сообщений системы")
+    @allure.step("Берем текст всех сообщений системы")
+    def get_alert_message(self):
+        all_alerts = self.elements_are_visible(self.locators.ALERT_MESSAGE)
+        data = []
+        for alert in all_alerts:
+            data.append(alert.text)
+        return data
+
+    @testit.step("Проверка наличия имени проекта на странице")
+    @allure.step("Проверка наличия имени проекта на странице")
+    def get_project_on_tab(self, project_name):
+        return self.element_is_displayed(self.locators.check_project_name_on_tab(project_name), 2)
