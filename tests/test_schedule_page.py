@@ -295,3 +295,20 @@ class TestSchedulePage:
         schedule_page.editing_a_specific_day('11:00', '12:00')
         assert schedule_page.get_massage() == 'Ваш рабочий день должен составлять не менее 8 часов', \
             "Не появилось сообщения о недостаточном количестве часов"
+
+    @testit.workItemIds(11662)
+    @testit.displayName("10.2.1.2. Выбор менее 40 часов в неделю (фултайм)")
+    @pytest.mark.regress
+    @allure.title("id-11662 10.2.1.2. Выбор менее 40 часов в неделю (фултайм)")
+    def test_choice_of_less_than_forty_hours_per_week_full_time(self, login, driver):
+        schedule_page = SchedulePage(driver)
+        schedule_page.go_to_schedule_page()
+        if schedule_page.check_text_on_modal():
+            schedule_page.press_submit_button_in_modal()
+        else:
+            pass
+        schedule_page.press_redact_button()
+        schedule_page.redact_next_week_day()
+        schedule_page.editing_a_specific_day('11:00', '13:00')
+        assert schedule_page.get_massage() == 'Ваш рабочий день должен составлять не менее 8 часов', \
+            "Не появилось сообщения о недостаточном количестве часов"

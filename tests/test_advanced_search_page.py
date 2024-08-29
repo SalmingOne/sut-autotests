@@ -21,6 +21,7 @@ class TestAdvancedSearchPage:
         chips_names = advanced_search_page.get_search_chips_names()
         advanced_search_page.check_tooltip(search_name)
         fields_values = advanced_search_page.get_chips_values_and_delete_search_chips('Авто-поиск')
+        time.sleep(4)
         assert search_name.upper() in chips_names, "Имени поиска нет на чипсах"
         assert criterion_value and operator_value and condition_value in fields_values, "Параметры поиска некорректно сохранились"
 
