@@ -349,7 +349,7 @@ class SchedulePage(BasePage):
     @allure.step("Редактирование отдельного дня на следующей неделе")
     def redact_next_week_day(self):
         self.element_is_visible(self.locators.NEXT_PERIOD_BUTTON).click()
-        self.elements_are_visible(self.locators.ALL_CHIPS_BUTTON)[0].click()
+        self.elements_are_visible(self.locators.ALL_CHIPS_BUTTON)[2].click()
 
     @testit.step("Добавление перерыва до начала рабочего дня")
     @allure.step("Добавление перерыва до начала рабочего дня")
@@ -413,3 +413,8 @@ class SchedulePage(BasePage):
         self.action_move_to_element(self.element_is_visible(self.locators.DRAWER_SUBMIT_BUTTON))
         assert not self.element_is_clickable(self.locators.DRAWER_SUBMIT_BUTTON, 1)
         assert self.element_is_visible(self.locators.TOOLTIP_SUBMIT_BUTTON).text == "Время перерыва должно быть между границами рабочего дня", 'Некорректный тултип'
+
+    @testit.step("Берем текст сообщения системы")
+    @allure.step("Берем текст сообщения системы")
+    def get_massage(self):
+        return self.element_is_visible(self.locators.ALERT_MESSAGE).text
