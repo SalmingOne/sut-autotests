@@ -883,8 +883,8 @@ class LaborCostPage(BasePage):
     @testit.step("Проверка что данные сохранились в дровере")
     @allure.step("Проверка что данные сохранились в дровере")
     def check_data_from_drover(self, overtime, reason):
-        assert self.element_is_visible(self.locators.check_value(overtime)), 'Переработка не сохранилась'
-        assert self.element_is_visible(self.locators.check_text(reason)), 'Причина не сохранилась'
+        assert self.element_is_displayed(self.locators.check_value(overtime)), 'Переработка не сохранилась'
+        assert self.element_is_displayed(self.locators.check_text(reason)), 'Причина не сохранилась'
 
     @testit.step("Открыть дровер добавления переработки за конкретный день")
     @allure.step("Открыть дровер добавления переработки за конкретный день")
