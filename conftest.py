@@ -294,6 +294,29 @@ def project_with_assignment():
 
 
 @pytest.fixture()
+def archive_project_with_assignment():
+    assignment_endpoint = AssignmentEndpoint()
+    project_endpoint = ProjectEndpoint()
+    payload = CreateProject(
+        status='ARCHIVED'
+    ).model_dump()
+    response = project_endpoint.create_project_api(json=payload)
+    payload = dict(projectRoleId=1,
+                   projectId=response.json()["id"],
+                   slotId=response.json()["slots"][0]["assignments"][0]['slotId'],
+                   userId=USER_ID,
+                   isProjectManager=True,
+                   startDate=CreateProject().startDate
+                   )
+    assignment_endpoint.put_assignment_api(
+        json=payload,
+        assignment_id=str(response.json()["slots"][0]["assignments"][0]["id"])
+    )
+    yield response.json()
+    project_endpoint.delete_project_api(str(response.json()['id']))
+
+
+@pytest.fixture()
 def project_with_assignment_not_current_manager(create_work_user):
     assignment_endpoint = AssignmentEndpoint()
     project_endpoint = ProjectEndpoint()
