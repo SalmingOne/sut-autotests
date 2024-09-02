@@ -209,3 +209,18 @@ class AllProjectPage(BasePage):
     @allure.step("Получение статуса проекта")
     def get_project_status(self, project_name):
         return self.element_is_visible(self.locators.check_project_status(project_name)).text
+
+    @testit.step("Отмена разархивации проекта")
+    @allure.step("Отмена разархивации проекта")
+    def cansel_unzipping_the_project(self, project_name):
+        time.sleep(3)
+        self.element_is_visible(self.locators.project_action_button(project_name)).click()
+        time.sleep(0.5)
+        self.element_is_visible(self.locators.PROJECT_UNZIPPING_BUTTON).click()
+        dialog_text = self.element_is_visible(self.locators.ALERT_DIALOG_DESCRIPTION, 25).text
+        assert dialog_text == (f'Вы уверены, что хотите восстановить проект '
+                               f'"{project_name}" из архива?'), \
+            "Не корректное сообщение в модальном окне"
+        assert self.element_is_displayed(self.locators.SUBMIT_BUTTON), \
+            "В модальном окне отсутствует кнопка подтвердить"
+        self.element_is_visible(self.locators.MODAL_ABORT_BUTTON).click()
