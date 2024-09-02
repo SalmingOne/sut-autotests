@@ -180,3 +180,12 @@ class AllProjectPage(BasePage):
         text_color = self.element_is_visible(self.locators.check_project_name_cojor_on_tab(project_name)).get_attribute('style')
         assert 'rgba(0, 0, 0, 0.4)' in text_color, "Цвет проекта не серый"
         self.element_is_visible(self.locators.check_project_name_on_tab(project_name)).click()
+
+    @testit.step("Отмена архивации проекта")
+    @allure.step("Отмена архивации проекта")
+    def cancel_archiving_a_project(self, project_name):
+        time.sleep(3)
+        self.element_is_visible(self.locators.project_action_button(project_name)).click()
+        time.sleep(0.5)
+        self.element_is_visible(self.locators.PROJECT_ARCHIVING_BUTTON).click()
+        self.element_is_visible(self.locators.MODAL_ABORT_BUTTON).click()

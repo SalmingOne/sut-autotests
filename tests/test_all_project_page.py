@@ -123,3 +123,15 @@ class TestProjectPage:
         create_local_user_page.go_to_tab_projects()
         project_list = create_local_user_page.get_project_and_roles_text()
         assert simple_project['name'] not in project_list, "Проект отображается в карточке пользователя"
+
+    @testit.workItemIds(941)
+    @testit.displayName("1.4.2. Отмена архивации проекта")
+    @pytest.mark.regress
+    @allure.title("id-941 1.4.2. Отмена архивации проекта")
+    def test_cancel_archiving_a_project(self, simple_project, login, driver):
+        projects_page = AllProjectPage(driver)
+        projects_page.go_to_all_project_page()
+        projects_page.cancel_archiving_a_project(simple_project['name'])
+        time.sleep(2)
+        assert projects_page.get_project_on_tab(simple_project['name']), "Проект отсутствует на странице"
+
