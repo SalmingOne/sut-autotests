@@ -487,4 +487,4 @@ class TestLaborCostPage:
         labor_cost_page.input_labor_reason_by_project(archive_project_with_assignment['name'], today[0], 7)
         labor_cost_page.save_labor_reason()
         time.sleep(1)
-        assert 'Трудозатраты сохранены' in labor_cost_page.get_alert_message(), "Трудозататы не со"
+        assert 'Трудозатраты сохранены' in labor_cost_page.get_alert_message(), "Трудозатраты не сохранились"
