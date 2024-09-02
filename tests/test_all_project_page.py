@@ -60,7 +60,7 @@ class TestProjectPage:
             "Проект отображается в таблице Все проекты"
         labor_cost_page = LaborCostPage(driver)
         labor_cost_page.go_to_labor_cost_page()
-        time.sleep(1)
+        time.sleep(2)
         project_names = labor_cost_page.get_all_project_name_on_tab()
         assert simple_project_to_delete['name'] not in project_names, "Проект отображается в таблице Трудозатраты"
         pivot_tab_page = PivotTabPage(driver)

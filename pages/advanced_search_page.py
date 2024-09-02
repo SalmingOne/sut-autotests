@@ -35,7 +35,7 @@ class AdvancedSearchPage(BasePage):
         time.sleep(1)
         self.elements_are_visible(self.locators.OPEN_BUTTONS)[2].click()
         try:
-            condition_value = self.elements_are_visible(self.locators.LI_MENU_ITEM, 2)[1].text
+            condition_value = self.elements_are_visible(self.locators.LI_MENU_ITEM, 3)[1].text
             self.elements_are_visible(self.locators.LI_MENU_ITEM)[1].click()
         except TimeoutException:
             self.elements_are_visible(self.locators.OPEN_BUTTONS)[2].click()
