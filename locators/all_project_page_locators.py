@@ -10,6 +10,12 @@ class AllProjectPageLocators:
     def check_project_name_on_tab(self, project_name):
         return By.XPATH, f'//div[text()="{project_name}"]'
 
+    def check_project_name_cojor_on_tab(self, project_name):
+        return By.XPATH, f'//div[text()="{project_name}"]/..'
+
+    def check_project_status(self, project_name):
+        return By.XPATH, f'//div[text()="{project_name}"]/../..//div[@col-id="status"]//span'
+
     ALL_PROJECTS_NAMES = (By.XPATH, '//div[@col-id="name"][@role="gridcell"]/div')
     CREATE_PROJECT_BUTTON = (By.XPATH, '//button[text()="Создать проект"]')
     SUBMIT_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
@@ -19,6 +25,7 @@ class AllProjectPageLocators:
         return (By.XPATH, f'//div[text()="{project_name}"]//ancestor::div[contains(@class,"ag-row-level-0")]//button')
 
     PROJECT_DELETE_BUTTON = (By.XPATH, '//span[text()="Удалить"]')
+    PROJECT_ARCHIVING_BUTTON = (By.XPATH, '//span[text()="В архив"]')
     # Локаторы фильтрации проектов по статусам
     STATUS_FILTER_BUTTON = (By.XPATH, '//div[@aria-colindex="5"]//button')
     MARK_ALL_STATUS = (By.XPATH, '//div[text()="Выделить всё"]')
@@ -28,6 +35,7 @@ class AllProjectPageLocators:
     TAT_COLUMN_TITLES = (By.CSS_SELECTOR, 'span[class="ag-header-cell-text"]')
 
     ALERT_DIALOG_DESCRIPTION = (By.CSS_SELECTOR, 'p[id="alert-dialog-description"]')
+    ALERT_TEXT = (By.CSS_SELECTOR, 'p[class^="MuiTypography-root MuiTypography-body1"]')
     MODAL_SUBMIT_BUTTON = (By.XPATH, '//p[@id="alert-dialog-description"]//following::button[text()="Подтвердить"]')
     MODAL_ABORT_BUTTON = (By.XPATH, '//p[@id="alert-dialog-description"]//following::button[text()="Отменить"]')
 

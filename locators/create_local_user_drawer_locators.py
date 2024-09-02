@@ -16,6 +16,7 @@ class CreateLocalUserDrawerLocators:
     ADD_PROJECTS_BUTTON = (By.XPATH, '//button[text()="Добавить проект"]')
     DELETE_PROJECTS_BUTTON = (By.CSS_SELECTOR, 'button[aria-label="Снять с проекта"]')
     PROJECTS_FIELDS = (By.XPATH, '//label[contains(@class, "MuiInputLabel-outlined")]')
+    PROJECTS_AND_ROLES_FIELDS = (By.XPATH, '//label[contains(@class, "MuiInputLabel-outlined")]//following::input[@type="text"]')
     PROJECT_MANAGER_CHECKBOX = (By.XPATH, '//span[text()="Руководитель проекта"]')
     # Локаторы вкладки контакты
     TAB_CONTACTS = (By.XPATH, '//button[text()="КОНТАКТЫ"]')

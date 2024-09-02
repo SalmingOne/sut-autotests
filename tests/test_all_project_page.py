@@ -4,10 +4,15 @@ import allure
 import pytest
 import testit
 
+from data.data import USER_NAME
 from endpoints.project_endpoint import ProjectEndpoint
 from pages.all_project_page import AllProjectPage
+from pages.create_local_user_drawer_page import CreateLocalUserDrawerPage
 from pages.labor_cost_page import LaborCostPage
 from pages.pivot_tab_page import PivotTabPage
+from pages.project_card_page import ProjectCardPage
+from pages.resource_plane_page import ResourcePlanePage
+from pages.user_page import UserPage
 
 
 @allure.suite("Страница все проекты")
@@ -63,3 +68,58 @@ class TestProjectPage:
         assert not projects_page.get_project_on_tab(simple_project_to_delete['name']), \
             "Проект отображается в Сводной таблице"
         assert message == ['Проект удален'], "Отсутствует сообщение об удалении проекта"
+
+    @testit.workItemIds(1474)
+    @testit.displayName("1.4.1 Удаление проекта на который списаны трудозатраты")
+    @pytest.mark.regress
+    @allure.title("id-1474 1.4.1 Удаление проекта на который списаны трудозатраты")
+    def test_deleting_a_project_for_which_labor_costs_have_been_written_off(self, project_with_work, login, driver):
+        projects_page = AllProjectPage(driver)
+        projects_page.go_to_all_project_page()
+        projects_page.check_delete_project_with_work(project_with_work['name'])
+
+    @testit.workItemIds(940)
+    @testit.displayName("1.4.2. Архивация проекта")
+    @pytest.mark.regress
+    @allure.title("id-940 1.4.2. Архивация проекта")
+    def test_archiving_a_project(self, simple_project, login, driver):
+        projects_page = AllProjectPage(driver)
+        projects_page.go_to_all_project_page()
+        projects_page.archiving_a_project(simple_project['name'])
+        message = projects_page.get_alert_message()
+        assert message == ['Проект заархивирован']
+        projects_page.check_archiving_a_project_on_tab(simple_project['name'])
+        # Не произошел переход на страницу проекта
+        project_card_page = ProjectCardPage(driver)
+        project_card_page.check_resource_plan_tab_on_page()
+        # Проект на странице трудозатрат
+        labor_cost_page = LaborCostPage(driver)
+        labor_cost_page.go_to_labor_cost_page()
+        time.sleep(2)
+        labor_cost_page.check_archive_project(simple_project['name'])
+        time.sleep(1)
+        # Проект на странице сводная таблица
+        pivot_tab_page = PivotTabPage(driver)
+        pivot_tab_page.go_to_pivot_page()
+        time.sleep(2)
+        pivot_tab_page.check_archive_project(simple_project['name'])
+        pivot_tab_page.go_to_by_user_tab()
+        pivot_tab_page.open_project_list()
+        pivot_tab_page.check_project_color_on_user(simple_project['name'])
+        # Проект на странице ресурсный план
+        resource_plane = ResourcePlanePage(driver)
+        resource_plane.go_to_resource_plane_page()
+        resource_plane.check_archive_project(simple_project['code'])
+        resource_plane.go_to_by_user_tab()
+        resource_plane.open_project_list()
+        resource_plane.check_project_color_on_user(simple_project['code'])
+        # Проект на странице пользователя
+        user_page = UserPage(driver)
+        user_page.go_to_user_page()
+        user_page.check_user_is_not_in_table(USER_NAME)
+        user_page.go_to_redact_user()
+        create_local_user_page = CreateLocalUserDrawerPage(driver)
+        time.sleep(2)
+        create_local_user_page.go_to_tab_projects()
+        project_list = create_local_user_page.get_project_and_roles_text()
+        assert simple_project['name'] not in project_list, "Проект отображается в карточке пользователя"

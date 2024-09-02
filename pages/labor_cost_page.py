@@ -932,3 +932,14 @@ class LaborCostPage(BasePage):
             data.append(i.text)
         data.remove('Итого')
         return list(set([i for i, data in enumerate(data)]) - set(data_list))
+
+    @testit.step("Проверка отображения архивного проекта")
+    @allure.step("Проверка отображения архивного проекта")
+    def check_archive_project(self, project_name):
+        self.element_is_visible(self.locators.FILTER_BUTTON).click()
+        self.element_is_visible(self.locators.NOT_ACTIV_PROJECT_CHECKBOX).click()
+        self.action_esc()
+        time.sleep(1)
+        self.action_move_to_element(self.element_is_visible(self.locators.check_name_project_color(project_name)))
+        name_color = self.element_is_visible(self.locators.check_name_project_color(project_name)).value_of_css_property('color')
+        assert name_color == 'rgba(0, 0, 0, 0.26)', "Цвет проекта не серый"

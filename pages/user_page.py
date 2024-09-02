@@ -184,3 +184,10 @@ class UserPage(BasePage):
         time.sleep(2)  # Без ожидания не успевает срабатывать анимация
         self.element_is_visible(self.locators.DELETE_PROJECT_ROLE_ICONS).click()
         assert not self.element_is_clickable(self.locators.SAVE_BUTTON, 1), 'Кнопка Сохранить не задизейбленна'
+
+    @testit.step("Редактирование пользователя")
+    @allure.step("Редактирование пользователя")
+    def go_to_redact_user(self):
+        time.sleep(1)  # Без ожидания не успевает срабатывать анимация
+        self.element_is_visible(self.locators.USER_KEBABS).click()
+        self.element_is_visible(self.locators.REDACT_BUTTON).click()
