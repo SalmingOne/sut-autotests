@@ -57,6 +57,17 @@ def simple_project():
 
 
 @pytest.fixture()
+def archive_project():
+    project_endpoint = ProjectEndpoint()
+    payload = CreateProject(
+        status='ARCHIVED'
+    ).model_dump()
+    response = project_endpoint.create_project_api(json=payload)
+    yield response.json()
+    project_endpoint.delete_project_api(str(response.json()['id']))
+
+
+@pytest.fixture()
 def simple_project_to_delete():
     project_endpoint = ProjectEndpoint()
     payload = CreateProject().model_dump()

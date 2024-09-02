@@ -943,3 +943,12 @@ class LaborCostPage(BasePage):
         self.action_move_to_element(self.element_is_visible(self.locators.check_name_project_color(project_name)))
         name_color = self.element_is_visible(self.locators.check_name_project_color(project_name)).value_of_css_property('color')
         assert name_color == 'rgba(0, 0, 0, 0.26)', "Цвет проекта не серый"
+
+    @testit.step("Добавление трудозатрат")
+    @allure.step("Добавление трудозатрат")
+    def check_add_hour_to_project(self):
+        self.element_is_visible(self.locators.NEXT_PERIOD_BUTTON).click()
+        self.input_time(self.locators.FIRST_DAY_BY_PROJECT, 5)
+        self.element_is_visible(self.locators.SAVE_BUTTON).click()
+        time.sleep(1)
+

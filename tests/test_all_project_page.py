@@ -135,3 +135,31 @@ class TestProjectPage:
         time.sleep(2)
         assert projects_page.get_project_on_tab(simple_project['name']), "Проект отсутствует на странице"
 
+    @testit.workItemIds(944)
+    @testit.displayName("1.4.3. Разархивация проекта")
+    @pytest.mark.regress
+    @allure.title("id-944 1.4.3. Разархивация проекта")
+    def test_unzipping_the_project(self, archive_project, login, driver):
+        projects_page = AllProjectPage(driver)
+        projects_page.go_to_all_project_page()
+        projects_page.check_archiving_a_project_on_tab(archive_project['name'])
+        projects_page.unzipping_the_project(archive_project['name'])
+        message = projects_page.get_alert_message()
+        assert message == ['Проект разархивирован'], "Не появилось сообщение об разархивации"
+        time.sleep(1)
+        assert projects_page.get_project_status(archive_project['name']) == 'Активный', "Статус проекта не Активный"
+        # Проект на странице трудозатрат
+        labor_cost_page = LaborCostPage(driver)
+        labor_cost_page.go_to_labor_cost_page()
+        labor_cost_page.check_add_hour_to_project()
+        # Проект на странице пользователя
+        user_page = UserPage(driver)
+        user_page.go_to_user_page()
+        user_page.check_user_is_not_in_table(USER_NAME)
+        user_page.go_to_redact_user()
+        create_local_user_page = CreateLocalUserDrawerPage(driver)
+        time.sleep(2)
+        create_local_user_page.go_to_tab_projects()
+        project_list = create_local_user_page.get_project_and_roles_text()
+        assert archive_project['name'] in project_list, "Проект не отображается в карточке пользователя"
+
