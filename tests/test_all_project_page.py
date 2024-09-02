@@ -163,3 +163,13 @@ class TestProjectPage:
         project_list = create_local_user_page.get_project_and_roles_text()
         assert archive_project['name'] in project_list, "Проект не отображается в карточке пользователя"
 
+    @testit.workItemIds(947)
+    @testit.displayName("1.4.3.  Отмена разархивации проекта")
+    @pytest.mark.regress
+    @allure.title("id-947 1.4.3.  Отмена разархивации проекта")
+    def test_cansel_unzipping_the_project(self, archive_project, login, driver):
+        projects_page = AllProjectPage(driver)
+        projects_page.go_to_all_project_page()
+        projects_page.check_archiving_a_project_on_tab(archive_project['name'])
+        projects_page.cansel_unzipping_the_project(archive_project['name'])
+        assert projects_page.get_project_status(archive_project['name']) == 'В архиве', "Статус проекта изменился"
