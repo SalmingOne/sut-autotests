@@ -112,3 +112,22 @@ class PivotTabPage(BasePage):
         assert this_period == end_month, 'Переработки не отразились в итоговом столбце '
         assert this_period == '3 + 3', 'Переработки не отразились в текущем столбце'
 
+    @testit.step("Проверка отображения архивного проекта в таблице по проектам")
+    @allure.step("Проверка отображения архивного проекта в таблице по проектам")
+    def check_archive_project(self, project_name):
+        self.element_is_visible(self.locators.FILTER_BUTTON).click()
+        time.sleep(1)
+        self.element_is_visible(self.locators.NOT_ACTIV_PROJECT_CHECKBOX).click()
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+        self.action_move_to_element(self.element_is_visible(self.locators.check_name_project_color(project_name)))
+        name_color = self.element_is_visible(self.locators.check_name_project_color(project_name)).value_of_css_property('color')
+        assert name_color == 'rgba(0, 0, 0, 0.4)', "Цвет проекта не серый"
+
+    @testit.step("Проверка отображения архивного проекта в таблице по пользователям")
+    @allure.step("Проверка отображения архивного проекта в таблице по пользователям")
+    def check_project_color_on_user(self, project_name):
+        self.action_move_to_element(self.element_is_visible(self.locators.project_color_on_user(project_name)))
+        name_color = self.element_is_visible(
+            self.locators.project_color_on_user(project_name)).value_of_css_property('color')
+        assert name_color == 'rgba(0, 0, 0, 0.4)', "Цвет проекта не серый"
+

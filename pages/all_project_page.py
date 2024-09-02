@@ -138,3 +138,74 @@ class AllProjectPage(BasePage):
     @allure.step("Проверка наличия имени проекта на странице")
     def get_project_on_tab(self, project_name):
         return self.element_is_displayed(self.locators.check_project_name_on_tab(project_name), 2)
+
+    @testit.step("Проверка удаления проекта со списанными трудозатратами")
+    @allure.step("Проверка удаления проекта со списанными трудозатратами")
+    def check_delete_project_with_work(self, project_name):
+        time.sleep(2)
+        self.element_is_visible(self.locators.project_action_button(project_name)).click()
+        time.sleep(0.5)
+        self.element_is_visible(self.locators.PROJECT_DELETE_BUTTON).click()
+        dialog_text = self.element_is_visible(self.locators.ALERT_TEXT, 25).text
+        assert dialog_text == ('Удаление невозможно так как в проект списаны трудозатраты.'
+                               ' Для скрытия проекта используйте архивацию.'), \
+            "Не появилось сообщение о невозможности удаления проекта"
+
+    @testit.step("Проверка архивирования проекта")
+    @allure.step("Проверка архивирования проекта")
+    def archiving_a_project(self, project_name):
+        time.sleep(3)
+        self.element_is_visible(self.locators.project_action_button(project_name)).click()
+        time.sleep(0.5)
+        self.element_is_visible(self.locators.PROJECT_ARCHIVING_BUTTON).click()
+        dialog_text = self.element_is_visible(self.locators.ALERT_DIALOG_DESCRIPTION, 25).text
+        assert dialog_text == (f'Вы уверены, что хотите переместить проект '
+                               f'"{project_name}" в архив? Просмотр информации о проекте будет недоступен'), \
+            "Не корректное сообщение в модальном окне"
+        assert self.element_is_displayed(self.locators.MODAL_ABORT_BUTTON), \
+            "В модальном окне отсутствует кнопка отменить"
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+
+    @testit.step("Проверка отображения архивного проекта в таблице")
+    @allure.step("Проверка отображения архивного проекта в таблице")
+    def check_archiving_a_project_on_tab(self, project_name):
+        time.sleep(2)
+        assert not self.element_is_displayed(self.locators.check_project_name_on_tab(project_name), 2), \
+            "Проект виден без фильтра Архивный"
+        self.see_all_status_project()
+        assert self.element_is_visible(self.locators.check_project_status(project_name)).text == 'В архиве', \
+            "У проекта статус не В архиве"
+        assert self.element_is_displayed(self.locators.check_project_name_on_tab(project_name), 2), \
+            "Проект не виден с фильтром Архивный"
+        text_color = self.element_is_visible(self.locators.check_project_name_cojor_on_tab(project_name)).get_attribute('style')
+        assert 'rgba(0, 0, 0, 0.4)' in text_color, "Цвет проекта не серый"
+        self.element_is_visible(self.locators.check_project_name_on_tab(project_name)).click()
+
+    @testit.step("Отмена архивации проекта")
+    @allure.step("Отмена архивации проекта")
+    def cancel_archiving_a_project(self, project_name):
+        time.sleep(3)
+        self.element_is_visible(self.locators.project_action_button(project_name)).click()
+        time.sleep(0.5)
+        self.element_is_visible(self.locators.PROJECT_ARCHIVING_BUTTON).click()
+        self.element_is_visible(self.locators.MODAL_ABORT_BUTTON).click()
+
+    @testit.step("Разархивация проекта")
+    @allure.step("Разархивация проекта")
+    def unzipping_the_project(self, project_name):
+        time.sleep(3)
+        self.element_is_visible(self.locators.project_action_button(project_name)).click()
+        time.sleep(0.5)
+        self.element_is_visible(self.locators.PROJECT_UNZIPPING_BUTTON).click()
+        dialog_text = self.element_is_visible(self.locators.ALERT_DIALOG_DESCRIPTION, 25).text
+        assert dialog_text == (f'Вы уверены, что хотите восстановить проект '
+                               f'"{project_name}" из архива?'), \
+            "Не корректное сообщение в модальном окне"
+        assert self.element_is_displayed(self.locators.MODAL_ABORT_BUTTON), \
+            "В модальном окне отсутствует кнопка отменить"
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+
+    @testit.step("Получение статуса проекта")
+    @allure.step("Получение статуса проекта")
+    def get_project_status(self, project_name):
+        return self.element_is_visible(self.locators.check_project_status(project_name)).text

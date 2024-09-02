@@ -13,6 +13,9 @@ class LaborCostPageLocators:
     def check_code_project(self, project_code):
         return (By.XPATH, f'//a[text()="{project_code}"]')
 
+    def check_name_project_color(self, project_name):
+        return (By.XPATH, f'//div[@aria-label="{project_name}"]/a')
+
     ALL_PROJECT_NAMES = (By.CSS_SELECTOR, 'div[basewrapprops]')
     # Дни в привязке к проекту
     RANDOM_DAYS_BY_PROJECT = (
@@ -32,10 +35,10 @@ class LaborCostPageLocators:
     ALL_DAY_COLORS = (By.XPATH, '//ancestor::div[contains(@class,"project-row MuiBox-root")]//div//input//parent::div')
     # Кнопки подтверждения и отмены
     SAVE_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
-    SUBMIT_BUTTON = (By.XPATH, '//button[text()="Подтвердить"]')
+    SUBMIT_BUTTON = (By.XPATH, '//button[text()="Применить"]')
     DISABLE_BUTTON = (By.XPATH, '//button[text()="Отменить"]')
     # Проверка что в аллерте есть поле для указания причины списания
-    CHECK_LABOR_REASON_FIELD = (By.XPATH, '//label[text()="Причина"]')
+    CHECK_LABOR_REASON_FIELD = (By.CSS_SELECTOR, 'textarea[name="overtimeReason"]')
     # Выбор периода на странице
     PERIOD_SELECT_BUTTON = (By.XPATH, '//div[contains(@class, "MuiSelect-select MuiSelect-standard MuiInput-input MuiInputBase-input")]')
     WEEK_PERIOD_SELECT = (By.CSS_SELECTOR, 'li[data-value="week"]')
@@ -63,10 +66,12 @@ class LaborCostPageLocators:
     FILTER_BUTTON = (By.XPATH, '//button[contains(@class, "MuiButton-text MuiButton-textPrimary")]')
     ELEMENTS_ON_FILTER = (By.XPATH, '//div[contains(@class, "MuiPaper-elevation8")]//span[contains(@class, "MuiTypography-body1")]')
     FILTER_BY_PROJECT_NAME = (By.XPATH, '//span[text()="Название проекта"]')
+    NOT_ACTIV_PROJECT_CHECKBOX = (By.XPATH, '//p[text()="Отображать неактивные проекты"]')
     # Кнопка открытия панели виджетов
     OPEN_WIDGET_BUTTON = (By.CSS_SELECTOR, 'svg[data-testid="KeyboardTabIcon"]')
     # Дни недели в заголовке таблицы
     SEVEN_DAY_ON_HEAD = (By.XPATH, '//span[contains(@class, "MuiTypography-root MuiTypography-caption")]')
+    TODAY = (By.XPATH, '//h6[contains(@class, "today circle")]')
     # Выбранные дни
     SELECTED_DAYS = (By.XPATH, '//div[contains(@class, "selected")]')
     # Первый столбец с названиями и кодами проектов
@@ -182,3 +187,9 @@ class LaborCostPageLocators:
         return By.XPATH, f'//div[@class="ag-cell ag-cell-not-inline-editing ag-cell-normal-height ag-cell-value"]//div[@aria-label="{project_mame}"]'
 
     LI_MENU_ITEM = (By.CSS_SELECTOR, 'li[role="option"]')
+
+    def check_text(self, text):
+        return (By.XPATH, f'//*[text()="{text}"]')
+
+    def check_value(self, value):
+        return (By.XPATH, f'//*[@value="{value}"]')

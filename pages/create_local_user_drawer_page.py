@@ -148,3 +148,12 @@ class CreateLocalUserDrawerPage(BasePage):
     @allure.step("Берем текст сообщения системы")
     def check_massage(self):
         return self.element_is_visible(self.locators.ALERT_MESSAGE).text
+
+    @testit.step("Получение текста проектов и ролей пользователя")
+    @allure.step("Получение текста проектов и ролей пользователя")
+    def get_project_and_roles_text(self):
+        all_fields = self.elements_are_visible(self.locators.PROJECTS_AND_ROLES_FIELDS)
+        fields_text = []
+        for field in all_fields:
+            fields_text.append(field.get_attribute('value'))
+        return fields_text

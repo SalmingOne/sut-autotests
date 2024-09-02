@@ -23,10 +23,16 @@ class PivotTabPageLocators:
     # Отображение по пользователю
     BY_USER_BUTTON = (By.XPATH, '//button[text()="По пользователям"]')
     OPEN_PROJECT_LIST = (By.XPATH, f'//h6[contains(@aria-label,"{USER_NAME}")]//ancestor::span[1]//preceding::span[2]')
+
+    def project_color_on_user(self, project_name):
+        return (By.XPATH, f'//p[text()="{project_name}"]')
+
     # Кнопка фильтрации
     FILTER_BUTTON = (By.XPATH,
                      '//button[contains(@class, "MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-disableElevation")]')
     HEADER_TODAY = (By.XPATH, '//div[contains(@class,"header-today")]')
+    NOT_ACTIV_PROJECT_CHECKBOX = (By.XPATH, '//p[text()="Неактивные проекты"]')
+    SUBMIT_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
     def get_row_id_on_project(self, project_name):
         return (By.XPATH, f'//h6[text()="{project_name}"]//ancestor::div[@row-id]')
 
@@ -36,4 +42,5 @@ class PivotTabPageLocators:
     def intersection_field(self, row_id, col_index):
         return (By.XPATH, f'//div[@row-id="{row_id}"]//div[@aria-colindex="{col_index}"]//p')
 
-
+    def check_name_project_color(self, project_name):
+        return (By.XPATH, f'//h6[text()="{project_name}"]')

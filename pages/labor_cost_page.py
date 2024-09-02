@@ -865,3 +865,90 @@ class LaborCostPage(BasePage):
             if project in adding_himself:
                 adding_himself.remove(project)
 
+    @testit.step("Нажатие кнопки сохранения в дровере добавления себя на проект")
+    @allure.step("Нажатие кнопки сохранения в дровере добавления себя на проект")
+    def press_save_button_adding_himself_to_a_project(self):
+        self.element_is_visible(self.locators.ADD_TO_PROJECT_SAVE).click()
+
+    @testit.step("Заполняем поле причина переработки")
+    @allure.step("Заполняем поле причина переработки")
+    def field_reason_overwork(self, reason):
+        self.element_is_visible(self.locators.CHECK_LABOR_REASON_FIELD).send_keys(reason)
+
+    @testit.step("Нажать Применить в дровере добавления переработки")
+    @allure.step("Нажать Применить в дровере добавления переработки")
+    def submit_labor_reason(self):
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+
+    @testit.step("Проверка что данные сохранились в дровере")
+    @allure.step("Проверка что данные сохранились в дровере")
+    def check_data_from_drover(self, overtime, reason):
+        assert self.element_is_displayed(self.locators.check_value(overtime)), 'Переработка не сохранилась'
+        assert self.element_is_displayed(self.locators.check_text(reason)), 'Причина не сохранилась'
+
+    @testit.step("Открыть дровер добавления переработки за конкретный день")
+    @allure.step("Открыть дровер добавления переработки за конкретный день")
+    def open_overwork_drover_for_specific_day(self, number_day_element, project_mame):
+        self.element_is_visible(self.locators.ADD_OVERTIME_WORK_BUTTON).click()
+        time.sleep(0.5)  # Без этого ожидания не успевает прогрузиться
+        self.element_is_visible(self.locators.OVERTIME_WORK_DATA_PICKER).click()
+        self.elements_are_visible(self.locators.ALL_DATA_IN_DATA_PICKER)[number_day_element].click()
+        self.element_is_visible(self.locators.PROJECT_NAME_DRAWER_INPUT).click()
+        time.sleep(0.5)  # Без этого ожидания не успевает прогрузиться
+        self.element_is_visible(self.locators.chose_project_on_overtime_work_drawer(project_mame)).click()
+
+    @testit.step("Редактирование переработки")
+    @allure.step("Редактирование переработки")
+    def editing_overwork(self, number, reason):
+        self.element_is_visible(self.locators.CHECK_LABOR_REASON_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.CHECK_LABOR_REASON_FIELD).send_keys(reason)
+        time.sleep(1)
+        self.element_is_visible(self.locators.OVERTIME_WORK_INPUT).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.OVERTIME_WORK_INPUT).send_keys(number)
+
+    @testit.step("Добавить переработку без файла")
+    @allure.step("Добавить переработку без файла")
+    def add_overtime_work_without_file(self, number_day_element, overtime_work_hours, project_mame):
+        self.element_is_visible(self.locators.ADD_OVERTIME_WORK_BUTTON).click()
+        time.sleep(0.5)  # Без этого ожидания не успевает прогрузиться
+        self.element_is_visible(self.locators.OVERTIME_WORK_DATA_PICKER).click()
+        self.elements_are_visible(self.locators.ALL_DATA_IN_DATA_PICKER)[number_day_element].click()
+        self.element_is_visible(self.locators.PROJECT_NAME_DRAWER_INPUT).click()
+        time.sleep(0.5)  # Без этого ожидания не успевает прогрузиться
+        self.element_is_visible(self.locators.chose_project_on_overtime_work_drawer(project_mame)).click()
+        self.element_is_visible(self.locators.OVERTIME_WORK_INPUT).send_keys(overtime_work_hours)
+        time.sleep(1)
+
+    @testit.step("Получение списка дат начиная с сегодняшней")
+    @allure.step("Получение списка дат начиная с сегодняшней")
+    def get_date_list_from_today(self):
+        today = int(self.element_is_visible(self.locators.TODAY).text)
+        data_list = []
+        for i in range(today):
+            data_list.append(i)
+        in_total_list = self.elements_are_visible(self.locators.ALL_IN_TOTAL)
+        data = []
+        for i in in_total_list:
+            data.append(i.text)
+        data.remove('Итого')
+        return list(set([i for i, data in enumerate(data)]) - set(data_list))
+
+    @testit.step("Проверка отображения архивного проекта")
+    @allure.step("Проверка отображения архивного проекта")
+    def check_archive_project(self, project_name):
+        self.element_is_visible(self.locators.FILTER_BUTTON).click()
+        self.element_is_visible(self.locators.NOT_ACTIV_PROJECT_CHECKBOX).click()
+        self.action_esc()
+        time.sleep(1)
+        self.action_move_to_element(self.element_is_visible(self.locators.check_name_project_color(project_name)))
+        name_color = self.element_is_visible(self.locators.check_name_project_color(project_name)).value_of_css_property('color')
+        assert name_color == 'rgba(0, 0, 0, 0.26)', "Цвет проекта не серый"
+
+    @testit.step("Добавление трудозатрат")
+    @allure.step("Добавление трудозатрат")
+    def check_add_hour_to_project(self):
+        self.element_is_visible(self.locators.NEXT_PERIOD_BUTTON).click()
+        self.input_time(self.locators.FIRST_DAY_BY_PROJECT, 5)
+        self.element_is_visible(self.locators.SAVE_BUTTON).click()
+        time.sleep(1)
+

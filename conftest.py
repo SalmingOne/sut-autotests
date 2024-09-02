@@ -57,6 +57,17 @@ def simple_project():
 
 
 @pytest.fixture()
+def archive_project():
+    project_endpoint = ProjectEndpoint()
+    payload = CreateProject(
+        status='ARCHIVED'
+    ).model_dump()
+    response = project_endpoint.create_project_api(json=payload)
+    yield response.json()
+    project_endpoint.delete_project_api(str(response.json()['id']))
+
+
+@pytest.fixture()
 def simple_project_to_delete():
     project_endpoint = ProjectEndpoint()
     payload = CreateProject().model_dump()
@@ -177,7 +188,26 @@ def project_with_overtime_work():
         userId=USER_ID
     )]
     labor_report_endpoint.post_labor_report_api(json=payload)
-    yield
+    yield res.json()
+    project_endpoint.delete_project_api(str(project_id))
+
+
+@pytest.fixture()
+def project_with_work():
+    labor_report_endpoint = LaborReportEndpoint()
+    project_endpoint = ProjectEndpoint()
+    payload = CreateProject().model_dump()
+    res = project_endpoint.create_project_api(json=payload)
+    project_id = res.json()['id']
+    payload = [dict(
+        date=BasePage(driver=None).get_day_before_m_d_y(0),
+        projectId=project_id,
+        hours=3,
+        type="DEFAULT",
+        userId=USER_ID
+    )]
+    labor_report_endpoint.post_labor_report_api(json=payload)
+    yield res.json()
     project_endpoint.delete_project_api(str(project_id))
 
 
