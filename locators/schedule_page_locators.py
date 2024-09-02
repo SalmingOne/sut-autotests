@@ -55,3 +55,4 @@ class SchedulePageLocators:
 
     # Ошибки
     MUI_ERROR = (By.XPATH, '//p[contains(@class, "Mui-error")]')
+    ALERT_MESSAGE = (By.XPATH, '//div[contains(@class, "MuiAlert-message")]')

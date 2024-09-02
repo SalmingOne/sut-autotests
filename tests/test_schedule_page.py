@@ -278,3 +278,20 @@ class TestSchedulePage:
         schedule_page.press_cancel_button()
         schedule_page.reopen_editing_schedule_for_a_standard_chart_drawer()
         schedule_page.check_add_break_for_hour_before_end_work_time()
+
+    @testit.workItemIds(11591)
+    @testit.displayName("10.2.1.3 Выбор менее 8 часов в день (фултайм)")
+    @pytest.mark.regress
+    @allure.title("id-11591 10.2.1.3 Выбор менее 8 часов в день (фултайм)")
+    def test_choice_of_less_than_eight_hours_a_day_full_time(self, login, driver):
+        schedule_page = SchedulePage(driver)
+        schedule_page.go_to_schedule_page()
+        if schedule_page.check_text_on_modal():
+            schedule_page.press_submit_button_in_modal()
+        else:
+            pass
+        schedule_page.press_redact_button()
+        schedule_page.redact_next_week_day()
+        schedule_page.editing_a_specific_day('11:00', '12:00')
+        assert schedule_page.get_massage() == 'Ваш рабочий день должен составлять не менее 8 часов', \
+            "Не появилось сообщения о недостаточном количестве часов"
