@@ -671,3 +671,9 @@ class ProjectCardPage(BasePage):
     @allure.step("Нажатие кнопки Применить")
     def press_apply_button(self):
         self.element_is_visible(self.locators.APPLY_BUTTON).click()
+
+    @testit.step("Нажатие чекбокса Согласовано")
+    @allure.step("Нажатие чекбокса Согласовано")
+    def press_approved_checkbox(self):
+        time.sleep(1)
+        self.element_is_present(self.locators.checbox_by_text('Согласовано')).click()

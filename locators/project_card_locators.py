@@ -93,3 +93,6 @@ class ProjectCardLocators:
 
     def text_on_page(self, text):
         return (By.XPATH, f'//*[contains(text(), "{text}")]')
+
+    def checbox_by_text(self, text):
+        return (By.XPATH, f'//span[contains(@class, "MuiTypography-root MuiTypography-body1")][contains(text(), "{text}")]')

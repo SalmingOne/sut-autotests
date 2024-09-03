@@ -341,3 +341,25 @@ class TestProjectCard:
         project_card_page.check_no_checked_checkboxes()
         project_card_page.press_apply_button()
         project_card_page.check_text_on_page('Нет данных')
+
+    @testit.workItemIds(12567)
+    @testit.displayName("1.3.3.6. Чек-лист. Фильтрация таблицы по статусу согласованности трудозатрат")
+    @pytest.mark.regress
+    @allure.title("id-12567 1.3.3.6. Чек-лист. Фильтрация таблицы по статусу согласованности трудозатрат")
+    def test_filtering_a_table_by_work_reconciliation_status(self, project_with_three_overtime_work, login, driver):
+        all_project_page = AllProjectPage(driver)
+        time.sleep(1)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(project_with_three_overtime_work['name'])
+        project_card_page = ProjectCardPage(driver)
+        project_card_page.go_to_progress_tab()
+        project_card_page.open_filter()
+        project_card_page.press_choose_all_checkbox()
+        project_card_page.check_no_checked_checkboxes()
+        project_card_page.press_apply_button()
+        project_card_page.check_text_on_page('Нет данных')
+        project_card_page.open_filter()
+
+        project_card_page.press_approved_checkbox()
+        project_card_page.press_apply_button()
+
