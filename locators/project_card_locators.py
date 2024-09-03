@@ -63,6 +63,7 @@ class ProjectCardLocators:
     # Локаторы вкладки Ход выполнения
     PROGRESS_TAB = (By.XPATH, '//button[text()="Ход выполнения"]')
     PROGRESS_TAB_HEADER = (By.CSS_SELECTOR, 'span[class="ag-header-cell-text"]')
+    CHECKED_CHECKBOXES = (By.XPATH, '//span[contains(@class, " Mui-checked")]')
 
     DONE_ICON = (By.CSS_SELECTOR, 'svg[data-testid="DoneIcon"]')
     CLEAR_ICON = (By.CSS_SELECTOR, 'svg[data-testid="ClearIcon"]')
@@ -77,6 +78,7 @@ class ProjectCardLocators:
 
     SAVE_BUTTON = (By.XPATH, '//button[text()="Сохранить"]')
     SUBMIT_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
+    APPLY_BUTTON = (By.XPATH, '//button[text()="Применить"]')
     BREAK_BUTTON = (By.XPATH, '//button[text()="Отмена"]')
     ABORT_BUTTON = (By.XPATH, '//button[text()="Отменить"]')
 
