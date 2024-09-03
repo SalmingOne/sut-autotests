@@ -289,3 +289,38 @@ class TestProjectCard:
         project_card_page.check_resource_plan_tab_on_page()
         project_card_page.check_text_on_page('Нет данных')
         assert message == 'Свойства проекта успешно изменены'
+
+    @testit.workItemIds(286)
+    @testit.displayName("1.3.2.2 Назначение руководителя проекта при редактировании свойств проекта")
+    @pytest.mark.regress
+    @allure.title("id-286 1.3.2.2 Назначение руководителя проекта при редактировании свойств проекта")
+    def test_assigning_a_project_manager_when_editing_project_properties(self, project_with_two_resources, login, driver):
+        all_project_page = AllProjectPage(driver)
+        time.sleep(1)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(project_with_two_resources['name'])
+        project_card_page = ProjectCardPage(driver)
+        project_card_page.check_manager_label()
+        project_card_page.go_to_team_tab()
+        time.sleep(2)
+        before_add_manager_time_tab = project_card_page.get_all_team_members()
+        project_card_page.go_to_description_tab()
+        # Добавление первого менеджера
+        project_card_page.add_manager(0)
+        assert project_card_page.get_all_manger() == ['Гвоздев Савватий Артемьевич'], "Менеджер не добавился"
+        project_card_page.press_submit_button()
+        time.sleep(0.5)
+        assert project_card_page.get_alert_message() == 'Свойства проекта успешно изменены', \
+            "Нет сообщения об изменении проекта"
+        project_card_page.check_manager_can_not_delete_himself()
+        # Добавление второго менеджера
+        project_card_page.add_manager(1)
+        assert project_card_page.get_all_manger() == ['Гвоздев Савватий Артемьевич', 'АвтоСПроектом Автомат'], \
+            "Менеджер не добавился"
+        project_card_page.press_submit_button()
+        time.sleep(2)
+        project_card_page.go_to_team_tab()
+        time.sleep(2)
+        after_add_manager_time_tab = project_card_page.get_all_team_members()
+        assert sorted(before_add_manager_time_tab) == sorted(after_add_manager_time_tab), \
+            "Изменились проектные роли выбранных менеджеров"
