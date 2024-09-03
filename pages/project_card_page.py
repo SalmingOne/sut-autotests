@@ -619,3 +619,34 @@ class ProjectCardPage(BasePage):
     @allure.step("Проверка отсутствия вкладки ресурсный план на странице")
     def check_resource_plan_tab_on_page(self):
         assert not self.element_is_displayed(self.locators.RESOURCE_PLAN_TAB, 1)
+
+    @testit.step("Добавление менеджера на проект")
+    @allure.step("Добавление менеджера на проект")
+    def add_manager(self, number_li_element):
+        self.element_is_visible(self.locators.MANAGER_FIELD).click()
+        self.elements_are_visible(self.locators.LI_MENU_ITEM)[number_li_element].click()
+
+    @testit.step("Получение всех менеджеров проекта")
+    @allure.step("Получение всех менеджеров проекта")
+    def get_all_manger(self):
+        all_manager = self.elements_are_visible(self.locators.MANAGER_LABEL)
+        manager_list = []
+        for manager in all_manager:
+            manager_list.append(manager.text)
+        return manager_list
+
+    @testit.step("Получение сообщений системы")
+    @allure.step("Получение сообщений системы")
+    def get_all_alert_message(self):
+        all_alerts = self.elements_are_visible(self.locators.ALERT_MESSAGE)
+        data = []
+        for alert in all_alerts:
+            data.append(alert.text)
+        return data
+
+    @testit.step("Проверка невозможности снять себя с менеджера проекта")
+    @allure.step("Проверка невозможности снять себя с менеджера проекта")
+    def check_manager_can_not_delete_himself(self):
+        self.element_is_visible(self.locators.CANSEL_ICON).click()
+        time.sleep(2)
+        assert 'Невозможно снять себя с должности Руководителя, обратитесь к администратору' in self.get_all_alert_message(), "Не появилось сообщение о невозможности снятия себя с проекта"

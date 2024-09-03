@@ -136,6 +136,30 @@ def project_with_attach_files():
     project_endpoint.delete_project_api(str(response.json()['id']))
 
 
+@pytest.fixture()
+def project_with_two_resources(create_work_user):
+    project_endpoint = ProjectEndpoint()
+    user_endpoint = UserEndpoint()
+    user_id = user_endpoint.get_user_id_by_email('auto_testt@mail.rruu')
+    payload = CreateProject(
+        resources=[
+            dict(
+                projectRoleId=3,
+                userId=USER_ID,
+                isProjectManager=False
+            ),
+            dict(
+                projectRoleId=3,
+                userId=user_id,
+                isProjectManager=False
+            )
+        ]
+    ).model_dump()
+    response = project_endpoint.create_project_api(json=payload)
+    yield response.json()
+    project_endpoint.delete_project_api(str(response.json()['id']))
+
+
 @pytest.fixture
 def f_overtime_reason_requirement():
     sys_settings = SystemSettingsApi()
@@ -290,6 +314,29 @@ def project_with_assignment():
         assignment_id=str(response.json()["slots"][0]["assignments"][0]["id"])
     )
     yield
+    project_endpoint.delete_project_api(str(response.json()['id']))
+
+
+@pytest.fixture()
+def archive_project_with_assignment():
+    assignment_endpoint = AssignmentEndpoint()
+    project_endpoint = ProjectEndpoint()
+    payload = CreateProject(
+        status='ARCHIVED'
+    ).model_dump()
+    response = project_endpoint.create_project_api(json=payload)
+    payload = dict(projectRoleId=1,
+                   projectId=response.json()["id"],
+                   slotId=response.json()["slots"][0]["assignments"][0]['slotId'],
+                   userId=USER_ID,
+                   isProjectManager=True,
+                   startDate=CreateProject().startDate
+                   )
+    assignment_endpoint.put_assignment_api(
+        json=payload,
+        assignment_id=str(response.json()["slots"][0]["assignments"][0]["id"])
+    )
+    yield response.json()
     project_endpoint.delete_project_api(str(response.json()['id']))
 
 

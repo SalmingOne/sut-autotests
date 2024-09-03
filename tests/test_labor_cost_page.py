@@ -470,3 +470,21 @@ class TestLaborCostPage:
         assert project_day_cell_contents_after != project_day_cell_contents_before, 'Часы переработки не изменились'
         assert total_column_after != total_column_before, 'Часы переработки не изменились'
         assert in_total_row_after != in_total_row_before, 'Часы переработки не изменились'
+
+    @testit.workItemIds(946)
+    @testit.displayName("1.4.3. Списание часов трудозатрат на восстановленный из архива проект")
+    @pytest.mark.regress
+    @allure.title("id-946 1.4.3. Списание часов трудозатрат на восстановленный из архива проект")
+    def test_writing_off_labor_hours_for_a_project_restored_from_the_archive(self, archive_project_with_assignment, login, driver):
+        labor_cost_page = LaborCostPage(driver)
+        projects_page = AllProjectPage(driver)
+        projects_page.go_to_all_project_page()
+        projects_page.check_archiving_a_project_on_tab(archive_project_with_assignment['name'])
+        projects_page.unzipping_the_project(archive_project_with_assignment['name'])
+        labor_cost_page.go_to_labor_cost_page()
+        time.sleep(2)
+        today = labor_cost_page.get_date_list_from_today()
+        labor_cost_page.input_labor_reason_by_project(archive_project_with_assignment['name'], today[0], 7)
+        labor_cost_page.save_labor_reason()
+        time.sleep(1)
+        assert 'Трудозатраты сохранены' in labor_cost_page.get_alert_message(), "Трудозатраты не сохранились"
