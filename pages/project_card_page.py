@@ -649,4 +649,25 @@ class ProjectCardPage(BasePage):
     def check_manager_can_not_delete_himself(self):
         self.element_is_visible(self.locators.CANSEL_ICON).click()
         time.sleep(2)
-        assert 'Невозможно снять себя с должности Руководителя, обратитесь к администратору' in self.get_all_alert_message(), "Не появилось сообщение о невозможности снятия себя с проекта"
+        assert ('Невозможно снять себя с должности Руководителя, обратитесь к администратору' in
+                self.get_all_alert_message()), "Не появилось сообщение о невозможности снятия себя с проекта"
+
+    @testit.step("Открытие фильтра")
+    @allure.step("Открытие фильтра")
+    def open_filter(self):
+        self.element_is_visible(self.locators.TEAM_TAB_FILTER_BUTTON).click()
+
+    @testit.step("Нажатие кнопки Выбрать все")
+    @allure.step("Нажатие кнопки Выбрать все")
+    def press_choose_all_checkbox(self):
+        self.element_is_visible(self.locators.text_on_page('Выбрать всё')).click()
+
+    @testit.step("Проверка отсутствия выбранных чекбоксов")
+    @allure.step("Проверка отсутствия выбранных чекбоксов")
+    def check_no_checked_checkboxes(self):
+        assert not self.element_is_displayed(self.locators.CHECKED_CHECKBOXES, 1), "Есть выбранные чекбоксы"
+
+    @testit.step("Нажатие кнопки Применить")
+    @allure.step("Нажатие кнопки Применить")
+    def press_apply_button(self):
+        self.element_is_visible(self.locators.APPLY_BUTTON).click()

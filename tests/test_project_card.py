@@ -324,3 +324,20 @@ class TestProjectCard:
         after_add_manager_time_tab = project_card_page.get_all_team_members()
         assert sorted(before_add_manager_time_tab) == sorted(after_add_manager_time_tab), \
             "Изменились проектные роли выбранных менеджеров"
+
+    @testit.workItemIds(3956)
+    @testit.displayName("1.3.3.6. Отображение пустой таблицы")
+    @pytest.mark.regress
+    @allure.title("id-3956 1.3.3.6. Отображение пустой таблицы")
+    def test_displaying_an_empty_progress_table(self, project_with_overtime_work, login, driver):
+        all_project_page = AllProjectPage(driver)
+        time.sleep(1)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(project_with_overtime_work['name'])
+        project_card_page = ProjectCardPage(driver)
+        project_card_page.go_to_progress_tab()
+        project_card_page.open_filter()
+        project_card_page.press_choose_all_checkbox()
+        project_card_page.check_no_checked_checkboxes()
+        project_card_page.press_apply_button()
+        project_card_page.check_text_on_page('Нет данных')
