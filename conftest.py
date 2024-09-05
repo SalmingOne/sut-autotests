@@ -217,6 +217,66 @@ def project_with_overtime_work():
 
 
 @pytest.fixture()
+def project_with_three_overtime_work():
+    labor_report_endpoint = LaborReportEndpoint()
+    project_endpoint = ProjectEndpoint()
+    payload = CreateProject().model_dump()
+    res = project_endpoint.create_project_api(json=payload)
+    project_id = res.json()['id']
+    payload = [
+        dict(
+            date=BasePage(driver=None).get_day_before_m_d_y(0),
+            projectId=project_id,
+            overtimeWork=3,
+            hours=3,
+            type="OTW",
+            userId=USER_ID,
+        )
+    ]
+    labor_report_endpoint.post_labor_report_api(json=payload)
+    payload = [
+        dict(
+            date=BasePage(driver=None).get_day_before_m_d_y(-7),
+            projectId=project_id,
+            overtimeWork=3,
+            hours=3,
+            type="OTW",
+            userId=USER_ID,
+        )
+    ]
+    labor_report_endpoint.post_labor_report_api(json=payload)
+    payload = [
+        dict(
+            date=BasePage(driver=None).get_day_before_m_d_y(-14),
+            projectId=project_id,
+            overtimeWork=3,
+            hours=3,
+            type="OTW",
+            userId=USER_ID,
+        )
+    ]
+    labor_report_endpoint.post_labor_report_api(json=payload)
+    labor_ids = sorted(labor_report_endpoint.get_labor_reports_by_project_api(str(project_id),
+                                                                       BasePage(driver=None).get_day_before_ymd(1),
+                                                                       BasePage(driver=None).get_day_before_ymd(-30)))
+    payload = [
+        dict(
+            ids=[labor_ids[1]],
+            approvalStatus="APPROVED"
+        ),
+        dict(
+            ids=[labor_ids[2]],
+            rejectionReason="string",
+            approvalStatus="REJECTED"
+        )
+    ]
+    a = labor_report_endpoint.put_labor_reports(json=payload)
+    yield res.json()
+    project_endpoint.delete_project_api(str(project_id))
+
+
+
+@pytest.fixture()
 def project_with_work():
     labor_report_endpoint = LaborReportEndpoint()
     project_endpoint = ProjectEndpoint()
