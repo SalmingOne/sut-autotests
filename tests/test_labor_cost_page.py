@@ -9,6 +9,7 @@ from endpoints.project_endpoint import ProjectEndpoint
 from pages.all_project_page import AllProjectPage
 from pages.labor_cost_page import LaborCostPage
 from locators.labor_cost_page_locators import LaborCostPageLocators
+from pages.user_page import UserPage
 
 
 @allure.suite("Таблица трудозатрат")
@@ -526,3 +527,19 @@ class TestLaborCostPage:
         assert project_day_cell_contents_after != project_day_cell_contents_before, 'Часы переработки не изменились'
         assert total_column_after != total_column_before, 'Часы переработки не изменились'
         assert in_total_row_after != in_total_row_before, 'Часы переработки не изменились'
+
+    @testit.workItemIds(3167)
+    @testit.displayName("3.1.1.5. Отмена перехода на другую страницу без сохранения данных в разделе трудозатрат")
+    @pytest.mark.regress
+    @allure.title("id-3167 3.1.1.5. Отмена перехода на другую страницу без сохранения данных в разделе трудозатрат")
+    def test_cancel_moving_without_saving_in_labor_cost(self, simple_project, login, driver):
+        labor_cost_page = LaborCostPage(driver)
+        user_page = UserPage(driver)
+        today = labor_cost_page.get_date_list_from_today()
+        labor_cost_page.input_labor_reason_by_project(simple_project['name'], today[1], 4)
+        in_total_row_before = labor_cost_page.get_day_total_raw(today[0])
+        user_page.go_to_user_page()
+        time.sleep(1)
+        labor_cost_page.cancel_moving_to_another_page()
+        in_total_row_after = labor_cost_page.get_day_total_raw(today[0])
+        assert in_total_row_after == in_total_row_before, 'Изменения не сохранились'

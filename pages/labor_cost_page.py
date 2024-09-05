@@ -1048,3 +1048,8 @@ class LaborCostPage(BasePage):
         time.sleep(1)
         self.element_is_visible(self.locators.SAVE_BUTTON).click()
         self.delete_file('переработка2.docx')
+
+    @testit.step("Отмена перехода на другую страницу со страницы трудозатрат")
+    @allure.step("Отмена перехода на другую страницу со страницы трудозатрат")
+    def cancel_moving_to_another_page(self):
+        self.element_is_visible(self.locators.UNSAVED_WINDOW_ABORT_BUTTON).click()
