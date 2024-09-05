@@ -1053,3 +1053,19 @@ class LaborCostPage(BasePage):
     @allure.step("Отмена перехода на другую страницу со страницы трудозатрат")
     def cancel_moving_to_another_page(self):
         self.element_is_visible(self.locators.UNSAVED_WINDOW_ABORT_BUTTON).click()
+
+    @testit.step("Проверка перехода по периодам при отображении по месяцу")
+    @allure.step("Проверка перехода по периодам при отображении по месяцу")
+    def check_change_period_by_month(self):
+        self.element_is_visible(self.locators.NEXT_PERIOD_BUTTON).click()
+        assert self.get_month_or_week_on_tab() == str(
+            (datetime.datetime.now() + datetime.timedelta(days=30)).strftime('%B %Y')), \
+            "В таблице не отображаются даты следующего месяца"
+        self.element_is_visible(self.locators.THIS_DAY_BUTTON).click()
+        assert self.get_month_or_week_on_tab() == str(
+            (datetime.datetime.now() + datetime.timedelta(days=0)).strftime('%B %Y')), \
+            "В таблице не отображаются даты текущего месяца"
+        self.element_is_visible(self.locators.PREVIOUS_PERIOD_BUTTON).click()
+        assert self.get_month_or_week_on_tab() == str(
+            (datetime.datetime.now() - datetime.timedelta(days=30)).strftime('%B %Y')), \
+            "В таблице не отображаются даты предыдущего месяца"

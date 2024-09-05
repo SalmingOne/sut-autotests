@@ -1,3 +1,4 @@
+import locale
 import time
 
 import allure
@@ -543,3 +544,19 @@ class TestLaborCostPage:
         labor_cost_page.cancel_moving_to_another_page()
         in_total_row_after = labor_cost_page.get_day_total_raw(today[0])
         assert in_total_row_after == in_total_row_before, 'Изменения не сохранились'
+
+    @testit.workItemIds(11865)
+    @testit.displayName("3.1.1.4 Просмотр таблицы Трудозатраты за месяц(с переключением периодов)")
+    @pytest.mark.regress
+    @allure.title("id-11865 3.1.1.4 Просмотр таблицы Трудозатраты за месяц (с переключением периодов)")
+    def test_viewing_the_effort_table_for_a_month_with_period_switching(self, simple_project, login, driver):
+        labor_cost_page = LaborCostPage(driver)
+        assert 'Проект' and 'Итого' in labor_cost_page.get_tab_header(), "В шапке столбцов нет Проект и Итого"
+        assert 'пн' and 'вт' and 'ср' and 'чт' and 'пт' and 'сб' and 'вс' in labor_cost_page.get_tab_header_week_days(), \
+            "В шапке столбцов нет названий дней недели"
+        labor_cost_page.check_next_previous_buttons()
+        locale.setlocale(locale.LC_TIME, 'ru_RU')
+        assert labor_cost_page.get_month_or_week_on_tab() == datetime.date.today().strftime('%B %Y'), \
+            "Отображается некорректный месяц и год"
+        labor_cost_page.check_filter()
+        labor_cost_page.check_change_period_by_month()
