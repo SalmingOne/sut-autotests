@@ -560,3 +560,12 @@ class TestLaborCostPage:
             "Отображается некорректный месяц и год"
         labor_cost_page.check_filter()
         labor_cost_page.check_change_period_by_month()
+
+    @testit.workItemIds(3381)
+    @testit.displayName("3.1.3.1 Приложение к переработке файла с превышением размера")
+    @pytest.mark.regress
+    @allure.title("id-3381 3.1.3.1 Приложение к переработке файла с превышением размера")
+    def test_add_oversized_file_to_overwork(self, project_with_attach_files, login, driver):
+        labor_cost_page = LaborCostPage(driver)
+        today = labor_cost_page.get_date_list_from_today()
+        labor_cost_page.add_overwork_with_file_5mb(today[0] - 1, 2, project_with_attach_files['name'])
