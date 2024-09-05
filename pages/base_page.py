@@ -106,3 +106,8 @@ class BasePage:
     def get_day_before_y_m_d(self, amount_of_days):
         day_before = datetime.now() - timedelta(days=amount_of_days)
         return day_before.strftime("%Y.%m.%d")
+
+    @allure.step("Получение предыдущей даты отличной от текущей на N дней (YYYY-MM-DD)")
+    def get_day_before_ymd(self, amount_of_days):
+        day_before = datetime.now() - timedelta(days=amount_of_days)
+        return day_before.strftime("%Y-%m-%d")

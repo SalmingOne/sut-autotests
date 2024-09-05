@@ -670,6 +670,7 @@ class ProjectCardPage(BasePage):
     @testit.step("Нажатие кнопки Применить")
     @allure.step("Нажатие кнопки Применить")
     def press_apply_button(self):
+        time.sleep(0.5)
         self.element_is_visible(self.locators.APPLY_BUTTON).click()
 
     @testit.step("Нажатие чекбокса Согласовано")
@@ -677,3 +678,43 @@ class ProjectCardPage(BasePage):
     def press_approved_checkbox(self):
         time.sleep(1)
         self.element_is_present(self.locators.checbox_by_text('Согласовано')).click()
+
+    @testit.step("Получение цвета согласования трудозатрат")
+    @allure.step("Получение цвета согласования трудозатрат")
+    def get_labor_color(self, number_element):
+        time.sleep(0.5)
+        return self.elements_are_visible(self.locators.LABOR_COLOR)[number_element].value_of_css_property('background-color')
+
+    @testit.step("Проверка цвета кружка Согласовано")
+    @allure.step("Проверка цвета кружка Согласовано")
+    def check_approved_reason_on_tab(self):
+        assert self.get_labor_color(0) == 'rgba(46, 125, 50, 1)', "Кружок согласованно не зеленого цвета"
+
+    @testit.step("Нажатие чекбокса Ожидает согласования")
+    @allure.step("Нажатие чекбокса Ожидает согласования")
+    def press_wait_approved_checkbox(self):
+        time.sleep(1)
+        self.element_is_present(self.locators.checbox_by_text('Ожидает согласования')).click()
+
+    @testit.step("Нажатие чекбокса Отклонено")
+    @allure.step("Нажатие чекбокса Отклонено")
+    def press_rejected_checkbox(self):
+        time.sleep(1)
+        self.element_is_present(self.locators.checbox_by_text('Отклонено')).click(), "Кружок Отклонено не красного цвета"
+
+    @testit.step("Проверка цвета кружка Отклонено")
+    @allure.step("Проверка цвета кружка Отклонено")
+    def check_rejected_on_tab(self):
+        assert self.get_labor_color(0) == 'rgba(211, 47, 47, 1)'
+
+    @testit.step("Проверка цвета кружка Ожидает согласования")
+    @allure.step("Проверка цвета кружка Ожидает согласования")
+    def check_wait_approved_reason_on_tab(self):
+        assert self.get_labor_color(0) == 'rgba(217, 217, 217, 1)', "Кружок Ожидает согласования не серого цвета"
+
+    @testit.step("Переход на следующий период")
+    @allure.step("Переход на следующий период")
+    def go_to_next_period(self):
+        time.sleep(0.5)
+        self.element_is_visible(self.locators.NEXT_PERIOD_BUTTON).click()
+        time.sleep(0.5)

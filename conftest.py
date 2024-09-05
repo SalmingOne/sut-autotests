@@ -231,30 +231,49 @@ def project_with_three_overtime_work():
             hours=3,
             type="OTW",
             userId=USER_ID,
-            overtimeApprovalStatus="APPROVED"
-        ),
-        dict(
-            date=BasePage(driver=None).get_day_before_m_d_y(-1),
-            projectId=project_id,
-            overtimeWork=3,
-            hours=3,
-            type="OTW",
-            userId=USER_ID,
-            overtimeApprovalStatus="REJECTED"
-        ),
-        dict(
-            date=BasePage(driver=None).get_day_before_m_d_y(-2),
-            projectId=project_id,
-            overtimeWork=3,
-            hours=3,
-            type="OTW",
-            userId=USER_ID,
-            overtimeApprovalStatus="UNDER_CONSIDERATION"
         )
     ]
     labor_report_endpoint.post_labor_report_api(json=payload)
+    payload = [
+        dict(
+            date=BasePage(driver=None).get_day_before_m_d_y(-7),
+            projectId=project_id,
+            overtimeWork=3,
+            hours=3,
+            type="OTW",
+            userId=USER_ID,
+        )
+    ]
+    labor_report_endpoint.post_labor_report_api(json=payload)
+    payload = [
+        dict(
+            date=BasePage(driver=None).get_day_before_m_d_y(-14),
+            projectId=project_id,
+            overtimeWork=3,
+            hours=3,
+            type="OTW",
+            userId=USER_ID,
+        )
+    ]
+    labor_report_endpoint.post_labor_report_api(json=payload)
+    labor_ids = sorted(labor_report_endpoint.get_labor_reports_by_project_api(str(project_id),
+                                                                       BasePage(driver=None).get_day_before_ymd(1),
+                                                                       BasePage(driver=None).get_day_before_ymd(-30)))
+    payload = [
+        dict(
+            ids=[labor_ids[1]],
+            approvalStatus="APPROVED"
+        ),
+        dict(
+            ids=[labor_ids[2]],
+            rejectionReason="string",
+            approvalStatus="REJECTED"
+        )
+    ]
+    a = labor_report_endpoint.put_labor_reports(json=payload)
     yield res.json()
     project_endpoint.delete_project_api(str(project_id))
+
 
 
 @pytest.fixture()

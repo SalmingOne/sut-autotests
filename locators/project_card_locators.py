@@ -63,8 +63,8 @@ class ProjectCardLocators:
     # Локаторы вкладки Ход выполнения
     PROGRESS_TAB = (By.XPATH, '//button[text()="Ход выполнения"]')
     PROGRESS_TAB_HEADER = (By.CSS_SELECTOR, 'span[class="ag-header-cell-text"]')
-    CHECKED_CHECKBOXES = (By.XPATH, '//span[contains(@class, " Mui-checked")]')
-
+    CHECKED_CHECKBOXES = (By.XPATH, '//span[contains(@class, "Mui-checked")]')
+    LABOR_COLOR = (By.XPATH, '//div[@aria-colindex="1"]/div[contains(@class,"MuiBox-root")]//descendant::div')
     DONE_ICON = (By.CSS_SELECTOR, 'svg[data-testid="DoneIcon"]')
     CLEAR_ICON = (By.CSS_SELECTOR, 'svg[data-testid="ClearIcon"]')
     KEBAB_MENU = (By.CSS_SELECTOR, 'svg[data-testid="MoreHorizIcon"]')
