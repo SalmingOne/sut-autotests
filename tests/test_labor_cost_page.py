@@ -3,6 +3,7 @@ import time
 import allure
 import pytest
 import testit
+import datetime
 
 from endpoints.project_endpoint import ProjectEndpoint
 from pages.all_project_page import AllProjectPage
@@ -488,3 +489,21 @@ class TestLaborCostPage:
         labor_cost_page.save_labor_reason()
         time.sleep(1)
         assert 'Трудозатраты сохранены' in labor_cost_page.get_alert_message(), "Трудозатраты не сохранились"
+
+    @testit.workItemIds(11864)
+    @testit.displayName("3.1.1.4 Просмотр таблицы Трудозатраты за неделю (с переключением периодов)")
+    @pytest.mark.regress
+    @allure.title("id-11864 3.1.1.4 Просмотр таблицы Трудозатраты за неделю (с переключением периодов)")
+    def test_viewing_the_effort_table_for_a_week_with_period_switching(self, simple_project, login, driver):
+        labor_cost_page = LaborCostPage(driver)
+        labor_cost_page.choose_period("week")
+        assert 'Проект' and 'Итого' in labor_cost_page.get_tab_header(), "В шапке столбцов нет Проект и Итого"
+        assert 'пн' and 'вт' and 'ср' and 'чт' and 'пт' and 'сб' and 'вс' in labor_cost_page.get_tab_header_week_days(), \
+            "В шапке столбцов нет названий дней недели"
+        labor_cost_page.check_next_previous_buttons()
+        assert labor_cost_page.get_month_or_week_on_tab() == str(datetime.date.today().isocalendar().week) + ' неделя', \
+            "Отображается некорректный номер недели"
+        assert labor_cost_page.get_week_dates() == ' ' + labor_cost_page.week_day(), \
+            "Отображаются некорректные даты недели"
+        labor_cost_page.check_filter()
+        labor_cost_page.check_change_period_by_week()
