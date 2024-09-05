@@ -451,9 +451,6 @@ class TestLaborCostPage:
         today = labor_cost_page.get_date_list_from_today()
         labor_cost_page.add_overtime_work_without_file(today[0]-1, 2, second_project['name'])
         labor_cost_page.field_reason_overwork("Много работал")
-        labor_cost_page.submit_labor_reason()
-        time.sleep(1)
-        labor_cost_page.save_labor_reason()
         # +1 т.к. считает с первого столбца (Проект)
         project_day_cell_contents_before = labor_cost_page.get_project_day_cell_contents(second_project['name'], today[0]+1)
         total_column_before = labor_cost_page.get_project_total(second_project['name'])
@@ -462,9 +459,6 @@ class TestLaborCostPage:
         labor_cost_page.open_overwork_drover_for_specific_day(today[0]-1, second_project['name'])
         labor_cost_page.check_data_from_drover(2, "Много работал")
         labor_cost_page.editing_overwork(5, 'Еще больше работал')
-        labor_cost_page.submit_labor_reason()
-        time.sleep(1)
-        labor_cost_page.save_labor_reason()
         project_day_cell_contents_after = labor_cost_page.get_project_day_cell_contents(second_project['name'], today[0]+1)
         total_column_after = labor_cost_page.get_project_total(second_project['name'])
         in_total_row_after = labor_cost_page.get_day_total_raw(today[0])
@@ -507,3 +501,28 @@ class TestLaborCostPage:
             "Отображаются некорректные даты недели"
         labor_cost_page.check_filter()
         labor_cost_page.check_change_period_by_week()
+
+    @testit.workItemIds(3377)
+    @testit.displayName("3.1.3.2. Редактирование переработки на проекте с обязательным приложением файлов")
+    @pytest.mark.regress
+    @allure.title("id-3377 3.1.3.2. Редактирование переработки на проекте с обязательным приложением файлов")
+    def test_edit_overwork_obligatory_file(self, project_with_attach_files, login, driver):
+        labor_cost_page = LaborCostPage(driver)
+        today = labor_cost_page.get_date_list_from_today()
+        labor_cost_page.add_overtime_work_with_file(today[0] - 1, 2, project_with_attach_files['name'])
+        # +1 т.к. считает с первого столбца (Проект)
+        project_day_cell_contents_before = labor_cost_page.get_project_day_cell_contents(project_with_attach_files['name'],
+                                                                                         today[0] + 1)
+        total_column_before = labor_cost_page.get_project_total(project_with_attach_files['name'])
+        in_total_row_before = labor_cost_page.get_day_total_raw(today[0])
+        # -1 иначе выбирает завтрашний день. Хотя при выводе print(today[0]) число верное
+        labor_cost_page.open_overwork_drover_for_specific_day(today[0] - 1, project_with_attach_files['name'])
+        labor_cost_page.check_data_with_file_from_drover(2, "переработка.docx")
+        labor_cost_page.editing_overwork_with_file(5)
+        project_day_cell_contents_after = labor_cost_page.get_project_day_cell_contents(project_with_attach_files['name'],
+                                                                                        today[0] + 1)
+        total_column_after = labor_cost_page.get_project_total(project_with_attach_files['name'])
+        in_total_row_after = labor_cost_page.get_day_total_raw(today[0])
+        assert project_day_cell_contents_after != project_day_cell_contents_before, 'Часы переработки не изменились'
+        assert total_column_after != total_column_before, 'Часы переработки не изменились'
+        assert in_total_row_after != in_total_row_before, 'Часы переработки не изменились'
