@@ -594,3 +594,23 @@ class TestLaborCostPage:
         assert labor_cost_page.check_text_on_page('Больничный'), "Отсутствия нет в разделе заявлений"
         assert labor_cost_page.check_text_on_page('Скачать файлы (1)'), "В разделе заявлений нет текста Скачать файл"
         labor_cost_page.delete_all_absence()
+
+    @testit.workItemIds(1357)
+    @testit.displayName("3.1.2.4. Редактирование отсутствий если выбранный период пересекается с другими отсутствиями")
+    @pytest.mark.regress
+    @allure.title("id-1357 3.1.2.4. Редактирование отсутствий если выбранный период пересекается с другими отсутствиями")
+    def test_add_editing_absences_if_the_selected_period_overlaps_with_other_absences(self, project_with_attach_files, login,
+                                                                         driver):
+        labor_cost_page = LaborCostPage(driver)
+        # Проверяем что нет заявлений в таблице. И если есть удаляем
+        if labor_cost_page.check_absence_on_tab() > 0:
+            labor_cost_page.click_previous_checkbox()
+            labor_cost_page.delete_all_absence()
+        else:
+            pass
+        zero_reason_day = labor_cost_page.get_numbers_days_reason('zero')
+        labor_cost_page.add_absence(zero_reason_day[-1], 'administrative_leave')
+        labor_cost_page.add_absence(zero_reason_day[-2], 'sick_leave')
+        labor_cost_page.check_editing_absences_if_the_selected_period_overlaps_with_other_absences(zero_reason_day[-2])
+        labor_cost_page.click_previous_checkbox()
+        labor_cost_page.delete_all_absence()
