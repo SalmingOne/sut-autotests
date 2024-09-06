@@ -876,6 +876,9 @@ class LaborCostPage(BasePage):
     @allure.step("Заполняем поле причина переработки")
     def field_reason_overwork(self, reason):
         self.element_is_visible(self.locators.CHECK_LABOR_REASON_FIELD).send_keys(reason)
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+        time.sleep(1)
+        self.element_is_visible(self.locators.SAVE_BUTTON).click()
 
     @testit.step("Нажать Применить в дровере добавления переработки")
     @allure.step("Нажать Применить в дровере добавления переработки")
@@ -907,6 +910,9 @@ class LaborCostPage(BasePage):
         time.sleep(1)
         self.element_is_visible(self.locators.OVERTIME_WORK_INPUT).send_keys(Keys.CONTROL + 'a')
         self.element_is_visible(self.locators.OVERTIME_WORK_INPUT).send_keys(number)
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+        time.sleep(1)
+        self.element_is_visible(self.locators.SAVE_BUTTON).click()
 
     @testit.step("Добавить переработку без файла")
     @allure.step("Добавить переработку без файла")
@@ -1003,4 +1009,63 @@ class LaborCostPage(BasePage):
         assert self.get_month_or_week_on_tab() == str(datetime.date.today().isocalendar().week - 1) + ' неделя', \
             "В таблице не отображаются даты предыдущей недели"
 
+    @testit.step("Добавить переработку с файлом")
+    @allure.step("Добавить переработку с файлом")
+    def add_overtime_work_with_file(self, number_day_element, overtime_work_hours, project_mame):
+        self.element_is_visible(self.locators.ADD_OVERTIME_WORK_BUTTON).click()
+        time.sleep(0.5)  # Без этого ожидания не успевает прогрузиться
+        self.element_is_visible(self.locators.OVERTIME_WORK_DATA_PICKER).click()
+        self.elements_are_visible(self.locators.ALL_DATA_IN_DATA_PICKER)[number_day_element].click()
+        self.element_is_visible(self.locators.PROJECT_NAME_DRAWER_INPUT).click()
+        time.sleep(0.5)  # Без этого ожидания не успевает прогрузиться
+        self.element_is_visible(self.locators.chose_project_on_overtime_work_drawer(project_mame)).click()
+        self.element_is_visible(self.locators.OVERTIME_WORK_INPUT).send_keys(overtime_work_hours)
+        self.add_file('переработка.docx', 'Переработка')
+        self.element_is_present(self.locators.FILE_INPUT, 2).send_keys(os.path.abspath(r'../переработка.docx'))
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+        time.sleep(1)
+        self.element_is_visible(self.locators.SAVE_BUTTON).click()
+        self.delete_file('переработка.docx')
 
+    @testit.step("Проверка что данные с файлом сохранились в дровере")
+    @allure.step("Проверка что данные с файлом сохранились в дровере")
+    def check_data_with_file_from_drover(self, overtime, file_name):
+        assert self.element_is_displayed(self.locators.check_value(overtime)), 'Переработка не сохранилась'
+        assert self.element_is_displayed(self.locators.check_text(file_name)), 'Файл не сохранился'
+
+    @testit.step("Редактирование переработки с файлом")
+    @allure.step("Редактирование переработки с файлом")
+    def editing_overwork_with_file(self, number):
+        self.element_is_visible(self.locators.OVERTIME_WORK_INPUT).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.OVERTIME_WORK_INPUT).send_keys(number)
+        time.sleep(1)
+        self.element_is_visible(self.locators.DELETE_ICON).click()
+        self.element_is_visible(self.locators.SUBMIT_DELETE_BUTTON).click()
+        time.sleep(1)
+        self.add_file('переработка2.docx', 'Переработка2')
+        self.element_is_present(self.locators.FILE_INPUT, 2).send_keys(os.path.abspath(r'../переработка2.docx'))
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+        time.sleep(1)
+        self.element_is_visible(self.locators.SAVE_BUTTON).click()
+        self.delete_file('переработка2.docx')
+
+    @testit.step("Отмена перехода на другую страницу со страницы трудозатрат")
+    @allure.step("Отмена перехода на другую страницу со страницы трудозатрат")
+    def cancel_moving_to_another_page(self):
+        self.element_is_visible(self.locators.UNSAVED_WINDOW_ABORT_BUTTON).click()
+
+    @testit.step("Проверка перехода по периодам при отображении по месяцу")
+    @allure.step("Проверка перехода по периодам при отображении по месяцу")
+    def check_change_period_by_month(self):
+        self.element_is_visible(self.locators.NEXT_PERIOD_BUTTON).click()
+        assert self.get_month_or_week_on_tab() == str(
+            (datetime.datetime.now() + datetime.timedelta(days=30)).strftime('%B %Y')), \
+            "В таблице не отображаются даты следующего месяца"
+        self.element_is_visible(self.locators.THIS_DAY_BUTTON).click()
+        assert self.get_month_or_week_on_tab() == str(
+            (datetime.datetime.now() + datetime.timedelta(days=0)).strftime('%B %Y')), \
+            "В таблице не отображаются даты текущего месяца"
+        self.element_is_visible(self.locators.PREVIOUS_PERIOD_BUTTON).click()
+        assert self.get_month_or_week_on_tab() == str(
+            (datetime.datetime.now() - datetime.timedelta(days=30)).strftime('%B %Y')), \
+            "В таблице не отображаются даты предыдущего месяца"

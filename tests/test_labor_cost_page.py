@@ -1,3 +1,4 @@
+import locale
 import time
 
 import allure
@@ -9,6 +10,7 @@ from endpoints.project_endpoint import ProjectEndpoint
 from pages.all_project_page import AllProjectPage
 from pages.labor_cost_page import LaborCostPage
 from locators.labor_cost_page_locators import LaborCostPageLocators
+from pages.user_page import UserPage
 
 
 @allure.suite("Таблица трудозатрат")
@@ -451,9 +453,6 @@ class TestLaborCostPage:
         today = labor_cost_page.get_date_list_from_today()
         labor_cost_page.add_overtime_work_without_file(today[0]-1, 2, second_project['name'])
         labor_cost_page.field_reason_overwork("Много работал")
-        labor_cost_page.submit_labor_reason()
-        time.sleep(1)
-        labor_cost_page.save_labor_reason()
         # +1 т.к. считает с первого столбца (Проект)
         project_day_cell_contents_before = labor_cost_page.get_project_day_cell_contents(second_project['name'], today[0]+1)
         total_column_before = labor_cost_page.get_project_total(second_project['name'])
@@ -462,9 +461,6 @@ class TestLaborCostPage:
         labor_cost_page.open_overwork_drover_for_specific_day(today[0]-1, second_project['name'])
         labor_cost_page.check_data_from_drover(2, "Много работал")
         labor_cost_page.editing_overwork(5, 'Еще больше работал')
-        labor_cost_page.submit_labor_reason()
-        time.sleep(1)
-        labor_cost_page.save_labor_reason()
         project_day_cell_contents_after = labor_cost_page.get_project_day_cell_contents(second_project['name'], today[0]+1)
         total_column_after = labor_cost_page.get_project_total(second_project['name'])
         in_total_row_after = labor_cost_page.get_day_total_raw(today[0])
@@ -507,3 +503,60 @@ class TestLaborCostPage:
             "Отображаются некорректные даты недели"
         labor_cost_page.check_filter()
         labor_cost_page.check_change_period_by_week()
+
+    @testit.workItemIds(3377)
+    @testit.displayName("3.1.3.2. Редактирование переработки на проекте с обязательным приложением файлов")
+    @pytest.mark.regress
+    @allure.title("id-3377 3.1.3.2. Редактирование переработки на проекте с обязательным приложением файлов")
+    def test_edit_overwork_obligatory_file(self, project_with_attach_files, login, driver):
+        labor_cost_page = LaborCostPage(driver)
+        today = labor_cost_page.get_date_list_from_today()
+        labor_cost_page.add_overtime_work_with_file(today[0] - 1, 2, project_with_attach_files['name'])
+        # +1 т.к. считает с первого столбца (Проект)
+        project_day_cell_contents_before = labor_cost_page.get_project_day_cell_contents(project_with_attach_files['name'],
+                                                                                         today[0] + 1)
+        total_column_before = labor_cost_page.get_project_total(project_with_attach_files['name'])
+        in_total_row_before = labor_cost_page.get_day_total_raw(today[0])
+        # -1 иначе выбирает завтрашний день. Хотя при выводе print(today[0]) число верное
+        labor_cost_page.open_overwork_drover_for_specific_day(today[0] - 1, project_with_attach_files['name'])
+        labor_cost_page.check_data_with_file_from_drover(2, "переработка.docx")
+        labor_cost_page.editing_overwork_with_file(5)
+        project_day_cell_contents_after = labor_cost_page.get_project_day_cell_contents(project_with_attach_files['name'],
+                                                                                        today[0] + 1)
+        total_column_after = labor_cost_page.get_project_total(project_with_attach_files['name'])
+        in_total_row_after = labor_cost_page.get_day_total_raw(today[0])
+        assert project_day_cell_contents_after != project_day_cell_contents_before, 'Часы переработки не изменились'
+        assert total_column_after != total_column_before, 'Часы переработки не изменились'
+        assert in_total_row_after != in_total_row_before, 'Часы переработки не изменились'
+
+    @testit.workItemIds(3167)
+    @testit.displayName("3.1.1.5. Отмена перехода на другую страницу без сохранения данных в разделе трудозатрат")
+    @pytest.mark.regress
+    @allure.title("id-3167 3.1.1.5. Отмена перехода на другую страницу без сохранения данных в разделе трудозатрат")
+    def test_cancel_moving_without_saving_in_labor_cost(self, simple_project, login, driver):
+        labor_cost_page = LaborCostPage(driver)
+        user_page = UserPage(driver)
+        today = labor_cost_page.get_date_list_from_today()
+        labor_cost_page.input_labor_reason_by_project(simple_project['name'], today[1], 4)
+        in_total_row_before = labor_cost_page.get_day_total_raw(today[0])
+        user_page.go_to_user_page()
+        time.sleep(1)
+        labor_cost_page.cancel_moving_to_another_page()
+        in_total_row_after = labor_cost_page.get_day_total_raw(today[0])
+        assert in_total_row_after == in_total_row_before, 'Изменения не сохранились'
+
+    @testit.workItemIds(11865)
+    @testit.displayName("3.1.1.4 Просмотр таблицы Трудозатраты за месяц(с переключением периодов)")
+    @pytest.mark.regress
+    @allure.title("id-11865 3.1.1.4 Просмотр таблицы Трудозатраты за месяц (с переключением периодов)")
+    def test_viewing_the_effort_table_for_a_month_with_period_switching(self, simple_project, login, driver):
+        labor_cost_page = LaborCostPage(driver)
+        assert 'Проект' and 'Итого' in labor_cost_page.get_tab_header(), "В шапке столбцов нет Проект и Итого"
+        assert 'пн' and 'вт' and 'ср' and 'чт' and 'пт' and 'сб' and 'вс' in labor_cost_page.get_tab_header_week_days(), \
+            "В шапке столбцов нет названий дней недели"
+        labor_cost_page.check_next_previous_buttons()
+        locale.setlocale(locale.LC_TIME, 'ru_RU')
+        assert labor_cost_page.get_month_or_week_on_tab() == datetime.date.today().strftime('%B %Y'), \
+            "Отображается некорректный месяц и год"
+        labor_cost_page.check_filter()
+        labor_cost_page.check_change_period_by_month()

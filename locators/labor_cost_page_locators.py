@@ -152,6 +152,8 @@ class LaborCostPageLocators:
     OVERTIME_WORK_INPUT = (By.CSS_SELECTOR, 'input[name="overtimeWork"]')
     PROJECT_NAME_DRAWER_INPUT = (By.CSS_SELECTOR, 'div[name="project"]')
     PROJECT_NAME_DRAWER_INPUT_FIELD = (By.XPATH, '//div[@name="project"]//input')
+    DELETE_ICON = (By.CSS_SELECTOR, 'svg[data-testid="DeleteIcon"]')
+    SUBMIT_DELETE_BUTTON = (By.XPATH, '//div[@role="dialog"]//following::button[@type="submit"]')
     def chose_project_on_overtime_work_drawer(self, project_mame):
         return By.XPATH, f'//p[text()="{project_mame}"]'
 
