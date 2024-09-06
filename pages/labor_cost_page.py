@@ -490,6 +490,7 @@ class LaborCostPage(BasePage):
         try:
             self.add_file('отсутствие.docx', 'Отсутствие')
             self.element_is_present(self.locators.FILE_INPUT, 2).send_keys(os.path.abspath(r'../отсутствие.docx'))
+            assert self.element_is_displayed(self.locators.check_text('отсутствие.docx')), "Файл не добавился"
         except TimeoutException:
             self.element_is_visible(self.locators.BEGIN_LEAVE_DATA_INPUT).click()
         self.element_is_visible(self.locators.DRAWER_SAVE_BUTTON).click()
@@ -1093,3 +1094,8 @@ class LaborCostPage(BasePage):
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
         assert self.element_is_displayed(self.locators.check_text('Суммарный размер файлов не должен превышать 5МБ')), 'Сообщения с предупреждением нет'
         self.delete_file('переработка 5мб.docx')
+
+    @testit.step("Проверка наличия текста на странице")
+    @allure.step("Проверка наличия текста на странице")
+    def check_text_on_page(self, text):
+        return self.element_is_displayed(self.locators.check_text(text), 2)

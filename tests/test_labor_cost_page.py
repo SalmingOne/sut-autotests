@@ -569,3 +569,28 @@ class TestLaborCostPage:
         labor_cost_page = LaborCostPage(driver)
         today = labor_cost_page.get_date_list_from_today()
         labor_cost_page.add_overwork_with_file_5mb(today[0] - 1, 2, project_with_attach_files['name'])
+
+    @testit.workItemIds(3379)
+    @testit.displayName("3.1.2.1 Добавление отсутствий из таблицы трудозатрат с обязательным приложением файлов.")
+    @pytest.mark.regress
+    @allure.title("id-3379 3.1.2.1 Добавление отсутствий из таблицы трудозатрат с обязательным приложением файлов.")
+    def test_add_adding_absences_with_the_obligatory_attachment_of_files(self, project_with_attach_files, login, driver):
+        labor_cost_page = LaborCostPage(driver)
+        # Проверяем что нет заявлений в таблице. И если есть удаляем
+        if labor_cost_page.check_absence_on_tab() > 0:
+            labor_cost_page.click_previous_checkbox()
+            labor_cost_page.delete_all_absence()
+        else:
+            pass
+        absense_count_before = labor_cost_page.check_absence_on_tab()
+        zero_reason_day = labor_cost_page.get_numbers_days_reason('zero')
+        labor_cost_page.add_absence(zero_reason_day[0], 'sick_leave')
+        time.sleep(1)
+        assert labor_cost_page.get_alert_message() == ['Файл прикреплён', 'Больничный/отпуск успешно добавлен'], \
+            "Не появились необходимые сообщения"
+        absense_count_after = labor_cost_page.check_absence_on_tab()
+        assert absense_count_before != absense_count_after, "Количество отсутствий не изменилось"
+        labor_cost_page.click_previous_checkbox()
+        assert labor_cost_page.check_text_on_page('Больничный'), "Отсутствия нет в разделе заявлений"
+        assert labor_cost_page.check_text_on_page('Скачать файлы (1)'), "В разделе заявлений нет текста Скачать файл"
+        labor_cost_page.delete_all_absence()
