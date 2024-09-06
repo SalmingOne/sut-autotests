@@ -49,8 +49,12 @@ class LaborCostPageLocators:
     THIS_DAY_BUTTON = (By.XPATH, '//button[contains(@class, "DateInterval-setToday")]')
     # Датапикер с выбором месяца
     MONTH_DATEPICKER = (By.XPATH, '//button[contains(@class, "DateInterval-openPicker")]')
+    MONTH_DATEPICKER_TEXT = (By.XPATH, '//button[contains(@class, "DateInterval-openPicker")]//h6')
+    WEEK_DATEPICKER_TEXT = (By.XPATH, '//button[contains(@class, "DateInterval-openPicker")]//p')
     # Локатор для определения количества дней в месяце
     ALL_DAY_NUMBER = (By.XPATH, '//h6[contains(@class, "MuiTypography-root")]')
+    TAB_HEADER_TEXT = (By.XPATH, '//div[contains(@class,"cornerCell")]//h6')
+    TAB_HEADER_WEEK_TEXT = (By.XPATH, '//div[contains(@class,"cornerCell")]//span')
     # Заголовок страницы
     TITLE_PAGE = (By.XPATH, '//h6[contains(@class,"MuiTypography-root MuiTypography-subtitle1")]')
     # Кнопка добавления себя на проект

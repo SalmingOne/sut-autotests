@@ -1,5 +1,7 @@
 import os
 import time
+import datetime
+
 
 import allure
 import testit
@@ -951,4 +953,54 @@ class LaborCostPage(BasePage):
         self.input_time(self.locators.FIRST_DAY_BY_PROJECT, 5)
         self.element_is_visible(self.locators.SAVE_BUTTON).click()
         time.sleep(1)
+
+    @testit.step("Получение заголовка таблицы")
+    @allure.step("Получение заголовка таблицы")
+    def get_tab_header(self):
+        all_day_list = self.elements_are_present(self.locators.TAB_HEADER_TEXT)
+        numbers = []
+        for day in all_day_list:
+            numbers.append(day.text)
+        return numbers
+
+    @testit.step("Получение заголовка таблицы с днями недели")
+    @allure.step("Получение заголовка таблицы с днями недели")
+    def get_tab_header_week_days(self):
+        all_day_list = self.elements_are_present(self.locators.TAB_HEADER_WEEK_TEXT)
+        numbers = []
+        for day in all_day_list:
+            numbers.append(day.text)
+        return numbers
+
+    @testit.step("Получение начала и конца текущей недели")
+    @allure.step("Получение начала и конца текущей недели")
+    def week_day(self):
+        date = datetime.date.today()
+        monday = self.get_day_before(date.weekday())
+        sunday = self.get_day_before(-6 + date.weekday())
+        return f'({monday} – {sunday})'
+
+    @testit.step("Получение названия месяца или номера недели")
+    @allure.step("Получение названия месяца или номера недели")
+    def get_month_or_week_on_tab(self):
+        return self.element_is_visible(self.locators.MONTH_DATEPICKER_TEXT).text
+
+    @testit.step("Получение начала и конца текущей недели с таблицы трудозатрат")
+    @allure.step("Получение начала и конца текущей недели с таблицы трудозатрат")
+    def get_week_dates(self):
+        return self.element_is_visible(self.locators.WEEK_DATEPICKER_TEXT).text
+
+    @testit.step("Проверка перехода по периодам при отображении по неделе")
+    @allure.step("Проверка перехода по периодам при отображении по неделе")
+    def check_change_period_by_week(self):
+        self.element_is_visible(self.locators.NEXT_PERIOD_BUTTON).click()
+        assert self.get_month_or_week_on_tab() == str(datetime.date.today().isocalendar().week + 1) + ' неделя', \
+            "В таблице не отображаются даты следующей недели"
+        self.element_is_visible(self.locators.THIS_DAY_BUTTON).click()
+        assert self.get_month_or_week_on_tab() == str(datetime.date.today().isocalendar().week) + ' неделя', \
+            "В таблице не отображаются даты текущей недели"
+        self.element_is_visible(self.locators.PREVIOUS_PERIOD_BUTTON).click()
+        assert self.get_month_or_week_on_tab() == str(datetime.date.today().isocalendar().week - 1) + ' неделя', \
+            "В таблице не отображаются даты предыдущей недели"
+
 
