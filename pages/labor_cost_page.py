@@ -1069,3 +1069,27 @@ class LaborCostPage(BasePage):
         assert self.get_month_or_week_on_tab() == str(
             (datetime.datetime.now() - datetime.timedelta(days=30)).strftime('%B %Y')), \
             "В таблице не отображаются даты предыдущего месяца"
+
+    @testit.step("Добавление файла более 5 мб")
+    @allure.step("Добавление файла более 5 мб")
+    def add_file_5_mb(self, name):
+        file = open(os.path.abspath(rf'../{name}'), 'w+')
+        file.write('ппппппппппппппппппппппппп'*215000)
+        file.close()
+
+    @testit.step("Добавление переработки с файлом более 5 мб")
+    @allure.step("Добавление переработки с файлом более 5 мб")
+    def add_overwork_with_file_5mb(self, number_day_element, overtime_work_hours, project_mame):
+        self.element_is_visible(self.locators.ADD_OVERTIME_WORK_BUTTON).click()
+        time.sleep(0.5)  # Без этого ожидания не успевает прогрузиться
+        self.element_is_visible(self.locators.OVERTIME_WORK_DATA_PICKER).click()
+        self.elements_are_visible(self.locators.ALL_DATA_IN_DATA_PICKER)[number_day_element].click()
+        self.element_is_visible(self.locators.PROJECT_NAME_DRAWER_INPUT).click()
+        time.sleep(0.5)  # Без этого ожидания не успевает прогрузиться
+        self.element_is_visible(self.locators.chose_project_on_overtime_work_drawer(project_mame)).click()
+        self.element_is_visible(self.locators.OVERTIME_WORK_INPUT).send_keys(overtime_work_hours)
+        self.add_file_5_mb('переработка 5мб.docx')
+        self.element_is_present(self.locators.FILE_INPUT, 2).send_keys(os.path.abspath(r'../переработка 5мб.docx'))
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+        assert self.element_is_displayed(self.locators.check_text('Суммарный размер файлов не должен превышать 5МБ')), 'Сообщения с предупреждением нет'
+        self.delete_file('переработка 5мб.docx')
