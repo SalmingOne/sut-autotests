@@ -1109,5 +1109,5 @@ class LaborCostPage(BasePage):
         self.elements_are_visible(self.locators.ALL_DATA_IN_DATA_PICKER)[number_day_element].click()
         self.element_is_visible(self.locators.REDACT_DRAWER_SAVE_BUTTON).click()
         assert self.element_is_displayed(self.locators.check_text('Наложение отсутствий, выберите другие даты')), \
-            "Нет сообщения о наложении лат"
+            "Нет сообщения о наложении дат"
         self.element_is_visible(self.locators.DRAWER_ABORT_BUTTON).click()
