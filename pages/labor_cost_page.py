@@ -1092,3 +1092,4 @@ class LaborCostPage(BasePage):
         self.element_is_present(self.locators.FILE_INPUT, 2).send_keys(os.path.abspath(r'../переработка 5мб.docx'))
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
         assert self.element_is_displayed(self.locators.check_text('Суммарный размер файлов не должен превышать 5МБ')), 'Сообщения с предупреждением нет'
+        self.delete_file('переработка 5мб.docx')
