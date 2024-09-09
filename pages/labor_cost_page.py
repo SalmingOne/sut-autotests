@@ -1099,3 +1099,15 @@ class LaborCostPage(BasePage):
     @allure.step("Проверка наличия текста на странице")
     def check_text_on_page(self, text):
         return self.element_is_displayed(self.locators.check_text(text), 2)
+
+    @testit.step("Проверка редактирования отсутствий с пересечением с другими отсутствиями")
+    @allure.step("Проверка редактирования отсутствий с пересечением с другими отсутствиями")
+    def check_editing_absences_if_the_selected_period_overlaps_with_other_absences(self, number_day_element):
+        self.elements_are_visible(self.locators.ALL_ABSENCE_KEBABS)[0].click()
+        self.element_is_visible(self.locators.KEBABS_REDACT_MENU_ITEM).click()
+        self.element_is_visible(self.locators.BEGIN_LEAVE_DATA_PICKER_BUTTON).click()
+        self.elements_are_visible(self.locators.ALL_DATA_IN_DATA_PICKER)[number_day_element].click()
+        self.element_is_visible(self.locators.REDACT_DRAWER_SAVE_BUTTON).click()
+        assert self.element_is_displayed(self.locators.check_text('Наложение отсутствий, выберите другие даты')), \
+            "Нет сообщения о наложении дат"
+        self.element_is_visible(self.locators.DRAWER_ABORT_BUTTON).click()
