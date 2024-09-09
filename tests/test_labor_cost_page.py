@@ -635,3 +635,13 @@ class TestLaborCostPage:
         reason, status = labor_cost_page.check_overtime_on_reason_tab(project_with_labor_reason['name'])
         assert reason == 'Много работал', "Не отобразился или отобразился некорректно текст причины переработки"
         assert status == 'На рассмотрении', "Не отобразился или отобразился некорректно статус причины переработки"
+
+    @testit.workItemIds(10166)
+    @testit.displayName("3.1.3.1 Отображение тултипа для поля загрузки файла при создании переработки")
+    @pytest.mark.regress
+    @allure.title("id-10166 3.1.3.1 Отображение тултипа для поля загрузки файла при создании переработки")
+    def test_display_tooltip_for_file_upload_field_when_creating_a_rework(self, project_with_labor_reason, login, driver):
+        labor_cost_page = LaborCostPage(driver)
+        zero_reason_day = labor_cost_page.get_numbers_days_reason("zero")
+        labor_cost_page.check_tooltip_overtime_work_file_field(zero_reason_day[-1], 3, project_with_labor_reason['name'])
+
