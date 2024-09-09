@@ -1120,3 +1120,17 @@ class LaborCostPage(BasePage):
         reason_text = self.element_is_visible(self.locators.ALL_OVERTIME_WORK_REASONS).text
         status_text = self.element_is_visible(self.locators.ALL_OVERTIME_WORK_STATUSES).text
         return reason_text, status_text
+
+    @testit.step("Проверка тултипа загрузки файла при добавлении переработки")
+    @allure.step("Проверка тултипа загрузки файла при добавлении переработки")
+    def check_tooltip_overtime_work_file_field(self, number_day_element, overtime_work_hours, project_mame):
+        self.element_is_visible(self.locators.ADD_OVERTIME_WORK_BUTTON).click()
+        time.sleep(0.5)  # Без этого ожидания не успевает прогрузиться
+        self.element_is_visible(self.locators.OVERTIME_WORK_DATA_PICKER).click()
+        self.elements_are_visible(self.locators.ALL_DATA_IN_DATA_PICKER)[number_day_element].click()
+        self.element_is_visible(self.locators.PROJECT_NAME_DRAWER_INPUT).click()
+        time.sleep(0.5)  # Без этого ожидания не успевает прогрузиться
+        self.element_is_visible(self.locators.chose_project_on_overtime_work_drawer(project_mame)).click()
+        self.element_is_visible(self.locators.OVERTIME_WORK_INPUT).send_keys(overtime_work_hours)
+        assert 'Приложите документ о подтверждении ' in self.element_is_visible(self.locators.TOOLTIP).text, \
+            "Не появился тултип с описанием файла"
