@@ -614,3 +614,24 @@ class TestLaborCostPage:
         labor_cost_page.check_editing_absences_if_the_selected_period_overlaps_with_other_absences(zero_reason_day[-2])
         labor_cost_page.click_previous_checkbox()
         labor_cost_page.delete_all_absence()
+
+    @testit.workItemIds(2736)
+    @testit.displayName("3.1.3.1. Добавление переработки на проект с обязательным указанием причины списания")
+    @pytest.mark.regress
+    @allure.title("id-2736 3.1.3.1. Добавление переработки на проект с обязательным указанием причины списания")
+    def test_adding_processing_to_a_project_with_mandatory_indication_of_the_reason(self, project_with_labor_reason,
+                                                                                    login, f_overtime_reason_requirement, driver):
+        labor_cost_page = LaborCostPage(driver)
+        zero_reason_day = labor_cost_page.get_numbers_days_reason("zero")
+        labor_cost_page.add_overtime_work_without_file(zero_reason_day[-1], 3, project_with_labor_reason['name'])
+        labor_cost_page.field_reason_overwork("Много работал")
+        time.sleep(2)
+        project_day_cell_contents = labor_cost_page.get_project_day_cell_contents(project_with_labor_reason['name'],
+                                                                                  zero_reason_day[-1] + 2)
+        total_column = labor_cost_page.get_project_total(project_with_labor_reason['name'])
+        assert project_day_cell_contents == total_column == '0+3', "Переработка не отразилась в строке и столбце Итого"
+        assert 'Переработка успешно добавлена' in labor_cost_page.get_alert_message(), \
+            "Не появилось сообщение о добавлении переработки"
+        reason, status = labor_cost_page.check_overtime_on_reason_tab(project_with_labor_reason['name'])
+        assert reason == 'Много работал', "Не отобразился или отобразился некорректно текст причины переработки"
+        assert status == 'На рассмотрении', "Не отобразился или отобразился некорректно статус причины переработки"

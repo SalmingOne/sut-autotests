@@ -186,10 +186,15 @@ class LaborCostPageLocators:
     ABSENCE_END_DATE_ON_TAB = (By.CSS_SELECTOR,
                                'div[col-id="endDate"][class="ag-cell ag-cell-not-inline-editing ag-cell-normal-height ag-cell-value"]')
     DRAWER_DESCRIPTION_TEXT = (By.CSS_SELECTOR, 'p[id="alert-dialog-description"]')
+    # Переработки
     ALL_DATES_OVERTIME_WORK = (By.XPATH,
                                '//h6[text()="Переработки"]//following::div[contains(@class, "ag-cell ag-cell-not-inline-editing ag-cell-normal-height ag-cell-value")][@col-id="date"]')
-
     REASON_TAB_TITLE = (By.XPATH, '//h6[text()="Причины"]')
+    ALL_OVERTIME_WORK_STATUSES = (By.XPATH, '//div[@aria-colindex="6"]//span[contains(@class, "MuiBox-root")]')
+    ALL_OVERTIME_WORK_PROJECTS = (By.XPATH, '//div[@aria-colindex="2"]//div[@aria-label]')
+    ALL_OVERTIME_WORK_REASONS = (By.XPATH, '//div[@aria-colindex="5"]//div[@basewrapprops]')
+    OVERTIME_WORK_PROJECTS_SEARCH_FIELD = (By.XPATH, '//div[@aria-colindex="2"]//input[@placeholder="Поиск"]')
+
     def check_projeck_on_reason_tab(self, project_mame):
         return By.XPATH, f'//div[@class="ag-cell ag-cell-not-inline-editing ag-cell-normal-height ag-cell-value"]//div[@aria-label="{project_mame}"]'
 
