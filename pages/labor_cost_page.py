@@ -1111,3 +1111,12 @@ class LaborCostPage(BasePage):
         assert self.element_is_displayed(self.locators.check_text('Наложение отсутствий, выберите другие даты')), \
             "Нет сообщения о наложении дат"
         self.element_is_visible(self.locators.DRAWER_ABORT_BUTTON).click()
+
+    @testit.step("Получение причины и статуса переработки проекта")
+    @allure.step("Получение причины и статуса переработки проекта")
+    def check_overtime_on_reason_tab(self, project_name):
+        self.action_move_to_element(self.element_is_visible(self.locators.OVERTIME_WORK_PROJECTS_SEARCH_FIELD))
+        self.element_is_visible(self.locators.OVERTIME_WORK_PROJECTS_SEARCH_FIELD).send_keys(project_name)
+        reason_text = self.element_is_visible(self.locators.ALL_OVERTIME_WORK_REASONS).text
+        status_text = self.element_is_visible(self.locators.ALL_OVERTIME_WORK_STATUSES).text
+        return reason_text, status_text
