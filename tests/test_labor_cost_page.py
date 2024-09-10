@@ -645,3 +645,28 @@ class TestLaborCostPage:
         zero_reason_day = labor_cost_page.get_numbers_days_reason("zero")
         labor_cost_page.check_tooltip_overtime_work_file_field(zero_reason_day[-1], 3, project_with_labor_reason['name'])
 
+    @testit.workItemIds(2784)
+    @testit.displayName("3.1.3.2. Отмена редактирования переработок в таблице трудозатраты")
+    @pytest.mark.regress
+    @allure.title("id-2784 3.1.3.2. Отмена редактирования переработок в таблице трудозатраты")
+    def test_cancel_editing_overtime_in_the_labor_costs_table(self, project_with_labor_reason, login, driver):
+        labor_cost_page = LaborCostPage(driver)
+        zero_reason_day = labor_cost_page.get_numbers_days_reason("zero")
+        labor_cost_page.add_overtime_work_with_file(
+            zero_reason_day[-1],
+            2,
+            project_with_labor_reason['name']
+        )
+        project_day_cell_contents_before = labor_cost_page.get_project_day_cell_contents(
+            project_with_labor_reason['name'],
+            zero_reason_day[-1] + 2
+        )
+        time.sleep(4)
+        labor_cost_page.redact_overtime_on_reason_tab(project_with_labor_reason['name'])
+        labor_cost_page.cancel_redact_overtime(7)
+        project_day_cell_contents_after = labor_cost_page.get_project_day_cell_contents(
+            project_with_labor_reason['name'],
+            zero_reason_day[-1] + 2
+        )
+        assert project_day_cell_contents_before == project_day_cell_contents_after, "Переработка изменилась"
+
