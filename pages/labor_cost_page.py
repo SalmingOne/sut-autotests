@@ -1140,6 +1140,7 @@ class LaborCostPage(BasePage):
     def redact_overtime_on_reason_tab(self, project_name):
         self.action_move_to_element(self.element_is_visible(self.locators.OVERTIME_WORK_PROJECTS_SEARCH_FIELD))
         self.element_is_visible(self.locators.OVERTIME_WORK_PROJECTS_SEARCH_FIELD).send_keys(project_name)
+        time.sleep(0.5)
         self.element_is_visible(self.locators.ALL_OVERTIME_WORK_KEBABS).click()
         self.element_is_visible(self.locators.KEBABS_REDACT_MENU_ITEM).click()
 
@@ -1149,3 +1150,12 @@ class LaborCostPage(BasePage):
         self.element_is_visible(self.locators.OVERTIME_WORK_INPUT).send_keys(Keys.CONTROL + 'a')
         self.element_is_visible(self.locators.OVERTIME_WORK_INPUT).send_keys(overtime_work_hours)
         self.element_is_visible(self.locators.DRAWER_ABORT_BUTTON).click()
+
+    @testit.step("Изменение даты переработки")
+    @allure.step("Изменение даты переработки")
+    def change_overtime_work_date(self, project_name, new_date):
+        self.redact_overtime_on_reason_tab(project_name)
+        self.element_is_visible(self.locators.OVERTIME_WORK_DATA_INPUT).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.OVERTIME_WORK_DATA_INPUT).send_keys(new_date)
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+        self.element_is_not_visible(self.locators.ALERT_TEXT, 10)

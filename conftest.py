@@ -217,6 +217,35 @@ def project_with_overtime_work():
 
 
 @pytest.fixture()
+def project_with_work_and_overtime_work():
+    labor_report_endpoint = LaborReportEndpoint()
+    project_endpoint = ProjectEndpoint()
+    payload = CreateProject().model_dump()
+    res = project_endpoint.create_project_api(json=payload)
+    project_id = res.json()['id']
+    payload = [
+        dict(
+            date=BasePage(driver=None).get_day_before_m_d_y(-1),
+            projectId=project_id,
+            hours=6,
+            type="DEFAULT",
+            userId=USER_ID
+        ),
+        dict(
+            date=BasePage(driver=None).get_day_before_m_d_y(-2),
+            projectId=project_id,
+            overtimeWork=3,
+            hours=8,
+            type="DEFAULT",
+            userId=USER_ID
+        )
+    ]
+    labor_report_endpoint.post_labor_report_api(json=payload)
+    yield res.json()
+    project_endpoint.delete_project_api(str(project_id))
+
+
+@pytest.fixture()
 def project_with_three_overtime_work():
     labor_report_endpoint = LaborReportEndpoint()
     project_endpoint = ProjectEndpoint()
