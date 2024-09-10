@@ -194,6 +194,8 @@ class LaborCostPageLocators:
     ALL_OVERTIME_WORK_PROJECTS = (By.XPATH, '//div[@aria-colindex="2"]//div[@aria-label]')
     ALL_OVERTIME_WORK_REASONS = (By.XPATH, '//div[@aria-colindex="5"]//div[@basewrapprops]')
     OVERTIME_WORK_PROJECTS_SEARCH_FIELD = (By.XPATH, '//div[@aria-colindex="2"]//input[@placeholder="Поиск"]')
+    ALL_OVERTIME_WORK_KEBABS = (By.XPATH, '//div[@aria-colindex="8"]//*[@data-testid="MoreHorizIcon"]')
+
 
     def check_projeck_on_reason_tab(self, project_mame):
         return By.XPATH, f'//div[@class="ag-cell ag-cell-not-inline-editing ag-cell-normal-height ag-cell-value"]//div[@aria-label="{project_mame}"]'

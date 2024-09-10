@@ -1134,3 +1134,18 @@ class LaborCostPage(BasePage):
         self.element_is_visible(self.locators.OVERTIME_WORK_INPUT).send_keys(overtime_work_hours)
         assert 'Приложите документ о подтверждении ' in self.element_is_visible(self.locators.TOOLTIP).text, \
             "Не появился тултип с описанием файла"
+
+    @testit.step("Переход в дровер редактирования переработки")
+    @allure.step("Переход в дровер редактирования переработки")
+    def redact_overtime_on_reason_tab(self, project_name):
+        self.action_move_to_element(self.element_is_visible(self.locators.OVERTIME_WORK_PROJECTS_SEARCH_FIELD))
+        self.element_is_visible(self.locators.OVERTIME_WORK_PROJECTS_SEARCH_FIELD).send_keys(project_name)
+        self.element_is_visible(self.locators.ALL_OVERTIME_WORK_KEBABS).click()
+        self.element_is_visible(self.locators.KEBABS_REDACT_MENU_ITEM).click()
+
+    @testit.step("Отмена редактирования переработки")
+    @allure.step("Отмена редактирования переработки")
+    def cancel_redact_overtime(self, overtime_work_hours):
+        self.element_is_visible(self.locators.OVERTIME_WORK_INPUT).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.OVERTIME_WORK_INPUT).send_keys(overtime_work_hours)
+        self.element_is_visible(self.locators.DRAWER_ABORT_BUTTON).click()
