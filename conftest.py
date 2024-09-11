@@ -621,8 +621,12 @@ def advanced_search_to_delete():
         title='Для удаления',
         query="{\"rules\":[{\"field\":\"status\",\"value\":\"WORK\",\"operator\":\"in\"}],\"combinator\":\"and\"}"
     )
-    advanced_search.create_advanced_search_api(json=payload)
+    response = advanced_search.create_advanced_search_api(json=payload)
     yield payload['title']
+    if advanced_search.check_advanced_search_by_id(str(USER_ID)):
+        advanced_search.delete_advanced_search_api(str(response.json()['id']))
+    else:
+        pass
 
 
 @pytest.fixture()

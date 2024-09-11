@@ -49,3 +49,11 @@ class AdvancedSearchPageLocators:
     OR_SWITCH = (By.CSS_SELECTOR, 'button[value="or"]')
 
     ALERT_MESSAGE = (By.XPATH, '//div[contains(@class, "MuiAlert-message")]')
+
+    COLUMN_HEADER = (By.CSS_SELECTOR, 'div[role="columnheader"]')
+    SEARCH_FIELDS = (By.CSS_SELECTOR, 'input[placeholder="Поиск"]')
+    DEPARTMENTS_COLUMN = (By.CSS_SELECTOR, 'div[col-id="department"][role="gridcell"]')
+
+
+    def text_on_page(self, name):
+        return (By.XPATH, f'//*[text()="{name}"]')

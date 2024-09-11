@@ -22,3 +22,15 @@ class SearchProfileEndpoint:
         self.response = requests.delete(url=Urls.advanced_search_url + search_id, headers=header, verify=False)
         assert self.response.status_code == 204
         return self.response
+
+    @allure.step("Проверяем наличие расширенного поиска")
+    def check_advanced_search_by_id(self, user_id):
+        header = AuthEndpoint().get_header_token_api()
+        self.response = requests.get(url=Urls.advanced_search_url + user_id, headers=header, verify=False)
+        self.response_json = self.response.json()
+        print(self.response.status_code)
+        print(self.response.json())
+        if not self.response.json():
+            return False
+        else:
+            return True

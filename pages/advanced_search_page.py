@@ -20,6 +20,8 @@ class AdvancedSearchPage(BasePage):
         self.element_is_visible(self.locators.ALL_COLLEAGUES).click()
         time.sleep(1)
         self.element_is_visible(self.locators.TO_ADVANCED_SEARCH_BUTTON).click()
+        self.element_is_visible(self.locators.DEPARTMENTS_COLUMN, 15)
+
 
     @testit.step("Создание расширенного поиска")
     @allure.step("Создание расширенного поиска")
@@ -255,6 +257,7 @@ class AdvancedSearchPage(BasePage):
     def check_editing_search(self, name):
         time.sleep(2)
         self.action_double_click(self.element_is_visible(self.locators.chips_by_name(name)))
+        self.element_is_present(self.locators.DEPARTMENTS_COLUMN, 15)
         values_before = self.get_all_fields()
         self.element_is_visible(self.locators.CRITERION_FIELD).send_keys(Keys.CONTROL + "a")
         self.element_is_visible(self.locators.CRITERION_FIELD).send_keys('Отдел')
@@ -276,7 +279,7 @@ class AdvancedSearchPage(BasePage):
     @testit.step("Берем текст сообщения системы")
     @allure.step("Берем текст сообщения системы")
     def get_massage(self):
-        return self.element_is_visible(self.locators.ALERT_MESSAGE).text
+        return self.element_is_visible(self.locators.ALERT_MESSAGE, 15).text
 
     @testit.step("Проверка кнопки Найти")
     @allure.step("Проверка кнопки Найти")
