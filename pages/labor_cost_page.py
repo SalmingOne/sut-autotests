@@ -1159,3 +1159,27 @@ class LaborCostPage(BasePage):
         self.element_is_visible(self.locators.OVERTIME_WORK_DATA_INPUT).send_keys(new_date)
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
         self.element_is_not_visible(self.locators.ALERT_TEXT, 10)
+
+    @testit.step("Редактирование переработки с файлом через дровер")
+    @allure.step("Редактирование переработки с файлом через дровер")
+    def editing_overwork_with_file_from_tab(self, number):
+        self.element_is_visible(self.locators.OVERTIME_WORK_INPUT).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.OVERTIME_WORK_INPUT).send_keys(number)
+        time.sleep(1)
+        self.element_is_visible(self.locators.DELETE_ICON).click()
+        self.element_is_visible(self.locators.SUBMIT_DELETE_BUTTON).click()
+        time.sleep(1)
+        self.add_file('переработка2.docx', 'Переработка2')
+        self.element_is_present(self.locators.FILE_INPUT).send_keys(os.path.abspath(r'../переработка2.docx'))
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+        time.sleep(0.5)
+        self.delete_file('переработка2.docx')
+
+    @testit.step("Получение значений полей из дровера редактирования переработки")
+    @allure.step("Получение значений полей из дровера редактирования переработки")
+    def get_overtime_value_on_drawer(self):
+        date = self.element_is_visible(self.locators.OVERTIME_WORK_DATA_INPUT).get_attribute('value')
+        hours = self.element_is_visible(self.locators.OVERTIME_WORK_INPUT).get_attribute('value')
+        project = self.element_is_visible(self.locators.PROJECT_NAME_DRAWER_INPUT_FIELD).get_attribute('value')
+        file_name = self.elements_are_visible(self.locators.ADD_FILES_TEXT)[0].text
+        return date, hours, project, file_name
