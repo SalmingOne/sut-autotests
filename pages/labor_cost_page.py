@@ -1138,6 +1138,7 @@ class LaborCostPage(BasePage):
     @testit.step("Переход в дровер редактирования переработки")
     @allure.step("Переход в дровер редактирования переработки")
     def redact_overtime_on_reason_tab(self, project_name):
+        self.element_is_not_visible(self.locators.ALERT_TEXT, 10)
         self.action_move_to_element(self.element_is_visible(self.locators.OVERTIME_WORK_PROJECTS_SEARCH_FIELD))
         self.element_is_visible(self.locators.OVERTIME_WORK_PROJECTS_SEARCH_FIELD).send_keys(project_name)
         time.sleep(0.5)
@@ -1223,3 +1224,37 @@ class LaborCostPage(BasePage):
         self.element_is_visible(self.locators.OVERTIME_WORK_INPUT).send_keys(Keys.CONTROL + 'a')
         self.element_is_visible(self.locators.OVERTIME_WORK_INPUT).send_keys(new_time)
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+
+    @testit.step("Удаление переработки")
+    @allure.step("Удаление переработки")
+    def delete_overtime_on_reason_tab(self, project_name):
+        self.element_is_not_visible(self.locators.ALERT_TEXT, 10)
+        self.action_move_to_element(self.element_is_visible(self.locators.OVERTIME_WORK_PROJECTS_SEARCH_FIELD))
+        self.element_is_visible(self.locators.OVERTIME_WORK_PROJECTS_SEARCH_FIELD).send_keys(project_name)
+        time.sleep(0.5)
+        self.element_is_visible(self.locators.ALL_OVERTIME_WORK_KEBABS).click()
+        self.element_is_visible(self.locators.KEBABS_DEL_MENU_ITEM).click()
+        self.element_is_visible(self.locators.DEL_ACCEPT_BUTTON).click()
+
+    @testit.step("Проверка отмены удаления переработки")
+    @allure.step("Проверка отмены удаления переработки")
+    def check_break_delete_overtime_on_reason_tab(self, project_name):
+        self.element_is_not_visible(self.locators.ALERT_TEXT, 10)
+        self.action_move_to_element(self.element_is_visible(self.locators.OVERTIME_WORK_PROJECTS_SEARCH_FIELD))
+        self.element_is_visible(self.locators.OVERTIME_WORK_PROJECTS_SEARCH_FIELD).send_keys(project_name)
+        time.sleep(0.5)
+        self.element_is_visible(self.locators.ALL_OVERTIME_WORK_KEBABS).click()
+        self.element_is_visible(self.locators.KEBABS_DEL_MENU_ITEM).click()
+        assert self.element_is_visible(
+            self.locators.DRAWER_DESCRIPTION_TEXT).text == 'Вы уверены, что хотите удалить переработку?', \
+            "В модальном окне отсутствует или не корректный текст"
+        self.element_is_visible(self.locators.DEL_CANSEL_BUTTON).click()
+
+    @testit.step("Проверка отсутствия переработок на проекте")
+    @allure.step("Проверка отсутствия переработок на проекте")
+    def not_have_overtime_on_reason_tab_by_project(self, project_name):
+        self.element_is_not_visible(self.locators.ALERT_TEXT, 10)
+        self.action_move_to_element(self.element_is_visible(self.locators.OVERTIME_WORK_PROJECTS_SEARCH_FIELD))
+        self.element_is_visible(self.locators.OVERTIME_WORK_PROJECTS_SEARCH_FIELD).send_keys(project_name)
+        assert not self.element_is_displayed(self.locators.ALL_OVERTIME_WORK_KEBABS, 2), \
+            "На проекте есть переработки"
