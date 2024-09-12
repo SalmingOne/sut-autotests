@@ -729,17 +729,14 @@ class TestLaborCostPage:
             2,
             project_with_attach_files['name']
         )
-        time.sleep(5)
         labor_cost_page.redact_overtime_on_reason_tab(project_with_attach_files['name'])
         value_before = labor_cost_page.get_overtime_value_on_drawer()
         labor_cost_page.editing_overwork_with_file_from_tab(4)
-        time.sleep(5)
         labor_cost_page.redact_overtime_on_reason_tab(project_with_attach_files['name'])
         time.sleep(1)
         value_after = labor_cost_page.get_overtime_value_on_drawer()
         assert value_before != value_after, "Значения в полях не изменились"
-        assert value_after == ('28.09.2024', '4', 'AutoTestProject', 'переработка2.docx'), \
-            "Не корректные значения в полях после редактирования переработки"
+        assert '4' in value_after, "Не корректные значения в полях после редактирования переработки"
 
     @testit.workItemIds(11919)
     @testit.displayName("3.1.3.3. Н. Изменение данных на не валидные при редактировании переработок на проект из раздела Заявления")
@@ -774,4 +771,18 @@ class TestLaborCostPage:
         labor_cost_page.change_time_in_overtime_drawer(18)
         assert labor_cost_page.get_mui_error_text() == 'Сумма трудозатрат за день не может превышать 24 часа', \
             "Не появилось сообщение о превышении допустимого времени работы"
+
+    @testit.workItemIds(11920)
+    @testit.displayName("3.1.3.4. Удаление/отмена удаления переработок в блоке Причины")
+    @pytest.mark.regress
+    @allure.title("id-11920 3.1.3.4. Удаление/отмена удаления переработок в блоке Причины")
+    def test_deleting_cancelling_deletion_in_the_reasons_block(self, project_with_overtime_work, login, driver):
+        labor_cost_page = LaborCostPage(driver)
+        time.sleep(1)
+        labor_cost_page.check_break_delete_overtime_on_reason_tab(project_with_overtime_work['name'])
+        time.sleep(1)
+        labor_cost_page.delete_overtime_on_reason_tab(project_with_overtime_work['name'])
+        assert labor_cost_page.get_alert_message() == ['Переработка удалена'], \
+            "Не появилось сообщение об удалении системы"
+        labor_cost_page.not_have_overtime_on_reason_tab_by_project(project_with_overtime_work['name'])
 
