@@ -1247,7 +1247,7 @@ class LaborCostPage(BasePage):
         self.element_is_visible(self.locators.KEBABS_DEL_MENU_ITEM).click()
         assert self.element_is_visible(
             self.locators.DRAWER_DESCRIPTION_TEXT).text == 'Вы уверены, что хотите удалить переработку?', \
-            "В модальном окне отсутствует или не корректный текст"
+            "Текст в модальном окне не корректен или отсутствует"
         self.element_is_visible(self.locators.DEL_CANSEL_BUTTON).click()
 
     @testit.step("Проверка отсутствия переработок на проекте")
