@@ -741,3 +741,37 @@ class TestLaborCostPage:
         assert value_after == ('28.09.2024', '4', 'AutoTestProject', 'переработка2.docx'), \
             "Не корректные значения в полях после редактирования переработки"
 
+    @testit.workItemIds(11919)
+    @testit.displayName("3.1.3.3. Н. Изменение данных на не валидные при редактировании переработок на проект из раздела Заявления")
+    @pytest.mark.regress
+    @allure.title("id-11919 3.1.3.3. Н. Изменение данных на не валидные при редактировании переработок на проект из раздела Заявления")
+    def test_changing_data_to_invalid_when_editing_overtime_work(self, project_with_attach_files, login, driver):
+        labor_cost_page = LaborCostPage(driver)
+        time.sleep(1)
+        zero_reason_day = labor_cost_page.get_numbers_days_reason("zero")
+        labor_cost_page.add_overtime_work_with_file(
+            zero_reason_day[-1],
+            2,
+            project_with_attach_files['name']
+        )
+        time.sleep(1)
+        labor_cost_page.input_labor_reason_by_project(project_with_attach_files['name'], zero_reason_day[-1] + 2, 8)
+        labor_cost_page.add_overtime_work_with_file(
+            zero_reason_day[-2],
+            4,
+            project_with_attach_files['name']
+        )
+        time.sleep(5)
+        labor_cost_page.redact_overtime_on_reason_tab(project_with_attach_files['name'])
+        labor_cost_page.check_clear_required_field()
+        labor_cost_page.redact_overtime_on_reason_tab(project_with_attach_files['name'])
+        labor_cost_page.change_date_in_date_piker(zero_reason_day[-2])
+        assert labor_cost_page.get_mui_error_text() == 'На выбранную дату и проект уже есть переработка', \
+            "Не появилось сообщение о наложении переработок"
+        labor_cost_page.redact_overtime_on_reason_tab(project_with_attach_files['name'])
+        labor_cost_page.check_change_file_to_not_valid()
+        labor_cost_page.redact_overtime_on_reason_tab(project_with_attach_files['name'])
+        labor_cost_page.change_time_in_overtime_drawer(18)
+        assert labor_cost_page.get_mui_error_text() == 'Сумма трудозатрат за день не может превышать 24 часа', \
+            "Не появилось сообщение о превышении допустимого времени работы"
+

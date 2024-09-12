@@ -1,7 +1,7 @@
 import os
 import time
 import datetime
-
+import random
 
 import allure
 import testit
@@ -1183,3 +1183,43 @@ class LaborCostPage(BasePage):
         project = self.element_is_visible(self.locators.PROJECT_NAME_DRAWER_INPUT_FIELD).get_attribute('value')
         file_name = self.elements_are_visible(self.locators.ADD_FILES_TEXT)[0].text
         return date, hours, project, file_name
+
+    @testit.step("Проверка очистки обязательного поля при редактирования")
+    @allure.step("Проверка очистки обязательного поля при редактирования")
+    def check_clear_required_field(self):
+        fields_locators = [self.locators.OVERTIME_WORK_DATA_INPUT, self.locators.OVERTIME_WORK_INPUT, self.locators.PROJECT_NAME_DRAWER_INPUT_FIELD]
+        random_field = fields_locators[random.randint(0, 2)]
+        self.element_is_visible(random_field).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(random_field).send_keys(Keys.BACKSPACE)
+        self.element_is_visible(self.locators.check_text('Редактирование переработки')).click()
+        assert self.element_is_visible(self.locators.MUI_ERROR).text == 'Поле обязательно',\
+            "Не появилось сообщение об обязательности поля"
+        assert not self.element_is_clickable(self.locators.SUBMIT_BUTTON, 2), "Кнопка сохранить кликабельна"
+        self.element_is_visible(self.locators.CLEAR_ICON).click()
+
+    @testit.step("Изменение даты в датапикере")
+    @allure.step("Изменение даты в датапикере")
+    def change_date_in_date_piker(self, number_day_element):
+        self.element_is_visible(self.locators.OVERTIME_WORK_DATA_PICKER).click()
+        self.elements_are_visible(self.locators.ALL_DATA_IN_DATA_PICKER)[number_day_element].click()
+
+    @testit.step("Проверка изменения файла на превышающий 5 мб")
+    @allure.step("Проверка изменения файла на превышающий 5 мб")
+    def check_change_file_to_not_valid(self):
+        self.element_is_visible(self.locators.DELETE_ICON).click()
+        self.element_is_visible(self.locators.SUBMIT_DELETE_BUTTON).click()
+        time.sleep(1)
+        self.add_file_5_mb('переработка 5мб.docx')
+        self.element_is_present(self.locators.FILE_INPUT, 2).send_keys(os.path.abspath(r'../переработка 5мб.docx'))
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+        assert self.element_is_displayed(self.locators.check_text(
+            'Суммарный размер файлов не должен превышать 5МБ')), 'Нет сообщения о превышении размера файла'
+        self.delete_file('переработка 5мб.docx')
+        self.element_is_visible(self.locators.CLEAR_ICON).click()
+
+    @testit.step("Проверка изменения файла на превышающий 5 мб")
+    @allure.step("Проверка изменения файла на превышающий 5 мб")
+    def change_time_in_overtime_drawer(self, new_time):
+        self.element_is_visible(self.locators.OVERTIME_WORK_INPUT).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.OVERTIME_WORK_INPUT).send_keys(new_time)
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
