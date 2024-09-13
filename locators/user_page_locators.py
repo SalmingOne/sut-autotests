@@ -9,6 +9,7 @@ class UserPageLocators:
     ADD_FREEIPA_USER_BUTTON = (By.XPATH, '//button[text()="Пользователь из Freeipa"]')
     # Поля поиска
     SEARCH_TAB_FIELDS = (By.CSS_SELECTOR, 'input[placeholder="Поиск"]')
+    USER_SEARCH_FIELD = (By.XPATH, '//div[@aria-colindex="1"]//input[@placeholder="Поиск"]')
     USER_STATUS = (By.XPATH, '//span[contains(@class, "MuiChip-label MuiChip-labelSmall")]')
     # Кебаб меню
     USER_KEBABS = (By.CSS_SELECTOR, 'svg[data-testid="MoreHorizIcon"]')

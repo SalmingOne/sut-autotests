@@ -3,7 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 
-from data.data import LOGIN, PASSWORD, USER_ID, USER_NAME
+from data.data import LOGIN, PASSWORD, USER_ID, USER_NAME, PROJECT_NAME
 from data.models.create_project_model import CreateProject
 from data.urls import Urls
 from endpoints.affiliates_endpoint import AffiliatesEndpoint
@@ -50,6 +50,7 @@ def login(driver):
 @pytest.fixture()
 def simple_project():
     project_endpoint = ProjectEndpoint()
+    project_endpoint.delete_project_if_it_exist(PROJECT_NAME)
     payload = CreateProject().model_dump()
     response = project_endpoint.create_project_api(json=payload)
     yield response.json()
@@ -59,6 +60,7 @@ def simple_project():
 @pytest.fixture()
 def archive_project():
     project_endpoint = ProjectEndpoint()
+    project_endpoint.delete_project_if_it_exist(PROJECT_NAME)
     payload = CreateProject(
         status='ARCHIVED'
     ).model_dump()
@@ -70,6 +72,7 @@ def archive_project():
 @pytest.fixture()
 def simple_project_to_delete():
     project_endpoint = ProjectEndpoint()
+    project_endpoint.delete_project_if_it_exist(PROJECT_NAME)
     payload = CreateProject().model_dump()
     response = project_endpoint.create_project_api(json=payload)
     yield response.json()
@@ -82,6 +85,7 @@ def simple_project_to_delete():
 @pytest.fixture()
 def second_project():
     project_endpoint = ProjectEndpoint()
+    project_endpoint.delete_project_if_it_exist('SecondProject')
     payload = CreateProject(
         code='SECP',
         name='SecondProject'
@@ -94,6 +98,7 @@ def second_project():
 @pytest.fixture()
 def no_resources_project():
     project_endpoint = ProjectEndpoint()
+    project_endpoint.delete_project_if_it_exist(PROJECT_NAME)
     payload = CreateProject(
         resources=[]
     ).model_dump()
@@ -105,6 +110,7 @@ def no_resources_project():
 @pytest.fixture()
 def project_with_labor_reason():
     project_endpoint = ProjectEndpoint()
+    project_endpoint.delete_project_if_it_exist(PROJECT_NAME)
     payload = CreateProject(
         laborReasons=True
     ).model_dump()
@@ -128,6 +134,7 @@ def project_with_labor_reason():
 @pytest.fixture()
 def project_with_attach_files():
     project_endpoint = ProjectEndpoint()
+    project_endpoint.delete_project_if_it_exist(PROJECT_NAME)
     payload = CreateProject(
         mandatoryAttachFiles=True
     ).model_dump()
@@ -139,6 +146,7 @@ def project_with_attach_files():
 @pytest.fixture()
 def project_with_two_resources(create_work_user):
     project_endpoint = ProjectEndpoint()
+    project_endpoint.delete_project_if_it_exist(PROJECT_NAME)
     user_endpoint = UserEndpoint()
     user_id = user_endpoint.get_user_id_by_email('auto_testt@mail.rruu')
     payload = CreateProject(
@@ -187,11 +195,11 @@ def f_notifications():
 @pytest.fixture()
 def finished_project():
     project_endpoint = ProjectEndpoint()
+    project_endpoint.delete_project_if_it_exist(PROJECT_NAME)
     payload = CreateProject(
         endDate=BasePage(driver=None).get_day_before_m_d_y(1)
     ).model_dump()
     response = project_endpoint.create_project_api(json=payload)
-
     yield
     project_endpoint.delete_project_api(str(response.json()['id']))
 
@@ -200,6 +208,7 @@ def finished_project():
 def project_with_overtime_work():
     labor_report_endpoint = LaborReportEndpoint()
     project_endpoint = ProjectEndpoint()
+    project_endpoint.delete_project_if_it_exist(PROJECT_NAME)
     payload = CreateProject().model_dump()
     res = project_endpoint.create_project_api(json=payload)
     project_id = res.json()['id']
@@ -217,9 +226,31 @@ def project_with_overtime_work():
 
 
 @pytest.fixture()
+def delete_created_project():
+    yield
+    project_endpoint = ProjectEndpoint()
+    project_endpoint.delete_project_by_name_api("AutoTestProject1")
+
+
+@pytest.fixture()
+def delete_created_draft_project():
+    yield
+    project_endpoint = ProjectEndpoint()
+    project_endpoint.delete_project_by_name_api("AutoTestProjectDraft")
+
+
+@pytest.fixture()
+def delete_created_reason_project():
+    yield
+    project_endpoint = ProjectEndpoint()
+    project_endpoint.delete_project_by_name_api("AutoTestProjectReason")
+
+
+@pytest.fixture()
 def project_with_work_and_overtime_work():
     labor_report_endpoint = LaborReportEndpoint()
     project_endpoint = ProjectEndpoint()
+    project_endpoint.delete_project_if_it_exist(PROJECT_NAME)
     payload = CreateProject().model_dump()
     res = project_endpoint.create_project_api(json=payload)
     project_id = res.json()['id']
@@ -249,6 +280,7 @@ def project_with_work_and_overtime_work():
 def project_with_three_overtime_work():
     labor_report_endpoint = LaborReportEndpoint()
     project_endpoint = ProjectEndpoint()
+    project_endpoint.delete_project_if_it_exist(PROJECT_NAME)
     payload = CreateProject().model_dump()
     res = project_endpoint.create_project_api(json=payload)
     project_id = res.json()['id']
@@ -304,11 +336,11 @@ def project_with_three_overtime_work():
     project_endpoint.delete_project_api(str(project_id))
 
 
-
 @pytest.fixture()
 def project_with_work():
     labor_report_endpoint = LaborReportEndpoint()
     project_endpoint = ProjectEndpoint()
+    project_endpoint.delete_project_if_it_exist(PROJECT_NAME)
     payload = CreateProject().model_dump()
     res = project_endpoint.create_project_api(json=payload)
     project_id = res.json()['id']
@@ -381,14 +413,19 @@ def create_second_skill():
 def create_skill_to_delete():
     skills_endpoint = SkillsEndpoint()
     payload = dict(name='ABCD', tags=[])
-    skills_endpoint.create_skills_api(json=payload)
+    response = skills_endpoint.create_skills_api(json=payload)
     yield payload['name']
+    if skills_endpoint.check_skill_by_id(str(response.json()['id'])):
+        skills_endpoint.delete_skill_api(str(response.json()['id']))
+    else:
+        pass
 
 
 @pytest.fixture()
 def project_with_assignment():
     assignment_endpoint = AssignmentEndpoint()
     project_endpoint = ProjectEndpoint()
+    project_endpoint.delete_project_if_it_exist(PROJECT_NAME)
     payload = CreateProject().model_dump()
     response = project_endpoint.create_project_api(json=payload)
     payload = dict(projectRoleId=1,
@@ -410,6 +447,7 @@ def project_with_assignment():
 def archive_project_with_assignment():
     assignment_endpoint = AssignmentEndpoint()
     project_endpoint = ProjectEndpoint()
+    project_endpoint.delete_project_if_it_exist(PROJECT_NAME)
     payload = CreateProject(
         status='ARCHIVED'
     ).model_dump()
@@ -433,6 +471,7 @@ def archive_project_with_assignment():
 def project_with_assignment_not_current_manager(create_work_user):
     assignment_endpoint = AssignmentEndpoint()
     project_endpoint = ProjectEndpoint()
+    project_endpoint.delete_project_if_it_exist(PROJECT_NAME)
     user_endpoint = UserEndpoint()
     user_id = user_endpoint.get_user_id_by_email('auto_testt@mail.rruu')
     payload = CreateProject().model_dump()
@@ -479,6 +518,22 @@ def create_filial():
     response = filial_endpoint.create_affiliates_api(json=payload)
     yield payload['name']
     filial_endpoint.delete_affiliates_api(str(response.json()['id']))
+
+
+@pytest.fixture()
+def create_filial_to_delete():
+    filial_endpoint = AffiliatesEndpoint()
+    payload = dict(name='Для удаления', address='г. Москва')
+    response = filial_endpoint.create_affiliates_api(json=payload)
+    yield
+    filial_endpoint.delete_filial_if_it_exist('Для удаления')
+
+
+@pytest.fixture()
+def delete_filial_after():
+    yield
+    filial_endpoint = AffiliatesEndpoint()
+    filial_endpoint.delete_filial_by_name_api('Центральный филиал')
 
 
 @pytest.fixture()
@@ -662,6 +717,10 @@ def create_resume_to_delete():
     )
     response = resume_endpoint.create_resume_api(json=payload)
     yield payload['title']
+    if resume_endpoint.check_resume_by_id(str(response.json()['id'])):
+        resume_endpoint.delete_resume_api(str(response.json()['id']))
+    else:
+        pass
 
 
 @pytest.fixture()

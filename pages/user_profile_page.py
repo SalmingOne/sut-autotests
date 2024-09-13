@@ -291,8 +291,8 @@ class UserProfilePage(BasePage):
     @testit.step("Удаление резюме")
     @allure.step("Удаление резюме")
     def delete_resume(self, name):
-        self.elements_are_visible(self.locators.SEARCH_FIELDS)[1].send_keys(Keys.CONTROL + 'a')
-        self.elements_are_visible(self.locators.SEARCH_FIELDS)[1].send_keys(name)
+        self.element_is_visible(self.locators.SEARCH_RESUME_NAME_FIELDS).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.SEARCH_RESUME_NAME_FIELDS).send_keys(name)
         time.sleep(1)
         self.elements_are_visible(self.locators.KEBAB_MENU)[0].click()
         menu_item = self.elements_are_visible(self.locators.KEBAB_MENU_ITEM)
@@ -767,7 +767,7 @@ class UserProfilePage(BasePage):
     @allure.step("Проверка выхода из просмотра резюме")
     def check_exit_resume_viewing_mode(self, resume_name):
         time.sleep(1)
-        self.elements_are_visible(self.locators.SEARCH_FIELDS)[1].send_keys(resume_name)
+        self.element_is_visible(self.locators.SEARCH_RESUME_NAME_FIELDS).send_keys(resume_name)
         time.sleep(1)
         self.elements_are_visible(self.locators.KEBAB_MENU)[0].click()
         self.element_is_visible(self.locators.KEBABS_VIEW_ITEM).click()
@@ -780,7 +780,7 @@ class UserProfilePage(BasePage):
     @allure.step("Копирование резюме")
     def copy_resume(self, name):
         time.sleep(1)
-        self.elements_are_visible(self.locators.SEARCH_FIELDS)[1].send_keys(name)
+        self.element_is_visible(self.locators.SEARCH_RESUME_NAME_FIELDS).send_keys(name)
         time.sleep(1)
         self.elements_are_visible(self.locators.KEBAB_MENU)[0].click()
         self.element_is_visible(self.locators.KEBABS_COPY_ITEM).click()
@@ -788,8 +788,8 @@ class UserProfilePage(BasePage):
     @testit.step("Отмена удаления резюме")
     @allure.step("Отмена удаления резюме")
     def cancel_delete_resume(self, name):
-        self.elements_are_visible(self.locators.SEARCH_FIELDS)[1].send_keys(Keys.CONTROL + 'a')
-        self.elements_are_visible(self.locators.SEARCH_FIELDS)[1].send_keys(name)
+        self.element_is_visible(self.locators.SEARCH_RESUME_NAME_FIELDS).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.SEARCH_RESUME_NAME_FIELDS).send_keys(name)
         time.sleep(0.5)
         self.elements_are_visible(self.locators.KEBAB_MENU)[0].click()
         time.sleep(0.5)
@@ -799,8 +799,8 @@ class UserProfilePage(BasePage):
     @testit.step("Редактирование резюме")
     @allure.step("Редактирование резюме")
     def redact_resume(self, name):
-        self.elements_are_visible(self.locators.SEARCH_FIELDS)[1].send_keys(Keys.CONTROL + 'a')
-        self.elements_are_visible(self.locators.SEARCH_FIELDS)[1].send_keys(name)
+        self.element_is_visible(self.locators.SEARCH_RESUME_NAME_FIELDS).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.SEARCH_RESUME_NAME_FIELDS).send_keys(name)
         time.sleep(0.5)
         self.elements_are_visible(self.locators.KEBAB_MENU)[0].click()
         time.sleep(0.5)

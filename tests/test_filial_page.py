@@ -14,7 +14,7 @@ class TestFilialPage:
     @testit.displayName("6.1.3.2. Создание ЮЛ в структуре организации")
     @pytest.mark.smoke
     @allure.title("id-10716 6.1.3.2. Создание ЮЛ в структуре организации")
-    def test_adding_the_filial(self, login, driver):
+    def test_adding_the_filial(self, delete_filial_after, login, driver):
         filial_page = FilialPage(driver)
         filial_endpoint = AffiliatesEndpoint()
         filial_page.go_to_filial_page()
@@ -34,10 +34,7 @@ class TestFilialPage:
                                '+77777777777',
                                'vip@vip.vip')
         assert filial_page.check_filial_on_tab('Центральный филиал'), "Филиал не создался"
-        # Снятие ресурсов с филиала
-        filial_page.delete_all_resources_from_filial('Центральный филиал')
-        # Удаляем филиал после теста
-        filial_endpoint.delete_filial_by_name_api('Центральный филиал')
+
 
     @testit.workItemIds(10720)
     @testit.displayName("6.1.3.3. Изменение данных в ЮЛ")
@@ -58,11 +55,8 @@ class TestFilialPage:
     @testit.displayName("6.1.3.5. Удаление ЮЛ")
     @pytest.mark.smoke
     @allure.title("id-10729 6.1.3.5. Удаление ЮЛ")
-    def test_deleting_the_filial(self, login, driver):
+    def test_deleting_the_filial(self, create_filial_to_delete, login, driver):
         filial_page = FilialPage(driver)
-        filial_endpoint = AffiliatesEndpoint()
-        payload = dict(name='Для удаления', address='г. Москва')
-        filial_endpoint.create_affiliates_api(json=payload)
         filial_page.go_to_filial_page()
         time.sleep(1)
         filial_page.delete_filial('Для удаления')

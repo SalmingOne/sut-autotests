@@ -39,4 +39,6 @@ class ResourcePlanePage(BasePage):
     @testit.step("Открываем список проектов пользователя")
     @allure.step("Открываем список проектов пользователя")
     def open_project_list(self):
+        self.element_is_visible(self.locators.ROLE_FILTER_INPUT).send_keys('Тестировщик')
+        self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
         self.element_is_visible(self.locators.OPEN_PROJECT_LIST).click()

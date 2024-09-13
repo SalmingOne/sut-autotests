@@ -101,6 +101,7 @@ class UserProfilePageLocators:
 
     RESUME_TITLES_ON_TAB = (By.CSS_SELECTOR, 'div[col-id="title"][role="gridcell"]')
     SEARCH_FIELDS = (By.CSS_SELECTOR, 'input[placeholder="Поиск"]')
+    SEARCH_RESUME_NAME_FIELDS = (By.XPATH, '//div[@aria-rowindex="2"]//input[@placeholder="Поиск"]')
     BREAK_IN_MODAL = (By.XPATH, '//div[@aria-label="Выйти без сохранения"]//button[text()="Отменить"]')
     PRINT_BUTTON = (By.XPATH, '//button[text()="Печать"]')
     BREAK_VIEW_BUTTON = (By.XPATH, '//button[text()="Отмена"]')

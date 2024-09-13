@@ -85,3 +85,10 @@ class ProjectEndpoint:
             return True
         else:
             return False
+
+    @allure.step("Удаление проекта если он существует")
+    def delete_project_if_it_exist(self, project_name):
+        if self.get_project_id_by_name(project_name) is None:
+            pass
+        else:
+            self.delete_project_by_name_api(project_name)

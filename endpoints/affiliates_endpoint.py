@@ -44,4 +44,31 @@ class AffiliatesEndpoint:
     @allure.step("Удаление филиала по имени")
     def delete_filial_by_name_api(self, name):
         filial_id = self.get_filial_id_by_name_api(name)
+        payload = dict(
+            name=name,
+            address='Самара',
+            employees=[]
+        )
+        self.change_filial(str(filial_id), payload)
         self.delete_affiliates_api(str(filial_id))
+
+    @allure.step("Изменение филиала")
+    def change_filial(self, affiliates_id, json):
+        header = AuthEndpoint().get_header_token_api()
+        self.response = requests.put(url=Urls.affiliates_url + affiliates_id, json=json, headers=header, verify=False)
+        self.response_json = self.response.json()
+        return self.response
+
+    @allure.step("Удаление филиала если он существует")
+    def delete_filial_if_it_exist(self, name):
+        filial_id = self.get_filial_id_by_name_api(name)
+        if filial_id is None:
+            pass
+        else:
+            payload = dict(
+                name=name,
+                address='Самара',
+                employees=[]
+            )
+            self.change_filial(str(filial_id), payload)
+            self.delete_affiliates_api(str(filial_id))
