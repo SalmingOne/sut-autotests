@@ -19,7 +19,7 @@ class TestCreateProject:
     @testit.displayName("1.1.1 Создание нового проекта")
     @pytest.mark.smoke
     @allure.title("id-47 1.1.1 Создание нового проекта")
-    def test_create_project(self, login, driver):
+    def test_create_project(self, delete_created_project, login, driver):
         # Создаем проект
         create_project_drawer_page = CreateProjectDrawerPage(driver)
         create_project_drawer_page.go_to_create_project_drawer_from_menu()
@@ -49,15 +49,12 @@ class TestCreateProject:
         labor_cost_page.go_to_labor_cost_page()
         check_code_at_labor = labor_cost_page.check_project_code_at_labor('ATP1')
         assert project_code == check_code_at_labor, "код созданного проекта отсутствует на странице трудозатрат"
-        # Удаляем проект
-        project_endpoint = ProjectEndpoint()
-        project_endpoint.delete_project_by_name_api("AutoTestProject1")
 
     @testit.workItemIds(10157)
     @testit.displayName("1.1.1 Создание нового проекта в статусе черновик")
     @pytest.mark.smoke
     @allure.title("id-10157 1.1.1 Создание нового проекта в статусе черновик")
-    def test_create_project_draft(self, login, driver):
+    def test_create_project_draft(self, delete_created_draft_project, login, driver):
         # Создаем проект
         create_project_drawer_page = CreateProjectDrawerPage(driver)
         create_project_drawer_page.go_to_create_project_drawer_from_menu()
@@ -93,15 +90,12 @@ class TestCreateProject:
             all_project_page.see_all_status_project()
             check_name_at_all = all_project_page.check_project_name_at_all('AutoTestProjectDraft')
         assert project_name == check_name_at_all, "имя созданного проекта отсутствует на странице все проекты"
-        # Удаляем проект
-        project_endpoint = ProjectEndpoint()
-        project_endpoint.delete_project_by_name_api("AutoTestProjectDraft")
 
     @testit.workItemIds(1469)
     @testit.displayName("1.1.1 Добавление нового проекта с обязательным указанием причины списания")
     @pytest.mark.smoke
     @allure.title("id-1469 1.1.1 Добавление нового проекта с обязательным указанием причины списания")
-    def test_create_project_reason(self, login, driver):
+    def test_create_project_reason(self, delete_created_reason_project, login, driver):
         # Создаем проект
         create_project_drawer_page = CreateProjectDrawerPage(driver)
         create_project_drawer_page.go_to_create_project_drawer_from_menu()
@@ -130,9 +124,6 @@ class TestCreateProject:
         all_project_page.go_to_all_project_page()
         check_name_at_all = all_project_page.check_project_name_at_all('AutoTestProjectReason')
         assert project_name == check_name_at_all, "имя созданного проекта отсутствует на странице все проекты"
-        # Удаляем проект
-        project_endpoint = ProjectEndpoint()
-        project_endpoint.delete_project_by_name_api("AutoTestProjectReason")
 
     @testit.workItemIds(48)
     @testit.displayName("1.1.1 Создание проекта с неуникальным названием")

@@ -17,3 +17,6 @@ class ResourcePlaneLocators:
     # Отображение по пользователю
     BY_USER_BUTTON = (By.XPATH, '//button[text()="По пользователям"]')
     OPEN_PROJECT_LIST = (By.XPATH, f'//span[contains(@aria-label,"{USER_NAME}")]')
+    ROLE_FILTER_INPUT = (By.CSS_SELECTOR, 'input[placeholder="Начните вводить роль"]')
+
+    LI_MENU_ITEM = (By.CSS_SELECTOR, 'li[role="option"]')

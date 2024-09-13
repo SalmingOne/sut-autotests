@@ -49,3 +49,12 @@ class SkillsEndpoint:
     def delete_skill_by_name_api(self, name):
         skill_id = self.get_skill_id_by_name_api(name)
         self.delete_skill_api(str(skill_id))
+
+    @allure.step("Проверка наличия знания")
+    def check_skill_by_id(self, skill_id):
+        header = AuthEndpoint().get_header_token_api()
+        self.response = requests.get(url=Urls.skills_url + skill_id, headers=header, verify=False)
+        if self.response.status_code == 200:
+            return True
+        else:
+            return False

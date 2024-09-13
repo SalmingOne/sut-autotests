@@ -39,6 +39,7 @@ class LaborCostPageLocators:
     DISABLE_BUTTON = (By.XPATH, '//button[text()="Отменить"]')
     # Проверка что в аллерте есть поле для указания причины списания
     CHECK_LABOR_REASON_FIELD = (By.CSS_SELECTOR, 'textarea[name="overtimeReason"]')
+    LABOR_REASON_FIELD = (By.CSS_SELECTOR, 'textarea[name="reason"]')
     # Выбор периода на странице
     PERIOD_SELECT_BUTTON = (By.XPATH, '//div[contains(@class, "MuiSelect-select MuiSelect-standard MuiInput-input MuiInputBase-input")]')
     WEEK_PERIOD_SELECT = (By.CSS_SELECTOR, 'li[data-value="week"]')

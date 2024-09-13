@@ -45,9 +45,9 @@ class LaborCostPage(BasePage):
     def check_to_have_reason_fo_write(self, project_name):
         self.element_is_visible(self.locators.NEXT_PERIOD_BUTTON).click()
         self.element_is_visible(self.locators.get_random_day_by_project(project_name)).click()
-        checked_text = self.element_is_visible(self.locators.CHECK_LABOR_REASON_FIELD).text
+        assert self.element_is_displayed(self.locators.LABOR_REASON_FIELD), "Не открылось окно указания причины"
         self.element_is_visible(self.locators.BREAK_LABOR_REASON_WINDOW).click()
-        assert checked_text == "Причина *", "Не открылось окно указания причины"
+
 
     @testit.step("Ввод значения в клетку таблицы трудозатрат")
     @allure.step("Ввод значения в клетку таблицы трудозатрат")
