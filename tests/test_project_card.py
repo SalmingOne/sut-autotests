@@ -378,3 +378,20 @@ class TestProjectCard:
         time.sleep(1)
         project_card_page.check_rejected_on_tab()
 
+    @testit.workItemIds(3736)
+    @testit.displayName("1.3.3.3. Отклонение списаний, если не заполнены обязательные поля")
+    @pytest.mark.regress
+    @allure.title("id-3736 1.3.3.3. Отклонение списаний, если не заполнены обязательные поля")
+    def test_rejection_labor_reason_if_required_fields_are_not_filled(self, project_with_three_overtime_work, login, driver):
+        all_project_page = AllProjectPage(driver)
+        time.sleep(1)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(project_with_three_overtime_work['name'])
+        project_card_page = ProjectCardPage(driver)
+        project_card_page.go_to_progress_tab()
+        project_card_page.press_clear_icon()
+        assert not project_card_page.check_dialog_submit_button_clickable(), \
+            "Кнопка сохранить кликабельна до заполнения обязательных полей"
+        project_card_page.field_modal_reason_field('Нужно больше работать')
+        assert project_card_page.check_dialog_submit_button_clickable(), \
+            "Кнопка сохранить не кликабельна после заполнения обязательных полей"

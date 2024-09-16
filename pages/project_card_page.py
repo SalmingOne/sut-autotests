@@ -718,3 +718,25 @@ class ProjectCardPage(BasePage):
         time.sleep(0.5)
         self.element_is_visible(self.locators.NEXT_PERIOD_BUTTON).click()
         time.sleep(0.5)
+
+    @testit.step("Нажатие иконки согласования трудозатрат")
+    @allure.step("Нажатие иконки согласования трудозатрат")
+    def press_done_icon(self):
+        self.element_is_visible(self.locators.DONE_ICON).click()
+
+    @testit.step("Нажатие иконки отклонения трудозатрат")
+    @allure.step("Нажатие иконки отклонения трудозатрат")
+    def press_clear_icon(self):
+        self.element_is_visible(self.locators.CLEAR_ICON).click()
+
+    @testit.step("Получение кликабельности кнопки Сохранить модального окна")
+    @allure.step("Получение кликабельности кнопки Сохранить модального окна")
+    def check_dialog_submit_button_clickable(self):
+        return self.element_is_clickable(self.locators.SUBMIT_BUTTON_IN_DIALOG)
+
+    @testit.step("Заполнение поля Причина отклонения")
+    @allure.step("Заполнение поля Причина отклонения")
+    def field_modal_reason_field(self, text):
+        self.element_is_visible(self.locators.REASON_TEXTAREA).send_keys(Keys.CONTROL + "a")
+        self.element_is_visible(self.locators.REASON_TEXTAREA).send_keys(text)
+
