@@ -700,12 +700,12 @@ class ProjectCardPage(BasePage):
     @allure.step("Нажатие чекбокса Отклонено")
     def press_rejected_checkbox(self):
         time.sleep(1)
-        self.element_is_present(self.locators.checbox_by_text('Отклонено')).click(), "Кружок Отклонено не красного цвета"
+        self.element_is_present(self.locators.checbox_by_text('Отклонено')).click()
 
     @testit.step("Проверка цвета кружка Отклонено")
     @allure.step("Проверка цвета кружка Отклонено")
     def check_rejected_on_tab(self):
-        assert self.get_labor_color(0) == 'rgba(211, 47, 47, 1)'
+        assert self.get_labor_color(0) == 'rgba(211, 47, 47, 1)', "Кружок Отклонено не красного цвета"
 
     @testit.step("Проверка цвета кружка Ожидает согласования")
     @allure.step("Проверка цвета кружка Ожидает согласования")
@@ -740,3 +740,12 @@ class ProjectCardPage(BasePage):
         self.element_is_visible(self.locators.REASON_TEXTAREA).send_keys(Keys.CONTROL + "a")
         self.element_is_visible(self.locators.REASON_TEXTAREA).send_keys(text)
 
+    @testit.step("Клик на ячейку со списанием по тексту")
+    @allure.step("Клик на ячейку со списанием по тексту")
+    def press_cell_with_labor_reason_by_text(self, text):
+        self.element_is_visible(self.locators.labor_reason_on_modal_by_text(text)).click()
+
+    @testit.step("Нажатие кнопки отмены отклонения трудозатрат")
+    @allure.step("Нажатие кнопки отмены отклонения трудозатрат")
+    def press_dialog_abort_button(self):
+        self.element_is_visible(self.locators.ABORT_BUTTON_IN_DIALOG).click()
