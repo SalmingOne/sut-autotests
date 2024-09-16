@@ -91,6 +91,9 @@ class ProjectCardLocators:
 
     CANSEL_ICON = (By.CSS_SELECTOR, 'svg[data-testid="CancelIcon"]')
 
+    SUBMIT_BUTTON_IN_DIALOG = (By.XPATH, '//div[@role="dialog"]//button[@type="submit"]')
+    REASON_TEXTAREA = (By.CSS_SELECTOR, 'textarea[name="reason"]')
+
     def text_on_page(self, text):
         return (By.XPATH, f'//*[contains(text(), "{text}")]')
 
