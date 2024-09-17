@@ -435,3 +435,21 @@ class TestProjectCard:
         project_card_page.check_rejected_on_tab()
         project_card_page.press_abort_button()
         project_card_page.check_wait_approved_reason_on_tab()
+
+    @testit.workItemIds(3803)
+    @testit.displayName("1.3.3.4. Отмена подтверждения списаний трудозатрат и переработок")
+    @pytest.mark.regress
+    @allure.title("id-3803 1.3.3.4. Отмена подтверждения списаний трудозатрат и переработок")
+    def test_cancel_of_confirmation_of_write_offs_of_labor_costs_and_overtime(self, project_with_three_overtime_work,
+                                                                              login, driver):
+        all_project_page = AllProjectPage(driver)
+        time.sleep(1)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(project_with_three_overtime_work['name'])
+        project_card_page = ProjectCardPage(driver)
+        project_card_page.go_to_progress_tab()
+        project_card_page.check_wait_approved_reason_on_tab()
+        project_card_page.press_done_icon()
+        project_card_page.check_approved_reason_on_tab()
+        project_card_page.press_abort_button()
+        project_card_page.check_wait_approved_reason_on_tab()
