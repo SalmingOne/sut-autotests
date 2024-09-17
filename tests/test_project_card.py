@@ -414,3 +414,24 @@ class TestProjectCard:
         project_card_page.press_cell_with_labor_reason_by_text('3 + 3')
         project_card_page.press_dialog_abort_button()
         project_card_page.check_wait_approved_reason_on_tab()
+
+    @testit.workItemIds(3800)
+    @testit.displayName("1.3.3.3. Отмена отклонения списаний на табе Ход выполнения")
+    @pytest.mark.regress
+    @allure.title("id-3800 1.3.3.3. Отмена отклонения списаний на табе Ход выполнения")
+    def test_cancel_the_rejection_of_write_the_progress_tab(self, project_with_three_overtime_work, login,
+                                                            driver):
+        all_project_page = AllProjectPage(driver)
+        time.sleep(1)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(project_with_three_overtime_work['name'])
+        project_card_page = ProjectCardPage(driver)
+        project_card_page.go_to_progress_tab()
+        project_card_page.check_wait_approved_reason_on_tab()
+        project_card_page.press_clear_icon()
+        project_card_page.field_modal_reason_field('Нужно больше работать')
+        project_card_page.press_cell_with_labor_reason_by_text('3 + 3')
+        project_card_page.press_dialog_submit_button()
+        project_card_page.check_rejected_on_tab()
+        project_card_page.press_abort_button()
+        project_card_page.check_wait_approved_reason_on_tab()

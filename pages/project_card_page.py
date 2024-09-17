@@ -749,3 +749,8 @@ class ProjectCardPage(BasePage):
     @allure.step("Нажатие кнопки отмены отклонения трудозатрат")
     def press_dialog_abort_button(self):
         self.element_is_visible(self.locators.ABORT_BUTTON_IN_DIALOG).click()
+
+    @testit.step("Нажатие кнопки сохранить в диалоговом окне")
+    @allure.step("Нажатие кнопки сохранить в диалоговом окне")
+    def press_dialog_submit_button(self):
+        self.element_is_visible(self.locators.SUBMIT_BUTTON_IN_DIALOG).click()
