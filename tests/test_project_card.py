@@ -453,3 +453,25 @@ class TestProjectCard:
         project_card_page.check_approved_reason_on_tab()
         project_card_page.press_abort_button()
         project_card_page.check_wait_approved_reason_on_tab()
+
+    @testit.workItemIds(3730)
+    @testit.displayName("1.3.3.2 Отображение тултипов при просмотре таблицы Трудозатраты")
+    @pytest.mark.regress
+    @allure.title("id-3730 1.3.3.2 Отображение тултипов при просмотре таблицы Трудозатраты")
+    def test_displaying_tooltips_when_viewing_the_labour_costs_table(self, project_with_three_overtime_work,
+                                                                              login, driver):
+        all_project_page = AllProjectPage(driver)
+        time.sleep(1)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(project_with_three_overtime_work['name'])
+        project_card_page = ProjectCardPage(driver)
+        project_card_page.go_to_progress_tab()
+        project_card_page.go_to_next_period()
+        project_card_page.go_to_next_period()
+        time.sleep(1)
+        assert project_card_page.get_tooltip_text_reject_labor_cost() == 'Не было такого', \
+            "Отсутствует тултип с причиной отклонения списания"
+        assert project_card_page.get_integrations_tooltip_text('3 + 3') == ['Jira:', 'Confluence:', 'Bitbucket:', 'Testit:', 'GitLab:'], \
+            "В тултипе указаны не все интеграции"
+        assert project_card_page.get_tooltip_text_on_approval_status() == 'Причина отклонения: У нас не перерабатывают', \
+            "Отсутствует тултип с причиной отклонения переработки"

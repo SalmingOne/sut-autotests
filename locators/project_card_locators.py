@@ -94,7 +94,8 @@ class ProjectCardLocators:
     SUBMIT_BUTTON_IN_DIALOG = (By.XPATH, '//div[@role="dialog"]//button[@type="submit"]')
     ABORT_BUTTON_IN_DIALOG = (By.XPATH, '//div[@role="dialog"]//button[text()="Отменить"]')
     REASON_TEXTAREA = (By.CSS_SELECTOR, 'textarea[name="reason"]')
-
+    INTEGRATIONS_TOOLTIP_TEXTS = (By.CSS_SELECTOR, 'p[class^="MuiTypography-root MuiTypography-inherit"]')
+    OVERTIME_APPROVAL_STATUS = (By.XPATH, '//div[@col-id="overtimeApprovalStatus"]/span')
     def text_on_page(self, text):
         return (By.XPATH, f'//*[contains(text(), "{text}")]')
 
@@ -103,3 +104,6 @@ class ProjectCardLocators:
 
     def labor_reason_on_modal_by_text(self, text):
         return (By.XPATH, f'//*[@type="button"][contains(text(), "{text}")][@tabindex="0"]')
+
+    def labor_reason_by_text(self, text):
+        return (By.XPATH, f'//*[@type="button"][contains(text(), "{text}")]')

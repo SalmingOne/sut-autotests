@@ -291,7 +291,7 @@ def project_with_three_overtime_work():
             overtimeWork=3,
             hours=3,
             type="OTW",
-            userId=USER_ID,
+            userId=USER_ID
         )
     ]
     labor_report_endpoint.post_labor_report_api(json=payload)
@@ -302,7 +302,7 @@ def project_with_three_overtime_work():
             overtimeWork=3,
             hours=3,
             type="OTW",
-            userId=USER_ID,
+            userId=USER_ID
         )
     ]
     labor_report_endpoint.post_labor_report_api(json=payload)
@@ -314,6 +314,9 @@ def project_with_three_overtime_work():
             hours=3,
             type="OTW",
             userId=USER_ID,
+            overtimeApprovalStatus="REJECTED",
+            overtimeRejectionReason="У нас не перерабатывают"
+
         )
     ]
     labor_report_endpoint.post_labor_report_api(json=payload)
@@ -327,8 +330,11 @@ def project_with_three_overtime_work():
         ),
         dict(
             ids=[labor_ids[2]],
-            rejectionReason="string",
-            approvalStatus="REJECTED"
+            rejectionReason="Не было такого",
+            approvalStatus="REJECTED",
+            overtimeApprovalStatus="REJECTED",
+            overtimeRejectionReason="У нас не перерабатывают"
+
         )
     ]
     a = labor_report_endpoint.put_labor_reports(json=payload)
