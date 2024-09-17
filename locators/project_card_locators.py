@@ -92,6 +92,7 @@ class ProjectCardLocators:
     CANSEL_ICON = (By.CSS_SELECTOR, 'svg[data-testid="CancelIcon"]')
 
     SUBMIT_BUTTON_IN_DIALOG = (By.XPATH, '//div[@role="dialog"]//button[@type="submit"]')
+    ABORT_BUTTON_IN_DIALOG = (By.XPATH, '//div[@role="dialog"]//button[text()="Отменить"]')
     REASON_TEXTAREA = (By.CSS_SELECTOR, 'textarea[name="reason"]')
 
     def text_on_page(self, text):
@@ -99,3 +100,6 @@ class ProjectCardLocators:
 
     def checbox_by_text(self, text):
         return (By.XPATH, f'//span[contains(@class, "MuiTypography-root MuiTypography-body1")][contains(text(), "{text}")]')
+
+    def labor_reason_on_modal_by_text(self, text):
+        return (By.XPATH, f'//*[@type="button"][contains(text(), "{text}")][@tabindex="0"]')

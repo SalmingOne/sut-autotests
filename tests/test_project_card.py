@@ -395,3 +395,22 @@ class TestProjectCard:
         project_card_page.field_modal_reason_field('Нужно больше работать')
         assert project_card_page.check_dialog_submit_button_clickable(), \
             "Кнопка сохранить не кликабельна после заполнения обязательных полей"
+
+    @testit.workItemIds(3799)
+    @testit.displayName("1.3.3.3. Отмена отклонения в модальном окне Отклонение")
+    @pytest.mark.regress
+    @allure.title("id-3799 1.3.3.3. Отмена отклонения в модальном окне Отклонение")
+    def test_cancel_a_deviation_in_the_decline_modal_window(self, project_with_three_overtime_work, login,
+                                                                      driver):
+        all_project_page = AllProjectPage(driver)
+        time.sleep(1)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(project_with_three_overtime_work['name'])
+        project_card_page = ProjectCardPage(driver)
+        project_card_page.go_to_progress_tab()
+        project_card_page.check_wait_approved_reason_on_tab()
+        project_card_page.press_clear_icon()
+        project_card_page.field_modal_reason_field('Нужно больше работать')
+        project_card_page.press_cell_with_labor_reason_by_text('3 + 3')
+        project_card_page.press_dialog_abort_button()
+        project_card_page.check_wait_approved_reason_on_tab()
