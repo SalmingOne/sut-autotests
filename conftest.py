@@ -330,7 +330,7 @@ def project_with_three_overtime_work():
         ),
         dict(
             ids=[labor_ids[2]],
-            rejectionReason="Не было такого",
+            rejectionReason="Сотрудник не работал в этот день",
             approvalStatus="REJECTED",
             overtimeApprovalStatus="REJECTED",
             overtimeRejectionReason="У нас не перерабатывают"

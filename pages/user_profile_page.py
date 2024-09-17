@@ -676,9 +676,8 @@ class UserProfilePage(BasePage):
         time.sleep(2)
         self.field_custom_employer_field("Новый работодатель")
         assert self.get_employer_field_text() == "Новый работодатель"
-        self.check_128_symbol_in_field(self.locators.EXPERIENCES_CUSTOM_PROJECT_FIELD,
-                                       self.locators.EXPERIENCES_KNOWLEDGE_FIELD)
-        self.check_64_symbol(self.locators.EXPERIENCES_SPECIALIZATION_SLOT, self.locators.EXPERIENCES_KNOWLEDGE_FIELD)
+        self.check_128_symbol_in_field(self.locators.EXPERIENCES_CUSTOM_PROJECT_FIELD, self.locators.check_text('Проект'))
+        self.check_64_symbol(self.locators.EXPERIENCES_SPECIALIZATION_SLOT, self.locators.check_text('Проект'))
         self.check_custom_begin_data_field()
         self.element_is_visible(self.locators.EXPERIENCES_KNOWLEDGE_FIELD).click()
         time.sleep(1)

@@ -469,7 +469,7 @@ class TestProjectCard:
         project_card_page.go_to_next_period()
         project_card_page.go_to_next_period()
         time.sleep(1)
-        assert project_card_page.get_tooltip_text_reject_labor_cost() == 'Не было такого', \
+        assert project_card_page.get_tooltip_text_reject_labor_cost() == 'Сотрудник не работал в этот день', \
             "Отсутствует тултип с причиной отклонения списания"
         assert project_card_page.get_integrations_tooltip_text('3 + 3') == ['Jira:', 'Confluence:', 'Bitbucket:', 'Testit:', 'GitLab:'], \
             "В тултипе указаны не все интеграции"
