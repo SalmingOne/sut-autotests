@@ -754,3 +754,25 @@ class ProjectCardPage(BasePage):
     @allure.step("Нажатие кнопки сохранить в диалоговом окне")
     def press_dialog_submit_button(self):
         self.element_is_visible(self.locators.SUBMIT_BUTTON_IN_DIALOG).click()
+
+    @testit.step("Получение тултипа причины отклонения трудозатрат")
+    @allure.step("Получение тултипа причины отклонения трудозатрат")
+    def get_tooltip_text_reject_labor_cost(self):
+        self.action_move_to_element(self.elements_are_visible(self.locators.LABOR_COLOR)[1])
+        return self.element_is_visible(self.locators.TOOLTIP).text
+
+    @testit.step("Получение тултипа интеграций")
+    @allure.step("Получение тултипа интеграций")
+    def get_integrations_tooltip_text(self, text):
+        self.action_move_to_element(self.elements_are_visible(self.locators.labor_reason_by_text(text))[0])
+        all_tooltip_strings = self.elements_are_visible(self.locators.INTEGRATIONS_TOOLTIP_TEXTS)
+        strings_text = []
+        for string in all_tooltip_strings:
+            strings_text.append(string.text)
+        return strings_text
+
+    @testit.step("Получение тултипа статуса согласования переработки")
+    @allure.step("Получение тултипа статуса согласования переработки")
+    def get_tooltip_text_on_approval_status(self):
+        self.action_move_to_element(self.element_is_visible(self.locators.OVERTIME_APPROVAL_STATUS))
+        return self.element_is_visible(self.locators.TOOLTIP).text
