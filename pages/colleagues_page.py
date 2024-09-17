@@ -66,7 +66,7 @@ class ColleaguesPage(BasePage):
     @allure.step("Проверка перехода на страницу пользователя")
     def check_user_name_link(self):
         self.elements_are_visible(self.locators.USER_NAME_LINK)[0].click()
-        assert self.element_is_displayed(self.locators.CHECK_GO_TO_USER_PAGE), "Мы не перешли на страницу пользователя"
+        assert self.element_is_displayed(self.locators.CHECK_GO_TO_USER_PAGE, 10), "Мы не перешли на страницу пользователя"
 
     @testit.step("Поиск пользователя по фамилии")
     @allure.step("Поиск пользователя по фамилии")
