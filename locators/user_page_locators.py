@@ -5,8 +5,10 @@ class UserPageLocators:
     # Переход на страницу Пользователи
     SETTING_ICON = (By.CSS_SELECTOR, 'svg[data-testid="SettingsIcon"]')
     SYSTEM_ROLE = (By.CSS_SELECTOR, 'a[href="/admin/system-roles/users"]')
+    USER_PAGE_TITLE = (By.XPATH, '//h6[text()="Все пользователи"]')
     ADD_LOCAL_USER_BUTTON = (By.XPATH, '//button[text()="Пользователь"]')
     ADD_FREEIPA_USER_BUTTON = (By.XPATH, '//button[text()="Пользователь из Freeipa"]')
+    NO_DATA_IMAGE = (By.CSS_SELECTOR, 'img[alt="Нет данных"]')
     # Поля поиска
     SEARCH_TAB_FIELDS = (By.CSS_SELECTOR, 'input[placeholder="Поиск"]')
     USER_SEARCH_FIELD = (By.XPATH, '//div[@aria-colindex="1"]//input[@placeholder="Поиск"]')
@@ -33,16 +35,16 @@ class UserPageLocators:
     USER_CARD_TITLE = (By.XPATH, '//h6[text()="Просмотр полной информации"]')
     TAB_PROJECTS = (By.XPATH, '//button[text()="ПРОЕКТЫ"]')
     TAB_CONTACTS = (By.XPATH, '//button[text()="КОНТАКТЫ"]')
-
-    USER_PAGE_TITLE = (By.XPATH, '//h6[text()="Все пользователи"]')
-    FILTER_BUTTON = (By.XPATH, '//h6[text()="Отображение"]')
+    # Фильтрация
+    FILTER_BUTTON = (By.XPATH, '//h6[text()="Отображение"]/..')
     TAB_FILTER_BUTTONS = (By.XPATH, '//div[@class="ag-floating-filter-button"]/button')
+    HOUR_WAGE_CHECKBOX = (By.XPATH, '//p[text()="Почасовая оплата"]')
+    BY_SALARY_CHECKBOX = (By.XPATH, '//p[text()="По окладу"]')
+    CHECKED_CHECKBOXES_TEXT = (By.XPATH, '//span[contains(@class, "Mui-checked")]//following::p[1]')
 
     COLUMNS_HEADERS = (By.CSS_SELECTOR, 'span[ref="eText"]')
-
     HIRING_DATA_DATA_PICKER = (By.XPATH, '//label[text()="Дата принятия на работу"]//..//descendant::button')
     HIRING_DATA_INPUT = (By.XPATH, '//label[text()="Дата принятия на работу"]//..//descendant::input')
-
     SYSTEM_ROLE_FIELD = (By.CSS_SELECTOR, 'input[placeholder="Начните вводить системную роль"]')
     SELECTED_SYSTEM_ROLE = (By.CSS_SELECTOR, 'li[aria-label][aria-selected="true"]')
     NOT_SELECTED_SYSTEM_ROLE = (By.CSS_SELECTOR, 'li[aria-label][aria-selected="false"]')

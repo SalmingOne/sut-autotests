@@ -26,6 +26,7 @@ class UserPage(BasePage):
     def go_to_user_page(self):
         self.element_is_visible(self.locators.SETTING_ICON).click()
         self.element_is_visible(self.locators.SYSTEM_ROLE).click()
+        self.elements_are_visible(self.locators.USER_KEBABS, 10)
 
     @testit.step("Переход на карточку пользователя")
     @allure.step("Переход на карточку пользователя")
@@ -191,3 +192,33 @@ class UserPage(BasePage):
         time.sleep(1)  # Без ожидания не успевает срабатывать анимация
         self.element_is_visible(self.locators.USER_KEBABS).click()
         self.element_is_visible(self.locators.REDACT_BUTTON).click()
+
+    @testit.step("Нажатие кнопки фильтрации")
+    @allure.step("Нажатие кнопки фильтрации")
+    def press_filter_button(self):
+        self.element_is_visible(self.locators.FILTER_BUTTON).click()
+
+    @testit.step("Нажатие чекбокса Почасовая оплата")
+    @allure.step("Нажатие чекбокса Почасовая оплата")
+    def press_hourly_wage_checkbox(self):
+        self.element_is_visible(self.locators.HOUR_WAGE_CHECKBOX).click()
+
+    @testit.step("Нажатие чекбокса По окладу")
+    @allure.step("Нажатие чекбокса По окладу")
+    def press_by_salary_checkbox(self):
+        self.element_is_visible(self.locators.BY_SALARY_CHECKBOX).click()
+
+    @testit.step("Проверка наличия картинки Данные отсутствуют")
+    @allure.step("Проверка наличия картинки Данные отсутствуют")
+    def check_no_data_image(self):
+        assert self.element_is_displayed(self.locators.NO_DATA_IMAGE), "Нет картинки Данные отсутствуют"
+
+    @testit.step("Получение текста выбранных чекбоксов")
+    @allure.step("Получение текста выбранных чекбоксов")
+    def get_checked_checkboxes_text(self):
+        element_list = self.elements_are_visible(self.locators.CHECKED_CHECKBOXES_TEXT)
+        data = []
+        for element in element_list:
+            self.go_to_element(element)
+            data.append(element.text)
+        return data

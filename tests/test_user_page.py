@@ -5,6 +5,7 @@ import pytest
 import testit
 
 from endpoints.users_endpoint import UserEndpoint
+from pages.labor_cost_page import LaborCostPage
 from pages.user_page import UserPage
 
 
@@ -102,3 +103,29 @@ class TestUsersPage:
         user_page.go_to_user_page()
         user_page.check_user_is_not_in_table(create_user_whit_one_project_role_and_no_assignments)
         user_page.check_removing_a_single_project_role_from_a_user()
+
+    @testit.workItemIds(2061)
+    @testit.displayName("4.9.1.1 Фильтрация пользователей по фильтру Почасовая оплата")
+    @pytest.mark.smoke
+    @allure.title("id-2061 4.9.1.1 Фильтрация пользователей по фильтру Почасовая оплата")
+    def test_filtering_users_by_the_hourly_wage_filter(self, create_hourly_wage_user, login, driver):
+        user_page = UserPage(driver)
+        user_page.go_to_user_page()
+        user_page.press_filter_button()
+        user_page.press_by_salary_checkbox()
+        user_page.press_hourly_wage_checkbox()
+        user_page.check_no_data_image()
+
+        user_page.press_hourly_wage_checkbox()
+        before_checkboxes = user_page.get_checked_checkboxes_text()
+        user_page.action_esc()
+        assert user_page.check_user_is_not_in_table(create_hourly_wage_user), \
+            "На странице не отображается пользователь с почасовой оплатой"
+
+        labor_cost_page = LaborCostPage(driver)
+        labor_cost_page.go_to_labor_cost_page()
+        user_page.go_to_user_page()
+        user_page.press_filter_button()
+        after_checkboxes = user_page.get_checked_checkboxes_text()
+        assert before_checkboxes == after_checkboxes, \
+            "Настройки фильтрации не сохранились при переходе на другую страницу"
