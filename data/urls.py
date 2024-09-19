@@ -22,7 +22,6 @@ class Urls:
     variables_url = f'{api_url}' + 'variables/'
     logs_url = f'{api_url}' + 'logs/'
     logs_settings_url = f'{logs_url}' + 'settings/'
-    tags_url = f'{api_url}' + 'tags/'
     skills_url = f'{api_url}' + 'skills/'
     system_settings_url = f'{api_url}' + 'system-settings/'
     advanced_search_url = f'{api_url}' + 'search/'

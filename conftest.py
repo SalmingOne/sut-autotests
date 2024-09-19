@@ -18,7 +18,7 @@ from endpoints.resume_endpoint import ResumeEndpoint
 from endpoints.search_profile_endpoint import SearchProfileEndpoint
 from endpoints.skills_endpoint import SkillsEndpoint
 from endpoints.system_roles_endpoint import SystemRolesEndpoint
-from endpoints.tags_endpoint import TagsEndpoint
+
 from endpoints.users_endpoint import UserEndpoint
 from endpoints.variables_endpoint import VariablesEndpoint
 from pages.authorization_page import AuthorizationPage
@@ -495,26 +495,6 @@ def project_with_assignment_not_current_manager(create_work_user):
     )
     yield response.json()
     project_endpoint.delete_project_api(str(response.json()['id']))
-
-
-@pytest.fixture()
-def create_tag():
-    tags_endpoint = TagsEndpoint()
-    payload = dict(name='ABSENT', skills=[])
-    response = tags_endpoint.create_tag_api(json=payload)
-    payload2 = dict(name='Asbestt', skills=[])
-    response2 = tags_endpoint.create_tag_api(json=payload2)
-    yield payload['name'], payload2['name']
-    tags_endpoint.delete_tag_api(str(response.json()['id']))
-    tags_endpoint.delete_tag_api(str(response2.json()['id']))
-
-
-@pytest.fixture()
-def create_tag_to_delete():
-    tags_endpoint = TagsEndpoint()
-    payload = dict(name='AA для удаления', skills=[])
-    response = tags_endpoint.create_tag_api(json=payload)
-    yield payload['name']
 
 
 @pytest.fixture()
