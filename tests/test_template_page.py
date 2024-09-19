@@ -22,3 +22,16 @@ class TestTemplatePage:
         #уходим из шаблонов чтобы проверить что он сохранился
         template_page.go_to_template_page()
         template_page.check_template_file()
+
+    @testit.workItemIds(1276)
+    @testit.displayName("6.3.1.1. Удаление шаблонов заявлений в системе")
+    @pytest.mark.smoke
+    @allure.title("id-1276 6.3.1.1. Удаление шаблонов заявлений в системе")
+    def test_delete_template_application(self, login, driver):
+        template_page = TemplatePage(driver)
+        template_page.go_to_template_page()
+        template_page.add_template_file()
+        template_page.check_template_is_empty()
+        # уходим из шаблонов, чтобы проверить что он удалился
+        template_page.go_to_template_page()
+        template_page.check_template_file_delete()

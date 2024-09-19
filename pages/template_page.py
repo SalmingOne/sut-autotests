@@ -54,3 +54,9 @@ class TemplatePage(BasePage):
     def check_template_file(self):
         assert self.element_is_displayed(self.locators.check_text('шаблон.docx')), "Файл не добавился"
         self.delete_file('шаблон.docx')
+
+    @testit.step("Проверка что шаблон удален")
+    @allure.step("Проверка что шаблон удален")
+    def check_template_file_delete(self):
+        assert self.element_is_not_visible(self.locators.check_text('шаблон.docx')), "Файл не удален"
+        self.delete_file('шаблон.docx')
