@@ -30,8 +30,14 @@ class TestTemplatePage:
     def test_delete_template_application(self, login, driver):
         template_page = TemplatePage(driver)
         template_page.go_to_template_page()
+        template_page.check_template_is_empty()
         template_page.add_template_file()
+        template_page.add_variable('Автотест', 'Автотекст')
+        value_before_delete = template_page.get_value_from_column_template('Автотест', '6')
         template_page.check_template_is_empty()
         # уходим из шаблонов, чтобы проверить что он удалился
         template_page.go_to_template_page()
         template_page.check_template_file_delete()
+        value_after_delete = template_page.get_value_from_column_template('Автотест', '6')
+        assert value_before_delete != value_after_delete, 'Шаблон не удален из переменной'
+        template_page.delete_add_variable('Автотест', '7')

@@ -4,9 +4,9 @@ import os
 import allure
 import testit
 from selenium.webdriver import Keys
+from selenium.common.exceptions import TimeoutException
 
 from locators.template_locators import TemplatePageLocators
-from pages.labor_cost_page import LaborCostPage
 from pages.base_page import BasePage
 
 
@@ -55,8 +55,39 @@ class TemplatePage(BasePage):
         assert self.element_is_displayed(self.locators.check_text('шаблон.docx')), "Файл не добавился"
         self.delete_file('шаблон.docx')
 
+    @testit.step("Создание переменной")
+    @allure.step("Создание переменной")
+    def add_variable(self, name, text):
+        self.element_is_visible(self.locators.CREATE_VARIABLE).click()
+        self.element_is_visible(self.locators.FIELD_NAME).send_keys(name)
+        self.element_is_visible(self.locators.VARIABLE_NAME).send_keys(text)
+        self.element_is_visible(self.locators.VARIABLE_VALUE).send_keys(text)
+        self.element_is_visible(self.locators.TEMPLATE_WITH_VARIABLE).click()
+        time.sleep(1)
+        self.element_is_visible(self.locators.TEMPLATE_VALUE).click()
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+        time.sleep(1)
+
+    @testit.step("Получить значение ячейки в столбце Шаблоны")
+    @allure.step("Получить значение ячейки в столбце Шаблоны")
+    def get_value_from_column_template(self, variable_name, column_number):
+        try:
+            self.element_is_visible(self.locators.get_value_from_column(variable_name, column_number))
+            return self.element_is_visible(self.locators.get_value_from_column(variable_name, column_number)).text
+        except TimeoutException:
+            return 'Пусто'
+
     @testit.step("Проверка что шаблон удален")
     @allure.step("Проверка что шаблон удален")
     def check_template_file_delete(self):
         assert self.element_is_not_visible(self.locators.check_text('шаблон.docx')), "Файл не удален"
         self.delete_file('шаблон.docx')
+
+    @testit.step("Удаление добавленной переменной")
+    @allure.step("Удаление добавленной переменной")
+    def delete_add_variable(self, variable_name, column_number):
+        self.element_is_visible(self.locators.get_value_from_column(variable_name, column_number)).click()
+        time.sleep(1)
+        self.element_is_visible(self.locators.DELETE).click()
+        time.sleep(1)
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
