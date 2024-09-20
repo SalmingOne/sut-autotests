@@ -54,3 +54,35 @@ class TestVariablesPage:
         assert errors == ['Переменная с таким названием поля уже создана в системе',
                           'Переменная с таким названием уже создана в системе'],\
             'Не появились сообщения о неуникальных полях'
+
+    @testit.workItemIds(1274)
+    @testit.displayName("6.3.1.1. Загрузка шаблонов заявлений в систему")
+    @pytest.mark.smoke
+    @allure.title("id-1274 6.3.1.1. Загрузка шаблонов заявлений в систему")
+    def test_add_template_application(self, login, driver):
+        variables_page = VariablesPage(driver)
+        variables_page.go_to_variables_page()
+        variables_page.check_template_is_empty()
+        variables_page.add_template_file()
+        # уходим из шаблонов, чтобы проверить что он сохранился
+        variables_page.go_to_variables_page()
+        variables_page.check_template_file()
+
+    @testit.workItemIds(1276)
+    @testit.displayName("6.3.1.1. Удаление шаблонов заявлений в системе")
+    @pytest.mark.smoke
+    @allure.title("id-1276 6.3.1.1. Удаление шаблонов заявлений в системе")
+    def test_delete_template_application(self, login, driver):
+        variables_page = VariablesPage(driver)
+        variables_page.go_to_variables_page()
+        variables_page.check_template_is_empty()
+        variables_page.add_template_file()
+        variables_page.add_variable_with_template('Автотест', 'Автотекст')
+        value_before_delete = variables_page.get_value_from_column_template('Автотест', '6')
+        variables_page.check_template_is_empty()
+        # уходим из шаблонов, чтобы проверить что он удалился
+        variables_page.go_to_variables_page()
+        variables_page.check_template_file_delete()
+        value_after_delete = variables_page.get_value_from_column_template('Автотест', '6')
+        assert value_before_delete != value_after_delete, 'Шаблон не удален из переменной'
+        variables_page.delete_add_variable('Автотест', '7')

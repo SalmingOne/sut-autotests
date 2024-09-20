@@ -16,12 +16,15 @@ class VariablesPageLocators:
     KEBABS_DEL_MENU_ITEM = (By.XPATH, '//span[text()="Удалить"]')
     DEL_ACCEPT_BUTTON = (By.XPATH, '//p[@id="alert-dialog-description"]//following::button[@type="submit"]')
     ALL_SEARCH_FIELDS = (By.CSS_SELECTOR, 'input[placeholder="Поиск"]')
+
     # Дровер создания переменной
     FIELD_NAME_INPUT = (By.CSS_SELECTOR, 'input[name="name"]')
     VARIABLE_NAME_INPUT = (By.CSS_SELECTOR, 'input[name="systemName"]')
     VARIABLE_VALUE_INPUT = (By.CSS_SELECTOR, 'input[name="value"]')
     SUBMIT_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
     ABORT_BUTTON = (By.XPATH, '//button[text()="Отменить"]')
+    TEMPLATE_WITH_VARIABLE = (By.CSS_SELECTOR, 'svg[data-testid="ArrowDropDownIcon"]')
+    TEMPLATE_VALUE = (By.XPATH, '//li[text()="Ежегодный отпуск"]')
 
     SAVE_VALUE_CHECKBOX = (By.XPATH, '//span[text()="Хранить значение поля"]/../span/input')
     ASK_VALUE_CHECKBOX = (By.XPATH, '//span[text()="Запрашивать значение у пользователя"]')
@@ -33,3 +36,12 @@ class VariablesPageLocators:
     # Ошибки
     MUI_ERROR = (By.XPATH, '//p[contains(@class, "Mui-error")]')
 
+    # Блок с шаблонами
+    DELETE_ICON = (By.CSS_SELECTOR, 'svg[data-testid="DeleteIcon"]')
+    ADD_DOC = (By.CSS_SELECTOR, 'input[type="file"]')
+
+    def check_text(self, text):
+        return (By.XPATH, f'//*[text()="{text}"]')
+
+    def get_value_from_column(self, variable_name, column_number):
+        return (By.XPATH, f'//div[@aria-label="{variable_name}"]//ancestor::div[contains(@class,"ag-row-even ag-row-no-focus")]//div[@aria-colindex="{column_number}"]//div')
