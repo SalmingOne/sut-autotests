@@ -18,6 +18,7 @@ class PivotTabPage(BasePage):
         time.sleep(1)
         self.element_is_visible(self.locators.ANALYTIC_MENU_BUTTON).click()
         self.element_is_visible(self.locators.PIVOT_TAB_BUTTON).click()
+        self.element_is_visible(self.locators.ICON_TREE_CLOSED, 15)
 
     @testit.step("Выбираем отображаемый период")
     @allure.step("Выбираем отображаемый период")

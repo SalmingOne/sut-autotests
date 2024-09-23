@@ -28,6 +28,7 @@ class ProjectCardPage(BasePage):
     @testit.step("Получаем значения полей вкладки описание проекта")
     @allure.step("Получаем значения полей вкладки описание проекта")
     def get_project_description(self):
+        time.sleep(1)
         output_project_name = self.element_is_visible(self.locators.NAME_FIELD).get_attribute("defaultValue")
         output_project_code = self.element_is_visible(self.locators.CODE_FIELD).get_attribute("defaultValue")
         output_project_status = self.element_is_visible(self.locators.STATUS_FIELD).get_attribute("value")
@@ -92,6 +93,10 @@ class ProjectCardPage(BasePage):
         self.element_is_visible(self.locators.LI_MENU_ITEM).click()
         self.elements_are_present(self.locators.FIRST_MEMBER_TEXT_ON_REDACT)[0].click()
         self.element_is_visible(self.locators.LI_MENU_ITEM).click()
+        time.sleep(1)
+        self.elements_are_visible(self.locators.APPOINTMENT_DATE_DATEPICKER)[1].click()
+        time.sleep(1)
+        self.element_is_visible(self.locators.THIS_DAY_PICKER).click()
         self.element_is_visible(self.locators.SAVE_BUTTON).click()
 
     @testit.step("Проверка вкладки Описание")
@@ -278,6 +283,7 @@ class ProjectCardPage(BasePage):
     @allure.step("Переход на вкладку Ресурсный план")
     def go_to_resource_plan_tab(self):
         self.element_is_visible(self.locators.RESOURCE_PLAN_TAB).click()
+        self.element_is_present(self.locators.ADD_PERCENT_BUTTON, 25)
 
     @testit.step("Проверка вкладки Ресурсный план")
     @allure.step("Проверка вкладки Ресурсный план")
@@ -355,6 +361,7 @@ class ProjectCardPage(BasePage):
     @allure.step("Переход на вкладку Ход выполнения")
     def go_to_progress_tab(self):
         self.element_is_visible(self.locators.PROGRESS_TAB).click()
+        self.element_is_visible(self.locators.LABOR_COLOR, 15)
 
     @testit.step("Проверка вкладки Ход выполнения")
     @allure.step("Проверка вкладки Ход выполнения")
@@ -624,7 +631,10 @@ class ProjectCardPage(BasePage):
     @allure.step("Добавление менеджера на проект")
     def add_manager(self, number_li_element):
         self.element_is_visible(self.locators.MANAGER_FIELD).click()
+        time.sleep(0.5)
+        manager = self.elements_are_visible(self.locators.LI_MENU_ITEM)[number_li_element].text
         self.elements_are_visible(self.locators.LI_MENU_ITEM)[number_li_element].click()
+        return manager
 
     @testit.step("Получение всех менеджеров проекта")
     @allure.step("Получение всех менеджеров проекта")

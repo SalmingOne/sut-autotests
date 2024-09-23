@@ -111,24 +111,30 @@ def no_resources_project():
 def project_with_labor_reason():
     project_endpoint = ProjectEndpoint()
     project_endpoint.delete_project_if_it_exist(PROJECT_NAME)
+    project_endpoint = ProjectEndpoint()
+    user_endpoint = UserEndpoint()
+    user_id = user_endpoint.get_user_id_by_email('auto_testt@mail.rruu')
+    project_endpoint.delete_project_if_it_exist(PROJECT_NAME)
     payload = CreateProject(
-        laborReasons=True
+        laborReasons=True,
+        resources=[dict(
+            projectRoleId=1,
+            userId=user_id,
+            isProjectManager=True
+        )
+        ]
     ).model_dump()
-    response = project_endpoint.create_project_api(json=payload)
+    res = project_endpoint.create_project_api(json=payload)
     payload = dict(projectRoleId=1,
-                   projectId=response.json()["id"],
-                   slotId=response.json()["slots"][0]["assignments"][0]['slotId'],
+                   projectId=res.json()["id"],
                    userId=USER_ID,
                    isProjectManager=True,
                    startDate=CreateProject().startDate
                    )
     assignment_endpoint = AssignmentEndpoint()
-    assignment_endpoint.put_assignment_api(
-        json=payload,
-        assignment_id=str(response.json()["slots"][0]["assignments"][0]["id"])
-    )
-    yield response.json()
-    project_endpoint.delete_project_api(str(response.json()['id']))
+    assignment_endpoint.create_assignment_api(json=payload)
+    yield res.json()
+    project_endpoint.delete_project_api(str(res.json()['id']))
 
 
 @pytest.fixture()
@@ -209,8 +215,28 @@ def project_with_overtime_work():
     labor_report_endpoint = LaborReportEndpoint()
     project_endpoint = ProjectEndpoint()
     project_endpoint.delete_project_if_it_exist(PROJECT_NAME)
-    payload = CreateProject().model_dump()
+    project_endpoint = ProjectEndpoint()
+    user_endpoint = UserEndpoint()
+    user_id = user_endpoint.get_user_id_by_email('auto_testt@mail.rruu')
+    project_endpoint.delete_project_if_it_exist(PROJECT_NAME)
+    payload = CreateProject(
+        resources=[dict(
+            projectRoleId=1,
+            userId=user_id,
+            isProjectManager=True
+        )
+        ]
+    ).model_dump()
     res = project_endpoint.create_project_api(json=payload)
+    payload = dict(projectRoleId=1,
+                   projectId=res.json()["id"],
+                   userId=USER_ID,
+                   isProjectManager=True,
+                   startDate=CreateProject().startDate
+                   )
+    assignment_endpoint = AssignmentEndpoint()
+    assignment_endpoint.create_assignment_api(json=payload)
+
     project_id = res.json()['id']
     payload = [dict(
         date=BasePage(driver=None).get_day_before_m_d_y(0),
@@ -429,70 +455,75 @@ def create_skill_to_delete():
 
 @pytest.fixture()
 def project_with_assignment():
-    assignment_endpoint = AssignmentEndpoint()
     project_endpoint = ProjectEndpoint()
+    user_endpoint = UserEndpoint()
+    user_id = user_endpoint.get_user_id_by_email('auto_testt@mail.rruu')
     project_endpoint.delete_project_if_it_exist(PROJECT_NAME)
-    payload = CreateProject().model_dump()
+    payload = CreateProject(
+        resources=[dict(
+            projectRoleId=1,
+            userId=user_id,
+            isProjectManager=True
+        )
+        ]
+    ).model_dump()
     response = project_endpoint.create_project_api(json=payload)
     payload = dict(projectRoleId=1,
                    projectId=response.json()["id"],
-                   slotId=response.json()["slots"][0]["assignments"][0]['slotId'],
                    userId=USER_ID,
                    isProjectManager=True,
                    startDate=CreateProject().startDate
                    )
-    assignment_endpoint.put_assignment_api(
-        json=payload,
-        assignment_id=str(response.json()["slots"][0]["assignments"][0]["id"])
-    )
+    assignment_endpoint = AssignmentEndpoint()
+    assignment_endpoint.create_assignment_api(json=payload)
     yield
     project_endpoint.delete_project_api(str(response.json()['id']))
 
 
 @pytest.fixture()
 def archive_project_with_assignment():
-    assignment_endpoint = AssignmentEndpoint()
     project_endpoint = ProjectEndpoint()
+    user_endpoint = UserEndpoint()
+    user_id = user_endpoint.get_user_id_by_email('auto_testt@mail.rruu')
     project_endpoint.delete_project_if_it_exist(PROJECT_NAME)
     payload = CreateProject(
-        status='ARCHIVED'
+        status='ARCHIVED',
+        resources=[dict(
+            projectRoleId=1,
+            userId=user_id,
+            isProjectManager=True
+        )
+        ]
     ).model_dump()
     response = project_endpoint.create_project_api(json=payload)
     payload = dict(projectRoleId=1,
                    projectId=response.json()["id"],
-                   slotId=response.json()["slots"][0]["assignments"][0]['slotId'],
                    userId=USER_ID,
                    isProjectManager=True,
                    startDate=CreateProject().startDate
                    )
-    assignment_endpoint.put_assignment_api(
-        json=payload,
-        assignment_id=str(response.json()["slots"][0]["assignments"][0]["id"])
-    )
+    assignment_endpoint = AssignmentEndpoint()
+    assignment_endpoint.create_assignment_api(json=payload)
     yield response.json()
     project_endpoint.delete_project_api(str(response.json()['id']))
 
 
 @pytest.fixture()
 def project_with_assignment_not_current_manager(create_work_user):
-    assignment_endpoint = AssignmentEndpoint()
+
     project_endpoint = ProjectEndpoint()
     project_endpoint.delete_project_if_it_exist(PROJECT_NAME)
     user_endpoint = UserEndpoint()
     user_id = user_endpoint.get_user_id_by_email('auto_testt@mail.rruu')
-    payload = CreateProject().model_dump()
+    payload = CreateProject(
+        resources=[dict(
+            projectRoleId=1,
+            userId=user_id,
+            isProjectManager=True
+        )
+        ]
+    ).model_dump()
     response = project_endpoint.create_project_api(json=payload)
-    payload = dict(projectRoleId=1,
-                   projectId=response.json()["id"],
-                   slotId=response.json()["slots"][0]["assignments"][0]['slotId'],
-                   userId=user_id,
-                   isProjectManager=True,
-                   startDate=CreateProject().startDate
-                   )
-    assignment_endpoint.put_assignment_api(
-        json=payload,
-        assignment_id=str(response.json()["slots"][0]["assignments"][0]["id"])
-    )
     yield response.json()
     project_endpoint.delete_project_api(str(response.json()['id']))
 
@@ -532,9 +563,9 @@ def create_work_user():
     system_roles_endpoint = SystemRolesEndpoint()
     first_system_role_id = system_roles_endpoint.get_all_system_roles_id()[0]
     first_project_role_id = project_roles_endpoint.get_all_project_roles_id()[1]
-    first_post_id = post_endpoint.get_all_posts_id()[0]
+    first_post_id = post_endpoint.get_all_posts_id()[1]
     first_department_id = department_endpoint.get_all_departments_id()[1]
-    first_project_id = project_endpoint.get_all_project().json()[0]['id']
+    first_project_id = project_endpoint.get_all_project().json()[4]['id']
     user_id = user_endpoint.get_user_id_by_email('auto_testt@mail.rruu')
     payload = dict(username="AutoTester1",
                    name="Автомат",

@@ -76,8 +76,10 @@ class UserProfilePage(BasePage):
     @testit.step("Берем цвет вкладки Образование")
     @allure.step("Берем цвет вкладки Образование")
     def get_education_tab_color(self):
+        time.sleep(0.5)
         self.element_is_visible(self.locators.EXPERIENCES_TAB_BUTTON).click()
         color = self.element_is_visible(self.locators.EDUCATION_TAB_BUTTON).value_of_css_property('background-color')
+        time.sleep(0.5)
         self.element_is_visible(self.locators.EDUCATION_TAB_BUTTON).click()
         return color
 
@@ -101,6 +103,7 @@ class UserProfilePage(BasePage):
     @allure.step("Берем цвет вкладки Информация о сотруднике")
     def get_my_profile_tab_color(self):
         self.element_is_visible(self.locators.CERTIFICATE_TAB_BUTTON).click()
+        time.sleep(1)
         color = self.element_is_visible(self.locators.MY_PROFILE_TAB_BUTTON).value_of_css_property('background-color')
         self.element_is_visible(self.locators.MY_PROFILE_TAB_BUTTON).click()
         return color
@@ -471,7 +474,9 @@ class UserProfilePage(BasePage):
     @testit.step("Проверка содержания раздела образование")
     @allure.step("Проверка содержания раздела образование")
     def check_education_form(self):
+        time.sleep(1)
         educations = self.get_dropdown_menu_items(self.locators.EDUCATION_FORM)
+        time.sleep(1)
         directions = self.get_dropdown_menu_items(self.locators.DIRECTION)
         levels = self.get_dropdown_menu_items(self.locators.EDUCATION_LEVEL)
         self.check_128_symbol_in_field(self.locators.FACULTY_NAME, self.locators.EDUCATION_FORM)
@@ -672,6 +677,7 @@ class UserProfilePage(BasePage):
     @allure.step("Проверка формы Опыт работы с самостоятельным заполнением")
     def field_work_experience_form_with_new_employer(self):
         self.press_redact_button()
+        time.sleep(1)
         self.press_add_icon_button()
         time.sleep(2)
         self.field_custom_employer_field("Новый работодатель")
@@ -713,6 +719,7 @@ class UserProfilePage(BasePage):
         self.element_is_visible(self.locators.RESUME_DIRECTION_FIELD).send_keys('1')
         assert self.element_is_clickable(self.locators.SAVE_BUTTON, 1), "Кнопка сохранить задизейблена"
         self.element_is_visible(self.locators.SAVE_BUTTON).click()
+        time.sleep(1)
         assert len(self.elements_are_visible(self.locators.MUI_ERROR)) == 2, \
             "Под обязательными полями не отображаются сообщения"
         assert self.elements_are_visible(self.locators.MUI_ERROR)[0].text == 'Поле обязательно', \
@@ -808,8 +815,10 @@ class UserProfilePage(BasePage):
     @testit.step("Изменение данных в резюме")
     @allure.step("Изменение данных в резюме")
     def change_resume(self, new_name):
+        time.sleep(1)
         self.element_is_visible(self.locators.RESUME_TITLE_FIELD).send_keys(Keys.CONTROL + 'a')
         self.element_is_visible(self.locators.RESUME_TITLE_FIELD).send_keys(new_name)
+        time.sleep(1)
         self.elements_are_visible(self.locators.DATE_PIKERS)[1].send_keys(Keys.CONTROL + 'a')
         self.elements_are_visible(self.locators.DATE_PIKERS)[1].send_keys('01.02.1990')
         self.elements_are_visible(self.locators.DATE_PIKERS)[2].send_keys(Keys.CONTROL + 'a')

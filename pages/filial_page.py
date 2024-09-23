@@ -18,6 +18,7 @@ class FilialPage(BasePage):
         self.element_is_visible(self.locators.SETTING_ICON).click()
         self.element_is_visible(self.locators.REFERENCE_BOOKS).click()
         self.element_is_visible(self.locators.FILIAL_TAB).click()
+        self.element_is_visible(self.locators.KEBAB_MENU, 15)
 
     @testit.step("Открытие дровера добавления филиала")
     @allure.step("Открытие дровера добавления филиала")
@@ -165,8 +166,9 @@ class FilialPage(BasePage):
     @testit.step("Проверка удаления пользователя из филиала")
     @allure.step("Проверка удаления пользователя из филиала")
     def check_removing_user_from_filial(self, filial_name):
-        self.element_is_visible(self.locators.kebab_by_filial_name(filial_name)).click()
         time.sleep(1)
+        self.element_is_visible(self.locators.kebab_by_filial_name(filial_name)).click()
+        time.sleep(2)
         self.element_is_visible(self.locators.REDACT_BUTTON).click()
         employees_before = self.get_employees_in_field()
         self.elements_are_visible(self.locators.EMPLOYEES_CHIPS_DELETE_ICON)[0].click()

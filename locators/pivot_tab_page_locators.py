@@ -23,7 +23,7 @@ class PivotTabPageLocators:
     # Отображение по пользователю
     BY_USER_BUTTON = (By.XPATH, '//button[text()="По пользователям"]')
     OPEN_PROJECT_LIST = (By.XPATH, f'//h6[contains(@aria-label,"{USER_NAME}")]//ancestor::span[1]//preceding::span[2]')
-
+    ICON_TREE_CLOSED = (By.CSS_SELECTOR, 'span[class="ag-icon ag-icon-tree-closed"]')
     def project_color_on_user(self, project_name):
         return (By.XPATH, f'//p[text()="{project_name}"]')
 

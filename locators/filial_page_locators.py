@@ -2,7 +2,7 @@ from selenium.webdriver.common.by import By
 
 
 class FilialPageLocators:
-    # Переход на таб Знания
+    # Переход на таб филиалы
     SETTING_ICON = (By.CSS_SELECTOR, 'svg[data-testid="SettingsIcon"]')
     REFERENCE_BOOKS = (By.CSS_SELECTOR, 'a[href="/admin/references/personal-qualities"]')
     FILIAL_TAB = (By.XPATH, '//div[text()="Филиалы"]')
@@ -10,6 +10,7 @@ class FilialPageLocators:
     ADD_FILIAL_BUTTON = (By.XPATH, '//button[contains(@class,"MuiButton-root MuiButton-text MuiButton-textPrimary")]')
     REDACT_BUTTON = (By.XPATH, '//span[text()="Редактировать"]')
     KEBAB_DELETE_BUTTON = (By.XPATH, '//span[text()="Удалить"]')
+    KEBAB_MENU = (By.CSS_SELECTOR, 'svg[data-testid="MoreHorizIcon"]')
     # Дровер добавления/редактирования филиала
     NAME_FIELD = (By.CSS_SELECTOR, 'input[name="name"]')
     ADDRESS_FIELD = (By.CSS_SELECTOR, 'input[name="address"]')

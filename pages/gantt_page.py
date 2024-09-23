@@ -108,6 +108,7 @@ class GanttPage(BasePage):
     @testit.step("Получение заголовков таблицы фаз")
     @allure.step("Получение заголовков таблицы фаз")
     def get_column_header(self):
+        time.sleep(1)
         all_headers = self.elements_are_visible(self.locators.COLUMN_HEADER)
         header_text = []
         for header in all_headers:
