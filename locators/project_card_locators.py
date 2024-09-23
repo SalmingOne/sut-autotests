@@ -44,6 +44,8 @@ class ProjectCardLocators:
     SECOND_MEMBER_TEXT_ON_REDACT = (By.XPATH, '//div[@row-index="1"]//input[contains(@class, "MuiOutlinedInput-input")]')
     ALL_MEMBERS_TEXT_ON_REDACT = (By.XPATH, '//div[@row-index]//input[contains(@class, "MuiOutlinedInput-input")]')
     FIRST_NOT_CHOOSE = (By.XPATH, '//li[@aria-selected="false"][1]')
+    APPOINTMENT_DATE_DATEPICKER = (By.XPATH, '//div[@aria-colindex="5"]//*[@data-testid="CalendarTodayOutlinedIcon"]')
+    THIS_DAY_PICKER = (By.XPATH, '//button[contains(@class, "MuiPickersDay-today")]')
     USERS_TEXT = (By.XPATH, '//div[@col-id="userId"]//p')
     DELETE_ICON = (By.CSS_SELECTOR, 'svg[data-testid="DeleteIcon"]')
 
@@ -73,6 +75,7 @@ class ProjectCardLocators:
     TOOLTIP = (By.XPATH, '//div[contains(@class, "MuiTooltip-tooltipPlacementTop")]')
 
     LI_MENU_ITEM = (By.CSS_SELECTOR, 'li[role="option"]')
+    LI_MENU_ITEM_TEXT = (By.XPATH, '//li[@role="option"]/p')
     def li_by_text(self, text):
         return (By.XPATH, f'//li[text()="{text}"]')
 

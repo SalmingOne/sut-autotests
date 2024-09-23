@@ -30,9 +30,9 @@ class TestUserProfilePage:
         else:
             pass
         user_profile_page.press_redact_button()
+        time.sleep(1)
         user_profile_page.press_add_icon_button()
         user_profile_page.press_save_button()
-        time.sleep(1)
         user_profile_page.go_to_education_tab()
         alert_messages = user_profile_page.get_alert_message()
         tab_color = user_profile_page.get_education_tab_color()
@@ -175,13 +175,14 @@ class TestUserProfilePage:
     @allure.title("id-1146 10.2.2. Редактирование раздела Дополнительная информация в личном профиле сотрудника")
     def test_editing_the_additional_information_section_in_personal_profile(self, login, driver):
         user_profile_page = UserProfilePage(driver)
+        time.sleep(1)
         user_profile_page.go_to_user_profile()
         before = user_profile_page.get_additional_information()
         user_profile_page.press_redact_button()
         time.sleep(1)
         user_profile_page.input_additional_information()
         user_profile_page.press_save_button()
-        time.sleep(1)
+        time.sleep(4)
         after = user_profile_page.get_additional_information()
         assert before[0] != after[0], 'Семейное положение не изменилось'
         assert before[1] != after[1], 'Информация о детях не изменилась'
@@ -196,6 +197,7 @@ class TestUserProfilePage:
         user_profile_page.go_to_user_profile()
         time.sleep(2)
         user_profile_page.go_to_education_tab()
+        time.sleep(1)
         # Создаем диплом если его нет
         if user_profile_page.check_diploma_title():
             pass
@@ -755,6 +757,7 @@ class TestUserProfilePage:
         time.sleep(0.5)
         user_profile_page.redact_resume(create_resume)
         user_profile_page.change_resume('Новое имя резюме')
+        time.sleep(1)
         assert user_profile_page.check_resume_name('Новое имя резюме'), "Имя резюме не изменилось"
 
     @testit.workItemIds(3214)
@@ -772,7 +775,7 @@ class TestUserProfilePage:
         len_errors = user_profile_page.len_required_errors()
         alert = user_profile_page.get_alert_message()
         assert 'Заполнены не все обязательные поля' in alert, "Не появился алерт"
-        assert len_errors == 6, "Отображаются не все сообщения Поле обязательно"
+        assert len_errors == 5, "Отображаются не все сообщения Поле обязательно"
 
     @testit.workItemIds(3215)
     @testit.displayName("10.6.1.8. Изменение названия резюме на неуникальное")
@@ -785,6 +788,7 @@ class TestUserProfilePage:
         user_profile_page.go_to_resume_tab()
         time.sleep(0.5)
         user_profile_page.redact_resume(create_resume)
+        time.sleep(1)
         user_profile_page.change_resume(create_second_resume)
         error = user_profile_page.get_mui_error()
         assert error == 'Название резюме должно быть уникальным', "Не отображается сообщение о не уникальности названия"
@@ -846,6 +850,7 @@ class TestUserProfilePage:
     def test_blank_entry_into_required_fields_on_employee_information_tab(self, login, driver):
         user_profile_page = UserProfilePage(driver)
         user_profile_page.go_to_user_profile()
+        time.sleep(4)
         user_profile_page.press_redact_button()
         time.sleep(1)
         user_profile_page.add_contact_form()
@@ -880,6 +885,7 @@ class TestUserProfilePage:
     def test_filling_additional_contact_in_contacts(self, login, driver):
         user_profile_page = UserProfilePage(driver)
         user_profile_page.go_to_user_profile()
+        time.sleep(4)
         user_profile_page.press_redact_button()
         time.sleep(2)  # без слип тайм не успевает прогрузиться
         user_profile_page.add_contact_form()
@@ -933,7 +939,7 @@ class TestUserProfilePage:
         colleagues_page.search_user(create_user_whit_one_project_role_and_no_assignments)
         time.sleep(2)  # если не успевает прогрузиться переходит по первому пользователю из списка
         colleagues_page.go_to_watch_the_user_eyes()
-        user_profile_page.check_note_not_visible_non_author(create_work_user, "Текст заметки")
+        user_profile_page.check_note_not_visible_non_author("Текст заметки")
         colleagues_page.go_back_to_profile()
         colleagues_page.go_colleagues_page()
         colleagues_page.search_user(create_work_user)

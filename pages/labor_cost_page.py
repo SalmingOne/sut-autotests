@@ -85,6 +85,7 @@ class LaborCostPage(BasePage):
         last_day_locator = (
             By.XPATH,
             f'//div[@aria-label="{PROJECT_NAME}"]//ancestor::div[contains(@class,"project-row MuiBox-root")]//div[{last_day_number}]//input')
+        time.sleep(1)
         self.input_time(last_day_locator, last_day_time)
         self.element_is_visible(self.locators.SAVE_BUTTON).click()
         # Переходим на предыдущий месяц и заполняем его

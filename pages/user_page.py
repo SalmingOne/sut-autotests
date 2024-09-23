@@ -66,6 +66,7 @@ class UserPage(BasePage):
     @testit.step("Получаем статус пользователя")
     @allure.step("Получаем статус пользователя")
     def get_user_status(self):
+        time.sleep(1)
         return self.element_is_visible(self.locators.USER_STATUS).text
 
     @testit.step("Уволить пользователя")

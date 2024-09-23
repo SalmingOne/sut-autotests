@@ -14,7 +14,7 @@ class AllProjectPage(BasePage):
     @testit.step("Переходим через меню на страницу все проекты")
     @allure.step("Переходим через меню на страницу все проекты")
     def go_to_all_project_page(self):
-        time.sleep(1)
+        time.sleep(2)
         self.action_move_to_element(self.element_is_visible(self.locators.TAB_PROJECTS))
         self.element_is_visible(self.locators.TAB_ALL_PROJECTS).click()
 
@@ -53,15 +53,15 @@ class AllProjectPage(BasePage):
     @testit.step("Проверяем меню Проекты в шапке сайта")
     @allure.step("Проверяем меню Проекты в шапке сайта")
     def check_all_projects_tab_menu_item(self):
-        time.sleep(1)
+        time.sleep(2)
         self.action_move_to_element(self.element_is_visible(self.locators.TAB_PROJECTS))
         menu_items = self.elements_are_visible(self.locators.ALL_PROJECTS_MENU_ITEMS)
         menu_items_names = []
         for item in menu_items:
             menu_items_names.append(item.text)
-        self.action_move_to_element(self.element_is_visible(self.locators.STATUS_FILTER_BUTTON))
         assert 5 >= len(menu_items_names) >= 3, "В меню отображается более трех проектов"
         assert 'Создать проект' and 'Посмотреть все' in menu_items_names, "В меню отсутствуют пункты Создать проект и Посмотреть все"
+        self.element_is_visible(self.locators.TAB_ALL_PROJECTS).click()
 
     @testit.step("Проверяем заголовок Проекты")
     @allure.step("Проверяем заголовок Проекты")

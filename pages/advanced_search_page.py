@@ -170,9 +170,13 @@ class AdvancedSearchPage(BasePage):
     @allure.step("Проверка операторов числового типа поля и даты")
     def check_numeric_and_date_field(self):
         self.element_is_visible(self.locators.NEW_SEARCH_BUTTON).click()
+        time.sleep(1)
         self.element_is_visible(self.locators.CRITERION_FIELD).send_keys('Дата рождения')
+        time.sleep(2)
         self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
+        time.sleep(1)
         self.element_is_visible(self.locators.RUL_FIELD).click()
+        print(self.get_operators())
         assert self.get_operators() == ['Равно', 'Не равно', 'Меньше', 'Меньше или равно', 'Больше', 'Больше или равно', 'Пусто', 'Не пусто'], \
             "Не корректные операторы сравнения при выборе числового типа поля"
 
