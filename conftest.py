@@ -510,7 +510,6 @@ def archive_project_with_assignment():
 
 @pytest.fixture()
 def project_with_assignment_not_current_manager(create_work_user):
-
     project_endpoint = ProjectEndpoint()
     project_endpoint.delete_project_if_it_exist(PROJECT_NAME)
     user_endpoint = UserEndpoint()

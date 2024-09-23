@@ -33,7 +33,6 @@ class TestUserProfilePage:
         time.sleep(1)
         user_profile_page.press_add_icon_button()
         user_profile_page.press_save_button()
-
         user_profile_page.go_to_education_tab()
         alert_messages = user_profile_page.get_alert_message()
         tab_color = user_profile_page.get_education_tab_color()
