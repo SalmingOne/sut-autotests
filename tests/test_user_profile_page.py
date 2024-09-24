@@ -175,14 +175,14 @@ class TestUserProfilePage:
     @allure.title("id-1146 10.2.2. Редактирование раздела Дополнительная информация в личном профиле сотрудника")
     def test_editing_the_additional_information_section_in_personal_profile(self, login, driver):
         user_profile_page = UserProfilePage(driver)
-        time.sleep(1)
         user_profile_page.go_to_user_profile()
+        time.sleep(3)
         before = user_profile_page.get_additional_information()
         user_profile_page.press_redact_button()
         time.sleep(1)
         user_profile_page.input_additional_information()
         user_profile_page.press_save_button()
-        time.sleep(4)
+        time.sleep(1)
         after = user_profile_page.get_additional_information()
         assert before[0] != after[0], 'Семейное положение не изменилось'
         assert before[1] != after[1], 'Информация о детях не изменилась'

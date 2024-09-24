@@ -693,7 +693,6 @@ def create_hourly_wage_user():
                        isProjectManager=False
                    )
                    ],
-
                    projectRoleIds=[first_project_role_id],
                    postId=first_post_id,
                    departmentId=first_department_id,

@@ -539,7 +539,7 @@ class TestLaborCostPage:
         today = labor_cost_page.get_date_list_from_today()
         labor_cost_page.input_labor_reason_by_project(simple_project['name'], today[1], 4)
         in_total_row_before = labor_cost_page.get_day_total_raw(today[0])
-        user_page.go_to_user_page()
+        user_page.go_to_user_page_simple()
         time.sleep(1)
         labor_cost_page.cancel_moving_to_another_page()
         in_total_row_after = labor_cost_page.get_day_total_raw(today[0])

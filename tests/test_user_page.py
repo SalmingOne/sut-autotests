@@ -129,3 +129,24 @@ class TestUsersPage:
         after_checkboxes = user_page.get_checked_checkboxes_text()
         assert before_checkboxes == after_checkboxes, \
             "Настройки фильтрации не сохранились при переходе на другую страницу"
+
+    @testit.workItemIds(2063)
+    @testit.displayName("4.9.1.1 Изменение значения фильтра в блоке заработной платы")
+    @pytest.mark.smoke
+    @allure.title("id-2063 4.9.1.1 Изменение значения фильтра в блоке заработной платы")
+    def test_changing_the_filter_value_in_the_salary_block(self, create_hourly_wage_user, login, driver):
+        user_page = UserPage(driver)
+        user_page.go_to_user_page()
+        user_page.press_filter_button()
+        user_page.press_by_salary_checkbox()
+        user_page.press_hourly_wage_checkbox()
+        before_checkboxes = user_page.get_checked_checkboxes_text()
+        user_page.check_no_data_image()
+        user_page.action_esc()
+        labor_cost_page = LaborCostPage(driver)
+        labor_cost_page.go_to_labor_cost_page()
+        user_page.go_to_user_page_simple()
+        user_page.press_filter_button()
+        after_checkboxes = user_page.get_checked_checkboxes_text()
+        assert before_checkboxes == after_checkboxes, \
+            "Настройки фильтрации не сохранились при переходе на другую страницу"

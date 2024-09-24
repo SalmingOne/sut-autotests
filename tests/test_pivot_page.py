@@ -87,6 +87,7 @@ class TestPivotPage:
     def test_displaying_overwork_on_pivot_page(self, project_with_overtime_work, login, driver):
         pivot_tab_page = PivotTabPage(driver)
         pivot_tab_page.go_to_pivot_page()
+        time.sleep(1)
         pivot_tab_page.check_overwork_by_project()
         pivot_tab_page.go_to_by_user_tab()
         pivot_tab_page.open_project_list()
