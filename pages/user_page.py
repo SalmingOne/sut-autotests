@@ -28,6 +28,12 @@ class UserPage(BasePage):
         self.element_is_visible(self.locators.SYSTEM_ROLE).click()
         self.elements_are_visible(self.locators.USER_KEBABS, 10)
 
+    @testit.step("Переход на страницу Пользователи без ожидания появления таблицы")
+    @allure.step("Переход на страницу Пользователи без ожидания появления таблицы")
+    def go_to_user_page_simple(self):
+        self.element_is_visible(self.locators.SETTING_ICON).click()
+        self.element_is_visible(self.locators.SYSTEM_ROLE).click()
+
     @testit.step("Переход на карточку пользователя")
     @allure.step("Переход на карточку пользователя")
     def go_to_user_card(self):

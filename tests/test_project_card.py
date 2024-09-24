@@ -28,13 +28,13 @@ class TestProjectCard:
         all_project_page.go_project_page(f"{PROJECT_NAME}")
         project_card_page = ProjectCardPage(driver)
         project_card_page.go_to_team_tab()
-        time.sleep(1)  # Без этого ожидания иногда не успевает прогрузиться проектная роль
+        time.sleep(2)  # Без этого ожидания иногда не успевает прогрузиться проектная роль
         input_member = project_card_page.get_all_team_members()
         project_card_page.go_to_redact_team()
         time.sleep(1)
         member_before_redact = project_card_page.get_all_team_member_on_redact()
         project_card_page.add_new_member()
-        time.sleep(1)  # Без этого ожидания иногда не успевает прогрузиться проектная роль
+        time.sleep(2)  # Без этого ожидания иногда не успевает прогрузиться проектная роль
         member_after_redact = project_card_page.get_all_team_members()
         assert input_member[0] == member_before_redact[0], "Роль, ресурс и ставка изменились при нажатии кнопки редактирования"
         assert len(input_member) != len(member_after_redact), "Не добавился новый ресурс"
