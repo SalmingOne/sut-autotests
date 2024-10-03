@@ -560,11 +560,11 @@ def create_work_user():
     post_endpoint = PostsEndpoint()
     project_roles_endpoint = ProjectRolesEndpoint()
     system_roles_endpoint = SystemRolesEndpoint()
-    first_system_role_id = system_roles_endpoint.get_all_system_roles_id()[0]
+    first_system_role_id = system_roles_endpoint.get_all_system_roles_id()[3]
     first_project_role_id = project_roles_endpoint.get_all_project_roles_id()[1]
     first_post_id = post_endpoint.get_all_posts_id()[1]
     first_department_id = department_endpoint.get_all_departments_id()[1]
-    first_project_id = project_endpoint.get_all_project().json()[4]['id']
+    first_project_id = project_endpoint.get_all_project().json()[3]['id']
     user_id = user_endpoint.get_user_id_by_email('auto_testt@mail.rruu')
     payload = dict(username="AutoTester1",
                    name="Автомат",
@@ -649,7 +649,8 @@ def create_user_whit_one_project_role_and_no_assignments():
                    phone="",
                    email="no_assignments@mail.ruru",
                    hourlyWage=False,
-                   startWorkDate="2024-04-11",
+                   startWorkDate=BasePage(driver=None).get_day_before_ymd(1),
+                   dismissalDate=None,
                    userAssignments=[],
                    projectRoleIds=[first_project_role_id],
                    postId=first_post_id,

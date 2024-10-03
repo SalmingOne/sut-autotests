@@ -59,6 +59,7 @@ class AllProjectPage(BasePage):
         menu_items_names = []
         for item in menu_items:
             menu_items_names.append(item.text)
+        time.sleep(1)
         assert 5 >= len(menu_items_names) >= 3, "В меню отображается более трех проектов"
         assert 'Создать проект' and 'Посмотреть все' in menu_items_names, "В меню отсутствуют пункты Создать проект и Посмотреть все"
         self.element_is_visible(self.locators.TAB_ALL_PROJECTS).click()
@@ -85,8 +86,8 @@ class AllProjectPage(BasePage):
         tab_title_names = []
         for title in tab_titles:
             tab_title_names.append(title.text)
-        assert tab_title_names == ['Название', 'Код', 'Дата начала', 'Дата окончания', 'Статус',
-                                   'Действия'], "В таблице есть не все столбцы"
+        assert tab_title_names == ['Название', 'Код', 'Дата начала', 'Дата окончания', 'Приоритет',
+                                   'Статус', 'Действия'], "В таблице есть не все столбцы"
 
     @testit.step("Проверяем наличие всех пунктов меню Действия")
     @allure.step("Проверяем наличие всех пунктов меню Действия")
