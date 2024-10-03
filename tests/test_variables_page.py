@@ -87,6 +87,21 @@ class TestVariablesPage:
         assert value_before_delete != value_after_delete, 'Шаблон не удален из переменной'
         variables_page.delete_add_variable('Автотест', '7')
 
+    @testit.workItemIds(3166)
+    @testit.displayName("6.3.1.3 Отмена создания переменной")
+    @pytest.mark.regress
+    @allure.title("id-3166 6.3.1.3 Отмена создания переменной")
+    def test_cancel_variable_creation(self, login, driver):
+        variables_page = VariablesPage(driver)
+        variables_page.go_to_variables_page()
+        count_before = variables_page.get_count_of_variables()
+        variables_page.cancel_variable_creation(
+            'Поле переменной',
+            'Имя переменной',
+            'Значение переменной')
+        count_after = variables_page.get_count_of_variables()
+        assert count_before == count_after, 'Переменная создана'
+
     @testit.workItemIds(3229)
     @testit.displayName("6.3.1.1. Попытка загрузить шаблон заявления с неподдерживаемым форматом в систему")
     @pytest.mark.regress

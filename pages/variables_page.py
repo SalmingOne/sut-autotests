@@ -177,6 +177,20 @@ class VariablesPage(BasePage):
         time.sleep(1)
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
 
+    @testit.step("Получить кол-во переменных на странице")
+    @allure.step("Получить кол-во переменных на странице")
+    def get_count_of_variables(self):
+        return len(self.elements_are_visible(self.locators.ALL_KEBABS))
+
+    @testit.step("Отмена создания переменной")
+    @allure.step("Отмена создания переменной")
+    def cancel_variable_creation(self, field_name, variable_mame, variable_value):
+        self.element_is_visible(self.locators.ADD_VARIABLE_BUTTON).click()
+        self.element_is_visible(self.locators.FIELD_NAME_INPUT).send_keys(field_name)
+        self.element_is_visible(self.locators.VARIABLE_NAME_INPUT).send_keys(variable_mame)
+        self.element_is_visible(self.locators.VARIABLE_VALUE_INPUT).send_keys(variable_value)
+        self.element_is_visible(self.locators.ABORT_BUTTON).click()
+
     @testit.step("Добавление шаблона в невалидном формате")
     @allure.step("Добавление шаблона в невалидном формате")
     def add_incorrect_template_file(self):
