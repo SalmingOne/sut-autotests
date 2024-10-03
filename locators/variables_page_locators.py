@@ -35,6 +35,7 @@ class VariablesPageLocators:
     DROPDOWN_ITEMS_NOT_SELECTED = (By.CSS_SELECTOR, 'li[role="option"][aria-selected="false"]')
     # Ошибки
     MUI_ERROR = (By.XPATH, '//p[contains(@class, "Mui-error")]')
+    ALERT_INCORRECT_TEMPLATE = (By.XPATH, '//div[text()="Неверный тип шаблона"]')
 
     # Блок с шаблонами
     DELETE_ICON = (By.CSS_SELECTOR, 'svg[data-testid="DeleteIcon"]')

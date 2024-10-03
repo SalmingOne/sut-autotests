@@ -86,3 +86,13 @@ class TestVariablesPage:
         value_after_delete = variables_page.get_value_from_column_template('Автотест', '6')
         assert value_before_delete != value_after_delete, 'Шаблон не удален из переменной'
         variables_page.delete_add_variable('Автотест', '7')
+
+    @testit.workItemIds(3229)
+    @testit.displayName("6.3.1.1. Попытка загрузить шаблон заявления с неподдерживаемым форматом в систему")
+    @pytest.mark.regress
+    @allure.title("id-3229 6.3.1.1. Попытка загрузить шаблон заявления с неподдерживаемым форматом в систему")
+    def test_add_template_application_incorrect_format(self, login, driver):
+        variables_page = VariablesPage(driver)
+        variables_page.go_to_variables_page()
+        variables_page.check_template_is_empty()
+        variables_page.add_incorrect_template_file()

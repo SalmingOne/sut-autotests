@@ -177,3 +177,11 @@ class VariablesPage(BasePage):
         time.sleep(1)
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
 
+    @testit.step("Добавление шаблона в невалидном формате")
+    @allure.step("Добавление шаблона в невалидном формате")
+    def add_incorrect_template_file(self):
+        self.add_file('Некорректный шаблон.pdf', 'Некорректный шаблон')
+        self.element_is_present(self.locators.ADD_DOC, 2).send_keys(os.path.abspath(r'../Некорректный шаблон.pdf'))
+        assert self.element_is_visible(self.locators.ALERT_INCORRECT_TEMPLATE), "Сообщения с предупреждением нет"
+        self.delete_file('Некорректный шаблон.pdf')
+
