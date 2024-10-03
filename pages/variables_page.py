@@ -191,6 +191,22 @@ class VariablesPage(BasePage):
         self.element_is_visible(self.locators.VARIABLE_VALUE_INPUT).send_keys(variable_value)
         self.element_is_visible(self.locators.ABORT_BUTTON).click()
 
+    @testit.step("Отмена удаления шаблона")
+    @testit.step("Отмена удаления шаблона")
+    def cancel_template_deletion(self):
+        self.element_is_present(self.locators.DELETE_ICON).click()
+        self.element_is_visible(self.locators.ABORT_BUTTON).click()
+        return self.element_is_displayed(self.locators.DELETE_ICON)
+
+    @testit.step("Проверка что есть хотя бы один загруженный шаблон")
+    @testit.step("Проверка что есть хотя бы один загруженный шаблон")
+    def check_template_is_not_empty(self):
+        if self.element_is_displayed(self.locators.DELETE_ICON):
+            pass
+        else:
+            self.add_template_file()
+            self.delete_file('шаблон.docx')
+
     @testit.step("Добавление шаблона в невалидном формате")
     @allure.step("Добавление шаблона в невалидном формате")
     def add_incorrect_template_file(self):

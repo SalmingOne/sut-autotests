@@ -102,6 +102,16 @@ class TestVariablesPage:
         count_after = variables_page.get_count_of_variables()
         assert count_before == count_after, 'Переменная создана'
 
+    @testit.workItemIds(3163)
+    @testit.displayName("6.3.1.1. Отмена удаления шаблона заявления в системе")
+    @pytest.mark.regress
+    @allure.title("id-3163 6.3.1.1. Отмена удаления шаблона заявления в системе")
+    def test_cancel_delete_template_application(self, login, driver):
+        variables_page = VariablesPage(driver)
+        variables_page.go_to_variables_page()
+        variables_page.check_template_is_not_empty()
+        assert variables_page.cancel_template_deletion(), "Шаблон удален"
+
     @testit.workItemIds(3229)
     @testit.displayName("6.3.1.1. Попытка загрузить шаблон заявления с неподдерживаемым форматом в систему")
     @pytest.mark.regress
