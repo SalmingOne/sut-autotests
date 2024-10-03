@@ -78,12 +78,12 @@ class TestVariablesPage:
         variables_page.check_template_is_empty()
         variables_page.add_template_file()
         variables_page.add_variable_with_template('Автотест', 'Автотекст')
-        value_before_delete = variables_page.get_value_from_column_template('Автотест', '6')
+        value_before_delete = variables_page.get_value_from_column('Автотест', '6')
         variables_page.check_template_is_empty()
         # уходим из шаблонов, чтобы проверить что он удалился
         variables_page.go_to_variables_page()
         variables_page.check_template_file_delete()
-        value_after_delete = variables_page.get_value_from_column_template('Автотест', '6')
+        value_after_delete = variables_page.get_value_from_column('Автотест', '6')
         assert value_before_delete != value_after_delete, 'Шаблон не удален из переменной'
         variables_page.delete_add_variable('Автотест', '7')
 
@@ -111,3 +111,23 @@ class TestVariablesPage:
         variables_page.go_to_variables_page()
         variables_page.check_template_is_empty()
         variables_page.add_incorrect_template_file()
+
+    @testit.workItemIds(1279)
+    @testit.displayName("6.3.1.1. Редактирование переменной в таблице переменных")
+    @pytest.mark.regress
+    @allure.title("id-1279 6.3.1.1. Редактирование переменной в таблице переменных")
+    def test_add_editing_variable(self, login, driver):
+        variables_page = VariablesPage(driver)
+        variables_page.go_to_variables_page()
+        variables_page.create_variable('Для редактирования', 'Для редактирования', 'Для редактирования')
+        variables_page.click_editing_add_variable('Для редактирования', '7')
+        variables_page.editing_variable('Отредактировано')
+        # без рефреша не видит новое название
+        driver.refresh()
+        field_name = variables_page.get_value_from_column("Отредактировано", '1')
+        variable_name = variables_page.get_value_from_column("Отредактировано", '2')
+        variable_value = variables_page.get_value_from_column("Отредактировано", '5')
+        assert field_name == "Отредактировано", 'Название поля не изменилось'
+        assert variable_name == "Отредактировано", 'Название переменной не изменилось'
+        assert variable_value == "Отредактировано", 'Значение переменной не изменилось'
+        variables_page.delete_add_variable('Отредактировано', '7')

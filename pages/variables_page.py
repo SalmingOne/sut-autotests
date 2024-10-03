@@ -55,10 +55,10 @@ class VariablesPage(BasePage):
 
     @testit.step("Создание переменной")
     @allure.step("Создание переменной")
-    def create_variable(self, field_name, variable_mame, variable_value):
+    def create_variable(self, field_name, variable_name, variable_value):
         self.element_is_visible(self.locators.ADD_VARIABLE_BUTTON).click()
         self.element_is_visible(self.locators.FIELD_NAME_INPUT).send_keys(field_name)
-        self.element_is_visible(self.locators.VARIABLE_NAME_INPUT).send_keys(variable_mame)
+        self.element_is_visible(self.locators.VARIABLE_NAME_INPUT).send_keys(variable_name)
         self.element_is_visible(self.locators.VARIABLE_VALUE_INPUT).send_keys(variable_value)
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
 
@@ -153,9 +153,9 @@ class VariablesPage(BasePage):
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
         time.sleep(1)
 
-    @testit.step("Получить значение ячейки в столбце Шаблоны")
-    @allure.step("Получить значение ячейки в столбце Шаблоны")
-    def get_value_from_column_template(self, variable_name, column_number):
+    @testit.step("Получить значение ячейки в указанном столбце")
+    @allure.step("Получить значение ячейки в указанном столбце")
+    def get_value_from_column(self, variable_name, column_number):
         try:
             self.element_is_visible(self.locators.get_value_from_column(variable_name, column_number))
             return self.element_is_visible(self.locators.get_value_from_column(variable_name, column_number)).text
@@ -199,3 +199,17 @@ class VariablesPage(BasePage):
         assert self.element_is_visible(self.locators.ALERT_INCORRECT_TEMPLATE), "Сообщения с предупреждением нет"
         self.delete_file('Некорректный шаблон.pdf')
 
+    @testit.step("Нажать кнопку редактирования добавленной переменной")
+    @allure.step("Нажать кнопку редактирования добавленной переменной")
+    def click_editing_add_variable(self, variable_name, column_number):
+        self.element_is_visible(self.locators.get_value_from_column(variable_name, column_number)).click()
+        time.sleep(1)
+        self.element_is_visible(self.locators.KEBABS_EDIT_MENU_ITEM).click()
+
+    @testit.step("Редактирование переменной")
+    @allure.step("Редактирование переменной")
+    def editing_variable(self, new_name):
+        self.element_is_visible(self.locators.FIELD_NAME_INPUT).send_keys(Keys.CONTROL + 'a', new_name)
+        self.element_is_visible(self.locators.VARIABLE_NAME_INPUT).send_keys(Keys.CONTROL + 'a', new_name)
+        self.element_is_visible(self.locators.VARIABLE_VALUE_INPUT).send_keys(Keys.CONTROL + 'a', new_name)
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
