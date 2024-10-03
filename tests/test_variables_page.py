@@ -42,12 +42,12 @@ class TestVariablesPage:
     @testit.displayName("6.3.1.3 Создание переменной в таблице переменных, если уникальные поля НЕ уникальны")
     @pytest.mark.smoke
     @allure.title("id-3164 6.3.1.3 Создание переменной в таблице переменных, если уникальные поля НЕ уникальны")
-    def test_creating_a_variable_with_a_non_unique_fields(self, variables, login, driver):
+    def test_creating_a_variable_with_a_non_unique_fields(self, variable_not_unique, login, driver):
         variables_page = VariablesPage(driver)
         variables_page.go_to_variables_page()
         variables_page.create_variable(
-            variables[0],
-            variables[1],
+            variable_not_unique[0],
+            variable_not_unique[1],
             'Значение переменной'
         )
         errors = variables_page.get_mui_errors_text()
@@ -126,10 +126,9 @@ class TestVariablesPage:
     @testit.displayName("6.3.1.1. Редактирование переменной в таблице переменных")
     @pytest.mark.regress
     @allure.title("id-1279 6.3.1.1. Редактирование переменной в таблице переменных")
-    def test_add_editing_variable(self, login, driver):
+    def test_add_editing_variable(self, variable_for_edit, login, driver):
         variables_page = VariablesPage(driver)
         variables_page.go_to_variables_page()
-        variables_page.create_variable('Для редактирования', 'Для редактирования', 'Для редактирования')
         variables_page.click_editing_add_variable('Для редактирования', '7')
         variables_page.editing_variable('Отредактировано')
         # без рефреша не видит новое название
@@ -140,4 +139,3 @@ class TestVariablesPage:
         assert field_name == "Отредактировано", 'Название поля не изменилось'
         assert variable_name == "Отредактировано", 'Название переменной не изменилось'
         assert variable_value == "Отредактировано", 'Значение переменной не изменилось'
-        variables_page.delete_add_variable('Отредактировано', '7')
