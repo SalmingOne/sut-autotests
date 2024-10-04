@@ -151,7 +151,7 @@ class TestVariablesPage:
         variables_page.cancel_variable_deletion(variable_for_delete[0])
         driver.refresh()
         count_variables_after_cancel_deletion = variables_page.get_count_of_variables()
-        variables_page.delete_variable(variable_for_delete)
+        variables_page.delete_variable(variable_for_delete[0])
         driver.refresh()
         count_variables_after_delete = variables_page.get_count_of_variables()
         assert count_variables == count_variables_after_cancel_deletion, "Переменная удалена"
