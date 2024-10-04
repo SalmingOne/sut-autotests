@@ -229,3 +229,12 @@ class VariablesPage(BasePage):
         self.element_is_visible(self.locators.VARIABLE_NAME_INPUT).send_keys(Keys.CONTROL + 'a', new_name)
         self.element_is_visible(self.locators.VARIABLE_VALUE_INPUT).send_keys(Keys.CONTROL + 'a', new_name)
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+
+    @testit.step("Отмена удаления переменной")
+    @allure.step("Отмена удаления переменной")
+    def cancel_variable_deletion(self, variable_mame):
+        self.elements_are_visible(self.locators.ALL_SEARCH_FIELDS)[6].send_keys(variable_mame)
+        self.elements_are_visible(self.locators.ALL_KEBABS)[0].click()
+        self.element_is_visible(self.locators.KEBABS_DEL_MENU_ITEM).click()
+        self.element_is_visible(self.locators.CANCEL_ACCEPT_BUTTON).click()
+        self.elements_are_visible(self.locators.ALL_SEARCH_FIELDS)[6].clear()

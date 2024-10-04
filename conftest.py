@@ -405,6 +405,12 @@ def variable_for_edit():
     yield payload['name'], payload['systemName'], payload['value']
     variables_endpoints.delete_variables_api(str(response.json()['id']))
 
+@pytest.fixture()
+def variable_for_delete():
+    variables_endpoints = VariablesEndpoint()
+    payload = dict(name='Для удаления', systemName='Для удаления', value='Для удаления')
+    variables_endpoints.create_variables_api(json=payload)
+    yield payload['name'],payload['systemName'], payload['value']
 
 @pytest.fixture()
 def logging_off():

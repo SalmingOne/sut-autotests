@@ -16,6 +16,7 @@ class VariablesPageLocators:
     KEBABS_DEL_MENU_ITEM = (By.XPATH, '//span[text()="Удалить"]')
     KEBABS_EDIT_MENU_ITEM = (By.XPATH, '//span[text()="Редактировать"]')
     DEL_ACCEPT_BUTTON = (By.XPATH, '//p[@id="alert-dialog-description"]//following::button[@type="submit"]')
+    CANCEL_ACCEPT_BUTTON = (By.XPATH, '//p[@id="alert-dialog-description"]//following::button[text()="Отменить"]')
     ALL_SEARCH_FIELDS = (By.CSS_SELECTOR, 'input[placeholder="Поиск"]')
 
     # Дровер создания переменной
