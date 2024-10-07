@@ -411,7 +411,7 @@ def variable_for_delete():
     payload = dict(name='Для удаления', systemName='Для удаления', value='Для удаления')
     response = variables_endpoints.create_variables_api(json=payload)
     yield payload['name'], payload['systemName'], payload['value']
-    if any(variable["name"] == payload["name"] and variable["systemName"] == payload["systemName"] for variable in variables_endpoints.get_all_variables().json()):
+    if any(variable["name"] == payload["name"] for variable in variables_endpoints.get_all_variables().json()):
         variables_endpoints.delete_variables_api(str(response.json()['id']))
 
 @pytest.fixture()
