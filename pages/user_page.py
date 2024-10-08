@@ -229,3 +229,57 @@ class UserPage(BasePage):
             self.go_to_element(element)
             data.append(element.text)
         return data
+
+    @testit.step("Открытие дровера редактирования пользователя")
+    @allure.step("Открытие дровера редактирования пользователя")
+    def open_redact_drawer(self):
+        time.sleep(1)  # Без ожидания не успевает срабатывать анимация
+        self.element_is_visible(self.locators.USER_KEBABS).click()
+        self.element_is_visible(self.locators.REDACT_BUTTON).click()
+
+    @testit.step("Проверка кликабельности предыдущего дня в датапикере")
+    @allure.step("Проверка кликабельности предыдущего дня в датапикере")
+    def check_clickable_previous_day(self):
+        self.element_is_visible(self.locators.DISMISSAL_DATA_DATA_PICKER).click()
+        assert not self.element_is_clickable(self.locators.DAY_BEFORE_SELECTED_DAY_PICKER,
+                                             2), 'Можно выбрать дату приема на работу'
+
+    @testit.step("Нажатие кнопки отмены в дровере")
+    @allure.step("Нажатие кнопки отмены в дровере")
+    def press_cancel_button(self):
+        self.element_is_visible(self.locators.ABORT_BUTTON).click()
+
+    @testit.step("Нажатие кнопки следующего дня в датапикере")
+    @allure.step("Нажатие кнопки следующего дня в датапикере")
+    def press_next_day_button_in_data_picker(self):
+        self.element_is_visible(self.locators.DAY_AFTER_THIS_DAY_PICKER).click()
+
+    @testit.step("Нажатие кнопки сохранения в дровере")
+    @allure.step("Нажатие кнопки сохранения в дровере")
+    def press_submit_button(self):
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+
+    @testit.step("Берем текст сообщения системы")
+    @allure.step("Берем текст сообщения системы")
+    def get_alert_message(self):
+        self.elements_are_visible(self.locators.ALERT_TEXT, 15)
+        all_messages = self.elements_are_visible(self.locators.ALERT_TEXT)
+        data = []
+        for message in all_messages:
+            data.append(message.text)
+        return data
+
+    @testit.step("Проверка наличия пункта Восстановить в кебаб меню")
+    @allure.step("Проверка наличия пункта Восстановить в кебаб меню")
+    def check_restore_menu_item(self):
+        time.sleep(1)  # Без ожидания не успевает срабатывать анимация
+        self.element_is_visible(self.locators.USER_KEBABS).click()
+        assert self.element_is_displayed(self.locators.RESTORE_BUTTON)
+
+    @testit.step("Проверка корректности даты увольнения")
+    @allure.step("Проверка корректности даты увольнения")
+    def check_data_fired_in_drawer(self):
+        self.element_is_visible(self.locators.REDACT_BUTTON).click()
+        assert self.element_is_visible(self.locators.DISMISSAL_DATA).get_attribute('value') == self.get_day_before(-1), \
+            "Дата увольнения не следующий день"
+

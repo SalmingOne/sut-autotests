@@ -18,7 +18,7 @@ class TestUserProfilePage:
     def test_blank_entry_on_education_tab(self, login, driver):
         user_profile_page = UserProfilePage(driver)
         user_profile_page.go_to_user_profile()
-        time.sleep(4)
+        time.sleep(5)
         user_profile_page.go_to_education_tab()
         # Удаляем диплом если есть
         if user_profile_page.check_diploma_title():
@@ -35,8 +35,8 @@ class TestUserProfilePage:
         user_profile_page.press_save_button()
         user_profile_page.go_to_education_tab()
         alert_messages = user_profile_page.get_alert_message()
-        tab_color = user_profile_page.get_education_tab_color()
         errors = user_profile_page.get_mui_errors_text()
+        tab_color = user_profile_page.get_education_tab_color()
         assert 'На табе "Образование" не все поля были заполнены корректно' in alert_messages, "Не появилось сообщение об ошибке"
         assert tab_color == 'rgba(211, 47, 47, 1)', "Цвет вкладки не красный"
         assert 'Поле обязательно' in errors, "Нет сообщений об обязательности поля"
@@ -56,9 +56,9 @@ class TestUserProfilePage:
         user_profile_page.press_save_button()
         user_profile_page.go_to_certificate_tab()
         alert_message = user_profile_page.get_alert_message()
-        tab_color = user_profile_page.get_certificate_tab_color()
         time.sleep(1)
         errors = user_profile_page.get_mui_errors_text()
+        tab_color = user_profile_page.get_certificate_tab_color()
         assert 'На табе "Сертификаты" не все поля были заполнены корректно' in alert_message, "Не появилось сообщение об ошибке"
         assert tab_color == 'rgba(211, 47, 47, 1)', "Цвет вкладки не красный"
         assert 'Поле обязательно' in errors, "Нет сообщений об обязательности поля"
@@ -179,10 +179,10 @@ class TestUserProfilePage:
         time.sleep(3)
         before = user_profile_page.get_additional_information()
         user_profile_page.press_redact_button()
-        time.sleep(1)
+        time.sleep(2)
         user_profile_page.input_additional_information()
         user_profile_page.press_save_button()
-        time.sleep(1)
+        time.sleep(2)
         after = user_profile_page.get_additional_information()
         assert before[0] != after[0], 'Семейное положение не изменилось'
         assert before[1] != after[1], 'Информация о детях не изменилась'
@@ -465,6 +465,7 @@ class TestUserProfilePage:
         time.sleep(1)
         colleagues_page.check_user_name_link()
         user_name = user_profile_page.get_title()
+        time.sleep(3)
         user_profile_page.go_to_certificate_tab()
         # Если нет сертификата создаем его
         if user_profile_page.check_certificate_title():
@@ -891,9 +892,9 @@ class TestUserProfilePage:
         user_profile_page.add_contact_form()
         user_profile_page.space_input_contact_form()
         user_profile_page.press_save_button()
+        assert user_profile_page.get_all_mui_errors() == ['Поле обязательно', 'Поле обязательно'], "Нет сообщения об обязательности полей"
         assert user_profile_page.get_my_profile_tab_color() == 'rgba(211, 47, 47, 1)', "Таб Информация о сотруднике не подсвечивается красным цветом."
         assert user_profile_page.get_alert_message() == ['На табе "Информация о сотруднике" не все поля были заполнены корректно'], "Нет сообщения о некорректном заполнении полей"
-        assert user_profile_page.get_all_mui_errors() == ['Поле обязательно', 'Поле обязательно'], "Нет сообщения об обязательности полей"
 
     @testit.workItemIds(1517)
     @testit.displayName("10.2.4. Удаление дополнительных контактов в разделе Контакты")

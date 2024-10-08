@@ -60,9 +60,9 @@ class TestProjectCard:
 
         project_card_page.go_to_team_tab()
         project_card_page.check_team_tab()
-        # Переход на ресурсный план может положить стенд, пока закоментировал
-        #project_card_page.go_to_resource_plan_tab()
-        #project_card_page.check_resource_plan_tab()
+        # Переход на ресурсный план может положить стенд, пока закомментировал
+        project_card_page.go_to_resource_plan_tab()
+        project_card_page.check_resource_plan_tab()
 
         project_card_page.go_to_progress_tab()
         project_card_page.check_progress_tab()

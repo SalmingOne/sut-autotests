@@ -35,6 +35,8 @@ class UserPageLocators:
     USER_CARD_TITLE = (By.XPATH, '//h6[text()="Просмотр полной информации"]')
     TAB_PROJECTS = (By.XPATH, '//button[text()="ПРОЕКТЫ"]')
     TAB_CONTACTS = (By.XPATH, '//button[text()="КОНТАКТЫ"]')
+    ABORT_BUTTON = (By.XPATH, '//button[text()="Отменить"]')
+    SUBMIT_BUTTON = (By.XPATH, '//button[text()="Сохранить"]')
     # Фильтрация
     FILTER_BUTTON = (By.XPATH, '//h6[text()="Отображение"]/..')
     TAB_FILTER_BUTTONS = (By.XPATH, '//div[@class="ag-floating-filter-button"]/button')
@@ -44,12 +46,16 @@ class UserPageLocators:
 
     COLUMNS_HEADERS = (By.CSS_SELECTOR, 'span[ref="eText"]')
     HIRING_DATA_DATA_PICKER = (By.XPATH, '//label[text()="Дата принятия на работу"]//..//descendant::button')
+    DISMISSAL_DATA_DATA_PICKER = (By.XPATH, '//input[@name="dismissalDate"]/..//*[@data-testid="CalendarTodayOutlinedIcon"]')
+    DISMISSAL_DATA = (By.XPATH, '//input[@name="dismissalDate"]')
     HIRING_DATA_INPUT = (By.XPATH, '//label[text()="Дата принятия на работу"]//..//descendant::input')
     SYSTEM_ROLE_FIELD = (By.CSS_SELECTOR, 'input[placeholder="Начните вводить системную роль"]')
     SELECTED_SYSTEM_ROLE = (By.CSS_SELECTOR, 'li[aria-label][aria-selected="true"]')
     NOT_SELECTED_SYSTEM_ROLE = (By.CSS_SELECTOR, 'li[aria-label][aria-selected="false"]')
     USER_SYSTEM_ROLE_DISABLE_INDICATOR = (By.XPATH, '//div[@name="systemRoleIds"]//span[contains(@class,"MuiChip-label MuiChip-labelMedium")]/..')
     DELETE_PROJECT_ROLE_ICONS = (By.XPATH, '//div[@name="projectRoles"]//*[local-name()="svg"][@data-testid="CancelIcon"]')
+
+    ALERT_TEXT = (By.XPATH, '//div[contains(@class, "MuiAlert-message")]')
 
     def delete_system_role_button(self, system_role_name):
         return By.XPATH, f'//div[@name="systemRoleIds"]//span[text()="{system_role_name}"]//..//*[local-name()="svg"]'

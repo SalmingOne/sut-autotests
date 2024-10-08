@@ -150,3 +150,32 @@ class TestUsersPage:
         after_checkboxes = user_page.get_checked_checkboxes_text()
         assert before_checkboxes == after_checkboxes, \
             "Настройки фильтрации не сохранились при переходе на другую страницу"
+
+    @testit.workItemIds(11854)
+    @testit.displayName("4.6 Запланированное увольнение пользователя / отмена увольнения")
+    @pytest.mark.regress
+    @allure.title("id-11854 4.6 Запланированное увольнение пользователя / отмена увольнения")
+    def test_planned_user_termination_cancellation_of_termination(self,
+                                                                  create_user_whit_one_project_role_and_no_assignments,
+                                                                  login, driver):
+        user_page = UserPage(driver)
+        user_page.go_to_user_page()
+        user_page.check_user_is_not_in_table(create_user_whit_one_project_role_and_no_assignments)
+        user_page.open_redact_drawer()
+        user_page.check_clickable_previous_day()
+        user_page.action_esc()
+        user_page.press_cancel_button()
+        user_page.open_redact_drawer()
+        user_page.check_clickable_previous_day()
+        user_page.press_next_day_button_in_data_picker()
+        user_page.press_submit_button()
+        message = user_page.get_alert_message()
+        time.sleep(2)
+        user_page.check_restore_menu_item()
+        user_page.check_data_fired_in_drawer()
+        time.sleep(1)
+        user_page.press_cancel_button()
+        # Восстановление пользователя
+        user_page.restore_user()
+        assert message == ['Пользователь изменен'], "Нет сообщения об изменении пользователя"
+
