@@ -143,7 +143,7 @@ class TestVariablesPage:
     @testit.workItemIds(1280)
     @testit.displayName("6.3.1.5 Удаление/отмена удаления переменной из таблицы переменных")
     @pytest.mark.regress
-    @allure.title("id-1279 6.3.1.5 Удаление/отмена удаления переменной из таблицы переменных")
+    @allure.title("id-1280 6.3.1.5 Удаление/отмена удаления переменной из таблицы переменных")
     def test_delete_and_cancel_deletion_variable(self, variable_for_delete, login, driver):
         variables_page = VariablesPage(driver)
         variables_page.go_to_variables_page()
