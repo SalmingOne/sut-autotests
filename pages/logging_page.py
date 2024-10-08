@@ -91,5 +91,6 @@ class LoggingPage(BasePage):
     @testit.step("Проверка активны ли кнопки")
     @allure.step("Проверка активны ли кнопки")
     def buttons_is_disabled(self):
-        assert self.element_is_visible(self.locators.SUBMIT_BUTTON).get_attribute('disabled'), "Кнопка активна"
-        assert self.element_is_visible(self.locators.ABORT_BUTTON).get_attribute('disabled'), "Кнопка активна"
+        save_btn_status = self.element_is_visible(self.locators.SUBMIT_BUTTON).get_attribute('disabled')
+        abort_btn_status = self.element_is_visible(self.locators.ABORT_BUTTON).get_attribute('disabled')
+        return save_btn_status and abort_btn_status
