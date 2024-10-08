@@ -156,3 +156,14 @@ class TestVariablesPage:
         count_variables_after_delete = variables_page.get_count_of_variables()
         assert count_variables == count_variables_after_cancel_deletion, "Переменная удалена"
         assert (count_variables - 1) == count_variables_after_delete, "Переменная не удалена"
+
+    @testit.workItemIds(3168)
+    @testit.displayName("6.3.1.4 Редактирование переменной в таблице переменных, если заполнены не все поля уникальными значениями")
+    @pytest.mark.regress
+    @allure.title("id-3168 6.3.1.4 Редактирование переменной в таблице переменных, если заполнены не все поля уникальными значениями")
+    def test_edit_variable_to_not_unique(self, variable_for_edit, variable_not_unique, login, driver):
+        variables_page = VariablesPage(driver)
+        variables_page.go_to_variables_page()
+        variables_page.click_editing_add_variable(variable_for_edit['name'], '7')
+        variables_page.editing_variable(variable_not_unique['name'])
+        variables_page.check_warning_text('Переменная с таким названием поля уже создана в системе', 'Переменная с таким названием уже создана в системе')
