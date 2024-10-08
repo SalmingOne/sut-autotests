@@ -139,3 +139,20 @@ class TestVariablesPage:
         assert field_name == "Отредактировано", 'Название поля не изменилось'
         assert variable_name == "Отредактировано", 'Название переменной не изменилось'
         assert variable_value == "Отредактировано", 'Значение переменной не изменилось'
+
+    @testit.workItemIds(1280)
+    @testit.displayName("6.3.1.5 Удаление/отмена удаления переменной из таблицы переменных")
+    @pytest.mark.regress
+    @allure.title("id-1280 6.3.1.5 Удаление/отмена удаления переменной из таблицы переменных")
+    def test_delete_and_cancel_deletion_variable(self, variable_for_delete, login, driver):
+        variables_page = VariablesPage(driver)
+        variables_page.go_to_variables_page()
+        count_variables = variables_page.get_count_of_variables()
+        variables_page.cancel_variable_deletion(variable_for_delete[0])
+        driver.refresh()
+        count_variables_after_cancel_deletion = variables_page.get_count_of_variables()
+        variables_page.delete_variable(variable_for_delete[0])
+        driver.refresh()
+        count_variables_after_delete = variables_page.get_count_of_variables()
+        assert count_variables == count_variables_after_cancel_deletion, "Переменная удалена"
+        assert (count_variables - 1) == count_variables_after_delete, "Переменная не удалена"
