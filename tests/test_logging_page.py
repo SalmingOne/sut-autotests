@@ -53,7 +53,7 @@ class TestLoggingPage:
         logging_page.go_to_audit_page()
         logging_page.check_elements_on_page()
         logging_page.check_elements_in_select()
-        assert logging_page.buttons_is_disabled, "Кнопки активны"
+        assert logging_page.buttons_are_disabled(), "Кнопки активны"
 
 
 
