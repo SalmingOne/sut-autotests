@@ -43,3 +43,16 @@ class TestLoggingPage:
         assert dialog_text == 'Вы уверены, что хотите отключить аудит?', 'Не корректный текст в модальном окне'
         assert alert_text == 'Аудит отключен', 'Не появилось сообщение об отключении аудита'
         assert not audit_on_menu, 'Нет скрылся пункт меню Аудит'
+
+    @testit.workItemIds(1228)
+    @testit.displayName('6.4.3 Содержание таба "Аудит"')
+    @pytest.mark.smoke
+    @allure.title('id-1228 6.4.3 Содержание таба "Аудит"')
+    def test_view_tab_audit(self, login, driver):
+        logging_page = LoggingPage(driver)
+        logging_page.go_to_audit_page()
+        logging_page.check_elements_on_page()
+        logging_page.check_elements_in_select()
+
+
+

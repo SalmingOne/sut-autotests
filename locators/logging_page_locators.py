@@ -11,6 +11,7 @@ class LoggingPageLocators:
     DEPTH_DATE_QUANTITY_FIELD = (By.CSS_SELECTOR, 'input[name="depthDateQuantity"]')
     DEPTH_DATE_TYPE_FIELD = (By.XPATH, '//div[@name="depthDateType"]//input')
     SUBMIT_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
+    ABORT_BUTTON = (By.XPATH, '//button[text()="Отменить"]')
     # Поля и кнопки на модальном окне
     DIALOG_TEXT = (By.CSS_SELECTOR, 'p[class^="MuiTypography-root MuiTypography-body2"]')
     DIALOG_SUBMIT_BUTTON = (By.XPATH, '//div[@role="dialog"]//button[@type="submit"]')
@@ -23,3 +24,6 @@ class LoggingPageLocators:
     # Выбор пункта меню
     def set_choice(self, choice):
         return (By.XPATH, f'//li[text()="{choice}"]')
+
+    def get_elements_in_select(self):
+        return (By.XPATH, "//li")
