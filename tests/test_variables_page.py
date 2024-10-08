@@ -42,12 +42,12 @@ class TestVariablesPage:
     @testit.displayName("6.3.1.3 Создание переменной в таблице переменных, если уникальные поля НЕ уникальны")
     @pytest.mark.smoke
     @allure.title("id-3164 6.3.1.3 Создание переменной в таблице переменных, если уникальные поля НЕ уникальны")
-    def test_creating_a_variable_with_a_non_unique_fields(self, variables, login, driver):
+    def test_creating_a_variable_with_a_non_unique_fields(self, variable_not_unique, login, driver):
         variables_page = VariablesPage(driver)
         variables_page.go_to_variables_page()
         variables_page.create_variable(
-            variables[0],
-            variables[1],
+            variable_not_unique[0],
+            variable_not_unique[1],
             'Значение переменной'
         )
         errors = variables_page.get_mui_errors_text()
@@ -78,11 +78,64 @@ class TestVariablesPage:
         variables_page.check_template_is_empty()
         variables_page.add_template_file()
         variables_page.add_variable_with_template('Автотест', 'Автотекст')
-        value_before_delete = variables_page.get_value_from_column_template('Автотест', '6')
+        value_before_delete = variables_page.get_value_from_column('Автотест', '6')
         variables_page.check_template_is_empty()
         # уходим из шаблонов, чтобы проверить что он удалился
         variables_page.go_to_variables_page()
         variables_page.check_template_file_delete()
-        value_after_delete = variables_page.get_value_from_column_template('Автотест', '6')
+        value_after_delete = variables_page.get_value_from_column('Автотест', '6')
         assert value_before_delete != value_after_delete, 'Шаблон не удален из переменной'
         variables_page.delete_add_variable('Автотест', '7')
+
+    @testit.workItemIds(3166)
+    @testit.displayName("6.3.1.3 Отмена создания переменной")
+    @pytest.mark.regress
+    @allure.title("id-3166 6.3.1.3 Отмена создания переменной")
+    def test_cancel_variable_creation(self, login, driver):
+        variables_page = VariablesPage(driver)
+        variables_page.go_to_variables_page()
+        count_before = variables_page.get_count_of_variables()
+        variables_page.cancel_variable_creation(
+            'Поле переменной',
+            'Имя переменной',
+            'Значение переменной')
+        count_after = variables_page.get_count_of_variables()
+        assert count_before == count_after, 'Переменная создана'
+
+    @testit.workItemIds(3163)
+    @testit.displayName("6.3.1.1. Отмена удаления шаблона заявления в системе")
+    @pytest.mark.regress
+    @allure.title("id-3163 6.3.1.1. Отмена удаления шаблона заявления в системе")
+    def test_cancel_delete_template_application(self, login, driver):
+        variables_page = VariablesPage(driver)
+        variables_page.go_to_variables_page()
+        variables_page.check_template_is_not_empty()
+        assert variables_page.cancel_template_deletion(), "Шаблон удален"
+
+    @testit.workItemIds(3229)
+    @testit.displayName("6.3.1.1. Попытка загрузить шаблон заявления с неподдерживаемым форматом в систему")
+    @pytest.mark.regress
+    @allure.title("id-3229 6.3.1.1. Попытка загрузить шаблон заявления с неподдерживаемым форматом в систему")
+    def test_add_template_application_incorrect_format(self, login, driver):
+        variables_page = VariablesPage(driver)
+        variables_page.go_to_variables_page()
+        variables_page.check_template_is_empty()
+        variables_page.add_incorrect_template_file()
+
+    @testit.workItemIds(1279)
+    @testit.displayName("6.3.1.1. Редактирование переменной в таблице переменных")
+    @pytest.mark.regress
+    @allure.title("id-1279 6.3.1.1. Редактирование переменной в таблице переменных")
+    def test_add_editing_variable(self, variable_for_edit, login, driver):
+        variables_page = VariablesPage(driver)
+        variables_page.go_to_variables_page()
+        variables_page.click_editing_add_variable('Для редактирования', '7')
+        variables_page.editing_variable('Отредактировано')
+        # без рефреша не видит новое название
+        driver.refresh()
+        field_name = variables_page.get_value_from_column("Отредактировано", '1')
+        variable_name = variables_page.get_value_from_column("Отредактировано", '2')
+        variable_value = variables_page.get_value_from_column("Отредактировано", '5')
+        assert field_name == "Отредактировано", 'Название поля не изменилось'
+        assert variable_name == "Отредактировано", 'Название переменной не изменилось'
+        assert variable_value == "Отредактировано", 'Значение переменной не изменилось'

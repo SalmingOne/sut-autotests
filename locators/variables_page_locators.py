@@ -14,6 +14,7 @@ class VariablesPageLocators:
     ALL_KEBABS = (By.CSS_SELECTOR, 'svg[data-testid="MoreHorizIcon"]')
     KEBAB_MENU_ITEM = (By.CSS_SELECTOR, 'span[class^="MuiTypography-root MuiTypography-caption"]')
     KEBABS_DEL_MENU_ITEM = (By.XPATH, '//span[text()="Удалить"]')
+    KEBABS_EDIT_MENU_ITEM = (By.XPATH, '//span[text()="Редактировать"]')
     DEL_ACCEPT_BUTTON = (By.XPATH, '//p[@id="alert-dialog-description"]//following::button[@type="submit"]')
     ALL_SEARCH_FIELDS = (By.CSS_SELECTOR, 'input[placeholder="Поиск"]')
 
@@ -35,6 +36,7 @@ class VariablesPageLocators:
     DROPDOWN_ITEMS_NOT_SELECTED = (By.CSS_SELECTOR, 'li[role="option"][aria-selected="false"]')
     # Ошибки
     MUI_ERROR = (By.XPATH, '//p[contains(@class, "Mui-error")]')
+    ALERT_INCORRECT_TEMPLATE = (By.XPATH, '//div[text()="Неверный тип шаблона"]')
 
     # Блок с шаблонами
     DELETE_ICON = (By.CSS_SELECTOR, 'svg[data-testid="DeleteIcon"]')

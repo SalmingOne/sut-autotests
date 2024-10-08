@@ -389,11 +389,20 @@ def project_with_work():
 
 
 @pytest.fixture()
-def variables():
+def variable_not_unique():
     variables_endpoints = VariablesEndpoint()
     payload = dict(name='Не уникальное имя', systemName='Не уникальное системное имя')
     response = variables_endpoints.create_variables_api(json=payload)
     yield payload['name'], payload['systemName']
+    variables_endpoints.delete_variables_api(str(response.json()['id']))
+
+
+@pytest.fixture()
+def variable_for_edit():
+    variables_endpoints = VariablesEndpoint()
+    payload = dict(name='Для редактирования', systemName='Для редактирования', value='Для редактирования')
+    response = variables_endpoints.create_variables_api(json=payload)
+    yield payload['name'], payload['systemName'], payload['value']
     variables_endpoints.delete_variables_api(str(response.json()['id']))
 
 
