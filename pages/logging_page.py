@@ -79,18 +79,17 @@ class LoggingPage(BasePage):
     @allure.step("Проверка значений в выпадающих списках")
     def check_elements_in_select(self):
         self.element_is_visible(self.locators.AUDIT_STATUS_FIELD).click()
-        audit_status_elements = [element.text for element in self.elements_are_visible(self.locators.get_elements_in_select())]
+        audit_status_elements = [element.text for element in self.elements_are_visible(self.locators.ELEMENTS_IN_SELECT)]
         self.element_is_visible(self.locators.AUDIT_LEVEL_FIELD).click()
-        audit_level_elements = [element.text for element in self.elements_are_visible(self.locators.get_elements_in_select())]
+        audit_level_elements = [element.text for element in self.elements_are_visible(self.locators.ELEMENTS_IN_SELECT)]
         self.element_is_visible(self.locators.DEPTH_DATE_TYPE_FIELD).click()
-        depth_date_elements = [element.text for element in self.elements_are_visible(self.locators.get_elements_in_select())]
-        assert audit_status_elements == ["Вкл", "Выкл"], "В выпадающем списке не все значения"
-        assert audit_level_elements == ["Все", "Информационные", "Ошибка", "Фатальные"], "В выпадающем списке не все значения"
-        assert depth_date_elements == ["День", "Неделя", "Месяц", "Год"], "В выпадающем списке не все значения"
+        depth_date_elements = [element.text for element in self.elements_are_visible(self.locators.ELEMENTS_IN_SELECT)]
+        assert audit_status_elements == ["Вкл", "Выкл"], "В выпадающем списке уровень аудита не все значения"
+        assert audit_level_elements == ["Все", "Информационные", "Ошибка", "Фатальные"], "В выпадающем списке уровень аудита не все значения"
+        assert depth_date_elements == ["День", "Неделя", "Месяц", "Год"], "В выпадающем списке уровень аудита не все значения"
 
     @testit.step("Проверка активны ли кнопки")
     @allure.step("Проверка активны ли кнопки")
     def buttons_are_disabled(self):
-        save_btn_status = self.element_is_visible(self.locators.SUBMIT_BUTTON).get_attribute('disabled')
-        abort_btn_status = self.element_is_visible(self.locators.ABORT_BUTTON).get_attribute('disabled')
-        return save_btn_status and abort_btn_status
+        assert not(self.element_is_clickable(self.locators.SUBMIT_BUTTON)), 'Кнопка сохранить активна'
+        assert not(self.element_is_clickable(self.locators.ABORT_BUTTON)), 'Кнопка отметь активна'

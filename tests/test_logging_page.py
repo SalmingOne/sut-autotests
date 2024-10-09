@@ -48,12 +48,12 @@ class TestLoggingPage:
     @testit.displayName('6.4.3 Содержание таба "Аудит"')
     @pytest.mark.smoke
     @allure.title('id-1228 6.4.3 Содержание таба "Аудит"')
-    def test_view_tab_audit(self, login, driver):
+    def test_view_tab_audit(self, logging_on, login, driver):
         logging_page = LoggingPage(driver)
         logging_page.go_to_audit_page()
         logging_page.check_elements_on_page()
         logging_page.check_elements_in_select()
-        assert logging_page.buttons_are_disabled(), "Кнопки активны"
+        logging_page.buttons_are_disabled()
 
 
 

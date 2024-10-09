@@ -20,10 +20,8 @@ class LoggingPageLocators:
     ALERT_TEXT = (By.XPATH, '//div[contains(@class, "MuiAlert-message")]')
     # Пункт меню Аудит
     AUDIT_PAGE = (By.CSS_SELECTOR, 'a[href="/admin/logging"]')
-
+    ELEMENTS_IN_SELECT = (By.XPATH, "//li")
     # Выбор пункта меню
     def set_choice(self, choice):
         return (By.XPATH, f'//li[text()="{choice}"]')
 
-    def get_elements_in_select(self):
-        return (By.XPATH, "//li")
