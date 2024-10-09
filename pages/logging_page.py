@@ -91,5 +91,11 @@ class LoggingPage(BasePage):
     @testit.step("Проверка активны ли кнопки")
     @allure.step("Проверка активны ли кнопки")
     def buttons_are_enabled(self):
+        assert self.element_is_clickable(self.locators.SUBMIT_BUTTON), 'Кнопка сохранить неактивна'
+        assert self.element_is_clickable(self.locators.ABORT_BUTTON), 'Кнопка отменить неактивна'
+
+    @testit.step("Проверка неактивны ли кнопки")
+    @allure.step("Проверка неактивны ли кнопки")
+    def buttons_are_disabled(self):
         assert not self.element_is_clickable(self.locators.SUBMIT_BUTTON), 'Кнопка сохранить активна'
         assert not self.element_is_clickable(self.locators.ABORT_BUTTON), 'Кнопка отменить активна'
