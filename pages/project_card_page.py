@@ -1,5 +1,5 @@
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import allure
 import testit
@@ -296,6 +296,17 @@ class ProjectCardPage(BasePage):
         self.check_resource_plan_tab_save_and_break_buttons()
         self.check_resource_plan_tab_add_percent_button()
         self.check_resource_plan_tab_header_tooltip()
+
+    @testit.step("Переключение радиобаттона на значение 'Проценты'")
+    @allure.step("Переключение радиобаттона на значение 'Проценты'")
+    def change_radiobutton(self):
+        self.element_is_present(self.locators.CHANGE_RADIOGROUP).click()
+
+
+    @testit.step("Нажатие на кнопку добавления процента занятости")
+    @allure.step("Нажатие на кнопку добавления процента занятости")
+    def press_add_percent_button(self):
+        self.element_is_present(self.locators.ADD_PERCENT_BUTTON).click()   
 
     @testit.step("Проверка периода выбранного по умолчанию")
     @allure.step("Проверка периода выбранного по умолчанию")
@@ -786,3 +797,27 @@ class ProjectCardPage(BasePage):
     def get_tooltip_text_on_approval_status(self):
         self.action_move_to_element(self.element_is_visible(self.locators.OVERTIME_APPROVAL_STATUS))
         return self.element_is_visible(self.locators.TOOLTIP).text
+
+    @testit.step("Проверка дровера 'Добавление процента занятости' на вкладке 'Ресурсный план'")
+    @allure.step("Проверка дровера 'Добавление процента занятости' на вкладке 'Ресурсный план'")
+    def check_drover_resource_plan_tab(self):
+        assert (self.element_is_present(self.locators.DROVER_TITLE).text ==
+                'Добавление процента занятости'), "Нет заголовка дровера"
+        assert self.element_is_present(self.locators.DROVER_INPUT).get_attribute("value") == '100', "В поле по умолчанию не 100"
+        time.sleep(5)
+        self.element_is_present(self.locators.DROVER_MENU).click()
+        menu_title_list = self.elements_are_visible(self.locators.DROVER_MENU_ITEM)
+        data = []
+        for title in menu_title_list:
+            data.append(title.text)
+        self.action_esc()
+        assert data == ['0', '12.5', '25', '37.5', '50', '62.5', '75', '87.5', '100'], "Не все значения отображены для выбора"
+        assert self.element_is_visible(self.locators.DROVER_START_DATE).get_attribute('value') == datetime.now().strftime('%d.%m.%Y'), \
+            "Дата начала по умолчанию не текущая дата"
+        assert self.element_is_visible(self.locators.DROVER_END_DATE).get_attribute('value') == '', \
+            "Дата окончания по умолчанию не пустое" 
+        self.element_is_present(self.locators.DROVER_END_DATE).send_keys(f"{(datetime.now() - timedelta(days=1)).strftime('%d.%m.%Y')}")
+        assert self.element_is_present(self.locators.DROVER_HELP_TEXT_END_DATE).text == \
+            'Указанная дата не может быть раньше даты начала периода привлечения', "Дата окончания раньше Даты начала"
+        assert self.element_is_present(self.locators.DROVER_SUBMIT_BUTTON), "В дровере нет кнопки Сохранить"
+        assert self.element_is_present(self.locators.DROVER_ABORT_BUTTON), "В дровере нет кнопки Отменить"

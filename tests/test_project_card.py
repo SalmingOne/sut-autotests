@@ -475,3 +475,19 @@ class TestProjectCard:
             "В тултипе указаны не все интеграции"
         assert project_card_page.get_tooltip_text_on_approval_status() == 'Причина отклонения: У нас не перерабатывают', \
             "Отсутствует тултип с причиной отклонения переработки"
+        
+    @testit.workItemIds(915)
+    @testit.displayName('2.1.1.1. Содержание дровера "Добавление процента занятости" ')
+    @pytest.mark.regress
+    @allure.title('id-915 2.1.1.1. Содержание дровера "Добавление процента занятости" ')
+    def test_drover_content_adding_percentage_occupancy(self, simple_project, login, driver):
+        all_project_page = AllProjectPage(driver)
+        time.sleep(0.5)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(simple_project['name'])
+        project_card_page = ProjectCardPage(driver)
+        project_card_page.go_to_resource_plan_tab()
+        project_card_page.change_radiobutton()
+        project_card_page.press_add_percent_button()
+        project_card_page.check_drover_resource_plan_tab()
+        time.sleep(3)
