@@ -99,3 +99,16 @@ class LoggingPage(BasePage):
     def buttons_are_disabled(self):
         assert not self.element_is_clickable(self.locators.SUBMIT_BUTTON), 'Кнопка сохранить активна'
         assert not self.element_is_clickable(self.locators.ABORT_BUTTON), 'Кнопка отменить активна'
+
+    @testit.step("Проверка активны ли поля")
+    @allure.step("Проверка активны ли поля")
+    def fields_are_enabled(self):
+        assert self.element_is_visible(self.locators.AUDIT_LEVEL_FIELD), 'Поле уровень аудита неактивно'
+        assert self.element_is_visible(self.locators.DEPTH_DATE_QUANTITY_FIELD), 'Поле количество неактивно'
+        assert self.element_is_visible(self.locators.DEPTH_DATE_TYPE_FIELD), 'Поле глубина аудита неактивно'
+
+    @testit.step("Изменение статуса аудита")
+    @allure.step("Изменение статуса аудита")
+    def change_audit_status(self, status):
+        self.element_is_visible(self.locators.AUDIT_STATUS_FIELD).click()
+        self.element_is_visible(self.locators.set_choice(status)).click()
