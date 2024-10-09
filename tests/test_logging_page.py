@@ -53,7 +53,4 @@ class TestLoggingPage:
         logging_page.go_to_audit_page()
         logging_page.check_elements_on_page()
         logging_page.check_elements_in_select()
-        logging_page.buttons_are_disabled()
-
-
-
+        logging_page.buttons_are_enabled()
