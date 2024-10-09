@@ -84,12 +84,12 @@ class LoggingPage(BasePage):
         audit_level_elements = [element.text for element in self.elements_are_visible(self.locators.ELEMENTS_IN_SELECT)]
         self.element_is_visible(self.locators.DEPTH_DATE_TYPE_FIELD).click()
         depth_date_elements = [element.text for element in self.elements_are_visible(self.locators.ELEMENTS_IN_SELECT)]
-        assert audit_status_elements == ["Вкл", "Выкл"], "В выпадающем списке уровень аудита не все значения"
+        assert audit_status_elements == ["Вкл", "Выкл"], "В выпадающем списке аудита не все значения"
         assert audit_level_elements == ["Все", "Информационные", "Ошибка", "Фатальные"], "В выпадающем списке уровень аудита не все значения"
-        assert depth_date_elements == ["День", "Неделя", "Месяц", "Год"], "В выпадающем списке уровень аудита не все значения"
+        assert depth_date_elements == ["День", "Неделя", "Месяц", "Год"], "В выпадающем списке глубина аудита не все значения"
 
     @testit.step("Проверка активны ли кнопки")
     @allure.step("Проверка активны ли кнопки")
     def buttons_are_disabled(self):
         assert not(self.element_is_clickable(self.locators.SUBMIT_BUTTON)), 'Кнопка сохранить активна'
-        assert not(self.element_is_clickable(self.locators.ABORT_BUTTON)), 'Кнопка отметь активна'
+        assert not(self.element_is_clickable(self.locators.ABORT_BUTTON)), 'Кнопка отменить активна'

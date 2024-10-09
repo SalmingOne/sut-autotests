@@ -46,7 +46,7 @@ class TestLoggingPage:
 
     @testit.workItemIds(1228)
     @testit.displayName('6.4.3 Содержание таба "Аудит"')
-    @pytest.mark.smoke
+    @pytest.mark.regress
     @allure.title('id-1228 6.4.3 Содержание таба "Аудит"')
     def test_view_tab_audit(self, logging_on, login, driver):
         logging_page = LoggingPage(driver)
