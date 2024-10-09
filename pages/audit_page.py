@@ -47,8 +47,8 @@ class AuditPage(BasePage):
             return True
         return False
 
-    @testit.step("Очистить всё")
-    @allure.step("Очистить всё")
+    @testit.step("Очистить поле")
+    @allure.step("Очистить поле")
     def clear_date_field(self, field):
         field.click()
         if platform.system() == 'Windows':
