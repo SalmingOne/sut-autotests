@@ -75,7 +75,7 @@ class TestLoggingPage:
         logging_page = LoggingPage(driver)
         logging_page.go_to_audit_page()
         logging_page.change_audit_setting(status='Вкл', level='Все', depth='Неделя')
-        logging_page.discard_audit_setting_changes()
+        logging_page.abort_modal_dialog()
         values = logging_page.get_field_values()
         assert values[0] == 'Вкл', 'Поле статус аудита не содержит введённое ранее значение'
         assert values[1] == 'Все', 'Поле уровень аудита не содержит введённое ранее значение'
