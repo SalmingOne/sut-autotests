@@ -189,3 +189,20 @@ class FilialPage(BasePage):
             except TimeoutException:
                 break
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+
+    @testit.step("Проверка заголовков колонок таблицы")
+    @allure.step("Проверка заголовков колонок таблицы")
+    def check_table_column_headings(self):
+        assert self.element_is_displayed(self.locators.NAME_HEADING), 'Некорректный заголовок столбца Название'
+        assert self.element_is_displayed(self.locators.ADDRESS_HEADING), 'Некорректный заголовок столбца Адрес'
+        assert self.element_is_displayed(self.locators.PARENT_FILIAL_HEADING), 'Некорректный заголовок столбца Родительский филиал'
+        assert self.element_is_displayed(self.locators.ACTIONS_HEADING), 'Некорректный заголовок столбца Действия'
+
+    @testit.step("Проверка заголовков колонок таблицы")
+    @allure.step("Проверка заголовков колонок таблицы")
+    def check_buttons_on_tab_filial(self):
+        self.element_is_visible(self.locators.KEBAB_MENU).click()
+        assert self.element_is_displayed(self.locators.REDACT_BUTTON), 'Нет Редактирования'
+        assert self.element_is_displayed(self.locators.KEBAB_VIEW_FULL_INFO_BUTTON), 'Нет Просмотра полной информации'
+        assert self.element_is_displayed(self.locators.KEBAB_DELETE_BUTTON), 'Нет Удаления'
+        assert self.element_is_displayed(self.locators.ADD_FILIAL_BUTTON), 'Нет кнопки Создать филиал'

@@ -63,4 +63,13 @@ class TestFilialPage:
         time.sleep(2)
         assert not filial_page.check_filial_on_tab('Для удаления'), 'Филиал остался в таблице'
 
+    @testit.workItemIds(1483)
+    @testit.displayName("6.1.3.1. Просмотр вкладки ЮЛ в структуре организации")
+    @pytest.mark.regress
+    @allure.title("id-1483 6.1.3.1. Просмотр вкладки ЮЛ в структуре организации")
+    def test_view_filial_tab(self, login, driver):
+        filial_page = FilialPage(driver)
+        filial_page.go_to_filial_page()
+        filial_page.check_table_column_headings()
+        filial_page.check_buttons_on_tab_filial()
 
