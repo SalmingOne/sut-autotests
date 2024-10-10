@@ -825,3 +825,27 @@ class ProjectCardPage(BasePage):
             'Указанная дата не может быть раньше даты начала периода привлечения', "Дата окончания раньше Даты начала"
         assert self.element_is_displayed(self.locators.DROVER_SUBMIT_BUTTON), "В дровере нет кнопки Сохранить"
         assert self.element_is_displayed(self.locators.DROVER_ABORT_BUTTON), "В дровере нет кнопки Отменить"
+
+    @testit.step("Внесение периода привлечения и процента занятости")
+    @allure.step("Внесение периода привлечения и процента занятости")
+    def set_period_and_percentage(self):
+        self.element_is_visible(self.locators.DROVER_MENU).click()
+        self.element_is_visible(self.locators.PERCENT_50).click()
+        self.element_is_visible(self.locators.DROVER_START_DATE).send_keys(self.get_day_after(1))
+        self.element_is_visible(self.locators.DROVER_END_DATE).send_keys(self.get_day_after(5))
+        
+    @testit.step("Нажатие кнопки 'Отмена' в дровере")
+    @allure.step("Нажатие кнопки 'Отмена' в дровере")
+    def press_cancel_in_drover(self):
+        self.element_is_visible(self.locators.DROVER_ABORT_BUTTON).click()
+        
+    @testit.step("Получение данных таблицы 'Ресурсный план'")
+    @allure.step("Получение данных таблицы 'Ресурсный план'")
+    def displaying_table_resource_plan(self):
+        list_cells = []
+        # Ищем все элементы cell на веб-странице и добавляем их в список
+        cells = self.elements_are_visible(self.locators.CELLS)
+        # Обходим каждый элемент в списке и достаем значение
+        for cell in cells:
+            list_cells.append(cell.text)
+        return list_cells
