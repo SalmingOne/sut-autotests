@@ -113,9 +113,9 @@ class LoggingPage(BasePage):
         self.element_is_visible(self.locators.AUDIT_STATUS_FIELD).click()
         self.element_is_visible(self.locators.set_choice(status)).click()
 
-    @testit.step("Отмена изменений настроек логирования")
-    @allure.step("Отмена изменений настроек логирования")
-    def cancel_logging_settings_changes(self):
+    @testit.step("Отмена изменений в модальном окне")
+    @allure.step("Отмена изменений в модальном окне")
+    def abort_modal_dialog(self):
         self.element_is_present(self.locators.DIALOG_ABORT_BUTTON).click()
 
     @testit.step("Получение значений полей")
