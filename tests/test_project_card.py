@@ -509,4 +509,4 @@ class TestProjectCard:
         # Получаем отображение таблицы "Ресурсный план" после изменений
         table_after = project_card_page.displaying_table_resource_plan()
         # Проверяем что таблица не изменяется
-        assert table_before == table_after
+        assert table_before == table_after, "Данные в таблице изменились после отмены внесения"
