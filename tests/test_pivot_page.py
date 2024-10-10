@@ -92,3 +92,23 @@ class TestPivotPage:
         pivot_tab_page.go_to_by_user_tab()
         pivot_tab_page.open_project_list()
         pivot_tab_page.check_overwork_by_user()
+
+    @testit.workItemIds(928)
+    @testit.displayName("3.2.2.4. Выбор формата ресурсов отображения значений трудозатрат в сводной таблице по пользователю")
+    @pytest.mark.regress
+    @allure.title("id-928 3.2.2.4. Выбор формата ресурсов отображения значений трудозатрат в сводной таблице по пользователю")
+    def test_select_the_resource_format_for_displaying_in_pivot_page(self, simple_project, login, driver):
+        pivot_tab_page = PivotTabPage(driver)
+        pivot_tab_page.go_to_pivot_page()
+        time.sleep(1)
+        pivot_tab_page.choose_period("week")
+        assert pivot_tab_page.get_first_column_title() == 'Проект', "Название первого столбца не Проект"
+        pivot_tab_page.check_tab_column_titles_by_project()
+        pivot_tab_page.go_to_by_user_tab()
+        pivot_tab_page.check_chose_period_list()
+        pivot_tab_page.check_export_buttons()
+        pivot_tab_page.check_next_previous_buttons()
+        pivot_tab_page.check_filter_icon()
+        assert pivot_tab_page.get_first_column_title() == 'Пользователь', "Название первого столбца не Пользователь"
+        time.sleep(2)
+        pivot_tab_page.check_tab_column_titles_by_user()

@@ -22,8 +22,11 @@ class PivotTabPageLocators:
     RIGHT_SCROLL = (By.CSS_SELECTOR, 'div[class="ag-horizontal-right-spacer ag-scroller-corner"]')
     # Отображение по пользователю
     BY_USER_BUTTON = (By.XPATH, '//button[text()="По пользователям"]')
+    BY_PROJECT_BUTTON = (By.XPATH, '//button[text()="По проектам"]')
     OPEN_PROJECT_LIST = (By.XPATH, f'//h6[contains(@aria-label,"{USER_NAME}")]//ancestor::span[1]//preceding::span[2]')
     ICON_TREE_CLOSED = (By.CSS_SELECTOR, 'span[class="ag-icon ag-icon-tree-closed"]')
+    EXPORT_TO_JSON_BUTTON = (By.XPATH, '//button[text()="Экспорт в JSON"]')
+    EXPORT_TO_EXEL_BUTTON = (By.XPATH, '//button[text()="Экспорт в Excel"]')
     def project_color_on_user(self, project_name):
         return (By.XPATH, f'//p[text()="{project_name}"]')
 
@@ -44,3 +47,14 @@ class PivotTabPageLocators:
 
     def check_name_project_color(self, project_name):
         return (By.XPATH, f'//h6[text()="{project_name}"]')
+
+    CHOSE_PERIOD_BUTTON = (By.CSS_SELECTOR, 'div[aria-haspopup="listbox"]')
+    LI_MENU_ITEM = (By.CSS_SELECTOR, 'li[role="option"]')
+
+    NEXT_PERIOD_BUTTON = (By.CSS_SELECTOR, 'svg[data-testid="ChevronRightIcon"]')
+    PREVIOUS_PERIOD_BUTTON = (By.CSS_SELECTOR, 'svg[data-testid="ChevronLeftIcon"]')
+    THIS_DAY_BUTTON = (By.XPATH, '//button[contains(@class, "DateInterval-setToday")]')
+
+    TAB_TITLE = (By.CSS_SELECTOR, 'span[class="ag-header-cell-text"]')
+    COLUMN_TITLES = (By.XPATH, '//div[contains(@class,"ag-header-cell-")]//h6')
+    TAB_HEADER_WEEK_TEXT = (By.XPATH, '//div[contains(@class,"ag-header-cell")]//span[contains(@class,"MuiTypography-caption")]')
