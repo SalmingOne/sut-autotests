@@ -218,3 +218,19 @@ class FilialPage(BasePage):
             self.elements_are_visible(self.locators.DROPDOWN_ITEMS, 2)[0].click()
         except TimeoutException:
             print('Нет родительских филиалов')
+
+    @testit.step("Добавление филиала без обязательных полей")
+    @allure.step("Добавление филиала без обязательных полей")
+    def add_filial_without_required_fields(self, address, phone, email):
+        self.element_is_visible(self.locators.ADDRESS_FIELD).send_keys(address)
+        try:
+            self.elements_are_visible(self.locators.ATTRACTION_RATE_FIELD, 2)[0].click()
+        except TimeoutException:
+            print('Нет доступных ставок привлечения')
+        self.element_is_visible(self.locators.AFFILIATE_FIELD).click()
+        try:
+            self.elements_are_visible(self.locators.DROPDOWN_ITEMS, 2)[0].click()
+        except TimeoutException:
+            print('Нет родительских филиалов')
+        self.element_is_visible(self.locators.PHONE_FIELD).send_keys(phone)
+        self.element_is_visible(self.locators.EMAIL_FIELD).send_keys(email)

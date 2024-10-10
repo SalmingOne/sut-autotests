@@ -75,7 +75,7 @@ class TestFilialPage:
 
     @testit.workItemIds(10717)
     @testit.displayName("6.1.3.2. Отмена создания ЮЛ")
-    @pytest.mark.smoke
+    @pytest.mark.regress
     @allure.title("id-10717 6.1.3.2. Отмена создания ЮЛ")
     def test_cancel_add_filial(self, login, driver):
         filial_page = FilialPage(driver)
@@ -86,3 +86,17 @@ class TestFilialPage:
         filial_page.press_abort_button()
         assert not filial_page.check_filial_on_tab('Центральный филиал'), "Филиал сохранился"
 
+    @testit.workItemIds(10718)
+    @testit.displayName("6.1.3.2. Создание ЮЛ в структуре организации, если не заполнены обязательные поля")
+    @pytest.mark.regress
+    @allure.title("id-10718 6.1.3.2. Создание ЮЛ в структуре организации, если не заполнены обязательные поля")
+    def test_add_filial_without_required_fields(self, login, driver):
+        filial_page = FilialPage(driver)
+        filial_page.go_to_filial_page()
+        time.sleep(1)
+        filial_page.open_add_filial_drawer()
+        assert not filial_page.check_clickable_save_button(), 'Кнопка сохранения не задизейбленна'
+        filial_page.add_filial_without_required_fields('Москва, Красная площадь',
+                                                       '+77777777777',
+                                                       'vip@vip.vip')
+        assert not filial_page.check_clickable_save_button(), 'Кнопка сохранения не задизейбленна'
