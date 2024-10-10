@@ -112,3 +112,17 @@ class LoggingPage(BasePage):
     def change_audit_status(self, status):
         self.element_is_visible(self.locators.AUDIT_STATUS_FIELD).click()
         self.element_is_visible(self.locators.set_choice(status)).click()
+
+    @testit.step("Отмена изменений настроек логирования")
+    @allure.step("Отмена изменений настроек логирования")
+    def cancel_logging_settings_changes(self):
+        self.element_is_present(self.locators.DIALOG_ABORT_BUTTON).click()
+
+    @testit.step("Получение значений полей")
+    @allure.step("Получение значений полей")
+    def get_field_values(self):
+        audit_status_field_value = self.element_is_visible(self.locators.AUDIT_STATUS_FIELD).get_attribute('value')
+        audit_level_field_value =  self.element_is_visible(self.locators.AUDIT_LEVEL_FIELD).get_attribute('value')
+        audit_depth_field_value = self.element_is_visible(self.locators.DEPTH_DATE_TYPE_FIELD).get_attribute('value')
+        audit_depth_quantity_value = self.element_is_visible(self.locators.DEPTH_DATE_QUANTITY_FIELD).get_attribute('value').lstrip('0')
+        return audit_status_field_value, audit_level_field_value, audit_depth_quantity_value, audit_depth_field_value
