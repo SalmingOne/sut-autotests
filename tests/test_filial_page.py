@@ -73,3 +73,16 @@ class TestFilialPage:
         filial_page.check_table_column_headings()
         filial_page.check_buttons_on_tab_filial()
 
+    @testit.workItemIds(10717)
+    @testit.displayName("6.1.3.2. Отмена создания ЮЛ")
+    @pytest.mark.smoke
+    @allure.title("id-10717 6.1.3.2. Отмена создания ЮЛ")
+    def test_cancel_add_filial(self, login, driver):
+        filial_page = FilialPage(driver)
+        filial_page.go_to_filial_page()
+        time.sleep(1)
+        filial_page.add_filial_with_fields_from_table_only('Центральный филиал',
+                               'Москва, Красная площадь')
+        filial_page.press_abort_button()
+        assert not filial_page.check_filial_on_tab('Центральный филиал'), "Филиал сохранился"
+

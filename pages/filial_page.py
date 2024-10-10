@@ -206,3 +206,15 @@ class FilialPage(BasePage):
         assert self.element_is_displayed(self.locators.KEBAB_VIEW_FULL_INFO_BUTTON), 'Нет Просмотра полной информации'
         assert self.element_is_displayed(self.locators.KEBAB_DELETE_BUTTON), 'Нет Удаления'
         assert self.element_is_displayed(self.locators.ADD_FILIAL_BUTTON), 'Нет кнопки Создать филиал'
+
+    @testit.step("Добавление филиала только c полями из таблицы")
+    @allure.step("Добавление филиала только c полями из таблицы")
+    def add_filial_with_fields_from_table_only(self, name, address):
+        self.element_is_visible(self.locators.ADD_FILIAL_BUTTON).click()
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(name)
+        self.element_is_visible(self.locators.ADDRESS_FIELD).send_keys(address)
+        self.element_is_visible(self.locators.AFFILIATE_FIELD).click()
+        try:
+            self.elements_are_visible(self.locators.DROPDOWN_ITEMS, 2)[0].click()
+        except TimeoutException:
+            print('Нет родительских филиалов')
