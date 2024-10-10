@@ -198,8 +198,8 @@ class FilialPage(BasePage):
         assert self.element_is_displayed(self.locators.PARENT_FILIAL_HEADING), 'Некорректный заголовок столбца Родительский филиал'
         assert self.element_is_displayed(self.locators.ACTIONS_HEADING), 'Некорректный заголовок столбца Действия'
 
-    @testit.step("Проверка заголовков колонок таблицы")
-    @allure.step("Проверка заголовков колонок таблицы")
+    @testit.step("Проверка отображения кнопок на табе")
+    @allure.step("Проверка отображения кнопок на табе")
     def check_buttons_on_tab_filial(self):
         self.element_is_visible(self.locators.KEBAB_MENU).click()
         assert self.element_is_displayed(self.locators.REDACT_BUTTON), 'Нет Редактирования'
