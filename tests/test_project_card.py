@@ -515,7 +515,7 @@ class TestProjectCard:
     @testit.displayName('2.1.1.1. Отмена сохранения внесенных изменений в таблицу "Ресурсный план"')
     @pytest.mark.regress
     @allure.title('id-419 2.1.1.1. Отмена сохранения внесенных изменений в таблицу "Ресурсный план"')
-    def test_drover_cancel_adding_attraction_period(self, simple_project, login, driver):
+    def test_cancel_saving_changes_resource_plan_table(self, simple_project, login, driver):
         all_project_page = AllProjectPage(driver)
         all_project_page.go_to_all_project_page()
         all_project_page.go_project_page(simple_project['name'])
