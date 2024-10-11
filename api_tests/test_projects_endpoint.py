@@ -7,6 +7,7 @@ import testit
 from data.data import PROJECT_NAME
 from endpoints.project_endpoint import ProjectEndpoint
 from pages.base_page import BasePage
+from data.models.create_project_model import CreateProject
 
 
 @allure.suite("Projects endpoint")
@@ -106,32 +107,37 @@ class TestProjectEndpoint:
 
     testdata_2 = [
         ("ATP", PROJECT_NAME, '12.21.2023', '12.21.2029', 'ACTIVE', True, False, False, [], False, '', None, None, None,
-         None, 400, 'Можно изменить проект с пустым полем description '),
+         None, None, 400, 'Можно изменить проект с пустым полем description '),
         ("ATP", PROJECT_NAME, '12.21.2023', '12.21.2029', 'ACTIVE', True, False, False, [], False, 'не визивиг', None,
-         None, None, None, 400, 'Можно изменить проект с полем description отличным от визивига'),
+         None, None, None, None, 200, 'Нельзя изменить проект с полем description типа string'),
         ("ATP", PROJECT_NAME, '12.21.2023', '12.21.2029', 'ACTIVE', True, False, False, [], False, 1, None, None, None,
-         None, 400, 'Можно изменить проект с полем description отличным от string '),
+         None, None, 400, 'Можно изменить проект с полем description отличным от string '),
         ("ATP", PROJECT_NAME, '12.21.2023', '12.21.2029', 'ACTIVE', True, False, False, [], False, None, '', None, None,
-         None, 400, 'Можно изменить проект с пустым полем consumer '),
+         None, None, 400, 'Можно изменить проект с пустым полем consumer '),
         ("ATP", PROJECT_NAME, '12.21.2023', '12.21.2029', 'ACTIVE', True, False, False, [], False, None, 24, None, None,
-         None, 400, 'Можно изменить проект с полем consumer отличным от string '),
+         None, None, 400, 'Можно изменить проект с полем consumer отличным от string '),
         ("ATP", PROJECT_NAME, '12.21.2023', '12.21.2029', 'ACTIVE', True, True, False, [], False, None, None, '', None,
-         None, 400, 'Можно изменить проект с пустым полем laborReasonStartDate '),
+         None, None, 400, 'Можно изменить проект с пустым полем laborReasonStartDate '),
         ("ATP", PROJECT_NAME, '12.21.2023', '12.21.2029', 'ACTIVE', True, True, False, [], False, None, None, 24, None,
-         None, 400, 'Можно изменить проект с полем laborReasonStartDate отличным от string '),
+         None, None, 400, 'Можно изменить проект с полем laborReasonStartDate отличным от string '),
         ("ATP", PROJECT_NAME, '12.21.2023', '12.21.2029', 'ACTIVE', True, True, False, [], False, None, None, 'дата',
-         None, None, 400, 'Можно изменить проект с полем laborReasonStartDate отличным от datetime '),
+         None, None, None, 400, 'Можно изменить проект с полем laborReasonStartDate отличным от datetime '),
         ("ATP", PROJECT_NAME, '12.21.2023', '12.21.2029', 'ACTIVE', True, True, False, [], False, None, None,
-         BasePage(driver=None).get_day_before_m_d_y(-1), None, None, 400,
+         BasePage(driver=None).get_day_before_m_d_y(-1), None, None, None, 200,
          'Можно изменить проект с полем laborReasonStartDate позднее текущей даты '),
         ("ATP", PROJECT_NAME, '12.21.2023', '12.21.2029', 'ACTIVE', True, True, False, [], False, None, None, None, '',
-         None, 400, 'Можно изменить проект с пустым полем fileDescription '),
+         None, None, 400, 'Можно изменить проект с пустым полем fileDescription '),
         ("ATP", PROJECT_NAME, '12.21.2023', '12.21.2029', 'ACTIVE', True, True, False, [], False, None, None, None, 24,
-         None, 400, 'Можно изменить проект с полем fileDescription отличным от string '),
-        ("ATP", PROJECT_NAME, '12.21.2023', '12.21.2029', 'ACTIVE', True, True, False, [], False, None, None, None,
-         None, '', 400, 'Можно изменить проект с пустым полем imageField '),
-        ("ATP", PROJECT_NAME, '12.21.2023', '12.21.2029', 'ACTIVE', True, True, False, [], False, None, None, None,
-         None, 'строка', 400, 'Можно изменить проект с полем imageField отличным от number ')
+         None, None, 400, 'Можно изменить проект с полем fileDescription отличным от string '),
+        (
+        "ATP", PROJECT_NAME, '12.21.2023', '12.21.2029', 'ACTIVE', True, True, False, [], False, None, None, None, None,
+        '', None, 400, 'Можно изменить проект с пустым полем imageField '),
+        (
+        "ATP", PROJECT_NAME, '12.21.2023', '12.21.2029', 'ACTIVE', True, True, False, [], False, None, None, None, None,
+        'строка', None, 400, 'Можно изменить проект с полем imageField отличным от number '),
+        (
+        "ATP", PROJECT_NAME, '12.21.2023', '12.21.2029', 'ACTIVE', True, True, False, [], False, None, None, None, None,
+        None, 'не число', 400, 'Можно изменить проект с полем stageId отличным от number ')
     ]
 
     @testit.workItemIds(65256)
@@ -140,11 +146,12 @@ class TestProjectEndpoint:
     @allure.title("id-65256 PUT /projects/{projectId} (Чек-лист)")
     @pytest.mark.parametrize("code, name, start_date, end_date, status, self_adding, labor_reasons, "
                              "mandatory_attach_files, resources, auto_labor_reports, description, consumer, "
-                             "labor_reason_start_date, file_description, image_field, expected, error_text", testdata_2)
+                             "labor_reason_start_date, file_description, image_file_id, stage_id, expected, "
+                             "error_text", testdata_2)
     def test_put_projects_check_list_2(self, simple_project, code, name, start_date, end_date, status, self_adding,
                                        labor_reasons, mandatory_attach_files, resources, auto_labor_reports,
-                                       description, consumer, labor_reason_start_date, file_description, image_field,
-                                       expected, error_text):
+                                       description, consumer, labor_reason_start_date, file_description, image_file_id,
+                                       stage_id, expected, error_text):
         project_endpoint = ProjectEndpoint()
         time.sleep(0.5)
         payload = dict(
@@ -160,11 +167,44 @@ class TestProjectEndpoint:
             automaticLaborReports=auto_labor_reports,
             description=description,
             consumer=consumer,
-            laborReasonStartDate=labor_reason_start_date,
+            laborReasonsStartDate=labor_reason_start_date,
             fileDescription=file_description,
-            imageField=image_field
+            imageFileId=image_file_id,
+            stageId=stage_id
         )
         time.sleep(1)
         response = project_endpoint.change_project_api(str(simple_project['id']), payload)
         assert response.status_code == expected, error_text + '\n' + 'Запрос:\n' + str(
             payload) + '\n' + 'Ответ:\n' + str(response.json())
+
+    testdata_3 = [
+
+        (False, CreateProject(status='DRAFT', resources=[]).model_dump(), False, 200, 'Нельзя изменить проект со статусом Активный на статус Черновик '),
+        (False, CreateProject(status='ARCHIVED', resources=[]).model_dump(), False, 200, 'Нельзя изменить проект со статусом Активный на статус Архивный '),
+        (CreateProject(status='ARCHIVED', resources=[]).model_dump(), CreateProject(status='DRAFT', resources=[]).model_dump(), False, 200, 'Нельзя изменить проект со статусом Архивный на статус Черновик '),
+        (CreateProject(status='ARCHIVED', resources=[]).model_dump(), CreateProject(status='ACTIVE', resources=[]).model_dump(), False, 200, 'Нельзя изменить проект со статусом Архивный на статус Активный '),
+        (CreateProject(status='ARCHIVED', resources=[]).model_dump(), CreateProject(status='ARCHIVED', resources=[]).model_dump(), CreateProject(status='DRAFT', resources=[]).model_dump(), 200, 'Нельзя изменить проект со статусом Черновик на статус Архивный '),
+        (CreateProject(status='ARCHIVED', resources=[]).model_dump(), CreateProject(status='ACTIVE', resources=[]).model_dump(), CreateProject(status='DRAFT', resources=[]).model_dump(), 200, 'Нельзя изменить проект со статусом Черновик на статус Активный '),
+        (False, {'namsse': 8}, False, 400, 'Можно изменить проект с не валидным JSON в запросе')
+    ]
+
+    @testit.workItemIds(65256)
+    @testit.displayName("PUT /projects/{projectId} (Чек-лист)")
+    @pytest.mark.api
+    @allure.title("id-65256 PUT /projects/{projectId} (Чек-лист)")
+    @pytest.mark.parametrize("payload_1, payload_2, payload_3, expected, error_text", testdata_3)
+    def test_put_projects_check_list_3(self, simple_project, payload_1, payload_2, payload_3, expected, error_text):
+        project_endpoint = ProjectEndpoint()
+        time.sleep(0.5)
+        if payload_1:
+            project_endpoint.change_project_api(str(simple_project['id']), payload_1)
+            if payload_3:
+                project_endpoint.change_project_api(str(simple_project['id']), payload_3)
+            else:
+                pass
+        else:
+            pass
+        time.sleep(1)
+        response = project_endpoint.change_project_api(str(simple_project['id']), payload_2)
+        assert response.status_code == expected, error_text + '\n' + 'Запрос:\n' + str(
+            payload_2) + '\n' + 'Ответ:\n' + str(response.json())
