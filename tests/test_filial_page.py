@@ -99,4 +99,4 @@ class TestFilialPage:
         filial_page.add_filial_without_required_fields('Москва, Красная площадь',
                                                        '+77777777777',
                                                        'vip@vip.vip')
-        filial_page.check_clickable_save_button(), 'Кнопка сохранения не задизейбленна'
+        filial_page.check_clickable_save_button()
