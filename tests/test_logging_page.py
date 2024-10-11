@@ -90,10 +90,8 @@ class TestLoggingPage:
         logging_page = LoggingPage(driver)
         logging_page.go_to_audit_page()
         values_before = logging_page.get_field_values()
-        logging_page.discard_audit_setting_changes(status='Вкл', level='Все', depth='Неделя')
+        values_between = logging_page.discard_audit_setting_changes(status='Вкл', level='Все', depth='Неделя')
         values_after = logging_page.get_field_values()
         logging_page.buttons_are_disabled()
-        assert values_before[0] == values_after[0], 'Поле статус аудита не содержит сохраненное ранее значение'
-        assert values_before[1] == values_after[1], 'Поле уровень аудита не содержит сохраненное ранее значение'
-        assert values_before[2] == values_after[2], 'Поле количество не содержит сохраненное ранее значение'
-        assert values_before[3] == values_after[3], 'Поле глубина аудита не содержит сохраненное ранее значение'
+        assert values_before != values_between, 'Введенные значение не отображаются'
+        assert values_before == values_after, 'Поля изменились'
