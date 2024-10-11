@@ -531,11 +531,9 @@ class TestProjectCard:
         table_after = project_card_page.displaying_table_resource_plan()
         # Проверяем что таблица изменяется
         assert table_before != table_after, "Выбранный в дровере период привлечения не отображается в таблице 'Ресурсный план'"
-        time.sleep(10)
         project_card_page.press_break_button()
         # Получаем отображение таблицы "Ресурсный план" после отмены сохранения
         table_after_cancel = project_card_page.displaying_table_resource_plan()
         # Проверяем что таблица вернулась к изначальному состоянию
         assert table_before == table_after_cancel, \
             "Выбранный в дровере период привлечения после отмены не исчезает из таблицы 'Ресурсный план'"
-        time.sleep(10)

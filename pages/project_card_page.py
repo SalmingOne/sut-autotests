@@ -846,7 +846,7 @@ class ProjectCardPage(BasePage):
         self.element_is_visible(self.locators.DROVER_SUBMIT_BUTTON).click()
         
     @testit.step("Нажатие кнопки 'Отмена' в дровере")
-    @allure.step("Нажатие кнопки 'Отмена' в дровере УХ")
+    @allure.step("Нажатие кнопки 'Отмена' в дровере")
     def press_cancel_in_drover(self):
         self.element_is_visible(self.locators.DROVER_ABORT_BUTTON).click()
         
