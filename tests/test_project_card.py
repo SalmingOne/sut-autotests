@@ -537,3 +537,19 @@ class TestProjectCard:
         # Проверяем что таблица вернулась к изначальному состоянию
         assert table_before == table_after_cancel, \
             "Выбранный в дровере период привлечения после отмены не исчезает из таблицы 'Ресурсный план'"
+
+    @testit.workItemIds(384)
+    @testit.displayName('2.1.1.2. Отображение заливки ячеек при выборе процента привлечения ресурса')
+    @pytest.mark.regress
+    @allure.title('id-384 2.1.1.2. Отображение заливки ячеек при выборе процента привлечения ресурса')
+    def test_displaying_cell_fill_percentage_resource_attraction(self, simple_project, login, driver):
+        all_project_page = AllProjectPage(driver)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(simple_project['name'])
+        project_card_page = ProjectCardPage(driver)
+        project_card_page.go_to_resource_plan_tab()
+        project_card_page.change_radiobutton()
+        project_card_page.checking_cell_default_value()
+        project_card_page.checking_cell_dropdown_list_values()
+        project_card_page.checking_color_cell()
+    
