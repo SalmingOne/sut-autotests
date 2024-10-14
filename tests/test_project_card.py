@@ -510,3 +510,30 @@ class TestProjectCard:
         table_after = project_card_page.displaying_table_resource_plan()
         # Проверяем что таблица не изменяется
         assert table_before == table_after, "Данные в таблице изменились после отмены внесения"
+
+    @testit.workItemIds(419)
+    @testit.displayName('2.1.1.1. Отмена сохранения внесенных изменений в таблицу "Ресурсный план"')
+    @pytest.mark.regress
+    @allure.title('id-419 2.1.1.1. Отмена сохранения внесенных изменений в таблицу "Ресурсный план"')
+    def test_cancel_saving_changes_resource_plan_table(self, simple_project, login, driver):
+        all_project_page = AllProjectPage(driver)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(simple_project['name'])
+        project_card_page = ProjectCardPage(driver)
+        project_card_page.go_to_resource_plan_tab()
+        project_card_page.change_radiobutton()
+        # Получаем отображение таблицы "Ресурсный план" до изменений
+        table_before = project_card_page.displaying_table_resource_plan()
+        project_card_page.press_add_percent_button()
+        project_card_page.set_period_and_percentage()
+        project_card_page.press_save_in_drover()
+        # Получаем отображение таблицы "Ресурсный план" после изменений
+        table_after = project_card_page.displaying_table_resource_plan()
+        # Проверяем что таблица изменяется
+        assert table_before != table_after, "Выбранный в дровере период привлечения не отображается в таблице 'Ресурсный план'"
+        project_card_page.press_break_button()
+        # Получаем отображение таблицы "Ресурсный план" после отмены сохранения
+        table_after_cancel = project_card_page.displaying_table_resource_plan()
+        # Проверяем что таблица вернулась к изначальному состоянию
+        assert table_before == table_after_cancel, \
+            "Выбранный в дровере период привлечения после отмены не исчезает из таблицы 'Ресурсный план'"

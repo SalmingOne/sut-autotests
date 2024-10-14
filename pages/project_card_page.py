@@ -557,6 +557,11 @@ class ProjectCardPage(BasePage):
     def press_submit_button(self):
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
 
+    @testit.step("Нажатие кнопки Отмена")
+    @allure.step("Нажатие кнопки Отмена")
+    def press_break_button(self):
+        self.element_is_visible(self.locators.BREAK_BUTTON).click()
+
     @testit.step("Получение сообщения системы")
     @allure.step("Получение сообщения системы")
     def get_alert_message(self):
@@ -834,9 +839,14 @@ class ProjectCardPage(BasePage):
         self.element_is_visible(self.locators.PERCENT_50).click()
         self.element_is_visible(self.locators.DROVER_START_DATE).send_keys(self.get_day_after(1))
         self.element_is_visible(self.locators.DROVER_END_DATE).send_keys(self.get_day_after(5))
+
+    @testit.step("Нажатие кнопки 'Сохранить' в дровере")
+    @allure.step("Нажатие кнопки 'Сохранить' в дровере")
+    def press_save_in_drover(self):
+        self.element_is_visible(self.locators.DROVER_SUBMIT_BUTTON).click()
         
     @testit.step("Нажатие кнопки 'Отмена' в дровере")
-    @allure.step("Нажатие кнопки 'Отмена' в дровере УХ")
+    @allure.step("Нажатие кнопки 'Отмена' в дровере")
     def press_cancel_in_drover(self):
         self.element_is_visible(self.locators.DROVER_ABORT_BUTTON).click()
         
