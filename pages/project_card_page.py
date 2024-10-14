@@ -807,7 +807,7 @@ class ProjectCardPage(BasePage):
         for title in menu_title_list:
             data.append(title.text)
         self.action_esc()
-        assert data == ['0', '12.5', '25', '37.5', '50', '62.5', '75', '87.5', '100'], "Не все значения отображены для выбора"
+        return data
 
     @testit.step("Проверка дровера 'Добавление процента занятости' на вкладке 'Ресурсный план'")
     @allure.step("Проверка дровера 'Добавление процента занятости' на вкладке 'Ресурсный план'")
@@ -815,7 +815,8 @@ class ProjectCardPage(BasePage):
         assert (self.element_is_visible(self.locators.DROVER_TITLE).text ==
                 'Добавление процента занятости'), "Нет заголовка дровера"
         assert self.element_is_visible(self.locators.DROVER_INPUT).get_attribute("value") == '100', "В поле по умолчанию не 100"
-        self.get_list_values_dropdown_resource_plan_tab()
+        assert self.get_list_values_dropdown_resource_plan_tab() == ['0', '12.5', '25', '37.5', '50', '62.5', '75', '87.5', '100'], \
+            "Не все значения отображены для выбора"
         assert self.element_is_visible(self.locators.DROVER_START_DATE).get_attribute('value') == datetime.now().strftime('%d.%m.%Y'), \
             "Дата начала по умолчанию не текущая дата"
         assert self.element_is_visible(self.locators.DROVER_END_DATE).get_attribute('value') == '', \
@@ -825,3 +826,27 @@ class ProjectCardPage(BasePage):
             'Указанная дата не может быть раньше даты начала периода привлечения', "Дата окончания раньше Даты начала"
         assert self.element_is_displayed(self.locators.DROVER_SUBMIT_BUTTON), "В дровере нет кнопки Сохранить"
         assert self.element_is_displayed(self.locators.DROVER_ABORT_BUTTON), "В дровере нет кнопки Отменить"
+
+    @testit.step("Внесение периода привлечения и процента занятости")
+    @allure.step("Внесение периода привлечения и процента занятости")
+    def set_period_and_percentage(self):
+        self.element_is_visible(self.locators.DROVER_MENU).click()
+        self.element_is_visible(self.locators.PERCENT_50).click()
+        self.element_is_visible(self.locators.DROVER_START_DATE).send_keys(self.get_day_after(1))
+        self.element_is_visible(self.locators.DROVER_END_DATE).send_keys(self.get_day_after(5))
+        
+    @testit.step("Нажатие кнопки 'Отмена' в дровере")
+    @allure.step("Нажатие кнопки 'Отмена' в дровере УХ")
+    def press_cancel_in_drover(self):
+        self.element_is_visible(self.locators.DROVER_ABORT_BUTTON).click()
+        
+    @testit.step("Получение данных таблицы 'Ресурсный план'")
+    @allure.step("Получение данных таблицы 'Ресурсный план'")
+    def displaying_table_resource_plan(self):
+        list_cells = []
+        # Ищем все элементы cell на веб-странице и добавляем их в список
+        cells = self.elements_are_visible(self.locators.CELLS)
+        # Обходим каждый элемент в списке и достаем значение
+        for cell in cells:
+            list_cells.append(cell.text)
+        return list_cells
