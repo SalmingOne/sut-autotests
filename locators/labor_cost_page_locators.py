@@ -184,8 +184,7 @@ class LaborCostPageLocators:
     By.XPATH, '//p[@id="alert-dialog-description"]//following::button[contains(@class, "MuiButton-outlinedSizeSmall MuiButton-disableElevation")]')
     KEBABS_REDACT_MENU_ITEM = (By.XPATH, '//span[text()="Редактировать"]')
     FIRST_AND_LAST_ABSENCE_DAY = (By.XPATH, '//input[contains(@class, "MuiInputBase-inputAdornedEnd")]')
-    ABSENCE_START_DATE_ON_TAB = (By.CSS_SELECTOR,
-                                 'div[col-id="startDate"][class="ag-cell ag-cell-not-inline-editing ag-cell-normal-height ag-cell-value"]')
+    ABSENCE_START_DATE_ON_TAB = (By.CSS_SELECTOR, 'div[col-id="startDate"][class^="ag-cell"]')
     ABSENCE_END_DATE_ON_TAB = (By.CSS_SELECTOR,
                                'div[col-id="endDate"][class="ag-cell ag-cell-not-inline-editing ag-cell-normal-height ag-cell-value"]')
     DRAWER_DESCRIPTION_TEXT = (By.CSS_SELECTOR, 'p[id="alert-dialog-description"]')

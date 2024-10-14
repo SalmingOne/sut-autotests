@@ -43,11 +43,12 @@ class TestProjectCard:
     @testit.displayName("1.2.2 Содержание табов в карточке проекта.")
     @pytest.mark.regress
     @allure.title("id-11847 1.2.2 Содержание табов в карточке проекта.")
-    def test_contents_of_tabs_in_the_project_card(self, project_with_overtime_work, login, driver):
+    def test_contents_of_tabs_in_the_project_card(self, project_with_three_overtime_work, login, driver):
         all_project_page = AllProjectPage(driver)
         time.sleep(0.5)
         all_project_page.go_to_all_project_page()
         all_project_page.go_project_page(f"{PROJECT_NAME}")
+        time.sleep(2)
         project_card_page = ProjectCardPage(driver)
         project_card_page.check_description_tab()
 
@@ -60,6 +61,7 @@ class TestProjectCard:
 
         project_card_page.go_to_team_tab()
         project_card_page.check_team_tab()
+        time.sleep(2)
         # Переход на ресурсный план может положить стенд, пока закомментировал
         project_card_page.go_to_resource_plan_tab()
         project_card_page.check_resource_plan_tab()
@@ -148,6 +150,7 @@ class TestProjectCard:
         time.sleep(0.5)
         all_project_page.go_to_all_project_page()
         all_project_page.go_project_page(f"{PROJECT_NAME}")
+        time.sleep(1)
         project_card_page = ProjectCardPage(driver)
         project_card_page.go_to_team_tab()
         time.sleep(1)  # Без этого ожидания иногда не успевает прогрузиться проектная роль

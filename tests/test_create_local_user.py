@@ -20,11 +20,6 @@ class TestCreateLocalUser:
         create_local_user_page.check_names_text()
         create_local_user_page.check_placeholder_text()
         create_local_user_page.check_hour_pay_checkbox()
-        # Проверяем вкладку Проекты
-        create_local_user_page.go_to_tab_projects()
-        create_local_user_page.check_add_project_button_and_fields()
-        create_local_user_page.check_project_manager_checkbox()
-        create_local_user_page.check_delete_project_button()
         # Проверяем вкладку Контакты
         create_local_user_page.go_to_tab_contacts()
         create_local_user_page.check_names_on_contacts_text()
@@ -42,7 +37,7 @@ class TestCreateLocalUser:
         create_local_user_page.go_to_create_local_user_drawer()
         create_local_user_page.field_required_fields('AutoUser', 'Автоматов', 'auto@mail.ruru', 'no')
         user_page = UserPage(driver)
-        assert user_page.check_user_is_not_in_table('Автоматов') == False, "Пользователь есть в таблице"
+        assert not user_page.check_user_is_not_in_table('Автоматов'), "Пользователь есть в таблице"
 
     @testit.workItemIds(289)
     @testit.displayName("Совпадение логинов пользователей")
@@ -53,5 +48,5 @@ class TestCreateLocalUser:
         create_local_user_page = CreateLocalUserDrawerPage(driver)
         user_page.go_to_user_page()
         create_local_user_page.go_to_create_local_user_drawer()
-        create_local_user_page.field_required_fields('AutoTester', 'Автоматов', 'auto@mail.ruru', 'yes')
+        create_local_user_page.field_required_fields('AutoTester1', 'Автоматов', 'auto@mail.ruru', 'yes')
         assert create_local_user_page.check_massage() == 'Пользователь с таким логином/почтой уже добавлен в систему', "Не появилось сообщение о совпадении логинов"

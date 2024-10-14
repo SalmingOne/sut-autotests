@@ -17,6 +17,7 @@ class AllProjectPage(BasePage):
         time.sleep(2)
         self.action_move_to_element(self.element_is_visible(self.locators.TAB_PROJECTS))
         self.element_is_visible(self.locators.TAB_ALL_PROJECTS).click()
+        self.element_is_visible(self.locators.KEBAB_MENU, 10)
 
     @testit.step("Проверяем, что имя проекта есть на странице")
     @allure.step("Проверяем, что имя проекта есть на странице")

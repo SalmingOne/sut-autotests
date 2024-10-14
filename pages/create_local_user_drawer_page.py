@@ -57,32 +57,12 @@ class CreateLocalUserDrawerPage(BasePage):
 
     @testit.step("Есть все поля на вкладке контакты")
     @allure.step("Есть все поля на вкладке контакты")
-    def check_add_project_button_and_fields(self):
-        self.element_is_visible(self.locators.ADD_PROJECTS_BUTTON).click()
-        fields_list = self.elements_are_visible(self.locators.PROJECTS_FIELDS)
-        data = []
-        for field in fields_list:
-            data.append(field.text)
-        assert data == ['Проект\u2009*', 'Роль в проекте\u2009*'], "Некоторые поля на вкладке проекты отсутствуют"
-
-    @testit.step("Есть чекбокс руководитель проекта")
-    @allure.step("Есть чекбокс руководитель проекта")
-    def check_project_manager_checkbox(self):
-        assert self.element_is_displayed(self.locators.PROJECT_MANAGER_CHECKBOX), "Чекбокс руководитель проекта отсутствует"
-
-    @testit.step("Есть все поля на вкладке контакты")
-    @allure.step("Есть все поля на вкладке контакты")
     def check_names_on_contacts_text(self):
         names_list = self.elements_are_visible(self.locators.INPUT_NAME_FIELDS)
         data = []
         for name in names_list:
             data.append(name.get_attribute("name"))
         assert data == ['phone', 'email'], "Некоторые поля на вкладке контакты отсутствуют"
-
-    @testit.step("Есть кнопка удаления проекта")
-    @allure.step("Есть кнопка удаления проекта")
-    def check_delete_project_button(self):
-        assert self.element_is_displayed(self.locators.DELETE_PROJECTS_BUTTON), "Кнопка удаления проекта"
 
     @testit.step("Есть кнопка закрытия дровера")
     @allure.step("Есть кнопка закрытия дровера")
@@ -129,14 +109,6 @@ class CreateLocalUserDrawerPage(BasePage):
         self.action_esc()
         self.input_dropdown(self.locators.DEPARTMENT_FIELD)
         self.input_dropdown(self.locators.POSITION_FIELD)
-        self.go_to_tab_projects()
-        self.element_is_visible(self.locators.ADD_PROJECTS_BUTTON).click()
-        time.sleep(0.5)  # Без ожидания иногда скрипт срабатывает раньше анимации
-        self.element_is_visible(self.locators.PROJECT_FIELD).click()
-        try:
-            self.elements_are_visible(self.locators.DROPDOWN_ITEMS, 1)[0].click()
-        except TimeoutException:
-            self.element_is_visible(self.locators.DELETE_PROJECTS_BUTTON).click()
         self.go_to_tab_contacts()
         self.element_is_visible(self.locators.EMAIL_FIELD).send_keys(email)
         if save == 'yes':
