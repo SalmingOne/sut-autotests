@@ -553,3 +553,23 @@ class TestProjectCard:
         project_card_page.checking_cell_dropdown_list_values()
         project_card_page.checking_color_cell()
     
+    @testit.workItemIds(481)
+    @testit.displayName('2.1.1.2. Отмена редактирования процента занятости')
+    @pytest.mark.regress
+    @allure.title('id-481 2.1.1.2. Отмена редактирования процента занятости')
+    def test_cancel_editing_percentage_employment(self, simple_project, login, driver):
+        all_project_page = AllProjectPage(driver)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(simple_project['name'])
+        project_card_page = ProjectCardPage(driver)
+        project_card_page.go_to_resource_plan_tab()
+        project_card_page.change_radiobutton()
+        # Получаем отображение таблицы "Ресурсный план" до изменений
+        table_before = project_card_page.displaying_table_resource_plan()
+        project_card_page.change_table_resource_plan()
+        project_card_page.press_break_button()
+        # Получаем отображение таблицы "Ресурсный план" после изменений
+        table_after = project_card_page.displaying_table_resource_plan()
+        # Проверяем что таблица не изменяется
+        assert table_before == table_after, "Данные в таблице изменились после отмены внесения"
+    

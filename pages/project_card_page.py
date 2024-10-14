@@ -889,4 +889,11 @@ class ProjectCardPage(BasePage):
                               'rgba(223, 244, 255, 0.3)', 'rgba(223, 244, 255, 0.6)', 'rgba(223, 244, 255, 0.6)',\
                                  'rgba(223, 244, 255, 0.6)', 'rgba(223, 244, 255, 0.6)', 'rgba(204, 231, 246, 1)'], \
             "Цвет заливки ячеек не соответствует"
-    
+        
+    @testit.step("Внести изменения в таблицу 'Ресурсный план'")
+    @allure.step("Внести изменения в таблицу 'Ресурсный план'")
+    def change_table_resource_plan(self):
+        self.action_double_click(self.elements_are_visible(self.locators.CELLS)[1])
+        #выбираем последнее значение в выпадающем списке
+        self.elements_are_visible(self.locators.LI_MENU_ITEM)[8].click()
+            
