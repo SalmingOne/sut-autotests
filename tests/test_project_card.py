@@ -572,4 +572,22 @@ class TestProjectCard:
         table_after = project_card_page.displaying_table_resource_plan()
         # Проверяем что таблица не изменяется
         assert table_before == table_after, "Данные в таблице изменились после отмены внесения"
-    
+
+    @testit.workItemIds(11798)
+    @testit.displayName('2.1.1.2.1. Отмена редактирования часов занятости')
+    @pytest.mark.regress
+    @allure.title('id-11798 2.1.1.2.1. Отмена редактирования часов занятости')
+    def test_cancel_editing_hours_employment(self, simple_project, login, driver):
+        all_project_page = AllProjectPage(driver)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(simple_project['name'])
+        project_card_page = ProjectCardPage(driver)
+        project_card_page.go_to_resource_plan_tab()
+        # Получаем отображение таблицы "Ресурсный план" до изменений
+        table_before = project_card_page.displaying_table_resource_plan()
+        project_card_page.change_table_resource_plan()
+        project_card_page.press_break_button()
+        # Получаем отображение таблицы "Ресурсный план" после изменений
+        table_after = project_card_page.displaying_table_resource_plan()
+        # Проверяем что таблица не изменяется
+        assert table_before == table_after, "Данные в таблице изменились после отмены внесения"
