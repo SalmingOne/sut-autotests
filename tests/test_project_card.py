@@ -567,11 +567,14 @@ class TestProjectCard:
         # Получаем отображение таблицы "Ресурсный план" до изменений
         table_before = project_card_page.displaying_table_resource_plan()
         project_card_page.change_table_resource_plan()
-        project_card_page.press_break_button()
         # Получаем отображение таблицы "Ресурсный план" после изменений
         table_after = project_card_page.displaying_table_resource_plan()
+        assert table_before != table_after, "Внесенные изменения не отображаются"
+        project_card_page.press_break_button()
+        # Получаем отображение таблицы "Ресурсный план" после отмены сохранения
+        table_after_cancel = project_card_page.displaying_table_resource_plan()
         # Проверяем что таблица не изменяется
-        assert table_before == table_after, "Данные в таблице изменились после отмены внесения"
+        assert table_before == table_after_cancel, "Данные в таблице изменились после отмены внесения"
 
     @testit.workItemIds(11798)
     @testit.displayName('2.1.1.2.1. Отмена редактирования часов занятости')
@@ -586,8 +589,11 @@ class TestProjectCard:
         # Получаем отображение таблицы "Ресурсный план" до изменений
         table_before = project_card_page.displaying_table_resource_plan()
         project_card_page.change_table_resource_plan()
-        project_card_page.press_break_button()
         # Получаем отображение таблицы "Ресурсный план" после изменений
         table_after = project_card_page.displaying_table_resource_plan()
+        assert table_before != table_after, "Внесенные изменения не отображаются"
+        project_card_page.press_break_button()
+        # Получаем отображение таблицы "Ресурсный план" после отмены сохранения
+        table_after_cancel = project_card_page.displaying_table_resource_plan()
         # Проверяем что таблица не изменяется
-        assert table_before == table_after, "Данные в таблице изменились после отмены внесения"
+        assert table_before == table_after_cancel, "Данные в таблице изменились после отмены внесения"
