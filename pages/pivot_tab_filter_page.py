@@ -49,3 +49,8 @@ class PivotTabFilterPage(BasePage):
     def open_integration_dropdown(self):
         self.element_is_visible(self.locators.INTEGRATION_CHECKBOX).click()
         self.element_is_visible(self.locators.OPEN_INTEGRATION_DROPDOWN).click()
+
+    @testit.step("Нажатие кнопки сохранить")
+    @allure.step("Нажатие кнопки сохранить")
+    def press_submit_button(self):
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()

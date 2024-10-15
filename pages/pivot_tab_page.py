@@ -20,6 +20,13 @@ class PivotTabPage(BasePage):
         self.element_is_visible(self.locators.PIVOT_TAB_BUTTON).click()
         self.element_is_visible(self.locators.ICON_TREE_CLOSED, 15)
 
+    @testit.step("Переходим на сводную таблицу через меню без ожидания")
+    @allure.step("Переходим на сводную таблицу через меню без ожидания")
+    def go_to_pivot_page_not_wait(self):
+        time.sleep(1)
+        self.element_is_visible(self.locators.ANALYTIC_MENU_BUTTON).click()
+        self.element_is_visible(self.locators.PIVOT_TAB_BUTTON).click()
+
     @testit.step("Выбираем отображаемый период")
     @allure.step("Выбираем отображаемый период")
     def choose_period(self, period):

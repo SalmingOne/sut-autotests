@@ -18,3 +18,4 @@ class PivotTabFilterPageLocators:
     OPEN_INTEGRATION_DROPDOWN = (By.XPATH, '//div[@name="activityTypes"]//input[contains(@class, "MuiOutlinedInput-input")]')
     # Кнопка сбросить все
     RESET_ALL_BUTTON = (By.XPATH, '//button[text()="Сбросить все"]')
+    SUBMIT_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
