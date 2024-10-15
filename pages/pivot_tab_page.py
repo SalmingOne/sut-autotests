@@ -200,3 +200,13 @@ class PivotTabPage(BasePage):
         assert 'Сумма' in title_sum, "Нет столбца сумма в таблице"
         assert 'пн' and 'вт' and 'ср' and 'чт' and 'пт' and 'сб' and 'вс' in week_days, \
             "Есть не все дни недели в заголовках столбцов таблицы"
+
+    @testit.step("Нажатие кнопки Экспорт в JSON")
+    @allure.step("Нажатие кнопки Экспорт в JSON")
+    def press_export_to_json_button(self):
+        self.element_is_visible(self.locators.EXPORT_TO_JSON_BUTTON).click()
+
+    @testit.step("Получение кликабельности кнопки Сохранить")
+    @allure.step("Получение кликабельности кнопки Сохранить")
+    def get_clickable_save_button(self):
+        return self.element_is_clickable(self.locators.SUBMIT_BUTTON, 3)
