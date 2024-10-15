@@ -537,3 +537,16 @@ class TestProjectCard:
         # Проверяем что таблица вернулась к изначальному состоянию
         assert table_before == table_after_cancel, \
             "Выбранный в дровере период привлечения после отмены не исчезает из таблицы 'Ресурсный план'"
+
+    @testit.workItemIds(11787)
+    @testit.displayName("2.1.1.1. Просмотр таблицы 'Ресурсный план' при отсутствии ресурсов")
+    @pytest.mark.regress
+    @allure.title("id-11787 2.1.1.1. Просмотр таблицы 'Ресурсный план' при отсутствии ресурсов")
+    def test_viewing_resource_plan_tab_without_resources(self,  no_resources_project, login, driver):
+        all_project_page = AllProjectPage(driver)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(no_resources_project['name'])
+        project_card_page = ProjectCardPage(driver)
+        project_card_page.go_to_resource_plan_tab()
+        project_card_page.check_resource_plan_tab_without_resources()
+    
