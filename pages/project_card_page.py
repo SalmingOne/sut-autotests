@@ -309,7 +309,7 @@ class ProjectCardPage(BasePage):
         all_messages = self.elements_are_visible(self.locators.TEXT_NO_RESOURCES, 15)
         data = []
         for message in all_messages:
-            data.append( message.text)
+            data.append(message.text)
         assert data == ['В проекте нет добавленных ресурсов', 'Перейдите по ссылке, чтобы добавить новые ресурсы в проект'], \
         "Отсутствует/не соответствует текст сообщения в табе Ресурсный план без ресурсов"
         
