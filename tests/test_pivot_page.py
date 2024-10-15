@@ -113,10 +113,10 @@ class TestPivotPage:
         time.sleep(2)
         pivot_tab_page.check_tab_column_titles_by_user()
 
-    @testit.workItemIds(11834)
+    @testit.workItemIds(11832)
     @testit.displayName("3.2.2.18 Экспорт в JSON, если не заполнены обязательные поля")
     @pytest.mark.regress
-    @allure.title("id-11834 3.2.2.18 Экспорт в JSON, если не заполнены обязательные поля")
+    @allure.title("id-11832 3.2.2.18 Экспорт в JSON, если не заполнены обязательные поля")
     def test_export_to_json_if_required_fields_are_left_blank(self, simple_project, login, driver):
         pivot_tab_page = PivotTabPage(driver)
         pivot_tab_page.go_to_pivot_page()
