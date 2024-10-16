@@ -44,6 +44,11 @@ class PivotTabFilterPage(BasePage):
     def open_filial_dropdown(self):
         self.element_is_visible(self.locators.OPEN_FILIAL_DROPDOWN).click()
 
+    @testit.step("Раскрываем дропдаун Проектные роли")
+    @allure.step("Раскрываем дропдаун Проектные роли")
+    def open_project_roles_dropdown(self):
+        self.element_is_visible(self.locators.PROJECT_ROLES_INPUT).click()
+
     @testit.step("Раскрываем дропдаун интеграций")
     @allure.step("Раскрываем дропдаун интеграций")
     def open_integration_dropdown(self):
@@ -54,3 +59,15 @@ class PivotTabFilterPage(BasePage):
     @allure.step("Нажатие кнопки сохранить")
     def press_submit_button(self):
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+
+    @testit.step("Проверка наличия кнопки сброса всех параметров")
+    @allure.step("Проверка наличия кнопки сброса всех параметров")
+    def check_reset_button(self):
+        assert self.element_is_displayed(self.locators.RESET_ALL_BUTTON, 2), "Нет кнопки сброса всех параметров"
+
+    @testit.step("Проверка кликабельности поля Интеграции")
+    @allure.step("Проверка кликабельности поля Интеграции")
+    def check_integration_field_not_clickable(self):
+        assert not self.element_is_clickable(self.locators.OPEN_INTEGRATION_DROPDOWN, 2), \
+            ("поле с текстовым фильтром и дропдауном выбора интеграций/активностей не задизейблено, "
+             "пока не выбран - чекбокс для отображения активностей по интеграциям")

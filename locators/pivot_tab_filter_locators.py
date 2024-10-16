@@ -12,9 +12,9 @@ class PivotTabFilterPageLocators:
     NOT_ACTIV_USER_CHECKBOX = (By.XPATH, '//p[text()="Неактивные пользователи"]')
     NOT_ACTIV_PROJECT_CHECKBOX = (By.XPATH, '//p[text()="Неактивные проекты"]')
     INTEGRATION_CHECKBOX = (By.XPATH, '//p[text()="Активности по интеграциям"]')
-    # Чек-боксы и радио-кнопки
+    PROJECT_ROLES_INPUT = (By.XPATH, '//label[text()="Проектные роли"]/..//input')
     ELEMENTS_DROPDOWN_TEXT = (By.XPATH, '//p[contains(@class, "MuiTypography-noWrap")]')
-    OPEN_FILIAL_DROPDOWN = (By.XPATH, '//input[contains(@class, "MuiOutlinedInput-input MuiInputBase-input MuiInputBase-inputAdornedStart")]')
+    OPEN_FILIAL_DROPDOWN = (By.XPATH, '//label[text()="Филиалы"]/..//input')
     OPEN_INTEGRATION_DROPDOWN = (By.XPATH, '//div[@name="activityTypes"]//input[contains(@class, "MuiOutlinedInput-input")]')
     # Кнопка сбросить все
     RESET_ALL_BUTTON = (By.XPATH, '//button[text()="Сбросить все"]')
