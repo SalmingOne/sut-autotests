@@ -862,22 +862,22 @@ class ProjectCardPage(BasePage):
             list_cells.append(cell.text)
         return list_cells
 
-    @testit.step("проверка переключения временных интервалов в периоде квартал")
-    @allure.step("проверка переключения временных интервалов в периоде квартал")
+    @testit.step("Проверка переключения временных интервалов в периоде квартал")
+    @allure.step("Проверка переключения временных интервалов в периоде квартал")
     def check_switching_time_intervals_quarter(self):
         self.check_time_intervals_quarter(0)
-        self.element_is_visible(self.locators.PREVIOUS_PERIOD_BUTTON, 5).click()
+        self.element_is_visible(self.locators.PREVIOUS_PERIOD_BUTTON).click()
         self.check_time_intervals_quarter(-1)
-        self.element_is_visible(self.locators.THIS_DAY_BUTTON, 5).click()
-        self.element_is_visible(self.locators.NEXT_PERIOD_BUTTON, 5).click()
+        self.element_is_visible(self.locators.THIS_DAY_BUTTON).click()
+        self.element_is_visible(self.locators.NEXT_PERIOD_BUTTON).click()
         self.check_time_intervals_quarter(1)
-        self.element_is_visible(self.locators.THIS_DAY_BUTTON, 5).click()
+        self.element_is_visible(self.locators.THIS_DAY_BUTTON).click()
 
-    @testit.step("проверка отображения в периоде квартал")
-    @allure.step("проверка отображения в периоде квартал")
+    @testit.step("Проверка отображения в периоде квартал")
+    @allure.step("Проверка отображения в периоде квартал")
     def check_time_intervals_quarter(self, difference_quarter):
         time.sleep(1)
-        displayed_interval = self.element_is_visible(self.locators.DISPLAYED_PERIOD, 5).text
+        displayed_interval = self.element_is_visible(self.locators.DISPLAYED_PERIOD).text
         current_quarter = (datetime.now().month - 1) // 3 + 1
         new_quarter = (current_quarter + difference_quarter - 1) % 4 + 1
         start_month = displayed_interval.split(" ")[0]
@@ -885,45 +885,45 @@ class ProjectCardPage(BasePage):
         quarter_start_month = (datetime.strptime(start_month, '%B').month - 1) // 3 + 1
         quarter_end_month = (datetime.strptime(end_month, '%B').month - 1) // 3 + 1
         time.sleep(1)
-        assert new_quarter == quarter_start_month ==quarter_end_month, "Не отображается выбранный квартал"
+        assert new_quarter == quarter_start_month == quarter_end_month, "Не отображается выбранный квартал"
         assert set([start_month, end_month]).issubset(set(self.get_low_string_in_header())), \
             "Не отображаются месяца выбранного квартала в столбцах"      
              
-    @testit.step("проверка переключения временных интервалов в периоде месяц по дням")
-    @allure.step("проверка переключения временных интервалов в периоде месяц по дням")
+    @testit.step("Проверка переключения временных интервалов в периоде месяц по дням")
+    @allure.step("Проверка переключения временных интервалов в периоде месяц по дням")
     def check_switching_time_intervals_month(self):
-        self.check_time_intervals__month(0)
-        self.element_is_visible(self.locators.PREVIOUS_PERIOD_BUTTON, 5).click()
-        self.check_time_intervals__month(-1)
-        self.element_is_visible(self.locators.THIS_DAY_BUTTON, 5).click()
-        self.element_is_visible(self.locators.NEXT_PERIOD_BUTTON, 5).click()
-        self.check_time_intervals__month(1)
-        self.element_is_visible(self.locators.THIS_DAY_BUTTON, 5).click()
+        self.check_time_intervals_month(0)
+        self.element_is_visible(self.locators.PREVIOUS_PERIOD_BUTTON).click()
+        self.check_time_intervals_month(-1)
+        self.element_is_visible(self.locators.THIS_DAY_BUTTON).click()
+        self.element_is_visible(self.locators.NEXT_PERIOD_BUTTON).click()
+        self.check_time_intervals_month(1)
+        self.element_is_visible(self.locators.THIS_DAY_BUTTON).click()
 
-    @testit.step("проверка отображения в периоде месяц по дням")
-    @allure.step("проверка отображения в периоде месяц по дням")
-    def check_time_intervals__month(self, difference_month):
+    @testit.step("Проверка отображения в периоде месяц по дням")
+    @allure.step("Проверка отображения в периоде месяц по дням")
+    def check_time_intervals_month(self, difference_month):
         time.sleep(1)
         day = self.get_hire_string_in_header()
-        displayed_interval = self.element_is_visible(self.locators.DISPLAYED_PERIOD, 5).text
+        displayed_interval = self.element_is_visible(self.locators.DISPLAYED_PERIOD).text
         month_number = int(datetime.now().month) + difference_month
         date_object = datetime(2024, month_number, 1)
         time.sleep(1)
         assert '1' and '15' and '28' in day, "Не отображаются дни в столбцах"
         assert date_object.strftime('%B') == displayed_interval.split(" ")[0], "Не отображается выбранный месяц"
         
-    @testit.step("проверка переключения временных интервалов в периоде год")
-    @allure.step("проверка переключения временных интервалов в периоде год")
+    @testit.step("Проверка переключения временных интервалов в периоде год")
+    @allure.step("Проверка переключения временных интервалов в периоде год")
     def check_switching_time_intervals_year(self):
         self.check_time_intervals_year(0)
-        self.element_is_visible(self.locators.PREVIOUS_PERIOD_BUTTON, 5).click()
+        self.element_is_visible(self.locators.PREVIOUS_PERIOD_BUTTON).click()
         self.check_time_intervals_year(-1)
-        self.element_is_visible(self.locators.THIS_DAY_BUTTON, 5).click()
-        self.element_is_visible(self.locators.NEXT_PERIOD_BUTTON, 5).click()
+        self.element_is_visible(self.locators.THIS_DAY_BUTTON).click()
+        self.element_is_visible(self.locators.NEXT_PERIOD_BUTTON).click()
         self.check_time_intervals_year(1)
 
-    @testit.step("проверка отображения в периоде год")
-    @allure.step("проверка отображения в периоде год")
+    @testit.step("Проверка отображения в периоде год")
+    @allure.step("Проверка отображения в периоде год")
     def check_time_intervals_year(self, difference_year):
         time.sleep(1)
         displayed_interval = self.element_is_visible(self.locators.DISPLAYED_PERIOD, 5).text
