@@ -537,3 +537,20 @@ class TestProjectCard:
         # Проверяем что таблица вернулась к изначальному состоянию
         assert table_before == table_after_cancel, \
             "Выбранный в дровере период привлечения после отмены не исчезает из таблицы 'Ресурсный план'"
+
+    @testit.workItemIds(1955)
+    @testit.displayName('2.1.2.2 Переключение временных интервалов')
+    @pytest.mark.regress
+    @allure.title('id-1955 2.1.2.2 Переключение временных интервалов')
+    def test_switching_time_intervals(self, simple_project, login, driver):
+        all_project_page = AllProjectPage(driver)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(simple_project['name'])
+        project_card_page = ProjectCardPage(driver)
+        project_card_page.go_to_resource_plan_tab()
+        project_card_page.check_switching_time_intervals_quarter()
+        project_card_page.chose_period('Месяц (по дням)')
+        project_card_page.check_switching_time_intervals_month()
+        project_card_page.chose_period('Год')
+        project_card_page.check_switching_time_intervals_year()
+        
