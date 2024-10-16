@@ -862,75 +862,49 @@ class ProjectCardPage(BasePage):
             list_cells.append(cell.text)
         return list_cells
 
-    @testit.step("Проверка переключения временных интервалов в периоде квартал")
-    @allure.step("Проверка переключения временных интервалов в периоде квартал")
-    def check_switching_time_intervals_quarter(self):
-        self.check_time_intervals_quarter(0)
+    @testit.step("Переключение временных интервалов")
+    @allure.step("Переключение временных интервалов")
+    def switching_time_intervals(self, period):
+        self.check_time_intervals(0, period)
         self.element_is_visible(self.locators.PREVIOUS_PERIOD_BUTTON).click()
-        self.check_time_intervals_quarter(-1)
+        self.check_time_intervals(-1, period)
         self.element_is_visible(self.locators.THIS_DAY_BUTTON).click()
         self.element_is_visible(self.locators.NEXT_PERIOD_BUTTON).click()
-        self.check_time_intervals_quarter(1)
+        self.check_time_intervals(1, period)
         self.element_is_visible(self.locators.THIS_DAY_BUTTON).click()
 
-    @testit.step("Проверка отображения в периоде квартал")
-    @allure.step("Проверка отображения в периоде квартал")
-    def check_time_intervals_quarter(self, difference_quarter):
-        time.sleep(1)
-        displayed_interval = self.element_is_visible(self.locators.DISPLAYED_PERIOD).text
-        current_quarter = (datetime.now().month - 1) // 3 + 1
-        new_quarter = (current_quarter + difference_quarter - 1) % 4 + 1
-        start_month = displayed_interval.split(" ")[0]
-        end_month = displayed_interval.split(" ")[2]
-        quarter_start_month = (datetime.strptime(start_month, '%B').month - 1) // 3 + 1
-        quarter_end_month = (datetime.strptime(end_month, '%B').month - 1) // 3 + 1
-        time.sleep(1)
-        assert new_quarter == quarter_start_month == quarter_end_month, "Не отображается выбранный квартал"
-        assert set([start_month, end_month]).issubset(set(self.get_low_string_in_header())), \
-            "Не отображаются месяца выбранного квартала в столбцах"      
-             
-    @testit.step("Проверка переключения временных интервалов в периоде месяц по дням")
-    @allure.step("Проверка переключения временных интервалов в периоде месяц по дням")
-    def check_switching_time_intervals_month(self):
-        self.check_time_intervals_month(0)
-        self.element_is_visible(self.locators.PREVIOUS_PERIOD_BUTTON).click()
-        self.check_time_intervals_month(-1)
-        self.element_is_visible(self.locators.THIS_DAY_BUTTON).click()
-        self.element_is_visible(self.locators.NEXT_PERIOD_BUTTON).click()
-        self.check_time_intervals_month(1)
-        self.element_is_visible(self.locators.THIS_DAY_BUTTON).click()
+    @testit.step("Проверка отображения временных интервалов")
+    @allure.step("Проверка отображения временных интервалов")
+    def check_time_intervals(self, difference, period):
+        if period == 'quarter':
+            #Логика проверки для квартала
+            displayed_interval = self.element_is_visible(self.locators.DISPLAYED_PERIOD).text
+            current_quarter = (datetime.now().month - 1) // 3 + 1
+            new_quarter = (current_quarter + difference - 1) % 4 + 1
+            start_month = displayed_interval.split(" ")[0]
+            end_month = displayed_interval.split(" ")[2]
+            quarter_start_month = (datetime.strptime(start_month, '%B').month - 1) // 3 + 1
+            quarter_end_month = (datetime.strptime(end_month, '%B').month - 1) // 3 + 1
+            assert new_quarter == quarter_start_month == quarter_end_month, "Не отображается выбранный квартал"
+            assert set([start_month, end_month]).issubset(set(self.get_low_string_in_header())), \
+                "Не отображаются месяца выбранного квартала в столбцах" 
 
-    @testit.step("Проверка отображения в периоде месяц по дням")
-    @allure.step("Проверка отображения в периоде месяц по дням")
-    def check_time_intervals_month(self, difference_month):
-        time.sleep(1)
-        day = self.get_hire_string_in_header()
-        displayed_interval = self.element_is_visible(self.locators.DISPLAYED_PERIOD).text
-        month_number = int(datetime.now().month) + difference_month
-        date_object = datetime(2024, month_number, 1)
-        time.sleep(1)
-        assert '1' and '15' and '28' in day, "Не отображаются дни в столбцах"
-        assert date_object.strftime('%B') == displayed_interval.split(" ")[0], "Не отображается выбранный месяц"
+        elif period == 'month':
+            #Логика проверки для месяца
+            day = self.get_hire_string_in_header()
+            displayed_interval = self.element_is_visible(self.locators.DISPLAYED_PERIOD).text
+            month_number = int(datetime.now().month) + difference
+            date_object = datetime(2024, month_number, 1)
+            assert '1' and '15' and '28' in day, "Не отображаются дни в столбцах"
+            assert date_object.strftime('%B') == displayed_interval.split(" ")[0], "Не отображается выбранный месяц"
         
-    @testit.step("Проверка переключения временных интервалов в периоде год")
-    @allure.step("Проверка переключения временных интервалов в периоде год")
-    def check_switching_time_intervals_year(self):
-        self.check_time_intervals_year(0)
-        self.element_is_visible(self.locators.PREVIOUS_PERIOD_BUTTON).click()
-        self.check_time_intervals_year(-1)
-        self.element_is_visible(self.locators.THIS_DAY_BUTTON).click()
-        self.element_is_visible(self.locators.NEXT_PERIOD_BUTTON).click()
-        self.check_time_intervals_year(1)
-
-    @testit.step("Проверка отображения в периоде год")
-    @allure.step("Проверка отображения в периоде год")
-    def check_time_intervals_year(self, difference_year):
-        time.sleep(1)
-        displayed_interval = self.element_is_visible(self.locators.DISPLAYED_PERIOD, 5).text
-        assert set(['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август',\
-                 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']) == set(self.get_hire_string_in_header()),\
-                      "Не отображаются месяцы в столбцах"
-        assert displayed_interval == str(datetime.now().year + difference_year), \
-            "Не отображается выбранный год"
-        assert set(self.get_low_string_in_header()) == set([displayed_interval]), \
-            "Не отображается выбранный год в столбцах"
+        elif period == 'year':
+            #Логика проверки для года
+            displayed_interval = self.element_is_visible(self.locators.DISPLAYED_PERIOD, 5).text
+            assert set(['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август',\
+                    'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']) == set(self.get_hire_string_in_header()),\
+                        "Не отображаются месяцы в столбцах"
+            assert displayed_interval == str(datetime.now().year + difference), \
+                "Не отображается выбранный год"
+            assert set(self.get_low_string_in_header()) == set([displayed_interval]), \
+                "Не отображается выбранный год в столбцах"

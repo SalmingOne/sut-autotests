@@ -548,9 +548,9 @@ class TestProjectCard:
         all_project_page.go_project_page(simple_project['name'])
         project_card_page = ProjectCardPage(driver)
         project_card_page.go_to_resource_plan_tab()
-        project_card_page.check_switching_time_intervals_quarter()
+        project_card_page.switching_time_intervals('quarter')
         project_card_page.chose_period('Месяц (по дням)')
-        project_card_page.check_switching_time_intervals_month()
+        project_card_page.switching_time_intervals('month')
         project_card_page.chose_period('Год')
-        project_card_page.check_switching_time_intervals_year()
+        project_card_page.switching_time_intervals('year')
         
