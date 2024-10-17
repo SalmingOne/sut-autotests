@@ -1,3 +1,4 @@
+import time
 
 import allure
 import pytest
@@ -65,3 +66,18 @@ class TestLoggingPage:
         logging_page.change_audit_status(status='Вкл')
         logging_page.fields_are_enabled()
         logging_page.buttons_are_enabled()
+
+    @testit.workItemIds(1412)
+    @testit.displayName('6.4.3 Отмена включения логирования')
+    @pytest.mark.regress
+    @allure.title('id-1412 6.4.3 Отмена включения логирования')
+    def test_cancel_enable_logging(self, logging_off, login, driver):
+        logging_page = LoggingPage(driver)
+        logging_page.go_to_audit_page()
+        logging_page.change_audit_setting(status='Вкл', level='Все', depth='Неделя')
+        logging_page.abort_modal_dialog()
+        values = logging_page.get_field_values()
+        assert values[0] == 'Вкл', 'Поле статус аудита не содержит введённое ранее значение'
+        assert values[1] == 'Все', 'Поле уровень аудита не содержит введённое ранее значение'
+        assert values[2] == '1', 'Поле количество не содержит введённое ранее значение'
+        assert values[3] == 'Неделя', 'Поле глубина аудита не содержит введённое ранее значение'
