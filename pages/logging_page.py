@@ -64,3 +64,38 @@ class LoggingPage(BasePage):
         self.element_is_visible(self.locators.AUDIT_STATUS_FIELD).click()
         self.element_is_visible(self.locators.set_choice('Выкл')).click()
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+
+    @testit.step("Проверка элементов на табе 'Аудит'")
+    @allure.step("Проверка элементов на табе 'Аудит'")
+    def check_elements_on_page(self):
+        assert self.element_is_displayed(self.locators.AUDIT_STATUS_FIELD), "Дропдаун аудит не отображается"
+        assert self.element_is_displayed(self.locators.AUDIT_LEVEL_FIELD), "Дропдаун уровень аудита не отображается"
+        assert self.element_is_displayed(self.locators.DEPTH_DATE_QUANTITY_FIELD), "Поле глубина аудита не отображается"
+        assert self.element_is_displayed(self.locators.DEPTH_DATE_TYPE_FIELD), "Дропдаун глубина аудита не отображается"
+        assert self.element_is_displayed(self.locators.SUBMIT_BUTTON), "Кнопка сохранить не отображается"
+        assert self.element_is_displayed(self.locators.ABORT_BUTTON), "Кнопка отменить не отображается"
+
+    @testit.step("Проверка значений в выпадающих списках")
+    @allure.step("Проверка значений в выпадающих списках")
+    def check_elements_in_select(self):
+        self.element_is_visible(self.locators.AUDIT_STATUS_FIELD).click()
+        audit_status_elements = [element.text for element in self.elements_are_visible(self.locators.ELEMENTS_IN_SELECT)]
+        self.element_is_visible(self.locators.AUDIT_LEVEL_FIELD).click()
+        audit_level_elements = [element.text for element in self.elements_are_visible(self.locators.ELEMENTS_IN_SELECT)]
+        self.element_is_visible(self.locators.DEPTH_DATE_TYPE_FIELD).click()
+        depth_date_elements = [element.text for element in self.elements_are_visible(self.locators.ELEMENTS_IN_SELECT)]
+        assert audit_status_elements == ["Вкл", "Выкл"], "В выпадающем списке аудита не все значения"
+        assert audit_level_elements == ["Все", "Информационные", "Ошибка", "Фатальные"], "В выпадающем списке уровень аудита не все значения"
+        assert depth_date_elements == ["День", "Неделя", "Месяц", "Год"], "В выпадающем списке глубина аудита не все значения"
+
+    @testit.step("Проверка активны ли кнопки")
+    @allure.step("Проверка активны ли кнопки")
+    def buttons_are_enabled(self):
+        assert self.element_is_clickable(self.locators.SUBMIT_BUTTON), 'Кнопка сохранить неактивна'
+        assert self.element_is_clickable(self.locators.ABORT_BUTTON), 'Кнопка отменить неактивна'
+
+    @testit.step("Проверка неактивны ли кнопки")
+    @allure.step("Проверка неактивны ли кнопки")
+    def buttons_are_disabled(self):
+        assert not self.element_is_clickable(self.locators.SUBMIT_BUTTON), 'Кнопка сохранить активна'
+        assert not self.element_is_clickable(self.locators.ABORT_BUTTON), 'Кнопка отменить активна'
