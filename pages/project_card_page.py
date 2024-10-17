@@ -297,6 +297,17 @@ class ProjectCardPage(BasePage):
         self.check_resource_plan_tab_add_percent_button()
         self.check_resource_plan_tab_header_tooltip()
 
+    @testit.step("Переключение радиобаттона на значение 'Проценты'")
+    @allure.step("Переключение радиобаттона на значение 'Проценты'")
+    def change_radiobutton(self):
+        self.element_is_visible(self.locators.CHANGE_RADIOGROUP).click()
+
+
+    @testit.step("Нажатие на кнопку добавления процента занятости")
+    @allure.step("Нажатие на кнопку добавления процента занятости")
+    def press_add_percent_button(self):
+        self.element_is_present(self.locators.ADD_PERCENT_BUTTON, 25).click()   
+
     @testit.step("Проверка периода выбранного по умолчанию")
     @allure.step("Проверка периода выбранного по умолчанию")
     def check_default_period(self):
@@ -546,6 +557,11 @@ class ProjectCardPage(BasePage):
     def press_submit_button(self):
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
 
+    @testit.step("Нажатие кнопки Отмена")
+    @allure.step("Нажатие кнопки Отмена")
+    def press_break_button(self):
+        self.element_is_visible(self.locators.BREAK_BUTTON).click()
+
     @testit.step("Получение сообщения системы")
     @allure.step("Получение сообщения системы")
     def get_alert_message(self):
@@ -786,3 +802,61 @@ class ProjectCardPage(BasePage):
     def get_tooltip_text_on_approval_status(self):
         self.action_move_to_element(self.element_is_visible(self.locators.OVERTIME_APPROVAL_STATUS))
         return self.element_is_visible(self.locators.TOOLTIP).text
+    
+    @testit.step("Получение списка значений из дропдауна на вкладке 'Ресурсный план'")
+    @allure.step("Получение списка значений из дропдауна на вкладке 'Ресурсный план'")
+    def get_list_values_dropdown_resource_plan_tab(self):
+        self.element_is_visible(self.locators.DROVER_MENU).click()
+        menu_title_list = self.elements_are_visible(self.locators.DROVER_MENU_ITEM)
+        data = []
+        for title in menu_title_list:
+            data.append(title.text)
+        self.action_esc()
+        return data
+
+    @testit.step("Проверка дровера 'Добавление процента занятости' на вкладке 'Ресурсный план'")
+    @allure.step("Проверка дровера 'Добавление процента занятости' на вкладке 'Ресурсный план'")
+    def check_drover_resource_plan_tab(self):
+        assert (self.element_is_visible(self.locators.DROVER_TITLE).text ==
+                'Добавление процента занятости'), "Нет заголовка дровера"
+        assert self.element_is_visible(self.locators.DROVER_INPUT).get_attribute("value") == '100', "В поле по умолчанию не 100"
+        assert self.get_list_values_dropdown_resource_plan_tab() == ['0', '12.5', '25', '37.5', '50', '62.5', '75', '87.5', '100'], \
+            "Не все значения отображены для выбора"
+        assert self.element_is_visible(self.locators.DROVER_START_DATE).get_attribute('value') == datetime.now().strftime('%d.%m.%Y'), \
+            "Дата начала по умолчанию не текущая дата"
+        assert self.element_is_visible(self.locators.DROVER_END_DATE).get_attribute('value') == '', \
+            "Дата окончания по умолчанию не пустое" 
+        self.element_is_visible(self.locators.DROVER_END_DATE).send_keys(f"{self.get_day_before(1)}")
+        assert self.element_is_visible(self.locators.DROVER_HELP_TEXT_END_DATE).text == \
+            'Указанная дата не может быть раньше даты начала периода привлечения', "Дата окончания раньше Даты начала"
+        assert self.element_is_displayed(self.locators.DROVER_SUBMIT_BUTTON), "В дровере нет кнопки Сохранить"
+        assert self.element_is_displayed(self.locators.DROVER_ABORT_BUTTON), "В дровере нет кнопки Отменить"
+
+    @testit.step("Внесение периода привлечения и процента занятости")
+    @allure.step("Внесение периода привлечения и процента занятости")
+    def set_period_and_percentage(self):
+        self.element_is_visible(self.locators.DROVER_MENU).click()
+        self.element_is_visible(self.locators.PERCENT_50).click()
+        self.element_is_visible(self.locators.DROVER_START_DATE).send_keys(self.get_day_after(1))
+        self.element_is_visible(self.locators.DROVER_END_DATE).send_keys(self.get_day_after(5))
+
+    @testit.step("Нажатие кнопки 'Сохранить' в дровере")
+    @allure.step("Нажатие кнопки 'Сохранить' в дровере")
+    def press_save_in_drover(self):
+        self.element_is_visible(self.locators.DROVER_SUBMIT_BUTTON).click()
+        
+    @testit.step("Нажатие кнопки 'Отмена' в дровере")
+    @allure.step("Нажатие кнопки 'Отмена' в дровере")
+    def press_cancel_in_drover(self):
+        self.element_is_visible(self.locators.DROVER_ABORT_BUTTON).click()
+        
+    @testit.step("Получение данных таблицы 'Ресурсный план'")
+    @allure.step("Получение данных таблицы 'Ресурсный план'")
+    def displaying_table_resource_plan(self):
+        list_cells = []
+        # Ищем все элементы cell на веб-странице и добавляем их в список
+        cells = self.elements_are_visible(self.locators.CELLS)
+        # Обходим каждый элемент в списке и достаем значение
+        for cell in cells:
+            list_cells.append(cell.text)
+        return list_cells
