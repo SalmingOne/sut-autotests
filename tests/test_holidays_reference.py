@@ -37,7 +37,8 @@ class TestHolidaysReferencePage:
             'Новое описание',
         )
         after_change = holidays_reference_page.get_holiday_field_values()
-
+        holidays_reference_page.press_abort_button()
         holidays_reference_page.open_kebab_to_edit(create_holiday)
         after_abort = holidays_reference_page.get_holiday_field_values()
-        time.sleep(4)
+        assert before != after_change, "Данные в дровере не изменились"
+        assert after_abort == before, "Данные сохранились после отмены сохранения"

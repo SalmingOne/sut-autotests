@@ -56,6 +56,8 @@ class HolidaysReferencePage(BasePage):
         self.element_is_visible(self.locators.KEBAB_DELETE_BUTTON).click()
         self.element_is_visible(self.locators.MODAL_SUBMIT_BUTTON).click()
 
+    @testit.step("Получение значений полей в дровере изменения праздничного дня")
+    @allure.step("Получение значений полей в дровере изменения праздничного дня")
     def get_holiday_field_values(self):
         name = self.element_is_visible(self.locators.NAME_FIELD).get_attribute('value')
         date = self.element_is_visible(self.locators.DATE_FIELD).get_attribute('value')
@@ -64,6 +66,8 @@ class HolidaysReferencePage(BasePage):
         description = self.element_is_visible(self.locators.DESCRIPTION_FIELD).text
         return name, date, type, priority, description
 
+    @testit.step("Изменение полей в дровере изменения праздничного дня")
+    @allure.step("Изменение полей в дровере изменения праздничного дня")
     def change_holiday_field_values(self, name, date, description):
         self.element_is_visible(self.locators.NAME_FIELD).send_keys(Keys.CONTROL + 'a')
         self.element_is_visible(self.locators.NAME_FIELD).send_keys(name)
@@ -71,3 +75,8 @@ class HolidaysReferencePage(BasePage):
         self.element_is_visible(self.locators.DATE_FIELD).send_keys(date)
         self.element_is_visible(self.locators.DESCRIPTION_FIELD).send_keys(Keys.CONTROL + 'a')
         self.element_is_visible(self.locators.DESCRIPTION_FIELD).send_keys(description)
+
+    @testit.step("Нажатие кнопки отмены")
+    @allure.step("Нажатие кнопки отмены")
+    def press_abort_button(self):
+        self.element_is_visible(self.locators.CANCEL_BUTTON).click()
