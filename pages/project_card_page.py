@@ -297,6 +297,29 @@ class ProjectCardPage(BasePage):
         self.check_resource_plan_tab_add_percent_button()
         self.check_resource_plan_tab_header_tooltip()
 
+    @testit.step("Проверка вкладки Ресурсный план без ресурсов")
+    @allure.step("Проверка вкладки Ресурсный план без ресурсов")
+    def check_resource_plan_tab_without_resources(self):
+        self.check_message_without_resources()
+        self.check_link_to_add_new_resources()
+
+    @testit.step("Проверка сообщения в табе Ресурсный план без ресурсов")
+    @allure.step("Проверка сообщения в табе Ресурсный план без ресурсов")
+    def check_message_without_resources(self):
+        all_messages = self.elements_are_visible(self.locators.TEXT_NO_RESOURCES, 15)
+        data = []
+        for message in all_messages:
+            data.append(message.text)
+        assert data == ['В проекте нет добавленных ресурсов', 'Перейдите по ссылке, чтобы добавить новые ресурсы в проект'], \
+        "Отсутствует/не соответствует текст сообщения в табе Ресурсный план без ресурсов"
+        
+    @testit.step("Проверка ссылки на добавление новых ресурсов в проект")
+    @allure.step("Проверка ссылки на добавление новых ресурсов в проект")
+    def check_link_to_add_new_resources(self):
+        self.element_is_visible(self.locators.LINK_NO_RESOURCES).click()
+        assert self.element_is_visible(self.locators.TEAM_TAB).get_attribute('aria-selected') == 'true', \
+            "Ссылка не ведет на вкладку Команда"
+        
     @testit.step("Переключение радиобаттона на значение 'Проценты'")
     @allure.step("Переключение радиобаттона на значение 'Проценты'")
     def change_radiobutton(self):
