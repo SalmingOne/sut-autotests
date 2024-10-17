@@ -49,10 +49,25 @@ class HolidaysReferencePage(BasePage):
         assert self.element_is_displayed(self.locators.GOAL_REASON_FIELD_IS_REQUIRED), 'Отсутствует сообщение "Поле обязательно"'
         self.element_is_visible(self.locators.CANCEL_BUTTON).click()
 
-
     @testit.step("Удаление праздничного дня")
     @allure.step("Удаление праздничного дня")
     def delete_holiday(self, name):
         self.element_is_visible(self.locators.kebab_by_holiday_name(name)).click()
         self.element_is_visible(self.locators.KEBAB_DELETE_BUTTON).click()
         self.element_is_visible(self.locators.MODAL_SUBMIT_BUTTON).click()
+
+    def get_holiday_field_values(self):
+        name = self.element_is_visible(self.locators.NAME_FIELD).get_attribute('value')
+        date = self.element_is_visible(self.locators.DATE_FIELD).get_attribute('value')
+        type = self.element_is_visible(self.locators.TYPE_VALUE).get_attribute('value')
+        priority = self.element_is_visible(self.locators.PRIORITY_VALUE).get_attribute('value')
+        description = self.element_is_visible(self.locators.DESCRIPTION_FIELD).text
+        return name, date, type, priority, description
+
+    def change_holiday_field_values(self, name, date, description):
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(name)
+        self.element_is_visible(self.locators.DATE_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.DATE_FIELD).send_keys(date)
+        self.element_is_visible(self.locators.DESCRIPTION_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.DESCRIPTION_FIELD).send_keys(description)
