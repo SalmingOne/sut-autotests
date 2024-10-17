@@ -128,7 +128,7 @@ class TestUserProfilePage:
         resume_title = user_profile_page.save_resume()
         time.sleep(2)
         message = user_profile_page.get_alert_message()
-        time.sleep(2)
+        driver.refresh()
         titles = user_profile_page.get_names_resume_on_tab()
         kebab_menu_items = user_profile_page.delete_resume(resume_title)
 
@@ -166,6 +166,7 @@ class TestUserProfilePage:
         time.sleep(2)
         user_profile_page.go_to_education_tab()
         user_profile_page.press_redact_button()
+        time.sleep(1)
         user_profile_page.press_add_icon_button()
         user_profile_page.go_to_user_profile_tab()
         have_start_work_field = user_profile_page.check_start_work_is_visible()

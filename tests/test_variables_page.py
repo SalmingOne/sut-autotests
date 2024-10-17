@@ -130,6 +130,7 @@ class TestVariablesPage:
         variables_page = VariablesPage(driver)
         variables_page.go_to_variables_page()
         variables_page.click_editing_add_variable('Для редактирования', '7')
+        time.sleep(5)
         variables_page.editing_variable('Отредактировано')
         # без рефреша не видит новое название
         driver.refresh()

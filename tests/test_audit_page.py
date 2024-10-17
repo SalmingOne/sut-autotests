@@ -16,5 +16,6 @@ class TestAuditPage:
     def test_view_audit_page(self, login, logging_on, driver):
         audit_page = AuditPage(driver)
         audit_page.go_to_audit_page()
+        time.sleep(1)
         audit_page.check_columns_headers()
         audit_page.check_reset_all_button()

@@ -47,4 +47,4 @@ class VariablesPageLocators:
         return (By.XPATH, f'//*[text()="{text}"]')
 
     def get_value_from_column(self, variable_name, column_number):
-        return (By.XPATH, f'//div[@aria-label="{variable_name}"]//ancestor::div[contains(@class,"ag-row-even ag-row-no-focus")]//div[@aria-colindex="{column_number}"]//div')
+        return (By.XPATH, f'//div[@aria-label="{variable_name}"]//ancestor::div[contains(@class,"ag-row-odd")]//div[@aria-colindex="{column_number}"]//div')

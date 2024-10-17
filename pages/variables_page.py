@@ -205,7 +205,6 @@ class VariablesPage(BasePage):
             pass
         else:
             self.add_template_file()
-            self.delete_file('шаблон.docx')
 
     @testit.step("Добавление шаблона в невалидном формате")
     @allure.step("Добавление шаблона в невалидном формате")
@@ -219,7 +218,6 @@ class VariablesPage(BasePage):
     @allure.step("Нажать кнопку редактирования добавленной переменной")
     def click_editing_add_variable(self, variable_name, column_number):
         self.element_is_visible(self.locators.get_value_from_column(variable_name, column_number)).click()
-        time.sleep(1)
         self.element_is_visible(self.locators.KEBABS_EDIT_MENU_ITEM).click()
 
     @testit.step("Редактирование переменной")

@@ -6,7 +6,7 @@ class VacationSchedulePageLocators:
     TAB_MORE = (By.CSS_SELECTOR, 'div[id="more"]')
     TAB_VACATION_SCHEDULE = (By.CSS_SELECTOR, 'a[href="/vacation-schedule"]')
     # Заголовок таблицы
-    VACATION_SCHEDULE_HEADER = (By.CSS_SELECTOR, 'div[class="ag-header-container"]')
+    VACATION_SCHEDULE_HEADER = (By.CSS_SELECTOR, 'div[role="columnheader"]')
     WEEKS_IN_VACATION_SCHEDULE_HEADER = (By.CSS_SELECTOR, 'div[aria-label^="Неделя №"]')
     FIRST_WEEK_IN_VACATION_SCHEDULE_HEADER = (By.CSS_SELECTOR, 'h6[class^="MuiTypography-root MuiTypography-subtitle2 today"]')
     TODAY_WEEK = (By.XPATH, '//p[contains(@class, "today")]')
