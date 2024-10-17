@@ -20,6 +20,7 @@ from endpoints.skills_endpoint import SkillsEndpoint
 from endpoints.system_roles_endpoint import SystemRolesEndpoint
 
 from endpoints.users_endpoint import UserEndpoint
+from endpoints.calendar_endpoint import CalendarEndpoint
 from endpoints.variables_endpoint import VariablesEndpoint
 from pages.authorization_page import AuthorizationPage
 from pages.base_page import BasePage
@@ -815,3 +816,19 @@ def create_second_resume():
     response = resume_endpoint.create_resume_api(json=payload)
     yield payload['title']
     resume_endpoint.delete_resume_api(str(response.json()['id']))
+
+@pytest.fixture()
+def create_holiday():
+    calendar_endpoint = CalendarEndpoint()
+    payload = dict(
+        name='Праздник3',
+        startDate='12.12.2055',
+        type="PREHOLIDAY",
+        source="USER",
+        description=None,
+        annuality=False
+    )
+    response = calendar_endpoint.create_holiday_api(json=payload)
+    yield payload['name']
+    calendar_endpoint.delete_holiday_api(str(response.json()['id']))
+

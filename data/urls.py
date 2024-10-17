@@ -27,4 +27,5 @@ class Urls:
     advanced_search_url = f'{api_url}' + 'search/'
     create_advanced_search_url = f'{advanced_search_url}' + 'create/'
     resume_url = f'{api_url}' + 'resume/'
+    calendar_url = f'{api_url}' + 'calendar/'
 
