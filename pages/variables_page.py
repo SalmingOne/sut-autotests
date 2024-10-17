@@ -236,3 +236,11 @@ class VariablesPage(BasePage):
         self.element_is_visible(self.locators.KEBABS_DEL_MENU_ITEM).click()
         self.element_is_visible(self.locators.CANCEL_ACCEPT_BUTTON).click()
         self.elements_are_visible(self.locators.ALL_SEARCH_FIELDS)[6].clear()
+
+    @testit.step("Удаление файла если он был использован")
+    @allure.step("Удаление файла если он был использован")
+    def delete_file_if_used(self, file_name):
+        try:
+            self.delete_file('file_name')
+        except FileNotFoundError:
+            pass
