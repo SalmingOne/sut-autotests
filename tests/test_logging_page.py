@@ -54,3 +54,14 @@ class TestLoggingPage:
         logging_page.check_elements_on_page()
         logging_page.check_elements_in_select()
         logging_page.buttons_are_disabled()
+
+    @testit.workItemIds(1230)
+    @testit.displayName('6.4.3 Реакция системы при выборе значения "Вкл"')
+    @pytest.mark.regress
+    @allure.title('id-1230 6.4.3 Реакция системы при выборе значения "Вкл"')
+    def test_system_reaction_when_on_is_selected(self, logging_off, login, driver):
+        logging_page = LoggingPage(driver)
+        logging_page.go_to_audit_page()
+        logging_page.change_audit_status(status='Вкл')
+        logging_page.fields_are_enabled()
+        logging_page.buttons_are_enabled()
