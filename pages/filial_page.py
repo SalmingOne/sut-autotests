@@ -189,3 +189,48 @@ class FilialPage(BasePage):
             except TimeoutException:
                 break
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+
+    @testit.step("Проверка заголовков колонок таблицы")
+    @allure.step("Проверка заголовков колонок таблицы")
+    def check_table_column_headings(self):
+        assert self.element_is_displayed(self.locators.NAME_HEADING), 'Некорректный заголовок столбца Название'
+        assert self.element_is_displayed(self.locators.ADDRESS_HEADING), 'Некорректный заголовок столбца Адрес'
+        assert self.element_is_displayed(self.locators.PARENT_FILIAL_HEADING), 'Некорректный заголовок столбца Родительский филиал'
+        assert self.element_is_displayed(self.locators.ACTIONS_HEADING), 'Некорректный заголовок столбца Действия'
+
+    @testit.step("Проверка отображения кнопок на табе")
+    @allure.step("Проверка отображения кнопок на табе")
+    def check_buttons_on_tab_filial(self):
+        self.element_is_visible(self.locators.KEBAB_MENU).click()
+        assert self.element_is_displayed(self.locators.REDACT_BUTTON), 'Нет Редактирования'
+        assert self.element_is_displayed(self.locators.KEBAB_VIEW_FULL_INFO_BUTTON), 'Нет Просмотра полной информации'
+        assert self.element_is_displayed(self.locators.KEBAB_DELETE_BUTTON), 'Нет Удаления'
+        assert self.element_is_displayed(self.locators.ADD_FILIAL_BUTTON), 'Нет кнопки Создать филиал'
+
+    @testit.step("Добавление филиала только c полями из таблицы")
+    @allure.step("Добавление филиала только c полями из таблицы")
+    def add_filial_with_fields_from_table_only(self, name, address):
+        self.element_is_visible(self.locators.ADD_FILIAL_BUTTON).click()
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(name)
+        self.element_is_visible(self.locators.ADDRESS_FIELD).send_keys(address)
+        self.element_is_visible(self.locators.AFFILIATE_FIELD).click()
+        try:
+            self.elements_are_visible(self.locators.DROPDOWN_ITEMS, 2)[0].click()
+        except TimeoutException:
+            print('Нет родительских филиалов')
+
+    @testit.step("Добавление филиала без обязательных полей")
+    @allure.step("Добавление филиала без обязательных полей")
+    def add_filial_without_required_fields(self, address, phone, email):
+        self.element_is_visible(self.locators.ADDRESS_FIELD).send_keys(address)
+        try:
+            self.elements_are_visible(self.locators.ATTRACTION_RATE_FIELD, 2)[0].click()
+        except TimeoutException:
+            print('Нет доступных ставок привлечения')
+        self.element_is_visible(self.locators.AFFILIATE_FIELD).click()
+        try:
+            self.elements_are_visible(self.locators.DROPDOWN_ITEMS, 2)[0].click()
+        except TimeoutException:
+            print('Нет родительских филиалов')
+        self.element_is_visible(self.locators.PHONE_FIELD).send_keys(phone)
+        self.element_is_visible(self.locators.EMAIL_FIELD).send_keys(email)

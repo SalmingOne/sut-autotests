@@ -230,6 +230,12 @@ class VariablesPage(BasePage):
         self.element_is_visible(self.locators.VARIABLE_VALUE_INPUT).send_keys(Keys.CONTROL + 'a', new_name)
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
 
+    @testit.step("Проверка наличия текста с предупреждением")
+    @allure.step("Проверка наличия текста с предупреждением")
+    def check_warning_text(self, name_field, value_name):
+        assert self.element_is_visible(self.locators.check_text(name_field))
+        assert self.element_is_visible(self.locators.check_text(value_name))
+
     @testit.step("Отмена удаления переменной")
     @allure.step("Отмена удаления переменной")
     def cancel_variable_deletion(self, variable_mame):

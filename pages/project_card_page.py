@@ -297,6 +297,29 @@ class ProjectCardPage(BasePage):
         self.check_resource_plan_tab_add_percent_button()
         self.check_resource_plan_tab_header_tooltip()
 
+    @testit.step("Проверка вкладки Ресурсный план без ресурсов")
+    @allure.step("Проверка вкладки Ресурсный план без ресурсов")
+    def check_resource_plan_tab_without_resources(self):
+        self.check_message_without_resources()
+        self.check_link_to_add_new_resources()
+
+    @testit.step("Проверка сообщения в табе Ресурсный план без ресурсов")
+    @allure.step("Проверка сообщения в табе Ресурсный план без ресурсов")
+    def check_message_without_resources(self):
+        all_messages = self.elements_are_visible(self.locators.TEXT_NO_RESOURCES, 15)
+        data = []
+        for message in all_messages:
+            data.append(message.text)
+        assert data == ['В проекте нет добавленных ресурсов', 'Перейдите по ссылке, чтобы добавить новые ресурсы в проект'], \
+        "Отсутствует/не соответствует текст сообщения в табе Ресурсный план без ресурсов"
+        
+    @testit.step("Проверка ссылки на добавление новых ресурсов в проект")
+    @allure.step("Проверка ссылки на добавление новых ресурсов в проект")
+    def check_link_to_add_new_resources(self):
+        self.element_is_visible(self.locators.LINK_NO_RESOURCES).click()
+        assert self.element_is_visible(self.locators.TEAM_TAB).get_attribute('aria-selected') == 'true', \
+            "Ссылка не ведет на вкладку Команда"
+        
     @testit.step("Переключение радиобаттона на значение 'Проценты'")
     @allure.step("Переключение радиобаттона на значение 'Проценты'")
     def change_radiobutton(self):
@@ -855,8 +878,45 @@ class ProjectCardPage(BasePage):
     def displaying_table_resource_plan(self):
         list_cells = []
         # Ищем все элементы cell на веб-странице и добавляем их в список
-        cells = self.elements_are_visible(self.locators.CELLS)
+        # Пока временно первых 10 ячеек, позже заменю на те где были изменения
+        cells = self.elements_are_visible(self.locators.CELLS)[1:10]
         # Обходим каждый элемент в списке и достаем значение
         for cell in cells:
             list_cells.append(cell.text)
         return list_cells
+
+    @testit.step("Проверка значения ячейки в табе 'Ресурсный план' по умолчанию")
+    @allure.step("Проверка значения ячейки в табе 'Ресурсный план' по умолчанию")
+    def checking_cell_default_value(self):
+        assert (self.displaying_table_resource_plan())[2] == '0%', "Процент привлечения по умолчанию не равен '0'"
+
+    @testit.step("Проверка значений выпадающего списка ячейки в табе 'Ресурсный план'")
+    @allure.step("Проверка значений выпадающего списка ячейки в табе 'Ресурсный план'")
+    def checking_cell_dropdown_list_values(self):
+        self.action_double_click(self.elements_are_visible(self.locators.CELLS)[1])
+        assert self.get_text_menu_items() == ['0%', '12.5%', '25%', '37.5%', '50%', '62.5%', '75%', '87.5%', '100%',], \
+            "Некорректные значения в выпадающем меню ячейки"
+        
+    @testit.step("Проверка окрашивания ячеек в зависимости от выбранного значения")
+    @allure.step("Проверка окрашивания ячеек в зависимости от выбранного значения")
+    def checking_color_cell(self):
+        value = (self.elements_are_visible(self.locators.CELLS))[1]
+        color_cell = []
+        for i in range(9):
+           self.action_double_click(value)
+           self.elements_are_visible(self.locators.LI_MENU_ITEM)[i].click()
+           color = value.value_of_css_property('background-color')
+           color_cell.append(color)
+           
+        assert color_cell == ['rgba(0, 0, 0, 0)', 'rgba(223, 244, 255, 0.3)', 'rgba(223, 244, 255, 0.3)',\
+                              'rgba(223, 244, 255, 0.3)', 'rgba(223, 244, 255, 0.6)', 'rgba(223, 244, 255, 0.6)',\
+                                 'rgba(223, 244, 255, 0.6)', 'rgba(223, 244, 255, 0.6)', 'rgba(204, 231, 246, 1)'], \
+            "Цвет заливки ячеек не соответствует"
+        
+    @testit.step("Внести изменения в таблицу 'Ресурсный план'")
+    @allure.step("Внести изменения в таблицу 'Ресурсный план'")
+    def change_table_resource_plan(self):
+        self.action_double_click(self.elements_are_visible(self.locators.CELLS)[1])
+        #выбираем последнее значение в выпадающем списке
+        self.elements_are_visible(self.locators.LI_MENU_ITEM)[8].click()
+            
