@@ -19,6 +19,7 @@ class GanttPage(BasePage):
     @allure.step("Добавление фазы")
     def add_phase(self, phase_name):
         self.element_is_visible(self.locators.EDIT_GANTT_BUTTON).click()
+        time.sleep(0.5)
         self.element_is_visible(self.locators.CREATE_PHASE_OR_TASK_BUTTON).click()
         self.element_is_visible(self.locators.CREATE_PHASE_BUTTON).click()
         self.element_is_visible(self.locators.PHASE_NAME_FIELD).send_keys(phase_name)

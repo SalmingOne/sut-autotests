@@ -27,6 +27,7 @@ class AllProjectPageLocators:
     PROJECT_DELETE_BUTTON = (By.XPATH, '//span[text()="Удалить"]')
     PROJECT_ARCHIVING_BUTTON = (By.XPATH, '//span[text()="В архив"]')
     PROJECT_UNZIPPING_BUTTON = (By.XPATH, '//span[text()="Разархивировать"]')
+    KEBAB_MENU = (By.CSS_SELECTOR, 'svg[data-testid="MoreHorizIcon"]')
     # Локаторы фильтрации проектов по статусам
     STATUS_FILTER_BUTTON = (By.XPATH, '//div[@aria-colindex="6"]//button')
     MARK_ALL_STATUS = (By.XPATH, '//div[text()="Выделить всё"]')

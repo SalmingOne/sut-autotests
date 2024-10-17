@@ -369,6 +369,7 @@ class TestLaborCostPage:
         labor_cost_page.click_previous_checkbox()
         start_date, end_date = labor_cost_page.check_data_absense()
         labor_cost_page.cansel_delete_absense()
+        time.sleep(1)
         start_date_outer, end_date_outer = labor_cost_page.check_data_absense()
         labor_cost_page.delete_all_absence()
         assert start_date == start_date_outer, "Дата начала отсутствия изменилась или удалилось отсутствие"
@@ -609,9 +610,9 @@ class TestLaborCostPage:
         else:
             pass
         zero_reason_day = labor_cost_page.get_numbers_days_reason('zero')
-        labor_cost_page.add_absence(zero_reason_day[-1], 'administrative_leave')
-        labor_cost_page.add_absence(zero_reason_day[-2], 'sick_leave')
-        labor_cost_page.check_editing_absences_if_the_selected_period_overlaps_with_other_absences(zero_reason_day[-2])
+        labor_cost_page.add_absence(zero_reason_day[-2], 'administrative_leave')
+        labor_cost_page.add_absence(zero_reason_day[-3], 'sick_leave')
+        labor_cost_page.check_editing_absences_if_the_selected_period_overlaps_with_other_absences(zero_reason_day[-3])
         labor_cost_page.click_previous_checkbox()
         labor_cost_page.delete_all_absence()
 
@@ -623,11 +624,11 @@ class TestLaborCostPage:
                                                                                     login, f_overtime_reason_requirement, driver):
         labor_cost_page = LaborCostPage(driver)
         zero_reason_day = labor_cost_page.get_numbers_days_reason("zero")
-        labor_cost_page.add_overtime_work_without_file(zero_reason_day[-1], 3, project_with_labor_reason['name'])
+        labor_cost_page.add_overtime_work_without_file(zero_reason_day[-2], 3, project_with_labor_reason['name'])
         labor_cost_page.field_reason_overwork("Много работал")
         time.sleep(2)
         project_day_cell_contents = labor_cost_page.get_project_day_cell_contents(project_with_labor_reason['name'],
-                                                                                  zero_reason_day[-1] + 2)
+                                                                                  zero_reason_day[-2] + 2)
         total_column = labor_cost_page.get_project_total(project_with_labor_reason['name'])
         assert project_day_cell_contents == total_column == '0+3', "Переработка не отразилась в строке и столбце Итого"
         assert 'Переработка успешно добавлена' in labor_cost_page.get_alert_message(), \
@@ -643,7 +644,7 @@ class TestLaborCostPage:
     def test_display_tooltip_for_file_upload_field_when_creating_a_rework(self, project_with_labor_reason, login, driver):
         labor_cost_page = LaborCostPage(driver)
         zero_reason_day = labor_cost_page.get_numbers_days_reason("zero")
-        labor_cost_page.check_tooltip_overtime_work_file_field(zero_reason_day[-1], 3, project_with_labor_reason['name'])
+        labor_cost_page.check_tooltip_overtime_work_file_field(zero_reason_day[-2], 3, project_with_labor_reason['name'])
 
     @testit.workItemIds(2784)
     @testit.displayName("3.1.3.2. Отмена редактирования переработок в таблице трудозатраты")
@@ -653,20 +654,20 @@ class TestLaborCostPage:
         labor_cost_page = LaborCostPage(driver)
         zero_reason_day = labor_cost_page.get_numbers_days_reason("zero")
         labor_cost_page.add_overtime_work_with_file(
-            zero_reason_day[-1],
+            zero_reason_day[-2],
             2,
             project_with_labor_reason['name']
         )
         project_day_cell_contents_before = labor_cost_page.get_project_day_cell_contents(
             project_with_labor_reason['name'],
-            zero_reason_day[-1] + 2
+            zero_reason_day[-2] + 2
         )
         time.sleep(4)
         labor_cost_page.redact_overtime_on_reason_tab(project_with_labor_reason['name'])
         labor_cost_page.cancel_redact_overtime(7)
         project_day_cell_contents_after = labor_cost_page.get_project_day_cell_contents(
             project_with_labor_reason['name'],
-            zero_reason_day[-1] + 2
+            zero_reason_day[-2] + 2
         )
         assert project_day_cell_contents_before == project_day_cell_contents_after, "Переработка изменилась"
 
@@ -725,7 +726,7 @@ class TestLaborCostPage:
         time.sleep(1)
         zero_reason_day = labor_cost_page.get_numbers_days_reason("zero")
         labor_cost_page.add_overtime_work_with_file(
-            zero_reason_day[-1],
+            zero_reason_day[-2],
             2,
             project_with_attach_files['name']
         )
@@ -747,14 +748,14 @@ class TestLaborCostPage:
         time.sleep(1)
         zero_reason_day = labor_cost_page.get_numbers_days_reason("zero")
         labor_cost_page.add_overtime_work_with_file(
-            zero_reason_day[-1],
+            zero_reason_day[-2],
             2,
             project_with_attach_files['name']
         )
         time.sleep(1)
-        labor_cost_page.input_labor_reason_by_project(project_with_attach_files['name'], zero_reason_day[-1] + 2, 8)
+        labor_cost_page.input_labor_reason_by_project(project_with_attach_files['name'], zero_reason_day[-2] + 2, 8)
         labor_cost_page.add_overtime_work_with_file(
-            zero_reason_day[-2],
+            zero_reason_day[-3],
             4,
             project_with_attach_files['name']
         )
@@ -762,7 +763,7 @@ class TestLaborCostPage:
         labor_cost_page.redact_overtime_on_reason_tab(project_with_attach_files['name'])
         labor_cost_page.check_clear_required_field()
         labor_cost_page.redact_overtime_on_reason_tab(project_with_attach_files['name'])
-        labor_cost_page.change_date_in_date_piker(zero_reason_day[-2])
+        labor_cost_page.change_date_in_date_piker(zero_reason_day[-3])
         assert labor_cost_page.get_mui_error_text() == 'На выбранную дату и проект уже есть переработка', \
             "Не появилось сообщение о наложении переработок"
         labor_cost_page.redact_overtime_on_reason_tab(project_with_attach_files['name'])

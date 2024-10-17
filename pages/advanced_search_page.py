@@ -17,9 +17,8 @@ class AdvancedSearchPage(BasePage):
     def go_advanced_search_page(self):
         time.sleep(1)
         self.element_is_visible(self.locators.COLLEAGUES_TAB).click()
-        self.element_is_visible(self.locators.ALL_COLLEAGUES).click()
         time.sleep(1)
-        self.element_is_visible(self.locators.TO_ADVANCED_SEARCH_BUTTON).click()
+        self.element_is_visible(self.locators.ADVANCED_SEARCH).click()
         self.element_is_visible(self.locators.DEPARTMENTS_COLUMN, 15)
 
 
@@ -28,6 +27,7 @@ class AdvancedSearchPage(BasePage):
     def create_new_search(self):
         self.element_is_visible(self.locators.NEW_SEARCH_BUTTON).click()
         self.elements_are_visible(self.locators.OPEN_BUTTONS)[0].click()
+        time.sleep(0.1)
         criterion_value = self.elements_are_visible(self.locators.LI_MENU_ITEM)[1].text
         self.elements_are_visible(self.locators.LI_MENU_ITEM)[1].click()
 
@@ -176,7 +176,6 @@ class AdvancedSearchPage(BasePage):
         self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
         time.sleep(1)
         self.element_is_visible(self.locators.RUL_FIELD).click()
-        print(self.get_operators())
         assert self.get_operators() == ['Равно', 'Не равно', 'Меньше', 'Меньше или равно', 'Больше', 'Больше или равно', 'Пусто', 'Не пусто'], \
             "Не корректные операторы сравнения при выборе числового типа поля"
 
@@ -352,7 +351,7 @@ class AdvancedSearchPage(BasePage):
         values_before = self.get_all_fields()
         self.check_search_name_field()
         self.element_is_visible(self.locators.SEARCH_NAME_FIELD).send_keys(Keys.CONTROL + "a")
-        self.element_is_visible(self.locators.SEARCH_NAME_FIELD).send_keys('Авто-поиск')
+        self.element_is_visible(self.locators.SEARCH_NAME_FIELD).send_keys('Автоматический поиск')
         self.element_is_visible(self.locators.CLOSE_ICON).click()
         values_after = self.get_all_fields()
         time.sleep(1)

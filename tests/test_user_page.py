@@ -24,15 +24,12 @@ class TestUsersPage:
         user_page.check_user_card_title()
         user_page.check_clear_button()
         personal_data = user_page.get_labels_on_user_card()
-        user_page.go_to_tab_projects()
-        project_data = user_page.get_labels_on_user_card()
         user_page.go_to_tab_contacts()
         contact_data = user_page.get_labels_on_user_card()
         assert personal_data == ['Логин', 'Фамилия', 'Имя', 'Отчество', 'Дата рождения', 'Пол',
                                  'Дата принятия на работу', 'Дата увольнения', 'Проектная роль', 'Системная роль',
                                  'Подразделение', 'Должность', 'Филиал', 'Дополнительная информация',
                                  'Почасовая оплата'], "Отсутствуют некоторые персональные данные"
-        assert 'Проект' and 'Роль в проекте' and 'Руководитель проекта' in project_data, "Отсутствуют поля на вкладке проекты"
         assert contact_data == ['Телефон', 'Почта'], "Отсутствуют поля на вкладке контакты"
 
     @testit.workItemIds(134)

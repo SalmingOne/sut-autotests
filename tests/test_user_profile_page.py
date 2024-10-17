@@ -48,12 +48,14 @@ class TestUserProfilePage:
     def test_blank_entry_on_certificate_tab(self, login, driver):
         user_profile_page = UserProfilePage(driver)
         user_profile_page.go_to_user_profile()
-        time.sleep(4)
+        time.sleep(6)
         user_profile_page.go_to_certificate_tab()
+        time.sleep(1)
         user_profile_page.press_redact_button()
         time.sleep(1)
         user_profile_page.press_add_icon_button()
         user_profile_page.press_save_button()
+        time.sleep(1)
         user_profile_page.go_to_certificate_tab()
         alert_message = user_profile_page.get_alert_message()
         time.sleep(1)
@@ -70,7 +72,7 @@ class TestUserProfilePage:
     def test_blank_entry_on_experience_tab(self, login, driver):
         user_profile_page = UserProfilePage(driver)
         user_profile_page.go_to_user_profile()
-        time.sleep(4)
+        time.sleep(6)
         user_profile_page.go_to_experience_tab()
         user_profile_page.press_redact_button()
         time.sleep(1)
@@ -195,7 +197,7 @@ class TestUserProfilePage:
     def test_adding_a_diploma_file_in_the_education_section(self, login, driver):
         user_profile_page = UserProfilePage(driver)
         user_profile_page.go_to_user_profile()
-        time.sleep(2)
+        time.sleep(6)
         user_profile_page.go_to_education_tab()
         time.sleep(1)
         # Создаем диплом если его нет
@@ -233,7 +235,7 @@ class TestUserProfilePage:
     def test_adding_a_certificate_file_in_the_certificate_tab(self, login, driver):
         user_profile_page = UserProfilePage(driver)
         user_profile_page.go_to_user_profile()
-        time.sleep(2)
+        time.sleep(6)
         user_profile_page.go_to_certificate_tab()
         if user_profile_page.check_certificate_title():
             user_profile_page.press_redact_button()
@@ -305,7 +307,7 @@ class TestUserProfilePage:
         time.sleep(1)
         colleagues_page.go_colleagues_page()
         colleagues_page.search_user('АвтоСПроектом')
-        time.sleep(1)
+        time.sleep(4)
         colleagues_page.check_user_name_link()
         user_name = user_profile_page.get_title()
         user_profile_page.go_to_education_tab()
@@ -341,7 +343,7 @@ class TestUserProfilePage:
         # Проводим тест
         colleagues_page.go_colleagues_page()
         colleagues_page.search_user('АвтоСПроектом')
-        time.sleep(1)
+        time.sleep(4)
         colleagues_page.check_user_name_link()
         user_name = user_profile_page.get_title()
         user_profile_page.go_to_education_tab()
@@ -350,7 +352,7 @@ class TestUserProfilePage:
             pass
         else:
             user_profile_page.add_simple_diploma()
-            time.sleep(1)
+            time.sleep(2)
             user_profile_page.go_to_education_tab()
         user_profile_page.press_redact_button()
         time.sleep(1)
@@ -519,7 +521,7 @@ class TestUserProfilePage:
     @testit.displayName("10.2.3. Добавление проекта в разделе Опыт работы в чужом профиле")
     @pytest.mark.regress
     @allure.title("id-1935 10.2.3. Добавление проекта в разделе Опыт работы в чужом профиле")
-    def test_adding_a_project_in_the_work_experience_section_someone_else_profile(self, login, create_filial, driver):
+    def test_adding_a_project_in_the_work_experience_section_someone_else_profile(self, login, project_with_two_resources, create_filial, driver):
         user_profile_page = UserProfilePage(driver)
         colleagues_page = ColleaguesPage(driver)
         time.sleep(1)
@@ -527,13 +529,13 @@ class TestUserProfilePage:
         colleagues_page.search_user('АвтоСПроектом')
         time.sleep(2)
         colleagues_page.check_user_name_link()
-        time.sleep(4)
+        time.sleep(6)
         user_name = user_profile_page.get_title()
         user_profile_page.go_to_experience_tab()
         time.sleep(1)
         if user_profile_page.check_experience_title():
             user_profile_page.press_redact_button()
-            time.sleep(1)
+            time.sleep(2)
             user_profile_page.press_delete_icon()
             user_profile_page.press_save_button()
         else:
@@ -684,7 +686,7 @@ class TestUserProfilePage:
     def test_entering_a_date_after_that_day_in_the_start_date_of_work_at_the_company_field(self, login, driver):
         user_profile_page = UserProfilePage(driver)
         user_profile_page.go_to_user_profile()
-        time.sleep(2)
+        time.sleep(6)
         user_profile_page.go_to_resume_tab()
         user_profile_page.press_create_resume_button()
         user_profile_page.check_entering_a_date_after_that_day_in_the_start_date_of_work_at_the_company_field()
@@ -725,7 +727,7 @@ class TestUserProfilePage:
     def test_delete_resume(self, create_resume_to_delete, login, driver):
         user_profile_page = UserProfilePage(driver)
         user_profile_page.go_to_user_profile()
-        time.sleep(2)
+        time.sleep(6)
         user_profile_page.go_to_resume_tab()
         time.sleep(1)
         user_profile_page.delete_resume(create_resume_to_delete)
@@ -770,13 +772,14 @@ class TestUserProfilePage:
         user_profile_page.go_to_user_profile()
         time.sleep(2)
         user_profile_page.go_to_resume_tab()
-        time.sleep(0.5)
+        time.sleep(3)
         user_profile_page.redact_resume(create_resume)
         user_profile_page.clear_required_fields()
+        time.sleep(1)
         len_errors = user_profile_page.len_required_errors()
         alert = user_profile_page.get_alert_message()
         assert 'Заполнены не все обязательные поля' in alert, "Не появился алерт"
-        assert len_errors == 5, "Отображаются не все сообщения Поле обязательно"
+        assert len_errors == 6, "Отображаются не все сообщения Поле обязательно"
 
     @testit.workItemIds(3215)
     @testit.displayName("10.6.1.8. Изменение названия резюме на неуникальное")
@@ -851,7 +854,7 @@ class TestUserProfilePage:
     def test_blank_entry_into_required_fields_on_employee_information_tab(self, login, driver):
         user_profile_page = UserProfilePage(driver)
         user_profile_page.go_to_user_profile()
-        time.sleep(4)
+        time.sleep(6)
         user_profile_page.press_redact_button()
         time.sleep(1)
         user_profile_page.add_contact_form()
@@ -886,7 +889,7 @@ class TestUserProfilePage:
     def test_filling_additional_contact_in_contacts(self, login, driver):
         user_profile_page = UserProfilePage(driver)
         user_profile_page.go_to_user_profile()
-        time.sleep(4)
+        time.sleep(6)
         user_profile_page.press_redact_button()
         time.sleep(2)  # без слип тайм не успевает прогрузиться
         user_profile_page.add_contact_form()
@@ -903,6 +906,7 @@ class TestUserProfilePage:
     def test_delete_additional_contact_in_contacts(self, login, driver):
         user_profile_page = UserProfilePage(driver)
         user_profile_page.go_to_user_profile()
+        time.sleep(6)
         user_profile_page.press_redact_button()
         time.sleep(2)  # без слип тайм не успевает прогрузиться
         user_profile_page.add_contact_form()
@@ -977,7 +981,7 @@ class TestUserProfilePage:
     def test_editing_fields_if_the_selected_employer_does_not_exist(self, login, driver):
         user_profile_page = UserProfilePage(driver)
         user_profile_page.go_to_user_profile()
-        time.sleep(4)
+        time.sleep(6)
         user_profile_page.go_to_experience_tab()
         time.sleep(2)
         # Проверяем что есть карточка опыта

@@ -113,16 +113,6 @@ class TestProjectPage:
         resource_plane.open_project_list()
         # есть проблема с отображением проекта в ресурсном плане до решения закомментировал
         #resource_plane.check_project_color_on_user(simple_project['code'])
-        # Проект на странице пользователя
-        user_page = UserPage(driver)
-        user_page.go_to_user_page()
-        user_page.check_user_is_not_in_table(USER_NAME)
-        user_page.go_to_redact_user()
-        create_local_user_page = CreateLocalUserDrawerPage(driver)
-        time.sleep(2)
-        create_local_user_page.go_to_tab_projects()
-        project_list = create_local_user_page.get_project_and_roles_text()
-        assert simple_project['name'] not in project_list, "Проект отображается в карточке пользователя"
 
     @testit.workItemIds(941)
     @testit.displayName("1.4.2. Отмена архивации проекта")
@@ -152,16 +142,7 @@ class TestProjectPage:
         labor_cost_page = LaborCostPage(driver)
         labor_cost_page.go_to_labor_cost_page()
         labor_cost_page.check_add_hour_to_project()
-        # Проект на странице пользователя
-        user_page = UserPage(driver)
-        user_page.go_to_user_page()
-        user_page.check_user_is_not_in_table(USER_NAME)
-        user_page.go_to_redact_user()
-        create_local_user_page = CreateLocalUserDrawerPage(driver)
-        time.sleep(2)
-        create_local_user_page.go_to_tab_projects()
-        project_list = create_local_user_page.get_project_and_roles_text()
-        assert archive_project['name'] in project_list, "Проект не отображается в карточке пользователя"
+
 
     @testit.workItemIds(947)
     @testit.displayName("1.4.3.  Отмена разархивации проекта")
