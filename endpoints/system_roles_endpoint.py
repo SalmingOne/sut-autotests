@@ -23,3 +23,10 @@ class SystemRolesEndpoint:
         for role in all_system_roles:
             system_roles_id.append(role['id'])
         return sorted(system_roles_id)
+
+    @allure.step("Получаем id системной роли Пользователь")
+    def get_user_system_role_id(self):
+        all_system_roles = self.get_all_system_roles().json()
+        for role in all_system_roles:
+            if role['name'] == 'Пользователь':
+                return role['id']

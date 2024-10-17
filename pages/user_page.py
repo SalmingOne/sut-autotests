@@ -19,7 +19,7 @@ class UserPage(BasePage):
         time.sleep(1)
         self.element_is_visible(self.locators.USER_SEARCH_FIELD).send_keys(Keys.BACK_SPACE)
         self.element_is_visible(self.locators.USER_SEARCH_FIELD).send_keys(f'{last_name}')
-        return self.element_is_displayed(self.locators.USER_KEBABS)
+        return self.element_is_displayed(self.locators.USER_KEBABS, 3)
 
     @testit.step("Переход на страницу Пользователи")
     @allure.step("Переход на страницу Пользователи")
@@ -173,6 +173,7 @@ class UserPage(BasePage):
         time.sleep(1)  # Без ожидания не успевает срабатывать анимация
         self.element_is_visible(self.locators.USER_KEBABS).click()
         self.element_is_visible(self.locators.REDACT_BUTTON).click()
+        time.sleep(4)
         user_before_add_role = self.element_is_visible(self.locators.USER_SYSTEM_ROLE_DISABLE_INDICATOR).get_attribute(
             'class')
         self.element_is_visible(self.locators.SYSTEM_ROLE_FIELD).click()

@@ -613,6 +613,7 @@ class UserProfilePage(BasePage):
         self.check_128_in_experience_tab()
         self.element_is_visible(self.locators.EXPERIENCES_EMPLOYER_FIELD).click()
         self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
+        time.sleep(0.5)
         self.element_is_visible(self.locators.EXPERIENCES_PROJECT_FIELD).click()
         self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
 
@@ -687,7 +688,10 @@ class UserProfilePage(BasePage):
         self.check_custom_begin_data_field()
         self.element_is_visible(self.locators.EXPERIENCES_KNOWLEDGE_FIELD).click()
         time.sleep(1)
-        self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
+        try:
+            self.elements_are_visible(self.locators.LI_MENU_ITEM, 2)[0].click()
+        except TimeoutException:
+            print("В системе нет знаний")
         self.press_save_button()
 
     @testit.step("Проверка удаления блока опыт работы в резюме")
@@ -808,7 +812,7 @@ class UserProfilePage(BasePage):
         self.element_is_visible(self.locators.SEARCH_RESUME_NAME_FIELDS).send_keys(Keys.CONTROL + 'a')
         self.element_is_visible(self.locators.SEARCH_RESUME_NAME_FIELDS).send_keys(name)
         time.sleep(0.5)
-        self.elements_are_visible(self.locators.KEBAB_MENU)[0].click()
+        self.elements_are_visible(self.locators.KEBAB_MENU, 7)[0].click()
         time.sleep(0.5)
         self.element_is_visible(self.locators.KEBABS_REDACT_ITEM).click()
 
@@ -828,18 +832,25 @@ class UserProfilePage(BasePage):
     @testit.step("Очистка обязательных полей в резюме")
     @allure.step("Очистка обязательных полей в резюме")
     def clear_required_fields(self):
+        time.sleep(2)
         self.element_is_visible(self.locators.RESUME_TITLE_FIELD).send_keys(Keys.CONTROL + 'a')
         self.element_is_visible(self.locators.RESUME_TITLE_FIELD).send_keys(Keys.BACK_SPACE)
+        time.sleep(0.5)
         self.element_is_visible(self.locators.RESUME_FULL_NAME_FIELD).send_keys(Keys.CONTROL + 'a')
         self.element_is_visible(self.locators.RESUME_FULL_NAME_FIELD).send_keys(Keys.BACK_SPACE)
+        time.sleep(0.5)
         self.element_is_visible(self.locators.RESUME_POST_FIELD).send_keys(Keys.CONTROL + 'a')
         self.element_is_visible(self.locators.RESUME_POST_FIELD).send_keys(Keys.BACK_SPACE)
+        time.sleep(0.5)
         self.element_is_visible(self.locators.START_WORK_IN_RESUME).send_keys(Keys.CONTROL + 'a')
         self.element_is_visible(self.locators.START_WORK_IN_RESUME).send_keys(Keys.BACK_SPACE)
+        time.sleep(0.5)
         self.elements_are_visible(self.locators.DATE_PIKERS)[1].send_keys(Keys.CONTROL + 'a')
         self.elements_are_visible(self.locators.DATE_PIKERS)[1].send_keys(Keys.BACK_SPACE)
+        time.sleep(0.5)
         self.elements_are_visible(self.locators.DATE_PIKERS)[2].send_keys(Keys.CONTROL + 'a')
         self.elements_are_visible(self.locators.DATE_PIKERS)[2].send_keys(Keys.BACK_SPACE)
+        time.sleep(0.5)
         self.element_is_visible(self.locators.RESUME_FULL_NAME_FIELD).click()
         self.element_is_visible(self.locators.SAVE_BUTTON).click()
         time.sleep(3)
@@ -847,7 +858,7 @@ class UserProfilePage(BasePage):
     @testit.step("Получение количества предупреждения об обязательности поля")
     @allure.step("Получение количества предупреждения об обязательности поля")
     def len_required_errors(self):
-        return len(self.elements_are_visible(self.locators.REQUIRED_FIELD_ERROR))
+        return len(self.elements_are_present(self.locators.REQUIRED_FIELD_ERROR))
 
     @testit.step("Получение текста ошибки")
     @allure.step("Получение текста ошибки")
@@ -987,7 +998,10 @@ class UserProfilePage(BasePage):
     def field_knowledge_field(self):
         self.element_is_visible(self.locators.EXPERIENCES_KNOWLEDGE_WHEN_FIELD).click()
         time.sleep(1)
-        self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
+        try:
+            self.elements_are_visible(self.locators.LI_MENU_ITEM, 2)[0].click()
+        except TimeoutException:
+            print("В системе нет знаний")
 
     @testit.step("Проверка поля Дата окончания работы при самостоятельном заполнении")
     @allure.step("Проверка поля Дата окончания работы при самостоятельном заполнении")

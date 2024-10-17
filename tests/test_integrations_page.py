@@ -25,7 +25,7 @@ class TestIntegrationsPage:
         integration_page.add_jira_integration('https://jira.web-bee.ru', 'admin', 'admin')
         time.sleep(1.5)  # Необходимо время для прогрузки анимации
         message = integration_page.get_alert_message()
-        time.sleep(1)  # Необходимо время для прогрузки анимации
+        time.sleep(2)  # Необходимо время для прогрузки анимации
         integration_page.check_check_icon_on_modal_window()
         integration_page.check_delete_icon_on_modal_window()
         integration_page.check_edit_icon_on_modal_window()

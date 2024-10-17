@@ -57,7 +57,7 @@ class TestAdvancedSearchPage:
     def test_cancel_search(self, login, driver):
         advanced_search_page = AdvancedSearchPage(driver)
         advanced_search_page.go_advanced_search_page()
-        advanced_search_page. check_cancel_search()
+        advanced_search_page.check_cancel_search()
 
     @testit.workItemIds(1137)
     @testit.displayName("10.3.1.  Операторы сравнения для поиска сотрудников (числовой тип поля)")
