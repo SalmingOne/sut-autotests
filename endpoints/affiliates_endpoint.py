@@ -72,3 +72,11 @@ class AffiliatesEndpoint:
             )
             self.change_filial(str(filial_id), payload)
             self.delete_affiliates_api(str(filial_id))
+
+    @allure.step("Получаем названия всех филиалов")
+    def get_all_affiliates_name(self):
+        all_affiliates = self.get_all_affiliates_api().json()
+        all_affiliates_name = []
+        for affiliates in all_affiliates:
+            all_affiliates_name.append(affiliates['name'])
+        return all_affiliates_name

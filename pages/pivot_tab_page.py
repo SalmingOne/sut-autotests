@@ -20,6 +20,13 @@ class PivotTabPage(BasePage):
         self.element_is_visible(self.locators.PIVOT_TAB_BUTTON).click()
         self.element_is_visible(self.locators.ICON_TREE_CLOSED, 15)
 
+    @testit.step("Переходим на сводную таблицу через меню без ожидания")
+    @allure.step("Переходим на сводную таблицу через меню без ожидания")
+    def go_to_pivot_page_not_wait(self):
+        time.sleep(1)
+        self.element_is_visible(self.locators.ANALYTIC_MENU_BUTTON).click()
+        self.element_is_visible(self.locators.PIVOT_TAB_BUTTON).click()
+
     @testit.step("Выбираем отображаемый период")
     @allure.step("Выбираем отображаемый период")
     def choose_period(self, period):
@@ -200,3 +207,13 @@ class PivotTabPage(BasePage):
         assert 'Сумма' in title_sum, "Нет столбца сумма в таблице"
         assert 'пн' and 'вт' and 'ср' and 'чт' and 'пт' and 'сб' and 'вс' in week_days, \
             "Есть не все дни недели в заголовках столбцов таблицы"
+
+    @testit.step("Нажатие кнопки Экспорт в JSON")
+    @allure.step("Нажатие кнопки Экспорт в JSON")
+    def press_export_to_json_button(self):
+        self.element_is_visible(self.locators.EXPORT_TO_JSON_BUTTON).click()
+
+    @testit.step("Получение кликабельности кнопки Сохранить")
+    @allure.step("Получение кликабельности кнопки Сохранить")
+    def get_clickable_save_button(self):
+        return self.element_is_clickable(self.locators.SUBMIT_BUTTON, 3)
