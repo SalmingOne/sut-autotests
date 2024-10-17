@@ -106,7 +106,7 @@ class IndividualsPage(BasePage):
     @testit.step("Проверка кнопки сохранить до заполнения обязательных полей")
     @allure.step("Проверка кнопки сохранить до заполнения обязательных полей")
     def check_clickable_submit_button(self):
-        assert not self.element_is_clickable(self.locators.SUBMIT_BUTTON), "Кнопка сохранить н задизейблена"
+        assert not self.element_is_clickable(self.locators.SUBMIT_BUTTON), "Кнопка сохранить не задизейблена"
 
     @testit.step("Проверка кнопки отмены")
     @allure.step("Проверка кнопки отмены")

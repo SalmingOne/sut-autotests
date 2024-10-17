@@ -77,6 +77,13 @@ class PivotTabPage(BasePage):
     @allure.step("Переходим на отображение таблицы по пользователю")
     def go_to_by_user_tab(self):
         self.element_is_visible(self.locators.BY_USER_BUTTON).click()
+        self.element_is_visible(self.locators.ICON_TREE_CLOSED, 15)
+
+    @testit.step("Переходим на отображение таблицы по проектам")
+    @allure.step("Переходим на отображение таблицы по проектам")
+    def go_to_by_project_tab(self):
+        self.element_is_visible(self.locators.BY_PROJECT_BUTTON).click()
+        self.element_is_visible(self.locators.ICON_TREE_CLOSED, 15)
 
     @testit.step("Открываем список проектов пользователя")
     @allure.step("Открываем список проектов пользователя")
@@ -132,3 +139,64 @@ class PivotTabPage(BasePage):
             self.locators.project_color_on_user(project_name)).value_of_css_property('color')
         assert name_color == 'rgba(0, 0, 0, 0.4)', "Цвет проекта не серый"
 
+    @testit.step("Проверка списка выбора периодов")
+    @allure.step("Проверка списка выбора периодов")
+    def check_chose_period_list(self):
+        self.element_is_visible(self.locators.CHOSE_PERIOD_BUTTON).click()
+        assert self.get_text_menu_items() == ['Неделя', 'Месяц (по дням)', 'Месяц (по неделям)', 'Год'], \
+            "Не корректный список выбора периодов"
+
+    @testit.step("Получение выпадающего списка")
+    @allure.step("Получение выпадающего списка")
+    def get_text_menu_items(self):
+        time.sleep(0.5)
+        text = [element.text for element in self.elements_are_present(self.locators.LI_MENU_ITEM)]
+        self.action_esc()
+        return text
+
+    @testit.step("Проверка наличия кнопок экспорта")
+    @allure.step("Проверка наличия кнопок экспорта")
+    def check_export_buttons(self):
+        assert self.element_is_displayed(self.locators.EXPORT_TO_JSON_BUTTON), "Нет кнопки экспорта в JSON"
+        assert self.element_is_displayed(self.locators.EXPORT_TO_EXEL_BUTTON), "Нет кнопки экспорта в EXEL"
+
+    @testit.step("Проверка наличия иконки фильтрации")
+    @allure.step("Проверка наличия иконки фильтрации")
+    def check_filter_icon(self):
+        assert self.element_is_displayed(self.locators.FILTER_BUTTON), "Нет иконки фильтрации"
+
+    @testit.step("Проверка наличия блока переключения периодов")
+    @allure.step("Проверка наличия блока переключения периодов")
+    def check_next_previous_buttons(self):
+        assert self.element_is_displayed(
+            self.locators.NEXT_PERIOD_BUTTON), "Нет кнопки переключения на следующий период"
+        assert self.element_is_displayed(
+            self.locators.PREVIOUS_PERIOD_BUTTON), "Нет кнопки переключения на предыдущий период"
+        assert self.element_is_displayed(self.locators.THIS_DAY_BUTTON), "Нет кнопки Сегодня"
+
+    @testit.step("Получение заголовка первого столбца страницы")
+    @allure.step("Получение заголовка первого столбца страницы")
+    def get_first_column_title(self):
+        return self.element_is_visible(self.locators.TAB_TITLE).text
+
+    @testit.step("Проверка заголовков сводной таблицы по пользователям")
+    @allure.step("Проверка заголовков сводной таблицы по пользователям")
+    def check_tab_column_titles_by_user(self):
+        week_days = [element.text for element in self.elements_are_present(self.locators.TAB_HEADER_WEEK_TEXT)]
+        self.action_drag_and_drop_by_offset(self.element_is_visible(self.locators.HORIZONTAL_SCROLL), 110, 0)
+        time.sleep(1)
+        title_sum = [element.text for element in self.elements_are_present(self.locators.COLUMN_TITLES)]
+        assert 'Сумма' and 'Сумма От' and 'Сумма Б' and 'Сумма А' and 'Сумма Д' and 'Итог + переработки' in title_sum, \
+            "Есть не все заголовки столбцов в таблице"
+        assert 'пн' and 'вт' and 'ср' and 'чт' and 'пт' and 'сб' and 'вс' in week_days, \
+            "Есть не все дни недели в заголовках столбцов таблицы"
+
+    @testit.step("Проверка заголовков сводной таблицы по проектам")
+    @allure.step("Проверка заголовков сводной таблицы по проектам")
+    def check_tab_column_titles_by_project(self):
+        week_days = [element.text for element in self.elements_are_present(self.locators.TAB_HEADER_WEEK_TEXT)]
+        time.sleep(1)
+        title_sum = [element.text for element in self.elements_are_present(self.locators.COLUMN_TITLES)]
+        assert 'Сумма' in title_sum, "Нет столбца сумма в таблице"
+        assert 'пн' and 'вт' and 'ср' and 'чт' and 'пт' and 'сб' and 'вс' in week_days, \
+            "Есть не все дни недели в заголовках столбцов таблицы"
