@@ -9,8 +9,13 @@ class FilialPageLocators:
     # Таблица филиалы
     ADD_FILIAL_BUTTON = (By.XPATH, '//button[contains(@class,"MuiButton-root MuiButton-text MuiButton-textPrimary")]')
     REDACT_BUTTON = (By.XPATH, '//span[text()="Редактировать"]')
+    KEBAB_VIEW_FULL_INFO_BUTTON = (By.XPATH, '//span[text()="Просмотр полной информации"]')
     KEBAB_DELETE_BUTTON = (By.XPATH, '//span[text()="Удалить"]')
     KEBAB_MENU = (By.CSS_SELECTOR, 'svg[data-testid="MoreHorizIcon"]')
+    NAME_HEADING = (By.XPATH, '//h6[text()="Название"]')
+    ADDRESS_HEADING = (By.XPATH, '//h6[text()="Адрес"]')
+    PARENT_FILIAL_HEADING = (By.XPATH, '//h6[text()="Родительский филиал"]')
+    ACTIONS_HEADING = (By.XPATH, '//span[text()="Действия"]')
     # Дровер добавления/редактирования филиала
     NAME_FIELD = (By.CSS_SELECTOR, 'input[name="name"]')
     ADDRESS_FIELD = (By.CSS_SELECTOR, 'input[name="address"]')

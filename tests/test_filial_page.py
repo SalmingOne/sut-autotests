@@ -63,4 +63,40 @@ class TestFilialPage:
         time.sleep(2)
         assert not filial_page.check_filial_on_tab('Для удаления'), 'Филиал остался в таблице'
 
+    @testit.workItemIds(1483)
+    @testit.displayName("6.1.3.1. Просмотр вкладки ЮЛ в структуре организации")
+    @pytest.mark.regress
+    @allure.title("id-1483 6.1.3.1. Просмотр вкладки ЮЛ в структуре организации")
+    def test_view_filial_tab(self, login, driver):
+        filial_page = FilialPage(driver)
+        filial_page.go_to_filial_page()
+        filial_page.check_table_column_headings()
+        filial_page.check_buttons_on_tab_filial()
 
+    @testit.workItemIds(10717)
+    @testit.displayName("6.1.3.2. Отмена создания ЮЛ")
+    @pytest.mark.regress
+    @allure.title("id-10717 6.1.3.2. Отмена создания ЮЛ")
+    def test_cancel_add_filial(self, login, driver):
+        filial_page = FilialPage(driver)
+        filial_page.go_to_filial_page()
+        time.sleep(1)
+        filial_page.add_filial_with_fields_from_table_only('Центральный филиал',
+                               'Москва, Красная площадь')
+        filial_page.press_abort_button()
+        assert not filial_page.check_filial_on_tab('Центральный филиал'), "Филиал сохранился"
+
+    @testit.workItemIds(10718)
+    @testit.displayName("6.1.3.2. Создание ЮЛ в структуре организации, если не заполнены обязательные поля")
+    @pytest.mark.regress
+    @allure.title("id-10718 6.1.3.2. Создание ЮЛ в структуре организации, если не заполнены обязательные поля")
+    def test_add_filial_without_required_fields(self, login, driver):
+        filial_page = FilialPage(driver)
+        filial_page.go_to_filial_page()
+        time.sleep(1)
+        filial_page.open_add_filial_drawer()
+        filial_page.check_clickable_save_button()
+        filial_page.add_filial_without_required_fields('Москва, Красная площадь',
+                                                       '+77777777777',
+                                                       'vip@vip.vip')
+        filial_page.check_clickable_save_button()

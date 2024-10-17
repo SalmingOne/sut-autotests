@@ -11,6 +11,7 @@ class LoggingPageLocators:
     DEPTH_DATE_QUANTITY_FIELD = (By.CSS_SELECTOR, 'input[name="depthDateQuantity"]')
     DEPTH_DATE_TYPE_FIELD = (By.XPATH, '//div[@name="depthDateType"]//input')
     SUBMIT_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
+    ABORT_BUTTON = (By.XPATH, '//button[text()="Отменить"]')
     # Поля и кнопки на модальном окне
     DIALOG_TEXT = (By.CSS_SELECTOR, 'p[class^="MuiTypography-root MuiTypography-body2"]')
     DIALOG_SUBMIT_BUTTON = (By.XPATH, '//div[@role="dialog"]//button[@type="submit"]')
@@ -19,7 +20,8 @@ class LoggingPageLocators:
     ALERT_TEXT = (By.XPATH, '//div[contains(@class, "MuiAlert-message")]')
     # Пункт меню Аудит
     AUDIT_PAGE = (By.CSS_SELECTOR, 'a[href="/admin/logging"]')
-
+    ELEMENTS_IN_SELECT = (By.XPATH, "//li")
     # Выбор пункта меню
     def set_choice(self, choice):
         return (By.XPATH, f'//li[text()="{choice}"]')
+

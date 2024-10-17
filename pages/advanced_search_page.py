@@ -20,7 +20,7 @@ class AdvancedSearchPage(BasePage):
         self.element_is_visible(self.locators.ALL_COLLEAGUES).click()
         time.sleep(1)
         self.element_is_visible(self.locators.TO_ADVANCED_SEARCH_BUTTON).click()
-        self.element_is_visible(self.locators.DEPARTMENTS_COLUMN, 15)
+        self.element_is_visible(self.locators.DEPARTMENTS_COLUMN, 20)
 
 
     @testit.step("Создание расширенного поиска")

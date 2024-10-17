@@ -1,5 +1,6 @@
 import allure
 import requests
+import testit
 
 from data.urls import Urls
 
@@ -92,3 +93,11 @@ class ProjectEndpoint:
             pass
         else:
             self.delete_project_by_name_api(project_name)
+
+    @testit.step("Изменяем проект (put)")
+    @allure.step("Изменяем проект (put)")
+    def change_project_api(self, project_id, json):
+        header = AuthEndpoint().get_header_token_api()
+        self.response = requests.put(url=Urls.project_url + project_id + '?isFromAdmin=true', headers=header, json=json, verify=False)
+        self.response_json = self.response.json()
+        return self.response
