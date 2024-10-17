@@ -1,11 +1,12 @@
 import time
 from datetime import datetime
-import locale
-locale.setlocale(locale.LC_ALL, 'ru_RU')
+
 import allure
 import testit
 from selenium.common import StaleElementReferenceException, TimeoutException
 from selenium.webdriver import Keys
+import locale
+locale.setlocale(locale.LC_ALL, 'ru_RU')
 
 from locators.project_card_locators import ProjectCardLocators
 from pages.base_page import BasePage
