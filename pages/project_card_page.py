@@ -5,6 +5,8 @@ import allure
 import testit
 from selenium.common import StaleElementReferenceException, TimeoutException
 from selenium.webdriver import Keys
+import locale
+locale.setlocale(locale.LC_ALL, 'ru_RU')
 
 from locators.project_card_locators import ProjectCardLocators
 from pages.base_page import BasePage
@@ -312,14 +314,14 @@ class ProjectCardPage(BasePage):
             data.append(message.text)
         assert data == ['В проекте нет добавленных ресурсов', 'Перейдите по ссылке, чтобы добавить новые ресурсы в проект'], \
         "Отсутствует/не соответствует текст сообщения в табе Ресурсный план без ресурсов"
-        
+
     @testit.step("Проверка ссылки на добавление новых ресурсов в проект")
     @allure.step("Проверка ссылки на добавление новых ресурсов в проект")
     def check_link_to_add_new_resources(self):
         self.element_is_visible(self.locators.LINK_NO_RESOURCES).click()
         assert self.element_is_visible(self.locators.TEAM_TAB).get_attribute('aria-selected') == 'true', \
             "Ссылка не ведет на вкладку Команда"
-        
+
     @testit.step("Переключение радиобаттона на значение 'Проценты'")
     @allure.step("Переключение радиобаттона на значение 'Проценты'")
     def change_radiobutton(self):
@@ -896,7 +898,7 @@ class ProjectCardPage(BasePage):
         self.action_double_click(self.elements_are_visible(self.locators.CELLS)[1])
         assert self.get_text_menu_items() == ['0%', '12.5%', '25%', '37.5%', '50%', '62.5%', '75%', '87.5%', '100%',], \
             "Некорректные значения в выпадающем меню ячейки"
-        
+
     @testit.step("Проверка окрашивания ячеек в зависимости от выбранного значения")
     @allure.step("Проверка окрашивания ячеек в зависимости от выбранного значения")
     def checking_color_cell(self):
@@ -907,16 +909,62 @@ class ProjectCardPage(BasePage):
            self.elements_are_visible(self.locators.LI_MENU_ITEM)[i].click()
            color = value.value_of_css_property('background-color')
            color_cell.append(color)
-           
+
         assert color_cell == ['rgba(0, 0, 0, 0)', 'rgba(223, 244, 255, 0.3)', 'rgba(223, 244, 255, 0.3)',\
                               'rgba(223, 244, 255, 0.3)', 'rgba(223, 244, 255, 0.6)', 'rgba(223, 244, 255, 0.6)',\
                                  'rgba(223, 244, 255, 0.6)', 'rgba(223, 244, 255, 0.6)', 'rgba(204, 231, 246, 1)'], \
             "Цвет заливки ячеек не соответствует"
-        
+
     @testit.step("Внести изменения в таблицу 'Ресурсный план'")
     @allure.step("Внести изменения в таблицу 'Ресурсный план'")
     def change_table_resource_plan(self):
         self.action_double_click(self.elements_are_visible(self.locators.CELLS)[1])
         #выбираем последнее значение в выпадающем списке
         self.elements_are_visible(self.locators.LI_MENU_ITEM)[8].click()
-            
+
+    @testit.step("Переключение временных интервалов")
+    @allure.step("Переключение временных интервалов")
+    def switching_time_intervals(self, period):
+        self.check_time_intervals(0, period)
+        self.element_is_visible(self.locators.PREVIOUS_PERIOD_BUTTON).click()
+        self.check_time_intervals(-1, period)
+        self.element_is_visible(self.locators.THIS_DAY_BUTTON).click()
+        self.element_is_visible(self.locators.NEXT_PERIOD_BUTTON).click()
+        self.check_time_intervals(1, period)
+        self.element_is_visible(self.locators.THIS_DAY_BUTTON).click()
+
+    @testit.step("Проверка отображения временных интервалов")
+    @allure.step("Проверка отображения временных интервалов")
+    def check_time_intervals(self, difference, period):
+        if period == 'quarter':
+            #Логика проверки для квартала
+            displayed_interval = self.element_is_visible(self.locators.DISPLAYED_PERIOD).text
+            current_quarter = (datetime.now().month - 1) // 3 + 1
+            new_quarter = (current_quarter + difference - 1) % 4 + 1
+            start_month = displayed_interval.split(" ")[0]
+            end_month = displayed_interval.split(" ")[2]
+            quarter_start_month = (datetime.strptime(start_month, '%B').month - 1) // 3 + 1
+            quarter_end_month = (datetime.strptime(end_month, '%B').month - 1) // 3 + 1
+            assert new_quarter == quarter_start_month == quarter_end_month, "Не отображается выбранный квартал"
+            assert set([start_month, end_month]).issubset(set(self.get_low_string_in_header())), \
+                "Не отображаются месяца выбранного квартала в столбцах"
+
+        elif period == 'month':
+            #Логика проверки для месяца
+            day = self.get_hire_string_in_header()
+            displayed_interval = self.element_is_visible(self.locators.DISPLAYED_PERIOD).text
+            month_number = int(datetime.now().month) + difference
+            date_object = datetime(2024, month_number, 1)
+            assert '1' and '15' and '28' in day, "Не отображаются дни в столбцах"
+            assert date_object.strftime('%B') == displayed_interval.split(" ")[0], "Не отображается выбранный месяц"
+
+        elif period == 'year':
+            #Логика проверки для года
+            displayed_interval = self.element_is_visible(self.locators.DISPLAYED_PERIOD, 5).text
+            assert set(['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август',\
+                    'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']) == set(self.get_hire_string_in_header()),\
+                        "Не отображаются месяцы в столбцах"
+            assert displayed_interval == str(datetime.now().year + difference), \
+                "Не отображается выбранный год"
+            assert set(self.get_low_string_in_header()) == set([displayed_interval]), \
+                "Не отображается выбранный год в столбцах"
