@@ -81,3 +81,17 @@ class TestLoggingPage:
         assert values[1] == 'Все', 'Поле уровень аудита не содержит введённое ранее значение'
         assert values[2] == '1', 'Поле количество не содержит введённое ранее значение'
         assert values[3] == 'Неделя', 'Поле глубина аудита не содержит введённое ранее значение'
+
+    @testit.workItemIds(1415)
+    @testit.displayName('6.4.3 Отмена редактирования логирования')
+    @pytest.mark.regress
+    @allure.title('id-1415 6.4.3 Отмена редактирования логирования')
+    def test_cancel_enable_logging(self, logging_on, login, driver):
+        logging_page = LoggingPage(driver)
+        logging_page.go_to_audit_page()
+        values_before = logging_page.get_field_values()
+        values_between = logging_page.discard_audit_setting_changes(status='Вкл', level='Все', depth='Неделя')
+        values_after = logging_page.get_field_values()
+        logging_page.buttons_are_disabled()
+        assert values_before != values_between, 'Введенные значение не отображаются'
+        assert values_before == values_after, 'Поля изменились'
