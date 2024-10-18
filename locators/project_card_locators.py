@@ -58,7 +58,7 @@ class ProjectCardLocators:
     CHOSE_PERIOD_BUTTON = (By.CSS_SELECTOR, 'div[aria-haspopup="listbox"]')
     RESOURCE_PLAN_RADIOGROUP = (By.CSS_SELECTOR, 'div[role="radiogroup"]')
     CHECKED_RADIOGROUP = (By.XPATH, '//span[contains(@class, "Mui-checked")]//following-sibling::span[contains(@class, "MuiTypography-caption")]')
-    ADD_PERCENT_BUTTON = (By.CSS_SELECTOR, 'svg[data-testid="CalendarTodayOutlinedIcon"]')
+    ADD_EMPLOYMENT_BUTTON = (By.CSS_SELECTOR, 'svg[data-testid="CalendarTodayOutlinedIcon"]')
     RESOURCE_PLAN_TAB_HEADER = (By.CSS_SELECTOR, 'div[class="ag-header-cell-comp-wrapper"]')
     HIRE_HEADER = (By.XPATH, '//div[@class="ag-header-cell-comp-wrapper"]//h6')
     LOW_HEADER = (By.XPATH, '//div[@class="ag-header-cell-comp-wrapper"]//span[contains(@class,"MuiTypography-caption")]')
@@ -69,13 +69,12 @@ class ProjectCardLocators:
     DROVER_TITLE = (By.XPATH, '//div[contains(@class, "MuiDrawer-paper")]//h6')
     DROVER_INPUT = (By.XPATH, '//div[contains(@class, "MuiDrawer-paper")]//input[@placeholder="Выберите процент"]')
     DROVER_MENU = (By.XPATH, '//div[contains(@class, "MuiDrawer-paper")]//button[@title="Открыть"]')
-    DROVER_MENU_ITEM = (By.XPATH, '//li[contains(@class,"MuiAutocomplete-option")]')
+    DROVER_MENU_ITEM = (By.XPATH, '//ul[@role="listbox"]/li')
     DROVER_SUBMIT_BUTTON = (By.XPATH, '//div[contains(@class, "MuiDrawer-paper")]//button[text()="Сохранить"]')
     DROVER_ABORT_BUTTON = (By.XPATH, '//div[contains(@class, "MuiDrawer-paper")]//button[text()="Отменить"]')
     DROVER_START_DATE = (By.XPATH, '//label[text()="Дата начала"]//following-sibling::div/input')
     DROVER_END_DATE = (By.XPATH, '//label[text()="Дата окончания"]//following-sibling::div/input')
     DROVER_HELP_TEXT_END_DATE = (By.XPATH, '//label[text()="Дата окончания"]//following-sibling::p')
-    PERCENT_50 = (By.XPATH, '//li[contains(@class,"MuiAutocomplete-option")][text()="50"]')
 
     # Локаторы вкладки Ход выполнения
     PROGRESS_TAB = (By.XPATH, '//button[text()="Ход выполнения"]')
