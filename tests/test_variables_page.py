@@ -111,6 +111,7 @@ class TestVariablesPage:
         variables_page.go_to_variables_page()
         variables_page.check_template_is_not_empty()
         assert variables_page.cancel_template_deletion(), "Шаблон удален"
+        variables_page.delete_file_if_used('шаблон.docx')
 
     @testit.workItemIds(3229)
     @testit.displayName("6.3.1.1. Попытка загрузить шаблон заявления с неподдерживаемым форматом в систему")
@@ -130,6 +131,7 @@ class TestVariablesPage:
         variables_page = VariablesPage(driver)
         variables_page.go_to_variables_page()
         variables_page.click_editing_add_variable('Для редактирования', '7')
+        time.sleep(5)
         variables_page.editing_variable('Отредактировано')
         # без рефреша не видит новое название
         driver.refresh()

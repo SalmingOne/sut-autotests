@@ -76,10 +76,10 @@ class UserProfilePage(BasePage):
     @testit.step("Берем цвет вкладки Образование")
     @allure.step("Берем цвет вкладки Образование")
     def get_education_tab_color(self):
-        time.sleep(0.5)
         self.element_is_visible(self.locators.EXPERIENCES_TAB_BUTTON).click()
+        time.sleep(1)
         color = self.element_is_visible(self.locators.EDUCATION_TAB_BUTTON).value_of_css_property('background-color')
-        time.sleep(0.5)
+        time.sleep(1)
         self.element_is_visible(self.locators.EDUCATION_TAB_BUTTON).click()
         return color
 
@@ -87,7 +87,9 @@ class UserProfilePage(BasePage):
     @allure.step("Берем цвет вкладки Сертификаты")
     def get_certificate_tab_color(self):
         self.element_is_visible(self.locators.EXPERIENCES_TAB_BUTTON).click()
+        time.sleep(1)
         color = self.element_is_visible(self.locators.CERTIFICATE_TAB_BUTTON).value_of_css_property('background-color')
+        time.sleep(1)
         self.element_is_visible(self.locators.CERTIFICATE_TAB_BUTTON).click()
         return color
 

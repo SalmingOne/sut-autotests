@@ -310,5 +310,6 @@ class TestSchedulePage:
         schedule_page.press_redact_button()
         schedule_page.redact_next_week_day()
         schedule_page.editing_a_specific_day('11:00', '13:00')
+        time.sleep(1)
         assert schedule_page.get_massage() == 'Ваш рабочий день должен составлять не менее 8 часов', \
             "Не появилось сообщения о недостаточном количестве часов"

@@ -612,6 +612,7 @@ class TestLaborCostPage:
         zero_reason_day = labor_cost_page.get_numbers_days_reason('zero')
         labor_cost_page.add_absence(zero_reason_day[-2], 'administrative_leave')
         labor_cost_page.add_absence(zero_reason_day[-3], 'sick_leave')
+        time.sleep(1) # Не успевает прогрузиться
         labor_cost_page.check_editing_absences_if_the_selected_period_overlaps_with_other_absences(zero_reason_day[-3])
         labor_cost_page.click_previous_checkbox()
         labor_cost_page.delete_all_absence()
@@ -763,6 +764,7 @@ class TestLaborCostPage:
         labor_cost_page.redact_overtime_on_reason_tab(project_with_attach_files['name'])
         labor_cost_page.check_clear_required_field()
         labor_cost_page.redact_overtime_on_reason_tab(project_with_attach_files['name'])
+        time.sleep(1)
         labor_cost_page.change_date_in_date_piker(zero_reason_day[-3])
         assert labor_cost_page.get_mui_error_text() == 'На выбранную дату и проект уже есть переработка', \
             "Не появилось сообщение о наложении переработок"

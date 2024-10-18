@@ -17,7 +17,7 @@ class TestProductionCalendarPage:
     def test_view_your_production_calendar(self, login, driver):
         production_calendar_page = ProductionCalendarPage(driver)
         production_calendar_page.go_to_production_calendar_page()
-        time.sleep(1)
+        time.sleep(2)
         production_calendar_page.check_title()
         production_calendar_page.check_next_previous_buttons()
         production_calendar_page.check_week_title()

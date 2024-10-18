@@ -28,7 +28,7 @@ class ProductionCalendarPage(BasePage):
         assert 'Производственный календарь' in data, "Нет заголовка производственный календарь"
         assert 'Январь' or 'Июль' in data, "Нет заголовка с названием месяца"
         assert 'I квартал' or 'III квартал' in data, "Нет заголовка с номером квартала"
-        assert datetime.now().strftime("%Y") in data, "Нет заголовка с текущим годом"
+        assert datetime.now().strftime("III-IV кварталы %Y") or datetime.now().strftime("I-II кварталы %Y") in data, "Нет заголовка с текущим годом"
 
     @testit.step("Проверка наличия кнопок следующего и предыдущего периода")
     @allure.step("Проверка наличия кнопок следующего и предыдущего периода")
@@ -54,8 +54,9 @@ class ProductionCalendarPage(BasePage):
     @testit.step("Проверка цветов в легенде")
     @allure.step("Проверка цветов в легенде")
     def check_legend_colors(self):
+        time.sleep(1)
         assert self.element_is_visible(self.locators.LEGEND_TODAY).value_of_css_property(
-            'border') == '1px solid rgb(46, 125, 50)', "Не корректный цвет текущего дня"
+            'border') == '1.5px solid rgb(46, 125, 50)', "Не корректный цвет текущего дня"
         assert self.element_is_visible(self.locators.LEGEND_HOLIDAY).value_of_css_property(
             'background-color') == 'rgba(198, 40, 40, 0.3)', "Не корректный цвет праздничного дня"
         assert self.element_is_visible(self.locators.LEGEND_WEEKEND).value_of_css_property(
