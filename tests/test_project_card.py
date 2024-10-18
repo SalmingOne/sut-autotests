@@ -639,7 +639,6 @@ class TestProjectCard:
         all_project_page.go_project_page(simple_project['name'])
         project_card_page = ProjectCardPage(driver)
         project_card_page.go_to_resource_plan_tab()
-        time.sleep(15)
         # Получаем отображение таблицы "Ресурсный план" до изменений
         table_before = project_card_page.displaying_table_resource_plan()
         project_card_page.press_add_employment_button()
