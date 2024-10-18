@@ -601,66 +601,6 @@ class TestProjectCard:
         # Проверяем что таблица не изменяется
         assert table_before == table_after_cancel, "Данные в таблице изменились после отмены внесения"
 
-    @testit.workItemIds(384)
-    @testit.displayName('2.1.1.2. Отображение заливки ячеек при выборе процента привлечения ресурса')
-    @pytest.mark.regress
-    @allure.title('id-384 2.1.1.2. Отображение заливки ячеек при выборе процента привлечения ресурса')
-    def test_displaying_cell_fill_percentage_resource_attraction(self, simple_project, login, driver):
-        all_project_page = AllProjectPage(driver)
-        all_project_page.go_to_all_project_page()
-        all_project_page.go_project_page(simple_project['name'])
-        project_card_page = ProjectCardPage(driver)
-        project_card_page.go_to_resource_plan_tab()
-        project_card_page.change_radiobutton()
-        project_card_page.checking_cell_default_value()
-        project_card_page.checking_cell_dropdown_list_values()
-        project_card_page.checking_color_cell()
-
-    @testit.workItemIds(481)
-    @testit.displayName('2.1.1.2. Отмена редактирования процента занятости')
-    @pytest.mark.regress
-    @allure.title('id-481 2.1.1.2. Отмена редактирования процента занятости')
-    def test_cancel_editing_percentage_employment(self, simple_project, login, driver):
-        all_project_page = AllProjectPage(driver)
-        all_project_page.go_to_all_project_page()
-        all_project_page.go_project_page(simple_project['name'])
-        project_card_page = ProjectCardPage(driver)
-        project_card_page.go_to_resource_plan_tab()
-        project_card_page.change_radiobutton()
-        # Получаем отображение таблицы "Ресурсный план" до изменений
-        table_before = project_card_page.displaying_table_resource_plan()
-        project_card_page.change_table_resource_plan()
-        # Получаем отображение таблицы "Ресурсный план" после изменений
-        table_after = project_card_page.displaying_table_resource_plan()
-        assert table_before != table_after, "Внесенные изменения не отображаются"
-        project_card_page.press_break_button()
-        # Получаем отображение таблицы "Ресурсный план" после отмены сохранения
-        table_after_cancel = project_card_page.displaying_table_resource_plan()
-        # Проверяем что таблица не изменяется
-        assert table_before == table_after_cancel, "Данные в таблице изменились после отмены внесения"
-
-    @testit.workItemIds(11798)
-    @testit.displayName('2.1.1.2.1. Отмена редактирования часов занятости')
-    @pytest.mark.regress
-    @allure.title('id-11798 2.1.1.2.1. Отмена редактирования часов занятости')
-    def test_cancel_editing_hours_employment(self, simple_project, login, driver):
-        all_project_page = AllProjectPage(driver)
-        all_project_page.go_to_all_project_page()
-        all_project_page.go_project_page(simple_project['name'])
-        project_card_page = ProjectCardPage(driver)
-        project_card_page.go_to_resource_plan_tab()
-        # Получаем отображение таблицы "Ресурсный план" до изменений
-        table_before = project_card_page.displaying_table_resource_plan()
-        project_card_page.change_table_resource_plan()
-        # Получаем отображение таблицы "Ресурсный план" после изменений
-        table_after = project_card_page.displaying_table_resource_plan()
-        assert table_before != table_after, "Внесенные изменения не отображаются"
-        project_card_page.press_break_button()
-        # Получаем отображение таблицы "Ресурсный план" после отмены сохранения
-        table_after_cancel = project_card_page.displaying_table_resource_plan()
-        # Проверяем что таблица не изменяется
-        assert table_before == table_after_cancel, "Данные в таблице изменились после отмены внесения"
-
     @testit.workItemIds(11787)
     @testit.displayName("2.1.1.1. Просмотр таблицы 'Ресурсный план' при отсутствии ресурсов")
     @pytest.mark.regress
