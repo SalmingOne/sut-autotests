@@ -490,7 +490,7 @@ class TestProjectCard:
         project_card_page = ProjectCardPage(driver)
         project_card_page.go_to_resource_plan_tab()
         project_card_page.change_radiobutton()
-        project_card_page.press_add_percent_button()
+        project_card_page.press_add_employment_button()
         project_card_page.check_drover_resource_plan_tab()
 
     @testit.workItemIds(417)
@@ -506,8 +506,8 @@ class TestProjectCard:
         project_card_page.change_radiobutton()
         # Получаем отображение таблицы "Ресурсный план" до изменений
         table_before = project_card_page.displaying_table_resource_plan()
-        project_card_page.press_add_percent_button()
-        project_card_page.set_period_and_percentage()
+        project_card_page.press_add_employment_button()
+        project_card_page.set_period_and_employment()
         project_card_page.press_cancel_in_drover()
         # Получаем отображение таблицы "Ресурсный план" после изменений
         table_after = project_card_page.displaying_table_resource_plan()
@@ -527,8 +527,8 @@ class TestProjectCard:
         project_card_page.change_radiobutton()
         # Получаем отображение таблицы "Ресурсный план" до изменений
         table_before = project_card_page.displaying_table_resource_plan()
-        project_card_page.press_add_percent_button()
-        project_card_page.set_period_and_percentage()
+        project_card_page.press_add_employment_button()
+        project_card_page.set_period_and_employment()
         project_card_page.press_save_in_drover()
         # Получаем отображение таблицы "Ресурсный план" после изменений
         table_after = project_card_page.displaying_table_resource_plan()
@@ -642,8 +642,8 @@ class TestProjectCard:
         time.sleep(15)
         # Получаем отображение таблицы "Ресурсный план" до изменений
         table_before = project_card_page.displaying_table_resource_plan()
-        project_card_page.press_add_percent_button()
-        project_card_page.set_period_and_hours()
+        project_card_page.press_add_employment_button()
+        project_card_page.set_period_and_employment()
         project_card_page.press_cancel_in_drover()
         # Получаем отображение таблицы "Ресурсный план" после изменений
         table_after = project_card_page.displaying_table_resource_plan()

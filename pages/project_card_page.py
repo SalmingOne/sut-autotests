@@ -285,7 +285,7 @@ class ProjectCardPage(BasePage):
     @allure.step("Переход на вкладку Ресурсный план")
     def go_to_resource_plan_tab(self):
         self.element_is_visible(self.locators.RESOURCE_PLAN_TAB).click()
-        self.element_is_present(self.locators.ADD_PERCENT_BUTTON, 25)
+        self.element_is_present(self.locators.ADD_EMPLOYMENT_BUTTON, 25)
 
     @testit.step("Проверка вкладки Ресурсный план")
     @allure.step("Проверка вкладки Ресурсный план")
@@ -330,8 +330,8 @@ class ProjectCardPage(BasePage):
 
     @testit.step("Нажатие на кнопку добавления процента занятости")
     @allure.step("Нажатие на кнопку добавления процента занятости")
-    def press_add_percent_button(self):
-        self.element_is_present(self.locators.ADD_PERCENT_BUTTON, 25).click()   
+    def press_add_employment_button(self):
+        self.element_is_present(self.locators.ADD_EMPLOYMENT_BUTTON, 25).click()   
 
     @testit.step("Проверка периода выбранного по умолчанию")
     @allure.step("Проверка периода выбранного по умолчанию")
@@ -382,8 +382,8 @@ class ProjectCardPage(BasePage):
     @testit.step("Проверка наличия кнопки с функционалом добавления процента занятости")
     @allure.step("Проверка наличия кнопки с функционалом добавления процента занятости")
     def check_resource_plan_tab_add_percent_button(self):
-        self.action_move_to_element(self.element_is_present(self.locators.ADD_PERCENT_BUTTON))
-        assert self.element_is_displayed(self.locators.ADD_PERCENT_BUTTON), ("Отсутствует кнопка с функционалом "
+        self.action_move_to_element(self.element_is_present(self.locators.ADD_EMPLOYMENT_BUTTON))
+        assert self.element_is_displayed(self.locators.ADD_EMPLOYMENT_BUTTON), ("Отсутствует кнопка с функционалом "
                                                                              "добавления процента занятости")
 
     @testit.step("Проверка наличия тултипа с указанием номера недели")
@@ -857,19 +857,11 @@ class ProjectCardPage(BasePage):
         assert self.element_is_displayed(self.locators.DROVER_SUBMIT_BUTTON), "В дровере нет кнопки Сохранить"
         assert self.element_is_displayed(self.locators.DROVER_ABORT_BUTTON), "В дровере нет кнопки Отменить"
 
-    @testit.step("Внесение периода привлечения и процента занятости")
-    @allure.step("Внесение периода привлечения и процента занятости")
-    def set_period_and_percentage(self):
+    @testit.step("Внесение периода привлечения занятости")
+    @allure.step("Внесение периода привлечения занятости")
+    def set_period_and_employment(self):
         self.element_is_visible(self.locators.DROVER_MENU).click()
-        self.element_is_visible(self.locators.PERCENT_50).click()
-        self.element_is_visible(self.locators.DROVER_START_DATE).send_keys(self.get_day_after(1))
-        self.element_is_visible(self.locators.DROVER_END_DATE).send_keys(self.get_day_after(5))
-
-    @testit.step("Внесение периода привлечения и часов занятости")
-    @allure.step("Внесение периода привлечения и часов занятости")
-    def set_period_and_hours(self):
-        self.element_is_visible(self.locators.DROVER_MENU).click()
-        self.element_is_visible(self.locators.HOUR_8).click()
+        (self.elements_are_visible(self.locators.DROVER_MENU_ITEM))[8].click()
         self.element_is_visible(self.locators.DROVER_START_DATE).send_keys(self.get_day_after(1))
         self.element_is_visible(self.locators.DROVER_END_DATE).send_keys(self.get_day_after(5))
 
