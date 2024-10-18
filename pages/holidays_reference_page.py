@@ -68,15 +68,29 @@ class HolidaysReferencePage(BasePage):
 
     @testit.step("Изменение полей в дровере изменения праздничного дня")
     @allure.step("Изменение полей в дровере изменения праздничного дня")
-    def change_holiday_field_values(self, name, date, description):
+    def change_holiday_field_values(self, name, date, description, priority=None):
         self.element_is_visible(self.locators.NAME_FIELD).send_keys(Keys.CONTROL + 'a')
         self.element_is_visible(self.locators.NAME_FIELD).send_keys(name)
         self.element_is_visible(self.locators.DATE_FIELD).send_keys(Keys.CONTROL + 'a')
         self.element_is_visible(self.locators.DATE_FIELD).send_keys(date)
         self.element_is_visible(self.locators.DESCRIPTION_FIELD).send_keys(Keys.CONTROL + 'a')
         self.element_is_visible(self.locators.DESCRIPTION_FIELD).send_keys(description)
+        if priority:
+            self.element_is_visible(self.locators.PRIORITY_DROPDOWN).click()
+            self.element_is_visible(self.locators.PRIORITY_VALUE).send_keys(priority)
+            self.element_is_visible(self.locators.LI_MENU_ITEM).click()
 
     @testit.step("Нажатие кнопки отмены")
     @allure.step("Нажатие кнопки отмены")
     def press_abort_button(self):
         self.element_is_visible(self.locators.CANCEL_BUTTON).click()
+
+    @testit.step("Нажатие кнопки Сохранить")
+    @allure.step("Нажатие кнопки Сохранить")
+    def press_submit_button(self):
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+
+    @testit.step("Получение текста сообщения об ошибке")
+    @allure.step("Получение текста сообщения об ошибке")
+    def get_mui_error(self):
+        return self.element_is_visible(self.locators.MUI_ERROR).text

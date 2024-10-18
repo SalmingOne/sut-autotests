@@ -35,3 +35,6 @@ class HolidaysReferencePageLocators:
     MODAL_CANCEL_BUTTON = (By.XPATH, '//button[text()="Отменить"]')
     def kebab_by_holiday_name(self, name):
         return (By.XPATH, f'//div[text()="{name}"]/..//following-sibling::div[@col-id="1"]')
+
+    LI_MENU_ITEM = (By.CSS_SELECTOR, 'li[role="option"]')
+    MUI_ERROR = (By.XPATH, '//p[contains(@class, "Mui-error")]')
