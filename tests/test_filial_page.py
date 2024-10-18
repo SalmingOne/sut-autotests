@@ -35,7 +35,6 @@ class TestFilialPage:
                                'vip@vip.vip')
         assert filial_page.check_filial_on_tab('Центральный филиал'), "Филиал не создался"
 
-
     @testit.workItemIds(10720)
     @testit.displayName("6.1.3.3. Изменение данных в ЮЛ")
     @pytest.mark.smoke
@@ -100,3 +99,14 @@ class TestFilialPage:
                                                        '+77777777777',
                                                        'vip@vip.vip')
         filial_page.check_clickable_save_button()
+
+    @testit.workItemIds(10730)
+    @testit.displayName("6.1.3.5. Отмена удаления ЮЛ")
+    @pytest.mark.regress
+    @allure.title("id-10730 6.1.3.5. Отмена удаления ЮЛ")
+    def test_cancel_delete_filial(self, create_filial, login, driver):
+        filial_page = FilialPage(driver)
+        filial_page.go_to_filial_page()
+        time.sleep(1)  # Нужно для отработки анимации
+        filial_page.cansel_delete_filial(create_filial)
+        assert filial_page.check_filial_on_tab(create_filial), "Филиал удалился"
