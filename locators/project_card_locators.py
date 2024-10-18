@@ -76,6 +76,7 @@ class ProjectCardLocators:
     DROVER_END_DATE = (By.XPATH, '//label[text()="Дата окончания"]//following-sibling::div/input')
     DROVER_HELP_TEXT_END_DATE = (By.XPATH, '//label[text()="Дата окончания"]//following-sibling::p')
     PERCENT_50 = (By.XPATH, '//li[contains(@class,"MuiAutocomplete-option")][text()="50"]')
+    HOUR_8 = (By.XPATH, '//li[contains(@class,"MuiAutocomplete-option")][text()="8"]')
 
     # Локаторы вкладки Ход выполнения
     PROGRESS_TAB = (By.XPATH, '//button[text()="Ход выполнения"]')

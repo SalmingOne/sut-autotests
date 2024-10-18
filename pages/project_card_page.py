@@ -865,6 +865,14 @@ class ProjectCardPage(BasePage):
         self.element_is_visible(self.locators.DROVER_START_DATE).send_keys(self.get_day_after(1))
         self.element_is_visible(self.locators.DROVER_END_DATE).send_keys(self.get_day_after(5))
 
+    @testit.step("Внесение периода привлечения и часов занятости")
+    @allure.step("Внесение периода привлечения и часов занятости")
+    def set_period_and_hours(self):
+        self.element_is_visible(self.locators.DROVER_MENU).click()
+        self.element_is_visible(self.locators.HOUR_8).click()
+        self.element_is_visible(self.locators.DROVER_START_DATE).send_keys(self.get_day_after(1))
+        self.element_is_visible(self.locators.DROVER_END_DATE).send_keys(self.get_day_after(5))
+
     @testit.step("Нажатие кнопки 'Сохранить' в дровере")
     @allure.step("Нажатие кнопки 'Сохранить' в дровере")
     def press_save_in_drover(self):
