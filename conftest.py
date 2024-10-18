@@ -832,3 +832,18 @@ def create_holiday():
     yield payload['name']
     calendar_endpoint.delete_holiday_api(str(response.json()['id']))
 
+
+@pytest.fixture()
+def create_second_holiday():
+    calendar_endpoint = CalendarEndpoint()
+    payload = dict(
+        name='Грустный праздник',
+        startDate='10.12.2055',
+        type="HOLIDAY",
+        source="SYSTEM",
+        description=None,
+        annuality=False
+    )
+    response = calendar_endpoint.create_holiday_api(json=payload)
+    yield payload
+    calendar_endpoint.delete_holiday_api(str(response.json()['id']))

@@ -34,7 +34,7 @@ class TestHolidaysReferencePage:
         holidays_reference_page.change_holiday_field_values(
             'Новое имя',
             '20.01.2060',
-            'Новое описание',
+            'Новое описание'
         )
         after_change = holidays_reference_page.get_holiday_field_values()
         holidays_reference_page.press_abort_button()
@@ -42,3 +42,24 @@ class TestHolidaysReferencePage:
         after_abort = holidays_reference_page.get_holiday_field_values()
         assert before != after_change, "Данные в дровере не изменились"
         assert after_abort == before, "Данные сохранились после отмены сохранения"
+
+    @testit.workItemIds(10460)
+    @testit.displayName("6.1.5.3. Редактирование праздничного дня, если уникальные поля НЕ уникальны")
+    @pytest.mark.regress
+    @allure.title("id-10460 6.1.5.3. Редактирование праздничного дня, если уникальные поля НЕ уникальны")
+    def test_editing_a_holiday_if_unique_fields_are_not_unique(self, create_holiday, create_second_holiday, login, driver):
+        holidays_reference_page = HolidaysReferencePage(driver)
+        holidays_reference_page.go_to_holidays_reference_page()
+        time.sleep(1)
+        holidays_reference_page.open_kebab_to_edit(create_holiday)
+        holidays_reference_page.change_holiday_field_values(
+            'Новое имя',
+            '12.10.2055',
+            'Новое описание',
+            'Низкий'
+        )
+        holidays_reference_page.press_submit_button()
+        assert holidays_reference_page.get_mui_error() == 'Праздник с такой датой и приоритетом уже существует', \
+            "Нет сообщения о существовании праздника с такой датой и приоритетом"
+
+
