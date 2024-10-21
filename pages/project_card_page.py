@@ -568,6 +568,11 @@ class ProjectCardPage(BasePage):
     @allure.step("Получение даты начала проекта")
     def get_project_start_date(self):
         return self.element_is_visible(self.locators.BEGIN_DATA_FIELD).get_attribute("value")
+    
+    @testit.step("Получение даты окончания проекта")
+    @allure.step("Получение даты окончания проекта")
+    def get_project_end_date(self):
+        return self.element_is_visible(self.locators.END_DATA_FIELD).get_attribute("value")
 
     @testit.step("Изменение даты начала проекта")
     @allure.step("Изменение даты начала проекта")
@@ -863,6 +868,28 @@ class ProjectCardPage(BasePage):
         self.element_is_visible(self.locators.DROVER_START_DATE).send_keys(self.get_day_after(1))
         self.element_is_visible(self.locators.DROVER_END_DATE).send_keys(self.get_day_after(5))
 
+    @testit.step("Нажатие на поле 'Дата начала' в дровере")
+    @allure.step("Нажатие на поле 'Дата начала' в дровере")
+    def press_start_date_in_drover(self):
+        self.element_is_visible(self.locators.DROVER_START_DATE).click()
+
+    @testit.step("Проверка отображения выпадающего календаря")
+    @allure.step("Проверка отображения выпадающего календаря")
+    def check_dropdown_calendar(self):
+        assert self.element_is_displayed(self.locators.DROVER_DROPDOWN_CALENDAR), "Нет выпадающего календаря"
+
+    @testit.step("Проверка дат за границами проекта")
+    @allure.step("Проверка дат за границами проекта")
+    def check_dates_outside_project_boundaries(self, start_date, end_date):
+        day_start = int(start_date.split('.')[0])
+        day_end = int(end_date.split('.')[0])
+        day_before_start = day_start - 1
+        day_after_end = day_end + 1
+        assert not self.element_is_clickable(self.locators.buttons_day_calendar(str(day_before_start))), \
+            "Дата до начала проекта доступна для выбора"
+        assert not self.element_is_clickable(self.locators.buttons_day_calendar(str(day_after_end))), \
+            "Дата после окончания проекта доступна для выбора"
+        
     @testit.step("Нажатие кнопки 'Сохранить' в дровере")
     @allure.step("Нажатие кнопки 'Сохранить' в дровере")
     def press_save_in_drover(self):

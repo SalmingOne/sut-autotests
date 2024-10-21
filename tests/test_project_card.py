@@ -647,3 +647,21 @@ class TestProjectCard:
         # Проверяем что таблица не изменяется
         assert table_before == table_after, "Данные в таблице изменились после отмены внесения"
     
+    @testit.workItemIds(444)
+    @testit.displayName('2.1.1.1 Обзор дат за границами проекта в выпадающем календаре')
+    @pytest.mark.regress
+    @allure.title('id-444 2.1.1.1 Обзор дат за границами проекта в выпадающем календаре')
+    def test_overview_dates_outside_boundary_project_drop_down_calendar(self, short_project, login, driver):
+        all_project_page = AllProjectPage(driver)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(short_project['name'])
+        project_card_page = ProjectCardPage(driver)
+        start_date = project_card_page.get_project_start_date()
+        end_date = project_card_page.get_project_end_date()
+        project_card_page.go_to_resource_plan_tab()
+        project_card_page.change_radiobutton()
+        project_card_page.press_add_employment_button()
+        project_card_page.press_start_date_in_drover()
+        project_card_page.check_dropdown_calendar()
+        project_card_page.check_dates_outside_project_boundaries(start_date, end_date)
+        
