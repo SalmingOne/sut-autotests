@@ -117,7 +117,7 @@ class BasePage:
         day_after = datetime.now() + timedelta(days=amount_of_days)
         return day_after.strftime("%d.%m.%Y")
 
-    @allure.step("Проверка и замена даты, если она выпадает на 1-е число и понедельник")
+    @allure.step("Проверка и замена даты, если она выпадает на 1-е число")
     def check_and_replace_start_date(self, date_str):
         date_obj = datetime.strptime(date_str, "%m.%d.%Y")
         if date_obj.day == 1:
