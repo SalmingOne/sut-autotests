@@ -212,6 +212,22 @@ def finished_project():
 
 
 @pytest.fixture()
+def short_project():
+    project_endpoint = ProjectEndpoint()
+    project_endpoint.delete_project_if_it_exist(PROJECT_NAME)
+    start_date = BasePage(driver=None).get_day_before_m_d_y(0)
+    end_date = BasePage(driver=None).get_day_before_m_d_y(-15)
+    start_date = BasePage(driver=None).check_and_replace_start_date(start_date)
+    payload = CreateProject(
+        startDate=start_date,
+        endDate=end_date
+    ).model_dump()
+    response = project_endpoint.create_project_api(json=payload)
+    yield response.json()
+    project_endpoint.delete_project_api(str(response.json()['id']))
+
+
+@pytest.fixture()
 def project_with_overtime_work():
     labor_report_endpoint = LaborReportEndpoint()
     project_endpoint = ProjectEndpoint()
