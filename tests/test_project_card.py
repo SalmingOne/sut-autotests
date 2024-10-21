@@ -664,4 +664,24 @@ class TestProjectCard:
         project_card_page.press_start_date_in_drover()
         project_card_page.check_dropdown_calendar()
         project_card_page.check_dates_outside_project_boundaries(start_date, end_date)
+
+    @testit.workItemIds(1956)
+    @testit.displayName('2.1.2.2 Уведомление о несохраненных данных в ячейках при переходе в другой раздел')
+    @pytest.mark.regress
+    @allure.title('id-1956 2.1.2.2 Уведомление о несохраненных данных в ячейках при переходе в другой раздел')
+    def test_message_unsaved_data_in_cells_when_navigation(self, simple_project, login, driver):
+        all_project_page = AllProjectPage(driver)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(simple_project['name'])
+        project_card_page = ProjectCardPage(driver)
+        project_card_page.go_to_resource_plan_tab()
+        # Получаем отображение таблицы "Ресурсный план" до изменений
+        table_before = project_card_page.displaying_table_resource_plan()
+        project_card_page.change_table_resource_plan()
+        # Получаем отображение таблицы "Ресурсный план" после изменений
+        table_after = project_card_page.displaying_table_resource_plan()
+        assert table_before != table_after, "Внесенные изменения не отображаются"
+        project_card_page.go_to_description_tab()
+        project_card_page.check_abort_add_resource_window()
+        # Добавить проверку при превышении максимальной занятости
         

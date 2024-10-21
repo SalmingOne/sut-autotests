@@ -49,6 +49,7 @@ class ProjectCardLocators:
     USERS_TEXT = (By.XPATH, '//div[@col-id="userId"]//p')
     DELETE_ICON = (By.CSS_SELECTOR, 'svg[data-testid="DeleteIcon"]')
 
+    ALERT_DIALOG_TITLE = (By.XPATH, '//p[@id="alert-dialog-description"]/../div/h6')
     ALERT_DIALOG_DESCRIPTION = (By.CSS_SELECTOR, 'p[id="alert-dialog-description"]')
     MODAL_SUBMIT_BUTTON = (By.XPATH, '//p[@id="alert-dialog-description"]//following::button[text()="Подтвердить"]')
     MODAL_ABORT_BUTTON = (By.XPATH, '//p[@id="alert-dialog-description"]//following::button[text()="Отменить"]')
