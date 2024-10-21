@@ -7,7 +7,7 @@ from selenium.webdriver import Keys
 
 from locators.filial_page_locators import FilialPageLocators
 from pages.base_page import BasePage
-
+from utils.concat_testit_allure_step import allure_testit_step
 
 class FilialPage(BasePage):
     locators = FilialPageLocators()
@@ -242,3 +242,14 @@ class FilialPage(BasePage):
         time.sleep(1)
         self.element_is_visible(self.locators.KEBAB_DELETE_BUTTON).click()
         self.element_is_visible(self.locators.ABORT_BUTTON).click()
+
+    @allure_testit_step("Открытие дровера редактирования филиала")
+    def open_redact_filial(self, name):
+        self.element_is_visible(self.locators.kebab_by_filial_name(name)).click()
+        time.sleep(1)
+        self.element_is_visible(self.locators.REDACT_BUTTON).click()
+
+    @allure_testit_step("Очистка обязательных полей")
+    def clearing_required_fields(self):
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(Keys.BACKSPACE)

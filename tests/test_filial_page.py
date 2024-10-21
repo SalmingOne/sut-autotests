@@ -110,3 +110,15 @@ class TestFilialPage:
         time.sleep(1)  # Нужно для отработки анимации
         filial_page.cansel_delete_filial(create_filial)
         assert filial_page.check_filial_on_tab(create_filial), "Филиал удалился"
+
+    @testit.workItemIds(10723)
+    @testit.displayName("6.1.3.3. Изменение данных в ЮЛ, если обязательные поля не заполнены")
+    @pytest.mark.regress
+    @allure.title("id-10723 6.1.3.3. Изменение данных в ЮЛ, если обязательные поля не заполнены")
+    def test_changing_data_in_a_filial_if_required_fields_are_not_filled(self, create_filial, login, driver):
+        filial_page = FilialPage(driver)
+        filial_page.go_to_filial_page()
+        time.sleep(2)  # Нужно для отработки анимации
+        filial_page.open_redact_filial(create_filial)
+        filial_page.clearing_required_fields()
+        filial_page.check_clickable_save_button()
