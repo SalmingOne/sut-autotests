@@ -215,9 +215,12 @@ def finished_project():
 def short_project():
     project_endpoint = ProjectEndpoint()
     project_endpoint.delete_project_if_it_exist(PROJECT_NAME)
+    start_date = BasePage(driver=None).get_day_before_m_d_y(0)
+    end_date = BasePage(driver=None).get_day_before_m_d_y(-15)
+    start_date = BasePage(driver=None).check_and_replace_start_date(start_date)
     payload = CreateProject(
-        startDate=BasePage(driver=None).get_day_before_m_d_y(0),
-        endDate=BasePage(driver=None).get_day_before_m_d_y(-15)
+        startDate=start_date,
+        endDate=end_date
     ).model_dump()
     response = project_endpoint.create_project_api(json=payload)
     yield response.json()

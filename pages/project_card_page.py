@@ -885,9 +885,9 @@ class ProjectCardPage(BasePage):
         day_end = int(end_date.split('.')[0])
         day_before_start = day_start - 1
         day_after_end = day_end + 1
-        assert not self.element_is_clickable(self.locators.buttons_day_calendar(str(day_before_start))), \
+        assert not self.element_is_clickable(self.locators.buttons_day_calendar(str(day_before_start)), 0.5), \
             "Дата до начала проекта доступна для выбора"
-        assert not self.element_is_clickable(self.locators.buttons_day_calendar(str(day_after_end))), \
+        assert not self.element_is_clickable(self.locators.buttons_day_calendar(str(day_after_end)), 0.5), \
             "Дата после окончания проекта доступна для выбора"
         
     @testit.step("Нажатие кнопки 'Сохранить' в дровере")
