@@ -253,3 +253,12 @@ class FilialPage(BasePage):
     def clearing_required_fields(self):
         self.element_is_visible(self.locators.NAME_FIELD).send_keys(Keys.CONTROL + 'a')
         self.element_is_visible(self.locators.NAME_FIELD).send_keys(Keys.BACKSPACE)
+
+    @allure_testit_step("Изменение имени филиала")
+    def change_filial_name(self, name):
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(name)
+
+    @allure_testit_step("Нажатие кнопки сохранить")
+    def press_save_button(self):
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
