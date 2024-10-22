@@ -683,5 +683,4 @@ class TestProjectCard:
         assert table_before != table_after, "Внесенные изменения не отображаются"
         project_card_page.go_to_description_tab()
         project_card_page.check_abort_add_resource_window()
-        # Добавить проверку при превышении максимальной занятости
-        
+            
