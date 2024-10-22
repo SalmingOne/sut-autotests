@@ -122,3 +122,16 @@ class TestFilialPage:
         filial_page.open_redact_filial(create_filial)
         filial_page.clearing_required_fields()
         filial_page.check_clickable_save_button()
+
+    @testit.workItemIds(10724)
+    @testit.displayName("6.1.3.3. Изменение названия ЮЛ")
+    @pytest.mark.regress
+    @allure.title("id-10724 6.1.3.3. Изменение названия ЮЛ")
+    def test_changing_filial_name(self, create_filial, login, driver):
+        filial_page = FilialPage(driver)
+        filial_page.go_to_filial_page()
+        time.sleep(2)  # Нужно для отработки анимации
+        filial_page.open_redact_filial(create_filial)
+        filial_page.change_filial_name('Новое имя')
+        filial_page.press_save_button()
+        assert filial_page.check_filial_on_tab('Новое имя'), "Имя филиала не изменилось"
