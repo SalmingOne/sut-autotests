@@ -555,14 +555,22 @@ class ProjectCardPage(BasePage):
     @testit.step("Проверка модального окна отмены редактирования")
     @allure.step("Проверка модального окна отмены редактирования")
     def check_abort_add_resource_window(self):
+        assert self.element_is_visible(self.locators.ALERT_DIALOG_TITLE).text == 'Подтвердите действие', \
+            "Нет заголовка модального окна"
         assert (self.element_is_visible(self.locators.ALERT_DIALOG_DESCRIPTION).text ==
                 'Внесенные изменения не сохранятся. Закрыть режим редактирования?'), "Нет сообщения об отмене изменений"
+        assert self.element_is_displayed(self.locators.MODAL_SUBMIT_BUTTON), "В модальном окне нет кнопки Подтвердить"
         assert self.element_is_displayed(self.locators.MODAL_ABORT_BUTTON), "В модальном окне нет кнопки Отменить"
 
     @testit.step("Нажатие кнопки подтвердить модального окна отмены редактирования")
     @allure.step("Нажатие кнопки подтвердить модального окна отмены редактирования")
     def press_modal_submit_button(self):
         self.element_is_visible(self.locators.MODAL_SUBMIT_BUTTON).click()
+
+    @testit.step("Нажатие кнопки отменить модального окна отмены редактирования")
+    @allure.step("Нажатие кнопки отменить модального окна отмены редактирования")
+    def press_modal_abort_button(self):
+        self.element_is_visible(self.locators.MODAL_ABORT_BUTTON).click()
 
     @testit.step("Получение даты начала проекта")
     @allure.step("Получение даты начала проекта")
