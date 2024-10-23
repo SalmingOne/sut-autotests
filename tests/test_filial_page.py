@@ -135,3 +135,16 @@ class TestFilialPage:
         filial_page.change_filial_name('Новое имя')
         filial_page.press_save_button()
         assert filial_page.check_filial_on_tab('Новое имя'), "Имя филиала не изменилось"
+
+    @testit.workItemIds(10719)
+    @testit.displayName("6.1.3.2. Создание ЮЛ в структуре организации, если уникальные поля НЕ уникальны")
+    @pytest.mark.regress
+    @allure.title("id-10719 6.1.3.2. Создание ЮЛ в структуре организации, если уникальные поля НЕ уникальны")
+    def test_create_filial_with_not_unique_fields(self, create_filial, login, driver):
+        filial_page = FilialPage(driver)
+        filial_page.go_to_filial_page()
+        time.sleep(2)  # Нужно для отработки анимации
+        filial_page.add_filial_with_fields_from_table_only('Для редактирования', 'г. Москва')
+        filial_page.press_save_button()
+        filial_page.check_warning_text('Укажите уникальноe название филиала', 'Укажите уникальный адрес филиала')
+
