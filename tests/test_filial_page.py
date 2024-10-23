@@ -148,3 +148,17 @@ class TestFilialPage:
         filial_page.press_save_button()
         filial_page.check_warning_text('Укажите уникальноe название филиала', 'Укажите уникальный адрес филиала')
 
+    @testit.workItemIds(10722)
+    @testit.displayName("6.1.3.3. Отмена изменения данных в ЮЛ")
+    @pytest.mark.regress
+    @allure.title("id-10722 6.1.3.3. Отмена изменения данных в ЮЛ")
+    def test_cancel_data_changes_in_filial(self, create_filial, login, driver):
+        filial_page = FilialPage(driver)
+        filial_page.go_to_filial_page()
+        time.sleep(2)  # Нужно для отработки анимации
+        filial_page.open_redact_filial(create_filial)
+        filial_page.change_filial_name('Новое имя')
+        filial_page.press_abort_button()
+        driver.refresh()
+        assert not filial_page.check_filial_on_tab('Новое имя'), "Имя филиала изменилось"
+        assert filial_page.check_filial_on_tab('Для редактирования'), "Имя филиала изменилось"
