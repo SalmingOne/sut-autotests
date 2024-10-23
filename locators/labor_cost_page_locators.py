@@ -72,6 +72,7 @@ class LaborCostPageLocators:
     ELEMENTS_ON_FILTER = (By.XPATH, '//div[contains(@class, "MuiPaper-elevation8")]//span[contains(@class, "MuiTypography-body1")]')
     FILTER_BY_PROJECT_NAME = (By.XPATH, '//span[text()="Название проекта"]')
     NOT_ACTIV_PROJECT_CHECKBOX = (By.XPATH, '//p[text()="Отображать неактивные проекты"]')
+    REJECTED_REASON_CHECKBOX = (By.XPATH, '//p[text()="Отображать причины отклонения"]')
     # Кнопка открытия панели виджетов
     OPEN_WIDGET_BUTTON = (By.CSS_SELECTOR, 'svg[data-testid="KeyboardTabIcon"]')
     # Дни недели в заголовке таблицы

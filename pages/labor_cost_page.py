@@ -14,6 +14,7 @@ from data.data import PROJECT_NAME
 from data.models.create_project_model import CreateProject
 from locators.labor_cost_page_locators import LaborCostPageLocators
 from pages.base_page import BasePage
+from utils.concat_testit_allure_step import allure_testit_step
 
 
 class LaborCostPage(BasePage):
@@ -1259,3 +1260,17 @@ class LaborCostPage(BasePage):
         self.element_is_visible(self.locators.OVERTIME_WORK_PROJECTS_SEARCH_FIELD).send_keys(project_name)
         assert not self.element_is_displayed(self.locators.ALL_OVERTIME_WORK_KEBABS, 2), \
             "На проекте есть переработки"
+
+    @allure_testit_step('Выбор чекбокса "Отображать причины отклонения"')
+    def click_rejection_reasons_checkbox(self):
+        self.element_is_visible(self.locators.FILTER_BUTTON).click()
+        self.element_is_visible(self.locators.REJECTED_REASON_CHECKBOX).click()
+        self.action_esc()
+
+    @allure_testit_step('Получение текста тултипа дня проекта')
+    def get_day_tooltip_text_in_project(self, project_name, number_day):
+        element = self.element_is_visible(self.locators.get_day_by_project(project_name, number_day))
+        self.action_move_to_element(element)
+        tooltip_text = self.element_is_visible(self.locators.TOOLTIP).find_element(By.XPATH, 'div').text
+        return tooltip_text
+
