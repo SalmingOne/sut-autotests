@@ -800,4 +800,4 @@ class TestLaborCostPage:
         labor_cost_page = LaborCostPage(driver)
         labor_cost_page.go_to_labor_cost_page()
         labor_cost_page.click_rejection_reasons_checkbox()
-        assert labor_cost_page.get_day_tooltip_text_in_project(project_name, number_day) == f'Причина отклонения: {rejection_reason}'
+        assert labor_cost_page.get_day_tooltip_text_in_project(project_name, number_day) == f'Причина отклонения: {rejection_reason}', 'Неверный текст тултипа с причиной отклонения'
