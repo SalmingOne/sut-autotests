@@ -129,3 +129,9 @@ class BasePage:
     def get_day_after_ymd(self, amount_of_days):
         day_after = datetime.now() + timedelta(days=amount_of_days)
         return day_after.strftime("%Y-%m-%d")
+
+    @allure.step("Получение первого и последнего дней текущей недели")
+    def get_current_week_start_end(self):
+        first_day_of_week = datetime.now() - timedelta(days=datetime.now().weekday())
+        last_day_of_week = first_day_of_week + timedelta(days=6)
+        return first_day_of_week, last_day_of_week
