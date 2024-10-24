@@ -166,8 +166,8 @@ class TestLaborCostPage:
         # Проверяем что нет заявлений в таблице. И если есть удаляем
         labor_cost_page.go_to_labor_cost_page()
         time.sleep(1)  # Без ожидания скрипт срабатывает до загрузки страницы
+        labor_cost_page.click_previous_checkbox()
         if labor_cost_page.check_absence_on_tab() > 0:
-            labor_cost_page.click_previous_checkbox()
             labor_cost_page.delete_all_absence()
         else:
             pass

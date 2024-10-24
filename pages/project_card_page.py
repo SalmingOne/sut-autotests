@@ -555,7 +555,7 @@ class ProjectCardPage(BasePage):
     @testit.step("Проверка модального окна отмены редактирования")
     @allure.step("Проверка модального окна отмены редактирования")
     def check_abort_add_resource_window(self):
-        assert self.element_is_visible(self.locators.ALERT_DIALOG_TITLE).text == 'Подтвердите действие', \
+        assert self.element_is_visible(self.locators.ALERT_DIALOG_TITLE).text in ['Подтвердите действие', 'Подтверждение действия'], \
             "Нет заголовка модального окна"
         assert (self.element_is_visible(self.locators.ALERT_DIALOG_DESCRIPTION).text ==
                 'Внесенные изменения не сохранятся. Закрыть режим редактирования?'), "Нет сообщения об отмене изменений"
@@ -928,14 +928,14 @@ class ProjectCardPage(BasePage):
     @testit.step("Проверка значений выпадающего списка ячейки в табе 'Ресурсный план'")
     @allure.step("Проверка значений выпадающего списка ячейки в табе 'Ресурсный план'")
     def checking_cell_dropdown_list_values(self):
-        self.action_double_click(self.elements_are_visible(self.locators.CELLS)[1])
+        self.action_double_click(self.elements_are_visible(self.locators.CELLS)[2])
         assert self.get_text_menu_items() == ['0%', '12.5%', '25%', '37.5%', '50%', '62.5%', '75%', '87.5%', '100%',], \
             "Некорректные значения в выпадающем меню ячейки"
 
     @testit.step("Проверка окрашивания ячеек в зависимости от выбранного значения")
     @allure.step("Проверка окрашивания ячеек в зависимости от выбранного значения")
     def checking_color_cell(self):
-        value = (self.elements_are_visible(self.locators.CELLS))[1]
+        value = (self.elements_are_visible(self.locators.CELLS))[2]
         color_cell = []
         for i in range(9):
            self.action_double_click(value)

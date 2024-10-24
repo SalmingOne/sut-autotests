@@ -190,7 +190,7 @@ class PivotTabPage(BasePage):
     @allure.step("Проверка заголовков сводной таблицы по пользователям")
     def check_tab_column_titles_by_user(self):
         week_days = [element.text for element in self.elements_are_present(self.locators.TAB_HEADER_WEEK_TEXT)]
-        self.action_drag_and_drop_by_offset(self.element_is_visible(self.locators.HORIZONTAL_SCROLL), 110, 0)
+        self.action_drag_and_drop_by_offset(self.element_is_visible(self.locators.HORIZONTAL_SCROLL), 500, 0)
         time.sleep(1)
         title_sum = [element.text for element in self.elements_are_present(self.locators.COLUMN_TITLES)]
         assert 'Сумма' and 'Сумма От' and 'Сумма Б' and 'Сумма А' and 'Сумма Д' and 'Итог + переработки' in title_sum, \

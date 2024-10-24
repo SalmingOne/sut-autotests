@@ -160,7 +160,6 @@ class TestProjectCard:
         project_card_page.check_abort_add_resource_window()
         project_card_page.press_modal_submit_button()
         time.sleep(1)  # Без этого ожидания иногда не успевает прогрузиться проектная роль
-        driver.refresh()
         member_after_redact = project_card_page.get_all_team_members()
         assert input_member[0] == member_before_redact[0], "Роль, ресурс и ставка изменились при нажатии кнопки редактирования"
         assert len(input_member) == len(member_after_redact), "Добавился новый ресурс"

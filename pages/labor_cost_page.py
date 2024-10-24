@@ -495,7 +495,6 @@ class LaborCostPage(BasePage):
         except TimeoutException:
             self.element_is_visible(self.locators.BEGIN_LEAVE_DATA_INPUT).click()
         self.element_is_visible(self.locators.DRAWER_SAVE_BUTTON).click()
-        self.element_is_visible(self.locators.DRAWER_SAVE_BUTTON).click()
         time.sleep(1.5)
         self.delete_file('отсутствие.docx')
 

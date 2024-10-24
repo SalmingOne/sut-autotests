@@ -69,4 +69,4 @@ class AuditPage(BasePage):
         end_date_field.send_keys(end_date)
         start_date_field_status = start_date_field.get_attribute('aria-invalid') == 'true'
         end_date_field_status = end_date_field.get_attribute('aria-invalid') == 'true'
-        return start_date_field_status, end_date_field_status
+        return (start_date_field_status and end_date_field_status)

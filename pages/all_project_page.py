@@ -17,13 +17,12 @@ class AllProjectPage(BasePage):
         time.sleep(2)
         self.action_move_to_element(self.element_is_visible(self.locators.TAB_PROJECTS))
         self.element_is_visible(self.locators.TAB_ALL_PROJECTS).click()
-        self.element_is_visible(self.locators.KEBAB_MENU, 10)
 
     @testit.step("Проверяем, что имя проекта есть на странице")
     @allure.step("Проверяем, что имя проекта есть на странице")
     def check_project_name_at_all(self, project_name):
-        check_name_at_all = self.element_is_present(self.locators.check_project_name_on_tab(project_name), 2).text
-        return check_name_at_all
+        assert self.element_is_displayed(self.locators.check_project_name_on_tab(project_name)), \
+            "имя созданного проекта отсутствует на странице все проекты"
 
     @testit.step("Удаляем проект")
     @allure.step("Удаляем проект")
