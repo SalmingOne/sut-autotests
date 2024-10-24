@@ -872,7 +872,7 @@ class TestUserProfilePage:
     @testit.displayName("10.2.3. Пустой ввод в поля дополнительных контактов в блоке Контакты")
     @pytest.mark.regress
     @allure.title("id-1514 10.2.3. Пустой ввод в поля дополнительных контактов в блоке Контакты")
-    def test_filling_additional_contact_in_contacts(self, login, driver):
+    def test_empty_filling_additional_contact_in_contacts(self, login, driver):
         user_profile_page = UserProfilePage(driver)
         user_profile_page.go_to_user_profile()
         user_profile_page.press_redact_button()
@@ -887,7 +887,7 @@ class TestUserProfilePage:
     @testit.displayName("10.2.3. Ввод пробела в  поля дополнительных контактов в разделе Контакты")
     @pytest.mark.regress
     @allure.title("id-1516 10.2.3. Ввод пробела в  поля дополнительных контактов в разделе Контакты")
-    def test_filling_additional_contact_in_contacts(self, login, driver):
+    def test_filling_additional_contact_in_contacts_with_space(self, login, driver):
         user_profile_page = UserProfilePage(driver)
         user_profile_page.go_to_user_profile()
         time.sleep(6)

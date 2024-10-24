@@ -262,3 +262,8 @@ class FilialPage(BasePage):
     @allure_testit_step("Нажатие кнопки сохранить")
     def press_save_button(self):
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+
+    @allure_testit_step("Проверка наличия текста с предупреждением")
+    def check_warning_text(self, name_field, address):
+        assert self.element_is_displayed(self.locators.text_on_page(name_field)), 'Нет сообщения о не уникальности названия'
+        assert self.element_is_displayed(self.locators.text_on_page(address)), 'Нет сообщения о не уникальности адреса'
