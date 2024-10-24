@@ -108,3 +108,11 @@ class UserEndpoint:
                     users.append(user["fullName"])
         return users
 
+    @allure.step("Получаем даты создания и редактирования пользователя по id")
+    def get_user_dates_by_id(self, user_id):
+        header = AuthEndpoint().get_header_token_api()
+        self.response = requests.get(url=Urls.users_url, headers=header, verify=False)
+        self.response_json = self.response.json()
+        for user in self.response_json:
+            if user['id'] == user_id:
+                return user["createdAt"], user["updatedAt"]

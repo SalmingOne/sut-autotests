@@ -863,3 +863,42 @@ def create_second_holiday():
     response = calendar_endpoint.create_holiday_api(json=payload)
     yield payload
     calendar_endpoint.delete_holiday_api(str(response.json()['id']))
+
+
+@pytest.fixture()
+def create_filial_with_director():
+    filial_endpoint = AffiliatesEndpoint()
+    user_endpoint = UserEndpoint()
+    project_roles_endpoint = ProjectRolesEndpoint()
+    director_id = user_endpoint.get_user_id_by_email('auto_testt@mail.rruu')
+    first_project_role_id = project_roles_endpoint.get_all_project_roles_id()[1]
+    dates_of_project_role = project_roles_endpoint.get_info_about_project_role_dates(first_project_role_id)
+    project_role_name = project_roles_endpoint.get_name_project_role_by_id(first_project_role_id)
+    dates_of_user = user_endpoint.get_user_dates_by_id(director_id)
+    payload = dict(name='Филиал с директором',
+                   address='г. Рязань',
+                   directorId=director_id,
+                   employees=[dict(
+                       id=director_id,
+                       createdAt=dates_of_user[0],
+                       updatedAt=dates_of_user[1],
+                       username="AutoTester1",
+                       name="Автомат",
+                       secondName="АвтоСПроектом",
+                       gender="MALE",
+                       fullName='АвтоСПроектом Автомат',
+                       email="auto_testt@mail.rruu",
+                       hourlyWage=False,
+                       type='local',
+                       projectRoles=[dict(
+                           id=first_project_role_id,
+                           createdAt=dates_of_project_role[0],
+                           updatedAt=dates_of_project_role[1],
+                           name=project_role_name,
+                           leadership=False)
+                       ])
+                   ])
+    response = filial_endpoint.create_affiliates_api(json=payload)
+    print(response.status_code)
+    yield payload['name']
+    filial_endpoint.delete_affiliates_api(str(response.json()['id']))
