@@ -80,10 +80,3 @@ class AffiliatesEndpoint:
         for affiliates in all_affiliates:
             all_affiliates_name.append(affiliates['name'])
         return all_affiliates_name
-
-    @allure.step("Создаем филиал с директором и сотрудником")
-    def create_affiliates_api(self, json):
-        header = AuthEndpoint().get_header_token_api()
-        self.response = requests.post(url=Urls.affiliates_url, headers=header, json=json, verify=False)
-        self.response_json = self.response.json()
-        return self.response

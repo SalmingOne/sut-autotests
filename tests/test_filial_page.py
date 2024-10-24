@@ -167,7 +167,7 @@ class TestFilialPage:
     @testit.displayName("6.1.3.4. Отмена удаления пользователя из ЮЛ")
     @pytest.mark.regress
     @allure.title("id-10726 6.1.3.4. Отмена удаления пользователя из ЮЛ")
-    def test_cancel_user_deletion_from_filial(self, create_work_user, create_filial_with_director,login, driver):
+    def test_cancel_user_deletion_from_filial(self, create_work_user, create_filial_with_director, login, driver):
         filial_page = FilialPage(driver)
         filial_page.go_to_filial_page()
         time.sleep(2)  # Нужно для отработки анимации
