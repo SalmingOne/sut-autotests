@@ -274,6 +274,6 @@ class FilialPage(BasePage):
         all_employs = self.elements_are_visible(self.locators.EMPLOYEES_CHIPS_DELETE_ICON)
         while len(all_employs) > 0:
             try:
-                self.elements_are_visible(self.locators.EMPLOYEES_CHIPS_DELETE_ICON, 1)[0].click()
+                self.elements_are_visible(self.locators.EMPLOYEES_CHIPS_DELETE_ICON, 2)[0].click()
             except TimeoutException:
                 break

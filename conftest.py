@@ -901,4 +901,4 @@ def create_filial_with_director():
     response = filial_endpoint.create_affiliates_api(json=payload)
     print(response.status_code)
     yield payload['name']
-    filial_endpoint.delete_affiliates_api(str(response.json()['id']))
+    filial_endpoint.delete_filial_if_it_exist('Филиал с директором') #Иначе пропадает пользователь
