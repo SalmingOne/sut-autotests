@@ -179,3 +179,26 @@ class TestFilialPage:
         employees_after_delete = filial_page.get_employees_in_field()
         assert employees_before_delete == employees_after_delete, 'Изменения сохранились'
 
+    @testit.workItemIds(10728)
+    @testit.displayName("6.1.3.4. Удаление пользователя из ЮЛ, если удаленный пользователь директор филиала")
+    @pytest.mark.regress
+    @allure.title("id-10728 6.1.3.4. Удаление пользователя из ЮЛ, если удаленный пользователь директор филиала")
+    def test_delete_director_user(self, create_work_user, create_filial_with_director, login, driver):
+        filial_page = FilialPage(driver)
+        filial_page.go_to_filial_page()
+        time.sleep(2)  # Нужно для отработки анимации
+        filial_page.open_redact_filial(create_filial_with_director)
+        director_before_delete = filial_page.get_director_field()
+        employees_before_delete = filial_page.get_employees_in_field()
+        assert director_before_delete != "Нет директора филиала", 'Поле Директор филиала не заполнено'
+        time.sleep(1)
+        filial_page.delete_employs_from_filial()
+        director_after_delete = filial_page.get_director_field()
+        assert director_after_delete == "Директор", 'Поле Директор филиала не очистилось'
+        filial_page.press_save_button()
+        time.sleep(2)
+        filial_page.open_redact_filial(create_filial_with_director)
+        employees_after_delete = filial_page.get_employees_in_field()
+        director_after_save = filial_page.get_director_field()
+        assert employees_before_delete != employees_after_delete, 'Изменения не сохранились'
+        assert director_before_delete == director_after_save, 'Изменения не сохранились'
