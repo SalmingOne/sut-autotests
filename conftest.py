@@ -269,6 +269,46 @@ def project_with_overtime_work():
 
 
 @pytest.fixture()
+def project_with_rejected_labor_report():
+    labor_report_endpoint = LaborReportEndpoint()
+    project_endpoint = ProjectEndpoint()
+    project_endpoint.delete_project_if_it_exist(PROJECT_NAME)
+    payload = CreateProject(
+        resources=[dict(
+            projectRoleId=1,
+            userId=USER_ID,
+            isProjectManager=True
+        )]
+    ).model_dump()
+    res = project_endpoint.create_project_api(json=payload)
+    payload = [
+        dict(
+            hours=3,
+            date=BasePage(driver=None).get_day_after_ymd(0),
+            type="OTW",
+            userId=USER_ID,
+            projectId=res.json()["id"],
+        )
+    ]
+    labor_report_endpoint.post_labor_report_api(json=payload)
+    rejection_reason = 'Просто так'
+    ids = labor_report_endpoint.get_labor_reports_by_project_api(str(res.json()["id"]),
+                                                                 BasePage(driver=None).get_day_before_ymd(1),
+                                                                 BasePage(driver=None).get_day_before_ymd(0))
+    payload = [
+        dict(
+            ids=ids,
+            rejectionReason=rejection_reason,
+            approvalStatus='REJECTED',
+        )
+    ]
+    number_day = BasePage(driver=None).get_day_after_ymd(1).split('-')[2]
+    labor_report_endpoint.put_labor_reports(json=payload)
+    yield res.json(), number_day, rejection_reason
+    project_endpoint.delete_project_api(str(res.json()["id"]))
+
+
+@pytest.fixture()
 def delete_created_project():
     yield
     project_endpoint = ProjectEndpoint()

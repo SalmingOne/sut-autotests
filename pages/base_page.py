@@ -124,3 +124,8 @@ class BasePage:
             new_date = datetime.now() + timedelta(days=1)
             return new_date.strftime("%m.%d.%Y")
         return date_str
+
+    @allure.step("Получение следующей даты отличной от текущей на N дней (YYYY-MM-DD)")
+    def get_day_after_ymd(self, amount_of_days):
+        day_after = datetime.now() + timedelta(days=amount_of_days)
+        return day_after.strftime("%Y-%m-%d")

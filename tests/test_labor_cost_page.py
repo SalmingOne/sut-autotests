@@ -782,3 +782,15 @@ class TestLaborCostPage:
             "Не появилось сообщение об удалении системы"
         labor_cost_page.not_have_overtime_on_reason_tab_by_project(project_with_overtime_work['name'])
 
+    @testit.workItemIds(3700)
+    @testit.displayName("3.1.1.7 Реакция системы на выбор чекбокса 'Отображать причины отклонения'")
+    @pytest.mark.regress
+    @allure.title("id-3700 3.1.1.7 Реакция системы на выбор чекбокса 'Отображать причины отклонения'")
+    def test_rejection_reasons_shown_on_checkbox_selection(self, project_with_rejected_labor_report, login, driver):
+        project_name = project_with_rejected_labor_report[0]['name']
+        number_day = project_with_rejected_labor_report[1]
+        rejection_reason = project_with_rejected_labor_report[2]
+        labor_cost_page = LaborCostPage(driver)
+        labor_cost_page.go_to_labor_cost_page()
+        labor_cost_page.click_rejection_reasons_checkbox()
+        assert labor_cost_page.get_day_tooltip_text_in_project(project_name, number_day) == f'Причина отклонения: {rejection_reason}', 'Неверный текст тултипа с причиной отклонения'
