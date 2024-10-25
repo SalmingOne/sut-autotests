@@ -11,6 +11,8 @@ from selenium.webdriver import Keys
 from endpoints.project_endpoint import ProjectEndpoint
 from locators.user_profile_page_locators import UserProfilePageLocators
 from pages.base_page import BasePage
+from utils.concat_testit_allure_step import allure_testit_step
+
 
 class UserProfilePage(BasePage):
     locators = UserProfilePageLocators()
@@ -1026,3 +1028,44 @@ class UserProfilePage(BasePage):
         for field in all_fields:
             text_list.append(field.get_attribute('value'))
         return text_list
+
+    @allure_testit_step('Проверка наличия Аватара')
+    def check_foto(self):
+        assert self.element_is_displayed(self.locators.AVATAR_CHECK), "Нет аватара пользователя"
+
+    @allure_testit_step('Проверка наличия должности в верхней части страницы')
+    def check_header_post(self):
+        assert self.element_is_displayed(self.locators.HEADER_POST), "Нет должности пользователя"
+
+    @allure_testit_step('Проверка наличия кнопки редактирования')
+    def check_redact_button(self):
+        assert self.element_is_displayed(self.locators.REDACT_BUTTON), "Нет кнопки редактирования"
+
+    @allure_testit_step('Проверка наличия вкладок в профиле пользователя')
+    def check_tab_text(self):
+        tab_titles = [element.text for element in self.elements_are_visible(self.locators.TAB_TITLES)]
+        assert tab_titles == ['ИНФОРМАЦИЯ О СОТРУДНИКЕ', 'ГРАФИК РАБОТЫ', 'ОБРАЗОВАНИЕ', 'СЕРТИФИКАТЫ', 'ОПЫТ РАБОТЫ',
+                              'ЗАМЕТКИ', 'МЕТКИ', 'РЕЗЮМЕ', 'АКТИВНОСТЬ', 'ПОДРАЗДЕЛЕНИЯ И ДОЛЖНОСТИ', 'HR-КАРТОЧКА']
+
+    @allure_testit_step('Получение названия активной вкладки')
+    def get_activ_tab(self):
+        return self.element_is_visible(self.locators.ACTIV_TAB).text
+
+    @allure_testit_step('Получение названий всех полей')
+    def get_all_labels_text(self):
+        return [element.text for element in self.elements_are_visible(self.locators.LABELS)]
+
+    @allure_testit_step('Получение значений всех полей')
+    def get_all_input_values_text(self):
+        return [element.get_attribute('value') for element in self.elements_are_present(self.locators.ALL_INPUT_VALUES)]
+
+    @allure_testit_step('Проверка наличия заголовка Теги')
+    def check_tags_title(self):
+        assert self.element_is_displayed(self.locators.check_text('Теги')), "Нет заголовка теги"
+
+    @allure_testit_step('Переход на страницу мой профиль с проверкой пунктов меню')
+    def go_to_user_profile_with_check_menu_items(self):
+        self.element_is_visible(self.locators.PROFILE_BUTTON).click()
+        items = [element.text for element in self.elements_are_visible(self.locators.ALL_PROFILE_MENU_ITEMS_TEXT)]
+        self.element_is_visible(self.locators.MY_PROFILE_MENU_ITEM).click()
+        return items
