@@ -4,6 +4,7 @@ import allure
 import pytest
 import testit
 
+from data.data import USER_NAME
 from pages.colleagues_page import ColleaguesPage
 from pages.user_profile_page import UserProfilePage
 
@@ -1015,3 +1016,32 @@ class TestUserProfilePage:
         user_profile_page.press_delete_icon()
         user_profile_page.press_save_button()
         time.sleep(0.2)
+
+    @testit.workItemIds(1083)
+    @testit.displayName("Общий шаг. Перейти в 'Мой профиль'")
+    @pytest.mark.regress
+    @allure.title("id-1083 Общий шаг. Перейти в 'Мой профиль'")
+    def test_go_to_my_profile(self, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        # Верхняя часть страницы
+        user_profile_page.check_foto()
+        user_name = user_profile_page.get_title()
+        user_profile_page.check_header_post()
+        user_profile_page.check_redact_button()
+        # Вкладки
+        user_profile_page.check_tab_text()
+        activ_tab_name = user_profile_page.get_activ_tab()
+        # Информацию о сотруднике
+        all_labels = user_profile_page.get_all_labels_text()
+        all_input = user_profile_page.get_all_input_values_text()
+        # Теги
+        user_profile_page.check_tags_title()
+        assert ('Должность' and 'Подразделение' and 'Непосредственный руководитель' and 'Статус' and 'Формат работы' and
+                'Прием в компанию' and 'Вступление в должность' and 'Увольнение из компании' in all_labels,
+                "Есть не все Общие данные")
+        assert 'E-mail' and 'Телефон' and 'Telegram' and 'Discord' in all_input, "Есть не все поля в разделе Контакты"
+        assert ('Семейное положение' and 'Дети' and 'Дата рождения' and 'Интересные факты о себе' and 'Хобби' in
+                all_labels, "Есть не все поля в разделе Дополнительная информация")
+        assert USER_NAME in user_name, "В заголовке отсутствует ФИО пользователя"
+        assert activ_tab_name == 'ИНФОРМАЦИЯ О СОТРУДНИКЕ', "По умолчанию не открыта вкладка Информация о сотруднике"

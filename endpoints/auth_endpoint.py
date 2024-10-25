@@ -16,7 +16,7 @@ class AuthEndpoint:
 
     @allure.step("Получаем токен")
     def get_header_token_api(self):
-        payload = AuthModels.AuthRequestModel.Model().dict()
+        payload = AuthModels.AuthRequestModel.Model().model_dump()
         self.response = requests.post(url=Urls.auth_url, json=payload, verify=False)
         self.response_json = self.response.json()
         return {"Access": "Bearer " + self.response_json['accessToken']}
