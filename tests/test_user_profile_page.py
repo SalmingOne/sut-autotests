@@ -1023,7 +1023,7 @@ class TestUserProfilePage:
     @allure.title("id-1083 Общий шаг. Перейти в 'Мой профиль'")
     def test_go_to_my_profile(self, login, driver):
         user_profile_page = UserProfilePage(driver)
-        user_profile_page.go_to_user_profile()
+        menu_items = user_profile_page.go_to_user_profile_with_check_menu_items()
         # Верхняя часть страницы
         user_profile_page.check_foto()
         user_name = user_profile_page.get_title()
@@ -1037,6 +1037,8 @@ class TestUserProfilePage:
         all_input = user_profile_page.get_all_input_values_text()
         # Теги
         user_profile_page.check_tags_title()
+        assert menu_items == ['Мой профиль', 'Редактирование профиля', 'Сменить пароль', 'Выйти'], \
+            "Выпадающий список содержит не все вкладки"
         assert ('Должность' and 'Подразделение' and 'Непосредственный руководитель' and 'Статус' and 'Формат работы' and
                 'Прием в компанию' and 'Вступление в должность' and 'Увольнение из компании' in all_labels,
                 "Есть не все Общие данные")

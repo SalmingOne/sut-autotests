@@ -1062,3 +1062,10 @@ class UserProfilePage(BasePage):
     @allure_testit_step('Проверка наличия заголовка Теги')
     def check_tags_title(self):
         assert self.element_is_displayed(self.locators.check_text('Теги')), "Нет заголовка теги"
+
+    @allure_testit_step('Переход на страницу мой профиль с проверкой пунктов меню')
+    def go_to_user_profile_with_check_menu_items(self):
+        self.element_is_visible(self.locators.PROFILE_BUTTON).click()
+        items = [element.text for element in self.elements_are_visible(self.locators.ALL_PROFILE_MENU_ITEMS_TEXT)]
+        self.element_is_visible(self.locators.MY_PROFILE_MENU_ITEM).click()
+        return items

@@ -5,6 +5,7 @@ class UserProfilePageLocators:
     # Переход на страницу профиля
     PROFILE_BUTTON = (By.CSS_SELECTOR, 'button[id="profile"]')
     MY_PROFILE_MENU_ITEM = (By.XPATH, '//a[text()="Мой профиль"]')
+    ALL_PROFILE_MENU_ITEMS_TEXT = (By.XPATH, '//li[@role="menuitem"]//a')
     MY_PROFILE_TAB_BUTTON = (By.XPATH, '//div[text()="Информация о сотруднике"]/..')
     PROFILE_TITLE = (By.CSS_SELECTOR, 'h6[class^="MuiTypography-root MuiTypography-subtitle1"]')
     AVATAR_INPUT = (By.XPATH, '//input[@accept="image/jpg, image/jpeg, image/png, image/bmp, image/x-icon, image/avif"]')
