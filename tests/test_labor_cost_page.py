@@ -794,3 +794,17 @@ class TestLaborCostPage:
         labor_cost_page.go_to_labor_cost_page()
         labor_cost_page.click_rejection_reasons_checkbox()
         assert labor_cost_page.get_day_tooltip_text_in_project(project_name, number_day) == f'Причина отклонения: {rejection_reason}', 'Неверный текст тултипа с причиной отклонения'
+
+    @testit.workItemIds(3723)
+    @testit.displayName("3.1.1.7 Просмотр причины отклонения списаний трудозатрат через уведомления системы")
+    @pytest.mark.regress
+    @allure.title("id-3723 3.1.1.7 Просмотр причины отклонения списаний трудозатрат через уведомления системы")
+    def test_labor_cost_rejection_notification(self, project_with_rejected_labor_report, login, driver):
+        project_name = project_with_rejected_labor_report[0]['name']
+        rejection_reason = project_with_rejected_labor_report[2]
+        labor_cost_page = LaborCostPage(driver)
+        labor_cost_page.go_to_labor_cost_page()
+        start, end = [day.strftime('%d.%m') for day in labor_cost_page.get_current_week_start_end()]
+        assert labor_cost_page.get_notification_text() == (f'Трудозатраты по {project_name} на {start}-{end} '
+                                                           f'были отклонены. Причина: {rejection_reason}'), \
+            'Неверный текст уведомления с причиной отклонения'

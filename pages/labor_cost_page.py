@@ -1273,3 +1273,8 @@ class LaborCostPage(BasePage):
         tooltip_text = self.element_is_visible(self.locators.TOOLTIP).text
         return tooltip_text
 
+    @allure_testit_step('Получение текста уведомления')
+    def get_notification_text(self, notification_id = 0):
+        self.element_is_visible(self.locators.NOTIFICATIONS_ICON).click()
+        self.elements_are_visible(self.locators.NOTIFICATIONS_SUMMARY_BUTTON,30)[notification_id].click()
+        return self.element_is_visible(self.locators.NOTIFICATIONS_SUMMARY).text

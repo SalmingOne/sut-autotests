@@ -9,6 +9,10 @@ class LaborCostPageLocators:
     # Переход на страницу трудозатрат
     TAB_ACTIVITY = (By.CSS_SELECTOR, 'div[id="activity"]')
     TAB_LABOR_COST_TABLE = (By.CSS_SELECTOR, 'a[href="/"]')
+
+    NOTIFICATIONS_ICON = (By.CSS_SELECTOR, 'svg[data-testid="NotificationsActiveIcon"]')
+    NOTIFICATIONS_SUMMARY_BUTTON = (By.XPATH,"//div//h6[text()='Уведомления']/following::div[1]//button")
+    NOTIFICATIONS_SUMMARY = (By.XPATH, "//div//h6[text()='Уведомления']/following::div[1]//p")
     # Проверка, что код проекта есть на странице
     def check_code_project(self, project_code):
         return (By.XPATH, f'//a[text()="{project_code}"]')
