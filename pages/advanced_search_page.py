@@ -260,7 +260,6 @@ class AdvancedSearchPage(BasePage):
     def check_editing_search(self, name):
         time.sleep(2)
         self.action_double_click(self.element_is_visible(self.locators.chips_by_name(name)))
-        self.element_is_present(self.locators.DEPARTMENTS_COLUMN, 15)
         values_before = self.get_all_fields()
         self.element_is_visible(self.locators.CRITERION_FIELD).send_keys(Keys.CONTROL + "a")
         self.element_is_visible(self.locators.CRITERION_FIELD).send_keys('Отдел')

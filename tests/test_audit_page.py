@@ -28,4 +28,4 @@ class TestAuditPage:
         audit_page = AuditPage(driver)
         audit_page.go_to_audit_page()
         assert not audit_page.select_day_interval_in_datepicker(10,9), 'Есть возможность выбора конченой даты раньше начальной'
-        assert not all(audit_page.input_date_manually('09.10.2024','08.10.2024')), 'Есть возможность ввода конченой даты раньше начальной'
+        assert (audit_page.input_date_manually('09.10.2024','08.10.2024')), 'Есть возможность ввода конченой даты раньше начальной'

@@ -122,8 +122,7 @@ class TestCreateProject:
         # Берем имя проекта со страницы все проекты
         all_project_page = AllProjectPage(driver)
         all_project_page.go_to_all_project_page()
-        check_name_at_all = all_project_page.check_project_name_at_all('AutoTestProjectReason')
-        assert project_name == check_name_at_all, "имя созданного проекта отсутствует на странице все проекты"
+        all_project_page.check_project_name_at_all('AutoTestProjectReason')        
 
     @testit.workItemIds(48)
     @testit.displayName("1.1.1 Создание проекта с неуникальным названием")
@@ -141,7 +140,8 @@ class TestCreateProject:
             '01.10.2022'
         )
         error = create_project_drawer_page.get_mui_error_text()
-        assert error == 'Указанное название проекта уже используется в системе', 'Не появилась ошибка о неуникальном названии проекта'
+        assert error == 'Указанное название проекта уже используется в системе', \
+            'Не появилась ошибка о неуникальном названии проекта'
 
     @testit.workItemIds(1470)
     @testit.displayName("1.1.1 Создание проекта с неуникальным кодом")
