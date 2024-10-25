@@ -263,17 +263,7 @@ class FilialPage(BasePage):
     def press_save_button(self):
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
 
-    @testit.step("Проверка наличия текста с предупреждением")
-    @allure.step("Проверка наличия текста с предупреждением")
+    @allure_testit_step("Проверка наличия текста с предупреждением")
     def check_warning_text(self, name_field, address):
-        assert self.element_is_visible(self.locators.text_on_page(name_field))
-        assert self.element_is_visible(self.locators.text_on_page(address))
-
-    @allure_testit_step("Удаление сотрудников с филиала")
-    def delete_employs_from_filial(self):
-        all_employs = self.elements_are_visible(self.locators.EMPLOYEES_CHIPS_DELETE_ICON)
-        while len(all_employs) > 0:
-            try:
-                self.elements_are_visible(self.locators.EMPLOYEES_CHIPS_DELETE_ICON, 2)[0].click()
-            except TimeoutException:
-                break
+        assert self.element_is_displayed(self.locators.text_on_page(name_field)), 'Нет сообщения о не уникальности названия'
+        assert self.element_is_displayed(self.locators.text_on_page(address)), 'Нет сообщения о не уникальности адреса'
