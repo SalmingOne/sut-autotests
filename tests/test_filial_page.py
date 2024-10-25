@@ -162,3 +162,20 @@ class TestFilialPage:
         driver.refresh()
         assert not filial_page.check_filial_on_tab('Новое имя'), "Имя филиала изменилось"
         assert filial_page.check_filial_on_tab('Для редактирования'), "Имя филиала изменилось"
+
+    @testit.workItemIds(10726)
+    @testit.displayName("6.1.3.4. Отмена удаления пользователя из ЮЛ")
+    @pytest.mark.regress
+    @allure.title("id-10726 6.1.3.4. Отмена удаления пользователя из ЮЛ")
+    def test_cancel_user_deletion_from_filial(self, create_work_user, create_filial_with_director, login, driver):
+        filial_page = FilialPage(driver)
+        filial_page.go_to_filial_page()
+        time.sleep(2)  # Нужно для отработки анимации
+        filial_page.open_redact_filial(create_filial_with_director)
+        employees_before_delete = filial_page.get_employees_in_field()
+        filial_page.delete_employs_from_filial()
+        filial_page.press_abort_button()
+        filial_page.open_redact_filial(create_filial_with_director)
+        employees_after_delete = filial_page.get_employees_in_field()
+        assert employees_before_delete == employees_after_delete, 'Изменения сохранились'
+
