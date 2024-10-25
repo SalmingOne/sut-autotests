@@ -1158,6 +1158,7 @@ class LaborCostPage(BasePage):
         self.redact_overtime_on_reason_tab(project_name)
         self.element_is_visible(self.locators.OVERTIME_WORK_DATA_INPUT).send_keys(Keys.CONTROL + 'a')
         self.element_is_visible(self.locators.OVERTIME_WORK_DATA_INPUT).send_keys(new_date)
+        time.sleep(1)
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
         self.element_is_not_visible(self.locators.ALERT_TEXT, 10)
 

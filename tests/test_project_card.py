@@ -102,10 +102,10 @@ class TestProjectCard:
     @allure.title("id-12239 1.3.1.1. Содержание выпадающих списков Проектная роль и Ресурс")
     def test_contents_of_the_project_role_and_resource_drop_down_lists(self, simple_project, create_work_user, login, driver):
         all_project_page = AllProjectPage(driver)
-        project_card_page = ProjectCardPage(driver)
         time.sleep(0.5)
         all_project_page.go_to_all_project_page()
         all_project_page.go_project_page(f"{PROJECT_NAME}")
+        project_card_page = ProjectCardPage(driver)
         project_card_page.go_to_team_tab()
         # Проверяем все роли и всех пользователей
         user_on_project = project_card_page.get_all_user_before_redact_team_tab()
@@ -127,7 +127,7 @@ class TestProjectCard:
         project_card_page.press_add_button()
         api_users_by_role = user_endpoint.get_users_by_project_role_name(user_roles_ui[0])
         project_card_page.field_roles_field(user_roles_ui[0])
-        ui_users_by_role = project_card_page.get_all_names_in_li_menu(0)
+        ui_users_by_role = project_card_page.get_all_names_in_li_menu(1)
 
         assert project_roles_system == project_roles_ui, ("Отображается выпадающий список не со всеми существующими "
                                                           "проектными ролями в системе")

@@ -681,37 +681,30 @@ class TestLaborCostPage:
         today = labor_cost_page.get_date_list_from_today()
         # Перенос переработки на день с трудозатратами
         labor_cost_page.change_overtime_work_date(project_with_work_and_overtime_work['name'], labor_cost_page.get_day_before(-1))
-        time.sleep(1)
         work = labor_cost_page.get_project_day_cell_contents(
             project_with_work_and_overtime_work['name'],
             today[1] + 1
         )
         assert work == '6+3', "Переработка не перенеслась на день с трудозатратами или не корректно отображается"
-        time.sleep(4)
         # Перенос переработки на день без трудозатрат
         labor_cost_page.change_overtime_work_date(project_with_work_and_overtime_work['name'],
                                                   labor_cost_page.get_day_before(-3))
-        time.sleep(1)
         zero_work = labor_cost_page.get_project_day_cell_contents(
             project_with_work_and_overtime_work['name'],
             today[3] + 1
         )
         assert zero_work == '0+3', "Переработка не перенеслась на день без трудозатрат или не корректно отображается"
         # Перенос переработки с дня без трудозатрат
-        time.sleep(4)
         labor_cost_page.change_overtime_work_date(project_with_work_and_overtime_work['name'],
                                                   labor_cost_page.get_day_before(-4))
-        time.sleep(1)
         empty_work = labor_cost_page.get_project_day_cell_contents(
             project_with_work_and_overtime_work['name'],
             today[3] + 1
         )
         assert empty_work == '', "Трудозатраты отображаются не корректно после переноса переработки"
-        time.sleep(4)
         # Перенос переработки на изначальный день
         labor_cost_page.change_overtime_work_date(project_with_work_and_overtime_work['name'],
                                                   labor_cost_page.get_day_before(-2))
-        time.sleep(1)
         work_and_overtime = labor_cost_page.get_project_day_cell_contents(
             project_with_work_and_overtime_work['name'],
             today[2] + 1
