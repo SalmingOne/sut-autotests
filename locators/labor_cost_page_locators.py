@@ -21,6 +21,7 @@ class LaborCostPageLocators:
         return (By.XPATH, f'//div[@aria-label="{project_name}"]/a')
 
     ALL_PROJECT_NAMES = (By.CSS_SELECTOR, 'div[basewrapprops]')
+    OPEN_TASKS_LIST_BUTTON = (By.XPATH, "//div[@basewrapprops]/preceding-sibling::div")
     # Дни в привязке к проекту
     RANDOM_DAYS_BY_PROJECT = (
         By.XPATH,
@@ -113,6 +114,10 @@ class LaborCostPageLocators:
     def get_day_by_project(self, project_name, number_day):
         return (By.XPATH,
                 f'//div[@aria-label="{project_name}"]//ancestor::div[contains(@class,"project-row MuiBox-root")]//div[{number_day}]//input')
+
+    def get_day_by_task(self, task_name, number_day):
+        return (By.XPATH,
+                f"//p[text()='{task_name}']/../../..//div[{number_day}]//input")
 
     def all_day_by_project(self, project_name):
         return By.XPATH, f'//div[@aria-label="{project_name}"]//ancestor::div[contains(@class,"project-row MuiBox-root")]//input'
