@@ -832,3 +832,14 @@ class TestLaborCostPage:
         labor_cost_page.go_to_labor_cost_page()
         labor_cost_page.open_tasks_list()
         assert labor_cost_page.get_status_of_field(task_name, number_day), 'Ячейка активна для ввода'
+
+    @testit.workItemIds(3724)
+    @testit.displayName("3.1.1.7 Проверка отсутствия тултипа если чекбокс 'Отображать причины отклонения' не выбран.")
+    @pytest.mark.regress
+    @allure.title("id-3724 3.1.1.7 Проверка отсутствия тултипа если чекбокс 'Отображать причины отклонения' не выбран.")
+    def test_no_tooltip_if_reason_checkbox_disabled(self, project_with_rejected_labor_report, login, driver):
+        project_name = project_with_rejected_labor_report[0]['name']
+        number_day = project_with_rejected_labor_report[1]
+        labor_cost_page = LaborCostPage(driver)
+        labor_cost_page.go_to_labor_cost_page()
+        assert not labor_cost_page.get_day_tooltip_text_in_project(project_name, number_day), 'Тултип отображается'

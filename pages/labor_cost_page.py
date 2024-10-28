@@ -1270,6 +1270,8 @@ class LaborCostPage(BasePage):
     @allure_testit_step('Получение текста тултипа дня проекта')
     def get_day_tooltip_text_in_project(self, project_name, number_day):
         self.action_move_to_element(self.element_is_visible(self.locators.get_day_by_project(project_name, number_day)))
+        if not self.element_is_displayed(self.locators.TOOLTIP):
+            return False
         tooltip_text = self.element_is_visible(self.locators.TOOLTIP).text
         return tooltip_text
 
