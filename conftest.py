@@ -325,6 +325,7 @@ def project_with_stopped_task():
     gantt_endpoint.start_editing(project_id)
 
     start_date, end_date = [day.strftime("%m.%d.%Y") for day in BasePage(driver=None).get_current_week_start_end()]
+    start_date = start_date if start_date != BasePage(driver=None).get_day_before_m_d_y(0) else BasePage(driver=None).get_day_before_m_d_y(1)
     payload = dict(
         stages=[
                 dict(
