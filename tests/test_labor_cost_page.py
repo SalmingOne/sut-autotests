@@ -843,3 +843,17 @@ class TestLaborCostPage:
         labor_cost_page = LaborCostPage(driver)
         labor_cost_page.go_to_labor_cost_page()
         assert not labor_cost_page.get_day_tooltip_text_in_project(project_name, number_day), 'Тултип отображается'
+
+    @testit.workItemIds(3160)
+    @testit.displayName("3.1.1.3. Отображение неактивных проектов в таблице трудозатрат")
+    @pytest.mark.regress
+    @allure.title("id-3160 3.1.1.3. Отображение неактивных проектов в таблице трудозатрат")
+    def test_no_tooltip_if_reason_checkbox_disabled(self, archive_project_with_assignment, second_project,  login, driver):
+        project_name = archive_project_with_assignment['name']
+        labor_cost_page = LaborCostPage(driver)
+        labor_cost_page.go_to_labor_cost_page()
+        before_check = project_name not in labor_cost_page.get_all_project_name_on_tab()
+        labor_cost_page.click_not_active_project_checkbox()
+        time.sleep(0.5)
+        after_check = project_name in labor_cost_page.get_all_project_name_on_tab()
+        assert before_check and after_check, "Неактивный проект не отображается"
