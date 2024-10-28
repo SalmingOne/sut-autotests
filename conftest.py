@@ -374,8 +374,6 @@ def project_with_stopped_task():
     gantt_endpoint.change_task_status(taskId, payload)
     number_day = BasePage(driver=None).get_day_after_ymd(1).split('-')[2]
 
-    print(number_day)
-
     yield res.json(), number_day, taskName
     project_endpoint.delete_project_api(str(project_id))
 
