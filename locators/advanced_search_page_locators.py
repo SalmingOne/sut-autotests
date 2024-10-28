@@ -6,6 +6,7 @@ class AdvancedSearchPageLocators:
     COLLEAGUES_TAB = (By.CSS_SELECTOR, 'div[id="colleagues"]')
     ALL_COLLEAGUES = (By.CSS_SELECTOR, 'a[href="/users/department"]')
     ADVANCED_SEARCH = (By.CSS_SELECTOR, 'a[href="/kk/user-search"]')
+    ALL_PROFILE_MENU_ITEMS_TEXT = (By.XPATH, '//li[@role="menuitem"]//a')
     TO_ADVANCED_SEARCH_BUTTON = (By.CSS_SELECTOR, 'button[class^="MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall"]')
     BREAK_SEARCH_BUTTON = (By.XPATH, '//button[text()="Сбросить поиск"]')
     EXPORT_TO_EXEL_BUTTON = (By.XPATH, '//p[text()="Экспорт в Excel"]')
