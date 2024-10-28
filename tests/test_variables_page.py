@@ -166,6 +166,7 @@ class TestVariablesPage:
     def test_edit_variable_to_not_unique(self, variable_for_edit, variable_not_unique, login, driver):
         variables_page = VariablesPage(driver)
         variables_page.go_to_variables_page()
-        variables_page.click_editing_add_variable(variable_for_edit['name'], '7')
-        variables_page.editing_variable(variable_not_unique['name'])
-        variables_page.check_warning_text('Переменная с таким названием поля уже создана в системе', 'Переменная с таким названием уже создана в системе')
+        variables_page.click_editing_add_variable(variable_for_edit[0], '7')
+        variables_page.editing_variable(variable_not_unique[0])
+        variables_page.check_warning_text('Переменная с таким названием поля уже создана в системе', \
+                                          'Переменная с таким названием уже создана в системе')

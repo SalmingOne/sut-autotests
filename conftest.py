@@ -448,7 +448,7 @@ def project_with_work():
 @pytest.fixture()
 def variable_not_unique():
     variables_endpoints = VariablesEndpoint()
-    payload = dict(name='Не уникальное имя', systemName='Не уникальное системное имя')
+    payload = dict(name='Не уникальное имя', systemName='Не уникальное имя')
     response = variables_endpoints.create_variables_api(json=payload)
     yield payload['name'], payload['systemName']
     variables_endpoints.delete_variables_api(str(response.json()['id']))
