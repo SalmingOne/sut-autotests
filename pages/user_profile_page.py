@@ -536,6 +536,7 @@ class UserProfilePage(BasePage):
         assert not self.element_is_clickable(self.locators.DAY_AFTER_THIS_DAY_PICKER, 2), \
             'Можно выбрать завтрашнюю дату'
         self.element_is_visible(self.locators.CERTIFICATE_DATA_PICKER).click()
+        self.element_is_visible(self.locators.THIS_DAY_PICKER).click()
         assert self.element_is_displayed(self.locators.DELETE_ICON), 'Нет иконки удаления'
 
     @testit.step("Нажимаем иконку удаления")
