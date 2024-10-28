@@ -848,7 +848,7 @@ class TestLaborCostPage:
     @testit.displayName("3.1.1.3. Отображение неактивных проектов в таблице трудозатрат")
     @pytest.mark.regress
     @allure.title("id-3160 3.1.1.3. Отображение неактивных проектов в таблице трудозатрат")
-    def test_no_tooltip_if_reason_checkbox_disabled(self, archive_project_with_assignment, second_project,  login, driver):
+    def test_show_inactive_projects_in_labor_cost_table(self, archive_project_with_assignment, second_project,  login, driver):
         project_name = archive_project_with_assignment['name']
         labor_cost_page = LaborCostPage(driver)
         labor_cost_page.go_to_labor_cost_page()
