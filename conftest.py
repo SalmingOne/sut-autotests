@@ -499,6 +499,34 @@ def project_with_work_and_overtime_work():
     yield res.json()
     project_endpoint.delete_project_api(str(project_id))
 
+@pytest.fixture()
+def project_with_required_reasons_with_work_and_overtime_work():
+    labor_report_endpoint = LaborReportEndpoint()
+    project_endpoint = ProjectEndpoint()
+    project_endpoint.delete_project_if_it_exist(PROJECT_NAME)
+    payload = CreateProject(
+        laborReasons=True
+    ).model_dump()
+    res = project_endpoint.create_project_api(json=payload)
+    project_id = res.json()['id']
+    hours = 6
+    reason = "Просто так"
+    payload = [
+        dict(
+            date=BasePage(driver=None).get_day_before_m_d_y(0),
+            projectId=project_id,
+            overtimeWork=hours,
+            hours=hours,
+            type="DEFAULT",
+            userId=USER_ID,
+            reason=reason,
+            overtimeReason=reason
+        )
+    ]
+    labor_report_endpoint.post_labor_report_api(json=payload)
+    number_day = BasePage(driver=None).get_day_after_ymd(1).split('-')[2]
+    yield res.json(), number_day, reason, hours
+    project_endpoint.delete_project_api(str(project_id))
 
 @pytest.fixture()
 def project_with_three_overtime_work():
