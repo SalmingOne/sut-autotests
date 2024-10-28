@@ -379,6 +379,77 @@ def project_with_stopped_task():
     project_endpoint.delete_project_api(str(project_id))
 
 @pytest.fixture()
+def project_with_completed_task():
+    project_endpoint = ProjectEndpoint()
+    project_endpoint.delete_project_if_it_exist(PROJECT_NAME)
+    payload = CreateProject(
+        resources=[dict(
+            projectRoleId=1,
+            userId=USER_ID,
+            isProjectManager=True
+        )]
+    ).model_dump()
+    res = project_endpoint.create_project_api(json=payload)
+    project_id = res.json()['id']
+    gantt_endpoint = GanttEndpoint()
+    gantt_endpoint.start_editing(project_id)
+
+    start_date, end_date = [day.strftime("%m.%d.%Y") for day in BasePage(driver=None).get_current_week_start_end()]
+    start_date = start_date if start_date != BasePage(driver=None).get_day_before_m_d_y(0) else BasePage(driver=None).get_day_before_m_d_y(1)
+    payload = dict(
+        stages=[
+                dict(
+                name='Auto',
+                id=1
+            )
+        ],
+        tasks=[
+            dict(
+                name='Auto',
+                id=1,
+                parentId=1,
+                slotsTasks=[
+                    dict(
+                        employmentPercentage=12.5,
+                        endDate=end_date,
+                        id=1,
+                        slotId=res.json()['slots'][0]['id'],
+                        startDate=start_date
+                    )
+                ],
+            startDate=start_date,
+            endDate=end_date
+            )
+        ],
+        links=[]
+    )
+    gantt_endpoint.create_task(project_id, json=payload)
+
+    tasks = gantt_endpoint.get_all_tasks(project_id).json()
+    parentId = tasks[0]['parentId']
+    taskId = tasks[0]['id']
+    taskName = tasks[0]['name']
+
+    payload = dict(
+                status="IN_PROGRESS",
+                changeDate=start_date
+        )
+
+    gantt_endpoint.change_stage_status(parentId, payload)
+    gantt_endpoint.change_task_status(taskId, payload)
+
+    payload = dict(
+        status="COMPLETED",
+        changeDate=start_date
+    )
+    gantt_endpoint.change_task_status(taskId, payload)
+    number_day = BasePage(driver=None).get_day_after_ymd(1).split('-')[2]
+
+    yield res.json(), number_day, taskName
+    project_endpoint.delete_project_api(str(project_id))
+
+
+@pytest.fixture()
 def delete_created_project():
     yield
     project_endpoint = ProjectEndpoint()
