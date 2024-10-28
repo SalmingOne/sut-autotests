@@ -1273,8 +1273,17 @@ class LaborCostPage(BasePage):
         tooltip_text = self.element_is_visible(self.locators.TOOLTIP).text
         return tooltip_text
 
+    @allure_testit_step('Получение информации о возможности ввода в ячейку')
+    def get_status_of_field(self, task_name, number_day):
+        return self.element_is_visible(self.locators.get_day_by_task(task_name, number_day)).get_attribute('disabled')
+
+
     @allure_testit_step('Получение текста уведомления')
     def get_notification_text(self, notification_id = 0):
         self.element_is_visible(self.locators.NOTIFICATIONS_ICON).click()
         self.elements_are_visible(self.locators.NOTIFICATIONS_SUMMARY_BUTTON,30)[notification_id].click()
         return self.element_is_visible(self.locators.NOTIFICATIONS_SUMMARY).text
+
+    @allure_testit_step("Открыть список задачи")
+    def open_tasks_list(self):
+        self.elements_are_visible(self.locators.OPEN_TASKS_LIST_BUTTON)[0].click()
