@@ -819,7 +819,7 @@ class TestLaborCostPage:
         labor_cost_page = LaborCostPage(driver)
         labor_cost_page.go_to_labor_cost_page()
         labor_cost_page.open_tasks_list()
-        assert labor_cost_page.get_status_of_field(task_name, number_day), 'Ячейка активна для ввода'
+        assert labor_cost_page.get_status_of_field_task(task_name, number_day), 'Ячейка активна для ввода'
 
     @testit.workItemIds(3139)
     @testit.displayName("3.1.1.2 Заполнение трудозатрат по задаче со статусом Завершено.")
@@ -831,7 +831,7 @@ class TestLaborCostPage:
         labor_cost_page = LaborCostPage(driver)
         labor_cost_page.go_to_labor_cost_page()
         labor_cost_page.open_tasks_list()
-        assert labor_cost_page.get_status_of_field(task_name, number_day), 'Ячейка активна для ввода'
+        assert labor_cost_page.get_status_of_field_task(task_name, number_day), 'Ячейка активна для ввода'
 
     @testit.workItemIds(3724)
     @testit.displayName("3.1.1.7 Проверка отсутствия тултипа если чекбокс 'Отображать причины отклонения' не выбран.")
@@ -842,7 +842,9 @@ class TestLaborCostPage:
         number_day = project_with_rejected_labor_report[1]
         labor_cost_page = LaborCostPage(driver)
         labor_cost_page.go_to_labor_cost_page()
-        assert not labor_cost_page.get_day_tooltip_text_in_project(project_name, number_day), 'Тултип отображается'
+        assert labor_cost_page.field_is_rejected(project_name, number_day), 'Трудозатраты не отклонены'
+        assert not labor_cost_page.get_status_of_field_project(project_name,number_day), 'Ячейка неактивна для ввода'
+        assert not labor_cost_page.tooltip_is_displayed(project_name, number_day), 'Тултип отображается'
 
     @testit.workItemIds(3160)
     @testit.displayName("3.1.1.3. Отображение неактивных проектов в таблице трудозатрат")
