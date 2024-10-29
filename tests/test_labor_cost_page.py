@@ -854,6 +854,7 @@ class TestLaborCostPage:
         project_name = archive_project_with_assignment['name']
         labor_cost_page = LaborCostPage(driver)
         labor_cost_page.go_to_labor_cost_page()
+        labor_cost_page.check_filter()
         before_check = project_name not in labor_cost_page.get_all_project_name_on_tab()
         labor_cost_page.check_archive_project(project_name)
         time.sleep(0.5)
