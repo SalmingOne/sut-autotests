@@ -855,7 +855,7 @@ class TestLaborCostPage:
         labor_cost_page = LaborCostPage(driver)
         labor_cost_page.go_to_labor_cost_page()
         before_check = project_name not in labor_cost_page.get_all_project_name_on_tab()
-        labor_cost_page.click_not_active_project_checkbox()
+        labor_cost_page.check_archive_project(project_name)
         time.sleep(0.5)
         after_check = project_name in labor_cost_page.get_all_project_name_on_tab()
         assert before_check and after_check, "Неактивный проект не отображается"
