@@ -5,7 +5,6 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 from data.data import LOGIN, PASSWORD, USER_ID, USER_NAME, PROJECT_NAME
 from data.models.create_project_model import CreateProject
-from data.models.schedule_model import SimpleDayModel
 from data.urls import Urls
 from endpoints.affiliates_endpoint import AffiliatesEndpoint
 from endpoints.assignments_endpoint import AssignmentEndpoint
@@ -18,7 +17,6 @@ from endpoints.posts_endpoint import PostsEndpoint
 from endpoints.project_endpoint import ProjectEndpoint
 from endpoints.project_roles_endpoint import ProjectRolesEndpoint
 from endpoints.resume_endpoint import ResumeEndpoint
-from endpoints.schedule_endpoint import ScheduleEndpoint
 from endpoints.search_profile_endpoint import SearchProfileEndpoint
 from endpoints.skills_endpoint import SkillsEndpoint
 from endpoints.system_roles_endpoint import SystemRolesEndpoint
