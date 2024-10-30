@@ -22,3 +22,12 @@ class CalendarEndpoint:
         self.response = requests.delete(url=Urls.calendar_url + calendar_id, headers=header, verify=False)
         assert self.response.status_code == 204
         return self.response
+    
+    @allure.step("Получаем информацию о выходных")
+    def get_production_api(self, start_date, end_date):
+        header = AuthEndpoint().get_header_token_api()
+        self.response = requests.get(url=Urls.calendar_url + 'production?' \
+                                     + f'endDate={end_date}' + f'&startDate={start_date}', headers=header, verify=False)
+        self.response_json = self.response.json()
+        return self.response_json
+    

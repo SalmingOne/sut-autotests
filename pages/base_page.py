@@ -5,6 +5,7 @@ from selenium.webdriver import ActionChains, Keys
 from selenium.webdriver.support.ui import WebDriverWait as wait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
+from endpoints.calendar_endpoint import CalendarEndpoint
 
 
 class BasePage:
@@ -135,3 +136,41 @@ class BasePage:
         first_day_of_week = datetime.now() - timedelta(days=datetime.now().weekday())
         last_day_of_week = first_day_of_week + timedelta(days=6)
         return first_day_of_week, last_day_of_week
+    
+    @allure.step("Получение следующей недели от заданной начальной даты")
+    def get_next_week(self, start_date):
+        first_day_of_week = start_date + timedelta(days=7 - start_date.weekday())
+        last_day_of_week = first_day_of_week + timedelta(days=6)
+        return first_day_of_week, last_day_of_week
+
+    @allure.step("Проверяем, есть ли в неделе праздничные или укороченные рабочие дни")
+    def is_week_shortened(self, start_date, end_date):
+        calendar = CalendarEndpoint()
+        holidays_data = calendar.get_production_api(start_date, end_date)
+        # Извлекаем списки с праздничными и предпраздничными днями
+        holidays = set(holidays_data.get("holidays", []))
+        preholidays = set(holidays_data.get("preholidays", []))
+
+        # Проверяем каждый день недели
+        for day in (start_date + timedelta(days=i) for i in range(0, 7)):
+            # Если день есть в праздничных или предпраздничных, неделя сокращена
+            if day.strftime("%Y-%m-%d") in holidays or day.strftime("%Y-%m-%d") in preholidays:
+                return True
+        return False
+
+    @allure.step("Получаем неделю без праздников или укороченных дней")
+    def get_full_work_week(self):
+        start_date, end_date = self.get_current_week_start_end()
+        while self.is_week_shortened(start_date, end_date):
+            start_date, end_date = self.get_next_week(start_date)
+        return start_date, end_date
+    
+    @allure.step("Получаем номер недели в квартале")
+    def get_week_of_quarter(self, date):
+        date = datetime.strptime(date, '%d.%m.%Y')
+        # Определяем начало квартала для данной даты
+        quarter_start_month = ((date.month - 1) // 3) * 3 + 1
+        quarter_start_date = datetime(date.year, quarter_start_month, 1)
+        # Вычисляем номер недели от начала квартала
+        week_of_quarter = (date - quarter_start_date).days // 7 + 1
+        return week_of_quarter

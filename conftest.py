@@ -23,6 +23,7 @@ from endpoints.system_roles_endpoint import SystemRolesEndpoint
 from endpoints.users_endpoint import UserEndpoint
 from endpoints.calendar_endpoint import CalendarEndpoint
 from endpoints.variables_endpoint import VariablesEndpoint
+from endpoints.busy_percentages_endpoint import BusyPercentagesEndpoint
 from pages.authorization_page import AuthorizationPage
 from pages.base_page import BasePage
 from api_methods.system_settings import SystemSettingsApi
@@ -1111,3 +1112,40 @@ def create_filial_with_director():
     print(response.status_code)
     yield payload['name']
     filial_endpoint.delete_filial_if_it_exist('Филиал с директором') #Иначе пропадает пользователь
+
+@pytest.fixture()
+def project_with_planned_resources():
+    project_endpoint = ProjectEndpoint()
+    project_endpoint.delete_project_if_it_exist('PlannedResourcesProject')    
+    start_date, end_date = [day for day in BasePage(driver=None).get_full_work_week()]
+    start_date_pr = start_date.strftime("%m.%d.%Y")
+    end_date_pr = end_date.strftime("%m.%d.%Y")
+    start_date_dr = start_date.strftime("%d.%m.%Y")
+    end_date_dr = end_date.strftime("%d.%m.%Y")
+    payload = CreateProject(
+        code='PRP',
+        name='PlannedResourcesProject',
+        startDate=start_date_pr,
+        endDate=end_date_pr,
+        resources=[dict(
+            projectRoleId=1,
+            userId=USER_ID,
+            isProjectManager=True)
+        ]
+        ).model_dump()
+    res = project_endpoint.create_project_api(json=payload)
+    project_id = res.json()["id"]
+    slot_id = res.json()["slots"][0]['id']
+    payload = [dict(
+        hours = 4,
+        slotId = slot_id,
+        projectId = project_id,
+        projectRoleId = 1,
+        userId = USER_ID,
+        startOf = start_date_pr,
+        endOf = end_date_pr 
+    )]
+    busy_percentages_endpoint = BusyPercentagesEndpoint()
+    busy_percentages_endpoint.create_busy_percentages_api(json=payload)
+    yield start_date_dr, end_date_dr, res.json()
+    project_endpoint.delete_project_api(str(res.json()['id']))
