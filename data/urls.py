@@ -28,6 +28,11 @@ class Urls:
     create_advanced_search_url = f'{advanced_search_url}' + 'create/'
     resume_url = f'{api_url}' + 'resume/'
     calendar_url = f'{api_url}' + 'calendar/'
+    gantt_url = f'{api_url}' + 'gantt/'
+    gantt_tasks_url = gantt_url + 'tasks/'
+    gantt_start_editing_url = gantt_url + 'start-editing/'
+    gantt_stage_status_url = gantt_url + 'stages/{id}/status/'
+    gantt_task_status_url = gantt_url + 'tasks/{id}/status/'
     schedule_url = f'{api_url}' + 'schedule/'
     labels_url = f'{api_url}' + 'labels/'
 

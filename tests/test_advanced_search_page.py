@@ -165,3 +165,19 @@ class TestAdvancedSearchPage:
         time.sleep(1)
         advanced_search_page.go_advanced_search_page()
         advanced_search_page.check_cancel_saving()
+
+    @testit.workItemIds(1133)
+    @testit.displayName("Перейти в подраздел  Расширенный поиск")
+    @pytest.mark.regress
+    @allure.title("id-1133 Перейти в подраздел  Расширенный поиск")
+    def test_go_to_advanced_search(self, create_advanced_search, login, driver):
+        advanced_search_page = AdvancedSearchPage(driver)
+        time.sleep(1)
+        menu_items = advanced_search_page.go_advanced_search_page_with_check_menu()
+        advanced_search_page.check_search_chips()
+        advanced_search_page.check_new_search()
+        advanced_search_page.check_export_to_exel_button()
+        advanced_search_page.check_column_titles()
+        assert not advanced_search_page.get_break_search_button_clickable(), \
+            "Кнопка Сбросить поиск активна"
+        assert menu_items == ['Все коллеги', 'Оргструктура', 'Расширенный поиск'], "Есть не все пункты меню"

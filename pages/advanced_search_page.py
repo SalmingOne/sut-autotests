@@ -7,6 +7,7 @@ from selenium.webdriver import Keys
 
 from locators.advanced_search_page_locators import AdvancedSearchPageLocators
 from pages.base_page import BasePage
+from utils.concat_testit_allure_step import allure_testit_step
 
 
 class AdvancedSearchPage(BasePage):
@@ -20,7 +21,6 @@ class AdvancedSearchPage(BasePage):
         time.sleep(1)
         self.element_is_visible(self.locators.ADVANCED_SEARCH).click()
         self.element_is_visible(self.locators.DEPARTMENTS_COLUMN, 15)
-
 
     @testit.step("Создание расширенного поиска")
     @allure.step("Создание расширенного поиска")
@@ -358,4 +358,17 @@ class AdvancedSearchPage(BasePage):
         assert self.element_is_displayed(self.locators.CRITERION_FIELD, 1), "Не отображается окно расширенного поиска"
         assert values_before == values_after, "Не отображаются выбранные параметры"
 
+    @allure_testit_step("Получение кликабельности кнопки Сбросить поиск")
+    def get_break_search_button_clickable(self):
+        assert self.element_is_displayed(self.locators.BREAK_SEARCH_BUTTON, 2), "Нет кнопки Сбросить поиск"
+        return self.element_is_clickable(self.locators.BREAK_SEARCH_BUTTON, 2)
 
+    @allure_testit_step("Переход на вкладку Расширенный поиск с получение текста пунктов меню")
+    def go_advanced_search_page_with_check_menu(self):
+        time.sleep(1)
+        self.element_is_visible(self.locators.COLLEAGUES_TAB).click()
+        items = [element.text for element in self.elements_are_visible(self.locators.ALL_PROFILE_MENU_ITEMS_TEXT)]
+        time.sleep(1)
+        self.element_is_visible(self.locators.ADVANCED_SEARCH).click()
+        self.element_is_visible(self.locators.DEPARTMENTS_COLUMN, 15)
+        return items

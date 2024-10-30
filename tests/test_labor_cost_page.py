@@ -808,3 +808,27 @@ class TestLaborCostPage:
         assert labor_cost_page.get_notification_text() == (f'Трудозатраты по {project_name} на {start}-{end} '
                                                            f'были отклонены. Причина: {rejection_reason}'), \
             'Неверный текст уведомления с причиной отклонения'
+
+    @testit.workItemIds(3138)
+    @testit.displayName("3.1.1.2 Заполнение трудозатрат по задаче со статусом Остановлено.")
+    @pytest.mark.regress
+    @allure.title("id-3138 3.1.1.2 Заполнение трудозатрат по задаче со статусом Остановлено.")
+    def test_fill_labor_costs_for_stopped_task(self, project_with_stopped_task, login, driver):
+        task_name = project_with_stopped_task[2]
+        number_day = project_with_stopped_task[1]
+        labor_cost_page = LaborCostPage(driver)
+        labor_cost_page.go_to_labor_cost_page()
+        labor_cost_page.open_tasks_list()
+        assert labor_cost_page.get_status_of_field(task_name, number_day), 'Ячейка активна для ввода'
+
+    @testit.workItemIds(3139)
+    @testit.displayName("3.1.1.2 Заполнение трудозатрат по задаче со статусом Завершено.")
+    @pytest.mark.regress
+    @allure.title("id-3139 3.1.1.2 Заполнение трудозатрат по задаче со статусом Завершено.")
+    def test_fill_labor_costs_for_completed_task(self, project_with_completed_task, login, driver):
+        task_name = project_with_completed_task[2]
+        number_day = project_with_completed_task[1]
+        labor_cost_page = LaborCostPage(driver)
+        labor_cost_page.go_to_labor_cost_page()
+        labor_cost_page.open_tasks_list()
+        assert labor_cost_page.get_status_of_field(task_name, number_day), 'Ячейка активна для ввода'

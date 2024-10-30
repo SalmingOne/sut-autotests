@@ -157,11 +157,15 @@ class FilialPage(BasePage):
     @testit.step("Получение пользователей назначенных на филиал")
     @allure.step("Получение пользователей назначенных на филиал")
     def get_employees_in_field(self):
-        all_chips = self.elements_are_visible(self.locators.EMPLOYEES_CHIPS)
-        data = []
-        for chips in all_chips:
-            data.append(chips.text)
-        return data
+        try:
+            all_chips = self.elements_are_visible(self.locators.EMPLOYEES_CHIPS)
+            data = []
+            for chips in all_chips:
+                data.append(chips.text)
+            return data
+        except TimeoutException:
+            # Тултип пустого поля
+            return "Сотрудники"
 
     @testit.step("Проверка удаления пользователя из филиала")
     @allure.step("Проверка удаления пользователя из филиала")
@@ -267,3 +271,20 @@ class FilialPage(BasePage):
     def check_warning_text(self, name_field, address):
         assert self.element_is_displayed(self.locators.text_on_page(name_field)), 'Нет сообщения о не уникальности названия'
         assert self.element_is_displayed(self.locators.text_on_page(address)), 'Нет сообщения о не уникальности адреса'
+
+    @allure_testit_step("Удаление сотрудников с филиала")
+    def delete_employs_from_filial(self):
+        all_employs = self.elements_are_visible(self.locators.EMPLOYEES_CHIPS_DELETE_ICON)
+        while len(all_employs) > 0:
+            try:
+                self.elements_are_visible(self.locators.EMPLOYEES_CHIPS_DELETE_ICON)[0].click()
+            except TimeoutException:
+                break
+
+    @allure_testit_step("Получение директора филиал")
+    def get_director_field(self):
+        try:
+            return self.element_is_visible(self.locators.DIRECTOR_FIELD).text
+        except TimeoutException:
+            # Тултип пустого поля
+            return "Директор"
