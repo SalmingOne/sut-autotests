@@ -6,6 +6,7 @@ import testit
 
 from data.data import USER_NAME
 from pages.colleagues_page import ColleaguesPage
+from pages.schedule_page import SchedulePage
 from pages.user_profile_page import UserProfilePage
 
 
@@ -1047,3 +1048,72 @@ class TestUserProfilePage:
                 all_labels, "Есть не все поля в разделе Дополнительная информация")
         assert USER_NAME in user_name, "В заголовке отсутствует ФИО пользователя"
         assert activ_tab_name == 'ИНФОРМАЦИЯ О СОТРУДНИКЕ', "По умолчанию не открыта вкладка Информация о сотруднике"
+
+    @testit.workItemIds(1167)
+    @testit.displayName("Общий шаг. Нажать кнопку Редактировать в личном профиле сотрудника")
+    @pytest.mark.regress
+    @allure.title("id-1167 10.2.3. Общий шаг. Нажать кнопку Редактировать в личном профиле сотрудника")
+    def test_click_edit_button_in_user_profile(self, create_work_user, create_resume_to_autotest_user,
+                                               put_label_to_auto_user, login, driver):
+        colleagues_page = ColleaguesPage(driver)
+        user_profile_page = UserProfilePage(driver)
+        colleagues_page.go_colleagues_page()
+        colleagues_page.search_user(create_work_user)
+        colleagues_page.go_to_watch_the_user_eyes()
+        schedule_page = SchedulePage(driver)
+        schedule_page.go_to_schedule_page()
+        if schedule_page.check_text_on_modal():
+            schedule_page.press_submit_button_in_modal()
+        else:
+            pass
+        time.sleep(4)
+        user_profile_page.go_to_user_profile()
+        time.sleep(2)
+        user_profile_page.press_redact_button()
+        # Информация о сотруднике
+        user_profile_page.check_tab_text_on_user()
+        user_profile_page.check_save_and_break_buttons()
+        activ_tab_name = user_profile_page.get_activ_tab()
+        assert activ_tab_name == 'ИНФОРМАЦИЯ О СОТРУДНИКЕ', "По умолчанию не открыта вкладка Информация о сотруднике"
+        # Общая информация
+        user_profile_page.check_not_clickable_information_bloc_fields()
+        user_profile_page.check_all_job_format()
+        user_profile_page.check_not_clickable_start_work_fields()
+        # Контакты
+        all_input = user_profile_page.get_all_input_values_text()
+        assert 'E-mail' and 'Телефон' and 'Telegram' and 'Discord' in all_input, "Есть не все поля в разделе Контакты"
+        user_profile_page.check_add_contact_button()
+        # Дополнительная информация
+        user_profile_page.check_family_status()
+        all_labels = user_profile_page.get_all_labels_text()
+        assert ('Семейное положение' and 'Дети' and 'Дата рождения' and 'Интересные факты о себе' and 'Хобби' in
+                all_labels, "Есть не все поля в разделе Дополнительная информация")
+        # Образование
+        user_profile_page.go_to_education_tab()
+        user_profile_page.check_add_icon()
+        # Сертификаты
+        user_profile_page.go_to_certificate_tab()
+        user_profile_page.check_add_icon()
+        # Опыт работы
+        user_profile_page.go_to_experience_tab()
+        user_profile_page.check_add_icon()
+        # Заметки
+        user_profile_page.go_to_colleague_profile()
+        user_profile_page.check_wisivig()
+        user_profile_page.check_submit_button()
+        # Резюме
+        user_profile_page.go_to_resume_tab()
+        user_profile_page.check_resume_tab_column()
+        user_profile_page.check_resume_kebab_menu()
+        user_profile_page.check_create_resume_button()
+        # График работы
+        user_profile_page.go_to_schedule_tab()
+        before_break = user_profile_page.get_text_on_chips(0)
+        after_break = user_profile_page.get_text_on_chips(1)
+        assert [before_break, after_break] == ['09:00 - 13:00', '14:00 - 18:00'], "По умолчанию график не с 09 до 18"
+        user_profile_page.check_hours_in_day_fields()
+        # Контакты
+        user_profile_page.go_to_labels_tab()
+        assert user_profile_page.get_all_labels_text() == ['Дата создания', 'ФИО автора', 'Проект',
+                                                           'Почему вы решили выдать такую метку?'], \
+            "В метке есть не все поля(заголовки)"

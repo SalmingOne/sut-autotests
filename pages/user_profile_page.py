@@ -1047,6 +1047,12 @@ class UserProfilePage(BasePage):
         assert tab_titles == ['ИНФОРМАЦИЯ О СОТРУДНИКЕ', 'ГРАФИК РАБОТЫ', 'ОБРАЗОВАНИЕ', 'СЕРТИФИКАТЫ', 'ОПЫТ РАБОТЫ',
                               'ЗАМЕТКИ', 'МЕТКИ', 'РЕЗЮМЕ', 'АКТИВНОСТЬ', 'ПОДРАЗДЕЛЕНИЯ И ДОЛЖНОСТИ', 'HR-КАРТОЧКА']
 
+    @allure_testit_step('Проверка наличия вкладок в профиле пользователя глазами пользователя')
+    def check_tab_text_on_user(self):
+        tab_titles = [element.text for element in self.elements_are_visible(self.locators.TAB_TITLES)]
+        assert tab_titles == ['ИНФОРМАЦИЯ О СОТРУДНИКЕ', 'ГРАФИК РАБОТЫ', 'ОБРАЗОВАНИЕ', 'СЕРТИФИКАТЫ', 'ОПЫТ РАБОТЫ',
+                              'ЗАМЕТКИ', 'МЕТКИ', 'РЕЗЮМЕ', 'HR-КАРТОЧКА']
+
     @allure_testit_step('Получение названия активной вкладки')
     def get_activ_tab(self):
         return self.element_is_visible(self.locators.ACTIV_TAB).text
@@ -1069,3 +1075,92 @@ class UserProfilePage(BasePage):
         items = [element.text for element in self.elements_are_visible(self.locators.ALL_PROFILE_MENU_ITEMS_TEXT)]
         self.element_is_visible(self.locators.MY_PROFILE_MENU_ITEM).click()
         return items
+
+    @allure_testit_step('Проверка наличия кнопок сохранить и отмены')
+    def check_save_and_break_buttons(self):
+        assert self.element_is_displayed(self.locators.SAVE_BUTTON)
+        assert self.element_is_displayed(self.locators.BREAK_BUTTON)
+
+    @allure_testit_step('Проверка некликабельности полей в разделе Общие данные')
+    def check_not_clickable_information_bloc_fields(self):
+        assert not self.element_is_clickable(self.locators.POST_FIELD, 1), "Поле должность можно редактировать"
+        assert not self.element_is_clickable(self.locators.DEPARTMENT_FIELD, 1), "Поле подразделение можно редактировать"
+        assert not self.element_is_clickable(self.locators.HEAD_FIELD, 1), "Поле Непосредственный руководитель можно редактировать"
+        assert not self.element_is_clickable(self.locators.STATUS_FIELD, 1), "Поле статус можно редактировать"
+
+    @allure_testit_step('Проверка формата работы')
+    def check_all_job_format(self):
+        chips_text = [element.text for element in self.elements_are_visible(self.locators.JOB_FORMAT_CHIPS)]
+        self.element_is_visible(self.locators.JOB_FORMAT_FIELD).click()
+        dropdown_text = [element.text for element in self.elements_are_visible(self.locators.LI_MENU_ITEM)]
+        dropdown_text.extend(chips_text)
+        self.action_esc()
+        assert sorted(dropdown_text) == ['Активен', 'В декрете', 'Внештатник', 'Неактивен', 'Удалённо',
+                                         'Частичная занятость'], "В дропдауне есть не все форматы работы"
+
+    @allure_testit_step('Проверка некликабельности полей в Прием в компанию и Вступление в должность')
+    def check_not_clickable_start_work_fields(self):
+        assert self.elements_are_visible(self.locators.START_WORK_ON_USER)[0].get_attribute('disabled'), \
+            "Поле прием в компанию можно редактировать"
+        assert self.elements_are_visible(self.locators.START_WORK_ON_USER)[1].get_attribute('disabled'), \
+            "Поле вступление в должность можно редактировать"
+
+    @allure_testit_step('Проверка присутствия кнопки Добавить контакт')
+    def check_add_contact_button(self):
+        assert self.element_is_displayed(self.locators.ADD_BUTTON), "Кнопка добавить контакт отсутствует"
+
+    @allure_testit_step('Проверка дропдауна семейное положение')
+    def check_family_status(self):
+        self.element_is_visible(self.locators.FAMILY_STATUS).click()
+        dropdown_text = [element.text for element in self.elements_are_visible(self.locators.LI_MENU_ITEM)]
+        self.action_esc()
+        assert dropdown_text == ['Не в браке', 'В браке'], "Есть не все варианты семейного положения"
+
+    @allure_testit_step('Проверка наличия иконки Добавить')
+    def check_add_icon(self):
+        assert self.element_is_displayed(self.locators.ADD_ICON), "Отсутствует иконка Добавить"
+
+    @allure_testit_step('Проверка наличия визивига')
+    def check_wisivig(self):
+        assert self.element_is_displayed(self.locators.TEXT_FIELD_WITH_VISIVIG), "Нет визивига"
+
+    @allure_testit_step('Проверка наличия кнопки сохранить')
+    def check_submit_button(self):
+        assert self.element_is_displayed(self.locators.SUBMIT_BUTTON), "Нет кнопки Сохранить"
+
+    @allure_testit_step('Проверка заголовков таблицы вкладки Резюме')
+    def check_resume_tab_column(self):
+        column_text = [element.text for element in self.elements_are_visible(self.locators.RESUME_TAB_COLUMN)]
+        assert column_text == ['Название', 'Дата создания', 'Дата редактирования', 'Действия'], \
+            "В таблице есть не все заголовки"
+
+    @allure_testit_step('Проверка элементов кебаб меню вкладки Резюме')
+    def check_resume_kebab_menu(self):
+        self.elements_are_visible(self.locators.KEBAB_MENU)[0].click()
+        assert [element.text for element in self.elements_are_visible(self.locators.KEBAB_MENU_ITEM)] == [
+            'Редактирование', 'Просмотр резюме', 'Копировать', 'Удалить'], "Есть не все элементы кебаб меню"
+        self.action_esc()
+
+    @allure_testit_step('Проверка наличия кнопки создать резюме')
+    def check_create_resume_button(self):
+        assert self.element_is_displayed(self.locators.CREATE_RESUME_BUTTON), "Нет кнопки создать резюме"
+
+    @allure_testit_step('Переход на вкладку График работы')
+    def go_to_schedule_tab(self):
+        self.element_is_visible(self.locators.SCHEDULE_TAB_BUTTON).click()
+
+    @allure_testit_step('Переход на вкладку Метки')
+    def go_to_labels_tab(self):
+        self.element_is_visible(self.locators.LABELS_TAB_BUTTON).click()
+
+    @allure_testit_step('Получение текста с чипсы рабочего дня')
+    def get_text_on_chips(self, number_element):
+        return self.elements_are_visible(self.locators.ALL_CHIPS_BUTTON)[number_element].text
+
+    @allure_testit_step('Проверка полей с рабочими часами')
+    def check_hours_in_day_fields(self):
+        assert len(self.elements_are_visible(self.locators.WORK_HOURS_IN_DAY)) == 24, \
+            'Не над каждым днем отображаются рабочие часы'
+
+
+

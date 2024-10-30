@@ -5,16 +5,19 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 from data.data import LOGIN, PASSWORD, USER_ID, USER_NAME, PROJECT_NAME
 from data.models.create_project_model import CreateProject
+from data.models.schedule_model import SimpleDayModel
 from data.urls import Urls
 from endpoints.affiliates_endpoint import AffiliatesEndpoint
 from endpoints.assignments_endpoint import AssignmentEndpoint
 from endpoints.departmens_endpoint import DepartmentsEndpoint
+from endpoints.labels_endpoint import LabelsEndpoint
 from endpoints.labor_reports_endpoint import LaborReportEndpoint
 from endpoints.logs_endpoint import LogsEndpoint
 from endpoints.posts_endpoint import PostsEndpoint
 from endpoints.project_endpoint import ProjectEndpoint
 from endpoints.project_roles_endpoint import ProjectRolesEndpoint
 from endpoints.resume_endpoint import ResumeEndpoint
+from endpoints.schedule_endpoint import ScheduleEndpoint
 from endpoints.search_profile_endpoint import SearchProfileEndpoint
 from endpoints.skills_endpoint import SkillsEndpoint
 from endpoints.system_roles_endpoint import SystemRolesEndpoint
@@ -873,6 +876,27 @@ def create_second_resume():
     yield payload['title']
     resume_endpoint.delete_resume_api(str(response.json()['id']))
 
+
+@pytest.fixture()
+def create_resume_to_autotest_user():
+    resume_endpoint = ResumeEndpoint()
+    user_endpoint = UserEndpoint()
+    user_id = user_endpoint.get_user_id_by_email('auto_testt@mail.rruu')
+    payload = dict(
+        userId=user_id,
+        title='резюме для авто',
+        version=1,
+        data=dict(
+            fullName='Авто Авто',
+            post='Автоматизатор',
+            experienceDate=BasePage(driver=None).get_day_before_m_d_y(2)
+        )
+    )
+    response = resume_endpoint.create_resume_api(json=payload)
+    yield payload['title']
+    resume_endpoint.delete_resume_api(str(response.json()['id']))
+
+
 @pytest.fixture()
 def create_holiday():
     calendar_endpoint = CalendarEndpoint()
@@ -942,3 +966,25 @@ def create_filial_with_director():
     print(response.status_code)
     yield payload['name']
     filial_endpoint.delete_filial_if_it_exist('Филиал с директором') #Иначе пропадает пользователь
+
+
+@pytest.fixture()
+def put_label_to_auto_user(project_with_two_resources):
+    user_endpoint = UserEndpoint()
+    labels_endpoint = LabelsEndpoint()
+    auto_user_id = user_endpoint.get_user_id_by_email('auto_testt@mail.rruu')
+    auto_user_profile_id = user_endpoint.get_user_profile_id_by_user_id(str(auto_user_id))
+    user_profile_id = user_endpoint.get_user_profile_id_by_user_id(str(USER_ID))
+    payload = dict(
+        authorProfileId=user_profile_id,
+        receiverProfileId=auto_user_profile_id,
+        labels=[
+            dict(
+                mark=True,
+                comment='Хорошо работает',
+                projectId=project_with_two_resources['id']
+            )
+        ]
+    )
+    labels_endpoint.put_label_api(json=payload)
+

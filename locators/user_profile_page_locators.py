@@ -6,16 +6,24 @@ class UserProfilePageLocators:
     PROFILE_BUTTON = (By.CSS_SELECTOR, 'button[id="profile"]')
     MY_PROFILE_MENU_ITEM = (By.XPATH, '//a[text()="Мой профиль"]')
     ALL_PROFILE_MENU_ITEMS_TEXT = (By.XPATH, '//li[@role="menuitem"]//a')
+    # информация о сотруднике
     MY_PROFILE_TAB_BUTTON = (By.XPATH, '//div[text()="Информация о сотруднике"]/..')
     PROFILE_TITLE = (By.CSS_SELECTOR, 'h6[class^="MuiTypography-root MuiTypography-subtitle1"]')
     AVATAR_INPUT = (By.XPATH, '//input[@accept="image/jpg, image/jpeg, image/png, image/bmp, image/x-icon, image/avif"]')
     AVATAR_CHECK = (By.XPATH, '//input[@type="file"]//following-sibling::div')
     HEADER_POST = (By.CSS_SELECTOR, 'p[class^="MuiTypography-root MuiTypography-body2"]')
+    POST_FIELD = (By.CSS_SELECTOR, 'input[placeholder="Выберите должность"]')
+    DEPARTMENT_FIELD = (By.CSS_SELECTOR, 'input[placeholder="Выберите подразделение"]')
+    HEAD_FIELD = (By.CSS_SELECTOR, 'input[placeholder="Выберите непосредственного руководителя"]')
+    STATUS_FIELD = (By.XPATH, '//div[@name="status"]//input')
+    JOB_FORMAT_FIELD = (By.XPATH, '//div[@name="jobFormat"]//input')
+    JOB_FORMAT_CHIPS = (By.XPATH, '//div[@name="jobFormat"]//span[contains(@class,"MuiChip-label")]')
     TAB_TITLES = (By.XPATH, '//button[@role="tab"]//div')
     ACTIV_TAB = (By.XPATH, '//button[@aria-selected="true"]//div')
     LABELS = (By.CSS_SELECTOR, 'label[data-shrink="true"]')
     ALL_INPUT_VALUES = (By.CSS_SELECTOR, 'input[value]')
     START_WORK = (By.XPATH, '//label[text()="Прием в компанию"]/..//input')
+    START_WORK_ON_USER = (By.CSS_SELECTOR, 'input[placeholder="Не указано"]')
     CHILDREN_TEXT_AREA = (By.CSS_SELECTOR, 'textarea[name="children"]')
     FAMILY_STATUS = (By.XPATH, '//div[@name="maritalStatus"]//input')
     NOT_SELECTED_LI = (By.CSS_SELECTOR, 'li[role="option"][aria-selected="false"]')
@@ -86,6 +94,7 @@ class UserProfilePageLocators:
     # Вкладка Резюме
     RESUME_TAB_BUTTON = (By.XPATH, '//div[text()="Резюме"]/..')
     CREATE_RESUME_BUTTON = (By.XPATH, '//a[text()="Создать"]')
+    RESUME_TAB_COLUMN = (By.CSS_SELECTOR, 'span[class="ag-header-cell-text"]')
     START_WORK_IN_RESUME = (By.XPATH, '//p[@id="experienceDate"]/..//input')
     READY_TO_WORK_DROPDOWN = (By.CSS_SELECTOR, 'input[role="combobox"]')
     RESUME_TITLE_FIELD = (By.CSS_SELECTOR, 'input[name="title"]')
@@ -142,3 +151,9 @@ class UserProfilePageLocators:
 
     def check_text(self, text):
         return (By.XPATH, f'//*[text()="{text}"]')
+    # Вкладка Графика работы
+    SCHEDULE_TAB_BUTTON = (By.XPATH, '//div[text()="График работы"]/..')
+    WORK_HOURS_IN_DAY = (By.XPATH, '//p[contains(@class,"MuiTypography-root MuiTypography-body1")]')
+    ALL_CHIPS_BUTTON = (By.CSS_SELECTOR, 'div[aria-label="Нажмите, чтобы редактировать рабочие часы"]')
+    # Вкладка Метки
+    LABELS_TAB_BUTTON = (By.XPATH, '//div[text()="Метки"]/..')
