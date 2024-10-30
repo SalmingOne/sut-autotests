@@ -116,3 +116,8 @@ class UserEndpoint:
         for user in self.response_json:
             if user['id'] == user_id:
                 return user["createdAt"], user["updatedAt"]
+
+    @allure.step("Получаем id профиля пользователя по id")
+    def get_user_profile_id_by_user_id(self, user_id):
+        response = self.get_user_by_id(user_id)
+        return response.json()['profile']['id']
