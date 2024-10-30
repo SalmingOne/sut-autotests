@@ -720,7 +720,9 @@ def project_with_assignment():
                    )
     assignment_endpoint = AssignmentEndpoint()
     assignment_endpoint.create_assignment_api(json=payload)
-    yield
+    number_day = BasePage(driver=None).get_day_after_ymd(0).split('-')[2]
+    number_day = number_day if number_day != '1' else BasePage(driver=None).get_day_after(1).split('.')[0]
+    yield response.json(), number_day
     project_endpoint.delete_project_api(str(response.json()['id']))
 
 

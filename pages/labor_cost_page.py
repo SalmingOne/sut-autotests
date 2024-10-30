@@ -1305,3 +1305,13 @@ class LaborCostPage(BasePage):
     @allure_testit_step("Открыть список задачи")
     def open_tasks_list(self):
         self.elements_are_visible(self.locators.OPEN_TASKS_LIST_BUTTON)[0].click()
+
+    @allure_testit_step("Получить цвет ячейки")
+    def get_cell_color(self, project_name, number_day):
+        return self.element_is_visible(self.locators.get_day_by_project(project_name, number_day)).find_element(
+            By.XPATH, '..').value_of_css_property(
+            'background-color')
+
+    @allure_testit_step("Отмена редактирования таблицы трудозатрат")
+    def cancel_editing_labor_cost(self):
+        self.element_is_visible(self.locators.DISABLE_BUTTON).click()

@@ -873,3 +873,22 @@ class TestLaborCostPage:
         labor_cost_page = LaborCostPage(driver)
         labor_cost_page.go_to_labor_cost_page()
         assert labor_cost_page.get_day_tooltip_text_in_project(project_name, number_day) == f"{hours} + {hours}\nРабота на проекте: {reason}\nПричина переработки: {reason}", 'Неверный текст тултипа с причинами списаний'
+
+    @testit.workItemIds(274)
+    @testit.displayName('3.1.1.2 Отмена заполнение таблицы "Отчет трудозатрат".')
+    @pytest.mark.regress
+    @allure.title('id-274 3.1.1.2 Отмена заполнение таблицы "Отчет трудозатрат".')
+    def test_cancel_labor_cost_fill(self, project_with_assignment, login, driver):
+        project_name = project_with_assignment[0]['name']
+        number_day = project_with_assignment[1]
+        labor_cost_page = LaborCostPage(driver)
+        labor_cost_page.input_labor_reason_by_project(project_name, number_day, 1)
+        value_before_canceling = labor_cost_page.get_project_day_cell_contents(project_name, number_day)
+        first_color = labor_cost_page.get_cell_color(project_name,number_day)
+        labor_cost_page.cancel_editing_labor_cost()
+        value_after_canceling = labor_cost_page.get_project_day_cell_contents(project_name, number_day)
+        second_color = labor_cost_page.get_cell_color(project_name,number_day)
+        assert first_color  == 'rgba(255, 251, 233, 1)', 'Цвет ячейки не желтый'
+        assert second_color == 'rgba(0, 0, 0, 0)', 'Цвет ячейки не белый'
+        assert value_before_canceling == '1', "Введенное значение не отображается в ячейке"
+        assert value_after_canceling == '', "В ячейке сохранены изменения"
