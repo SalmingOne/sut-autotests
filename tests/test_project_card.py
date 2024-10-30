@@ -7,6 +7,7 @@ import testit
 
 from data.data import PROJECT_NAME
 from endpoints.project_roles_endpoint import ProjectRolesEndpoint
+from endpoints.busy_percentages_endpoint import BusyPercentagesEndpoint
 from endpoints.users_endpoint import UserEndpoint
 from pages.all_project_page import AllProjectPage
 from pages.colleagues_page import ColleaguesPage
@@ -682,4 +683,34 @@ class TestProjectCard:
         assert table_before != table_after, "Внесенные изменения не отображаются"
         project_card_page.go_to_description_tab()
         project_card_page.check_abort_add_resource_window()
-            
+
+    @testit.workItemIds(433)
+    @testit.displayName('2.1.1.1. Добавление процента занятости для ресурса')
+    @pytest.mark.regress
+    @allure.title('id-433 2.1.1.1. Добавление процента занятости для ресурса')
+    def test_adding_busy_percentage_for_resource(self, simple_project, project_with_planned_resources, login, driver):
+        start_date = str(project_with_planned_resources[0])
+        end_date = str(project_with_planned_resources[1])
+        all_project_page = AllProjectPage(driver)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(simple_project['name'])
+        project_card_page = ProjectCardPage(driver)
+        project_card_page.go_to_resource_plan_tab()
+        project_card_page.change_radiobutton()
+        project_card_page.press_add_employment_button()
+        project_card_page.set_period_and_busy(start_date, end_date, 4)
+        project_card_page.press_save_in_drover()
+        # Получаем отображение таблицы "Ресурсный план" до сохранения
+        table_before = project_card_page.displaying_table_resource_plan()
+        # Проверяем период отображения и процент привлечения
+        percentage_ui = project_card_page.check_period_and_busy(start_date, table_before)
+        project_card_page.press_submit_button()
+        # Получаем отображение таблицы "Ресурсный план" после сохранения
+        table_after = project_card_page.displaying_table_resource_plan()
+        # Получаем busy_percentages после сохранения
+        busy_percentages_endpoint = BusyPercentagesEndpoint()
+        busy_percentages_api = busy_percentages_endpoint.get_busy_percentages_api(simple_project['id'])
+        percentage_api = set([entry['percentage'] for entry in busy_percentages_api])
+        assert int(percentage_ui[:-1]) in percentage_api, "Внесенные изменения не сохранились в БД"
+        assert table_before == table_after, "Данные в таблице не сохранились"
+        
