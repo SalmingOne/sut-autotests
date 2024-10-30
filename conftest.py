@@ -26,6 +26,7 @@ from endpoints.system_roles_endpoint import SystemRolesEndpoint
 from endpoints.users_endpoint import UserEndpoint
 from endpoints.calendar_endpoint import CalendarEndpoint
 from endpoints.variables_endpoint import VariablesEndpoint
+from endpoints.busy_percentages_endpoint import BusyPercentagesEndpoint
 from pages.authorization_page import AuthorizationPage
 from pages.base_page import BasePage
 from api_methods.system_settings import SystemSettingsApi
@@ -1017,27 +1018,6 @@ def create_second_resume():
     yield payload['title']
     resume_endpoint.delete_resume_api(str(response.json()['id']))
 
-
-@pytest.fixture()
-def create_resume_to_autotest_user():
-    resume_endpoint = ResumeEndpoint()
-    user_endpoint = UserEndpoint()
-    user_id = user_endpoint.get_user_id_by_email('auto_testt@mail.rruu')
-    payload = dict(
-        userId=user_id,
-        title='резюме для авто',
-        version=1,
-        data=dict(
-            fullName='Авто Авто',
-            post='Автоматизатор',
-            experienceDate=BasePage(driver=None).get_day_before_m_d_y(2)
-        )
-    )
-    response = resume_endpoint.create_resume_api(json=payload)
-    yield payload['title']
-    resume_endpoint.delete_resume_api(str(response.json()['id']))
-
-
 @pytest.fixture()
 def create_holiday():
     calendar_endpoint = CalendarEndpoint()
@@ -1107,6 +1087,43 @@ def create_filial_with_director():
     print(response.status_code)
     yield payload['name']
     filial_endpoint.delete_filial_if_it_exist('Филиал с директором') #Иначе пропадает пользователь
+
+@pytest.fixture()
+def project_with_planned_resources():
+    project_endpoint = ProjectEndpoint()
+    project_endpoint.delete_project_if_it_exist('PlannedResourcesProject')
+    start_date, end_date = [day for day in BasePage(driver=None).get_full_work_week()]
+    start_date_pr = start_date.strftime("%m.%d.%Y")
+    end_date_pr = end_date.strftime("%m.%d.%Y")
+    start_date_dr = start_date.strftime("%d.%m.%Y")
+    end_date_dr = end_date.strftime("%d.%m.%Y")
+    payload = CreateProject(
+        code='PRP',
+        name='PlannedResourcesProject',
+        startDate=start_date_pr,
+        endDate=end_date_pr,
+        resources=[dict(
+            projectRoleId=1,
+            userId=USER_ID,
+            isProjectManager=True)
+        ]
+        ).model_dump()
+    res = project_endpoint.create_project_api(json=payload)
+    project_id = res.json()["id"]
+    slot_id = res.json()["slots"][0]['id']
+    payload = [dict(
+        hours = 4,
+        slotId = slot_id,
+        projectId = project_id,
+        projectRoleId = 1,
+        userId = USER_ID,
+        startOf = start_date_pr,
+        endOf = end_date_pr
+    )]
+    busy_percentages_endpoint = BusyPercentagesEndpoint()
+    busy_percentages_endpoint.create_busy_percentages_api(json=payload)
+    yield start_date_dr, end_date_dr, res.json()
+    project_endpoint.delete_project_api(str(res.json()['id']))
 
 
 @pytest.fixture()

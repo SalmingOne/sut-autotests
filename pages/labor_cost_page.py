@@ -1267,16 +1267,34 @@ class LaborCostPage(BasePage):
         self.element_is_visible(self.locators.REJECTED_REASON_CHECKBOX).click()
         self.action_esc()
 
+    @allure_testit_step('Выбор чекбокса "Отображать неактивные проекты"')
+    def click_not_active_project_checkbox(self):
+        self.element_is_visible(self.locators.FILTER_BUTTON).click()
+        self.element_is_visible(self.locators.NOT_ACTIV_PROJECT_CHECKBOX).click()
+        self.action_esc()
+
     @allure_testit_step('Получение текста тултипа дня проекта')
     def get_day_tooltip_text_in_project(self, project_name, number_day):
         self.action_move_to_element(self.element_is_visible(self.locators.get_day_by_project(project_name, number_day)))
         tooltip_text = self.element_is_visible(self.locators.TOOLTIP).text
         return tooltip_text
 
-    @allure_testit_step('Получение информации о возможности ввода в ячейку')
-    def get_status_of_field(self, task_name, number_day):
+    @allure_testit_step('Проверка отображения тултипа')
+    def tooltip_is_displayed(self, project_name, number_day):
+        self.action_move_to_element(self.element_is_visible(self.locators.get_day_by_project(project_name, number_day)))
+        return self.element_is_displayed(self.locators.TOOLTIP)
+
+    @allure_testit_step('Проверка отклонения трудозатрат')
+    def field_is_rejected(self, task_name, number_day):
+        return 'rejected' in self.element_is_visible(self.locators.get_day_by_project(task_name, number_day)).find_element(By.XPATH, "..").get_attribute("class")
+
+    @allure_testit_step('Получение информации о возможности ввода в ячейку задачи')
+    def get_status_of_field_task(self, task_name, number_day):
         return self.element_is_visible(self.locators.get_day_by_task(task_name, number_day)).get_attribute('disabled')
 
+    @allure_testit_step('Получение информации о возможности ввода в ячейку проекта')
+    def get_status_of_field_project(self, project_name, number_day):
+        return self.element_is_visible(self.locators.get_day_by_project(project_name, number_day)).get_attribute('disabled')
 
     @allure_testit_step('Получение текста уведомления')
     def get_notification_text(self, notification_id = 0):

@@ -324,7 +324,7 @@ class ProjectCardPage(BasePage):
     @testit.step("Переключение радиобаттона на значение 'Проценты'")
     @allure.step("Переключение радиобаттона на значение 'Проценты'")
     def change_radiobutton(self):
-        self.element_is_visible(self.locators.CHANGE_RADIOGROUP).click()
+        self.element_is_visible(self.locators.CHANGE_RADIOGROUP, 15).click()
 
 
     @testit.step("Нажатие на кнопку добавления процента занятости")
@@ -591,7 +591,7 @@ class ProjectCardPage(BasePage):
     @testit.step("Нажатие кнопки Сохранить")
     @allure.step("Нажатие кнопки Сохранить")
     def press_submit_button(self):
-        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+        self.element_is_visible(self.locators.SAVE_BUTTON).click()
 
     @testit.step("Нажатие кнопки Отмена")
     @allure.step("Нажатие кнопки Отмена")
@@ -875,7 +875,28 @@ class ProjectCardPage(BasePage):
         (self.elements_are_visible(self.locators.DROVER_MENU_ITEM))[8].click()
         self.element_is_visible(self.locators.DROVER_START_DATE).send_keys(self.get_day_after(1))
         self.element_is_visible(self.locators.DROVER_END_DATE).send_keys(self.get_day_after(5))
+    
+    @testit.step("Внесение периода привлечения занятости c заданными параметрами")
+    @allure.step("Внесение периода привлечения занятости c заданными параметрами")
+    def set_period_and_busy(self, start_date, end_date, period=8):
+        # period это порядковый номер элемента, в зависимости от выбора радиобаттона
+        # 8 - это 100% или 8 часов если не переключен радиобаттон (4 это 50% или 4 часа)
+        self.element_is_visible(self.locators.DROVER_MENU, 10).click()
+        (self.elements_are_visible(self.locators.DROVER_MENU_ITEM, 10))[period].click()
+        time.sleep(1)
+        self.element_is_visible(self.locators.DROVER_START_DATE).send_keys(Keys.CONTROL + "a")
+        self.element_is_visible(self.locators.DROVER_START_DATE).send_keys(start_date)
+        time.sleep(1)
+        self.element_is_visible(self.locators.DROVER_END_DATE).send_keys(Keys.CONTROL + "a")
+        self.element_is_visible(self.locators.DROVER_END_DATE).send_keys(end_date)
 
+    @testit.step("Проверка периода привлечения с выбранным процентом привлечения")
+    @allure.step("Проверка периода привлечения с выбранным процентом привлечения")
+    def check_period_and_busy(self, start_date, table_before):
+        number_week = self.get_week_of_quarter(start_date)
+        assert table_before[number_week] == '50%', 'Период или занятость не соответствует'
+        return table_before[number_week]
+    
     @testit.step("Нажатие на поле 'Дата начала' в дровере")
     @allure.step("Нажатие на поле 'Дата начала' в дровере")
     def press_start_date_in_drover(self):
