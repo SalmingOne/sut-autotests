@@ -34,7 +34,7 @@ class FilialPage(BasePage):
         self.element_is_visible(locator).send_keys(bed_value)
         self.element_is_visible(self.locators.EMAIL_FIELD).click()
         error_text = self.element_is_visible(self.locators.MUI_ERROR).text
-        self.element_is_visible(locator).send_keys(Keys.CONTROL + 'a')
+        self.action_double_click(self.element_is_visible(locator))
         self.element_is_visible(locator).send_keys('1')
         self.element_is_visible(self.locators.EMAIL_FIELD).click()
         assert error_text == 'Максимальное количество символов: 255', \
@@ -130,7 +130,7 @@ class FilialPage(BasePage):
     def change_filial_address(self, name, new_address):
         self.element_is_visible(self.locators.kebab_by_filial_name(name)).click()
         self.element_is_visible(self.locators.REDACT_BUTTON).click()
-        self.element_is_visible(self.locators.ADDRESS_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.action_triple_click(self.element_is_visible(self.locators.ADDRESS_FIELD))
         self.element_is_visible(self.locators.ADDRESS_FIELD).send_keys(new_address)
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
 
@@ -255,12 +255,12 @@ class FilialPage(BasePage):
 
     @allure_testit_step("Очистка обязательных полей")
     def clearing_required_fields(self):
-        self.element_is_visible(self.locators.NAME_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.action_triple_click(self.element_is_visible(self.locators.NAME_FIELD))
         self.element_is_visible(self.locators.NAME_FIELD).send_keys(Keys.BACKSPACE)
 
     @allure_testit_step("Изменение имени филиала")
     def change_filial_name(self, name):
-        self.element_is_visible(self.locators.NAME_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.action_triple_click(self.element_is_visible(self.locators.NAME_FIELD))
         self.element_is_visible(self.locators.NAME_FIELD).send_keys(name)
 
     @allure_testit_step("Нажатие кнопки сохранить")

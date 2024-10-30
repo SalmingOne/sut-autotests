@@ -25,7 +25,7 @@ class LoggingPage(BasePage):
         self.element_is_visible(self.locators.set_choice(status)).click()
         self.element_is_visible(self.locators.AUDIT_LEVEL_FIELD).click()
         self.element_is_visible(self.locators.set_choice(level)).click()
-        self.element_is_visible(self.locators.DEPTH_DATE_QUANTITY_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.action_double_click(self.element_is_visible(self.locators.DEPTH_DATE_QUANTITY_FIELD))
         self.element_is_visible(self.locators.DEPTH_DATE_QUANTITY_FIELD).send_keys('1')
         self.element_is_visible(self.locators.DEPTH_DATE_TYPE_FIELD).click()
         self.element_is_visible(self.locators.set_choice(depth)).click()
@@ -124,7 +124,7 @@ class LoggingPage(BasePage):
         audit_status_field_value = self.element_is_visible(self.locators.AUDIT_STATUS_FIELD).get_attribute('value')
         audit_level_field_value =  self.element_is_visible(self.locators.AUDIT_LEVEL_FIELD).get_attribute('value')
         audit_depth_field_value = self.element_is_visible(self.locators.DEPTH_DATE_TYPE_FIELD).get_attribute('value')
-        audit_depth_quantity_value = self.element_is_visible(self.locators.DEPTH_DATE_QUANTITY_FIELD).get_attribute('value').lstrip('0')
+        audit_depth_quantity_value = self.element_is_visible(self.locators.DEPTH_DATE_QUANTITY_FIELD).get_attribute('value')
         return audit_status_field_value, audit_level_field_value, audit_depth_quantity_value, audit_depth_field_value
 
     @testit.step("Изменение настроек логирования с отменой")
@@ -134,7 +134,7 @@ class LoggingPage(BasePage):
         self.element_is_visible(self.locators.set_choice(status)).click()
         self.element_is_visible(self.locators.AUDIT_LEVEL_FIELD).click()
         self.element_is_visible(self.locators.set_choice(level)).click()
-        self.element_is_visible(self.locators.DEPTH_DATE_QUANTITY_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.action_double_click(self.element_is_visible(self.locators.DEPTH_DATE_QUANTITY_FIELD))
         self.element_is_visible(self.locators.DEPTH_DATE_QUANTITY_FIELD).send_keys('1')
         self.element_is_visible(self.locators.DEPTH_DATE_TYPE_FIELD).click()
         self.element_is_visible(self.locators.set_choice(depth)).click()
@@ -142,6 +142,6 @@ class LoggingPage(BasePage):
         audit_level_field_value = self.element_is_visible(self.locators.AUDIT_LEVEL_FIELD).get_attribute('value')
         audit_depth_field_value = self.element_is_visible(self.locators.DEPTH_DATE_TYPE_FIELD).get_attribute('value')
         audit_depth_quantity_value = self.element_is_visible(self.locators.DEPTH_DATE_QUANTITY_FIELD).get_attribute(
-            'value').lstrip('0')
+            'value')
         self.element_is_visible(self.locators.ABORT_BUTTON).click()
         return audit_status_field_value, audit_level_field_value, audit_depth_quantity_value, audit_depth_field_value
