@@ -1267,6 +1267,12 @@ class LaborCostPage(BasePage):
         self.element_is_visible(self.locators.REJECTED_REASON_CHECKBOX).click()
         self.action_esc()
 
+    @allure_testit_step('Выбор чекбокса "Отображать неактивные проекты"')
+    def click_not_active_project_checkbox(self):
+        self.element_is_visible(self.locators.FILTER_BUTTON).click()
+        self.element_is_visible(self.locators.NOT_ACTIV_PROJECT_CHECKBOX).click()
+        self.action_esc()
+
     @allure_testit_step('Получение текста тултипа дня проекта')
     def get_day_tooltip_text_in_project(self, project_name, number_day):
         self.action_move_to_element(self.element_is_visible(self.locators.get_day_by_project(project_name, number_day)))
