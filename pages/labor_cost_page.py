@@ -1308,9 +1308,8 @@ class LaborCostPage(BasePage):
 
     @allure_testit_step("Получить цвет ячейки")
     def get_cell_color(self, project_name, number_day):
-        return self.element_is_visible(self.locators.get_day_by_project(project_name, number_day)).find_element(
-            By.XPATH, '..').value_of_css_property(
-            'background-color')
+        return (self.element_is_visible(self.locators.check_day_color_by_project(project_name, number_day)).
+                value_of_css_property('background-color'))
 
     @allure_testit_step("Отмена редактирования таблицы трудозатрат")
     def cancel_editing_labor_cost(self):
