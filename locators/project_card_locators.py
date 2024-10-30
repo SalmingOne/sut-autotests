@@ -77,8 +77,12 @@ class ProjectCardLocators:
     DROVER_END_DATE = (By.XPATH, '//label[text()="Дата окончания"]//following-sibling::div/input')
     DROVER_HELP_TEXT_END_DATE = (By.XPATH, '//label[text()="Дата окончания"]//following-sibling::p')
     DROVER_DROPDOWN_CALENDAR = (By.CSS_SELECTOR, '.MuiPickersPopper-paper')
+    def busy(self, start_date):
+        return (By.XPATH, f'//div[@col-id="{start_date}" and contains(@class, "ag-cell-value")]')
     def buttons_day_calendar(self, text):
         return (By.XPATH, f'//button[contains(@class,"MuiPickersDay-root") and text()="{text}"]')
+    def text_on_cell(self, text):
+        return (By.XPATH, f'//div[text()="{text}"]/..')
 
     # Локаторы вкладки Ход выполнения
     PROGRESS_TAB = (By.XPATH, '//button[text()="Ход выполнения"]')

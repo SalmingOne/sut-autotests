@@ -7,6 +7,7 @@ from selenium.common import StaleElementReferenceException, TimeoutException
 from selenium.webdriver import Keys
 import locale
 locale.setlocale(locale.LC_ALL, 'ru_RU')
+from utils.concat_testit_allure_step import allure_testit_step
 
 from locators.project_card_locators import ProjectCardLocators
 from pages.base_page import BasePage
@@ -284,7 +285,7 @@ class ProjectCardPage(BasePage):
     @allure.step("Переход на вкладку Ресурсный план")
     def go_to_resource_plan_tab(self):
         self.element_is_visible(self.locators.RESOURCE_PLAN_TAB).click()
-        self.element_is_present(self.locators.ADD_EMPLOYMENT_BUTTON, 25)
+        self.element_is_present(self.locators.ADD_EMPLOYMENT_BUTTON, 15)
 
     @testit.step("Проверка вкладки Ресурсный план")
     @allure.step("Проверка вкладки Ресурсный план")
@@ -892,10 +893,12 @@ class ProjectCardPage(BasePage):
 
     @testit.step("Проверка периода привлечения с выбранным процентом привлечения")
     @allure.step("Проверка периода привлечения с выбранным процентом привлечения")
-    def check_period_and_busy(self, start_date, table_before):
-        number_week = self.get_week_of_quarter(start_date)
-        assert table_before[number_week] == '50%', 'Период или занятость не соответствует'
-        return table_before[number_week]
+    def check_period_and_busy(self, start_date):
+        date_obj = datetime.strptime(start_date, "%d.%m.%Y")
+        formatted_date = f"resultHours.{date_obj.strftime('%d-%m-%Y')}"
+        busy = self.element_is_visible(self.locators.busy(formatted_date)).text        
+        assert busy == '50%', 'Период или занятость не соответствует'
+        return busy
     
     @testit.step("Нажатие на поле 'Дата начала' в дровере")
     @allure.step("Нажатие на поле 'Дата начала' в дровере")
@@ -935,7 +938,7 @@ class ProjectCardPage(BasePage):
         list_cells = []
         # Ищем все элементы cell на веб-странице и добавляем их в список
         # Пока временно первых 10 ячеек, позже заменю на те где были изменения
-        cells = self.elements_are_visible(self.locators.CELLS)[1:10]
+        cells = self.elements_are_visible(self.locators.CELLS)
         # Обходим каждый элемент в списке и достаем значение
         for cell in cells:
             list_cells.append(cell.text)
@@ -1022,3 +1025,13 @@ class ProjectCardPage(BasePage):
                 "Не отображается выбранный год"
             assert set(self.get_low_string_in_header()) == set([displayed_interval]), \
                 "Не отображается выбранный год в столбцах"
+
+    @allure_testit_step("Проверка цвета ячейки превышающей максимальную занятость")
+    def check_color_cell(self):
+        color_cell = self.element_is_visible(self.locators.text_on_cell('100%')).value_of_css_property('background-color')
+        assert color_cell == 'rgba(255, 236, 229, 1)', "Цвет ячейки превышающей максимальную занятость, не красного цвета"
+    
+    @allure_testit_step("Проверка некликабельности кнопки Сохранить")
+    def check_save_button_not_clickable(self):
+        assert not self.element_is_clickable(self.locators.SAVE_BUTTON), "кнопка Сохранить кликабельна"
+    
