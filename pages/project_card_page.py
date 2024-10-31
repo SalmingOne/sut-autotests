@@ -1024,8 +1024,10 @@ class ProjectCardPage(BasePage):
                 "Не отображается выбранный год в столбцах"
 
     @allure_testit_step("Проверка цвета ячейки превышающей максимальную занятость")
-    def check_color_cell(self):
-        color_cell = self.element_is_visible(self.locators.text_on_cell('100%')).value_of_css_property('background-color')
+    def check_color_cell(self, maximum='100%'):
+        if maximum == 'hours':
+            maximum = '40'
+        color_cell = self.element_is_visible(self.locators.text_on_cell(maximum)).value_of_css_property('background-color')
         assert color_cell == 'rgba(255, 236, 229, 1)', "Цвет ячейки превышающей максимальную занятость, не красного цвета"
     
     @allure_testit_step("Проверка некликабельности кнопки Сохранить")

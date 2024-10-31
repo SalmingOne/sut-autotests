@@ -766,3 +766,21 @@ class TestProjectCard:
         assert percentage_api == [50, 50, 50, 50, 50], "Внесенные изменения не сохранились в БД"
         assert table_before == table_after, "Данные в таблице не сохранились"
     
+    @testit.workItemIds(11792)
+    @testit.displayName('2.1.1.1.1. Превышение суммы почасовой занятости для ресурса')
+    @pytest.mark.regress
+    @allure.title('id-11792 2.1.1.1.1. Превышение суммы почасовой занятости для ресурса')
+    def test_overoccupancy_hours_for_resource(self, simple_project, project_with_planned_resources, login, driver):
+        start_date = str(project_with_planned_resources[0])
+        end_date = str(project_with_planned_resources[1])
+        all_project_page = AllProjectPage(driver)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(simple_project['name'])
+        project_card_page = ProjectCardPage(driver)
+        project_card_page.go_to_resource_plan_tab()
+        project_card_page.press_add_employment_button()
+        project_card_page.set_period_and_busy(start_date, end_date, 8)
+        project_card_page.press_save_in_drover()
+        project_card_page.check_color_cell('hours')
+        project_card_page.check_save_button_not_clickable()
+    
