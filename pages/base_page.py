@@ -164,13 +164,3 @@ class BasePage:
         while self.is_week_shortened(start_date, end_date):
             start_date, end_date = self.get_next_week(start_date)
         return start_date, end_date
-    
-    @allure.step("Получаем номер недели в квартале")
-    def get_week_of_quarter(self, date):
-        date = datetime.strptime(date, '%d.%m.%Y')
-        # Определяем начало квартала для данной даты
-        quarter_start_month = ((date.month - 1) // 3) * 3 + 1
-        quarter_start_date = datetime(date.year, quarter_start_month, 1)
-        # Вычисляем номер недели от начала квартала
-        week_of_quarter = (date - quarter_start_date).days // 7 + 1
-        return week_of_quarter
