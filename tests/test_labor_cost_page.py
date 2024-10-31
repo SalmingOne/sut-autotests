@@ -819,7 +819,7 @@ class TestLaborCostPage:
         labor_cost_page = LaborCostPage(driver)
         labor_cost_page.go_to_labor_cost_page()
         labor_cost_page.open_tasks_list()
-        assert labor_cost_page.get_status_of_field(task_name, number_day), 'Ячейка активна для ввода'
+        assert labor_cost_page.get_status_of_field_task(task_name, number_day), 'Ячейка активна для ввода'
 
     @testit.workItemIds(3139)
     @testit.displayName("3.1.1.2 Заполнение трудозатрат по задаче со статусом Завершено.")
@@ -831,4 +831,45 @@ class TestLaborCostPage:
         labor_cost_page = LaborCostPage(driver)
         labor_cost_page.go_to_labor_cost_page()
         labor_cost_page.open_tasks_list()
-        assert labor_cost_page.get_status_of_field(task_name, number_day), 'Ячейка активна для ввода'
+        assert labor_cost_page.get_status_of_field_task(task_name, number_day), 'Ячейка активна для ввода'
+
+    @testit.workItemIds(3724)
+    @testit.displayName("3.1.1.7 Проверка отсутствия тултипа если чекбокс 'Отображать причины отклонения' не выбран.")
+    @pytest.mark.regress
+    @allure.title("id-3724 3.1.1.7 Проверка отсутствия тултипа если чекбокс 'Отображать причины отклонения' не выбран.")
+    def test_no_tooltip_if_reason_checkbox_disabled(self, project_with_rejected_labor_report, login, driver):
+        project_name = project_with_rejected_labor_report[0]['name']
+        number_day = project_with_rejected_labor_report[1]
+        labor_cost_page = LaborCostPage(driver)
+        labor_cost_page.go_to_labor_cost_page()
+        assert labor_cost_page.field_is_rejected(project_name, number_day), 'Трудозатраты не отклонены'
+        assert not labor_cost_page.get_status_of_field_project(project_name,number_day), 'Ячейка неактивна для ввода'
+        assert not labor_cost_page.tooltip_is_displayed(project_name, number_day), 'Тултип отображается'
+
+    @testit.workItemIds(3160)
+    @testit.displayName("3.1.1.3. Отображение неактивных проектов в таблице трудозатрат")
+    @pytest.mark.regress
+    @allure.title("id-3160 3.1.1.3. Отображение неактивных проектов в таблице трудозатрат")
+    def test_show_inactive_projects_in_labor_cost_table(self, archive_project_with_assignment, second_project,  login, driver):
+        project_name = archive_project_with_assignment['name']
+        labor_cost_page = LaborCostPage(driver)
+        labor_cost_page.go_to_labor_cost_page()
+        labor_cost_page.check_filter()
+        before_check = project_name not in labor_cost_page.get_all_project_name_on_tab()
+        labor_cost_page.check_archive_project(project_name)
+        time.sleep(0.5)
+        after_check = project_name in labor_cost_page.get_all_project_name_on_tab()
+        assert before_check and after_check, "Неактивный проект не отображается"
+
+    @testit.workItemIds(3458)
+    @testit.displayName("3.1.1.1 Отображение тултипа причины списания трудозатрат и переработки.")
+    @pytest.mark.regress
+    @allure.title("id-3458 3.1.1.1 Отображение тултипа причины списания трудозатрат и переработки.")
+    def test_display_labor_cost_and_overtime_write_off_tooltip(self, f_overtime_reason_requirement, project_with_required_reasons_with_work_and_overtime_work, login, driver):
+        project_name = project_with_required_reasons_with_work_and_overtime_work[0]['name']
+        number_day = project_with_required_reasons_with_work_and_overtime_work[1]
+        reason = project_with_required_reasons_with_work_and_overtime_work[2]
+        hours = project_with_required_reasons_with_work_and_overtime_work[3]
+        labor_cost_page = LaborCostPage(driver)
+        labor_cost_page.go_to_labor_cost_page()
+        assert labor_cost_page.get_day_tooltip_text_in_project(project_name, number_day) == f"{hours} + {hours}\nРабота на проекте: {reason}\nПричина переработки: {reason}", 'Неверный текст тултипа с причинами списаний'

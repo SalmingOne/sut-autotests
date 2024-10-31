@@ -5,12 +5,10 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 from data.data import LOGIN, PASSWORD, USER_ID, USER_NAME, PROJECT_NAME
 from data.models.create_project_model import CreateProject
-from data.models.schedule_model import SimpleDayModel
 from data.urls import Urls
 from endpoints.affiliates_endpoint import AffiliatesEndpoint
 from endpoints.assignments_endpoint import AssignmentEndpoint
 from endpoints.departmens_endpoint import DepartmentsEndpoint
-from endpoints.labels_endpoint import LabelsEndpoint
 from endpoints.gantt_endpoint import GanttEndpoint
 from endpoints.labor_reports_endpoint import LaborReportEndpoint
 from endpoints.logs_endpoint import LogsEndpoint
@@ -18,7 +16,6 @@ from endpoints.posts_endpoint import PostsEndpoint
 from endpoints.project_endpoint import ProjectEndpoint
 from endpoints.project_roles_endpoint import ProjectRolesEndpoint
 from endpoints.resume_endpoint import ResumeEndpoint
-from endpoints.schedule_endpoint import ScheduleEndpoint
 from endpoints.search_profile_endpoint import SearchProfileEndpoint
 from endpoints.skills_endpoint import SkillsEndpoint
 from endpoints.system_roles_endpoint import SystemRolesEndpoint
@@ -26,6 +23,7 @@ from endpoints.system_roles_endpoint import SystemRolesEndpoint
 from endpoints.users_endpoint import UserEndpoint
 from endpoints.calendar_endpoint import CalendarEndpoint
 from endpoints.variables_endpoint import VariablesEndpoint
+from endpoints.busy_percentages_endpoint import BusyPercentagesEndpoint
 from pages.authorization_page import AuthorizationPage
 from pages.base_page import BasePage
 from api_methods.system_settings import SystemSettingsApi
@@ -502,6 +500,34 @@ def project_with_work_and_overtime_work():
     yield res.json()
     project_endpoint.delete_project_api(str(project_id))
 
+@pytest.fixture()
+def project_with_required_reasons_with_work_and_overtime_work():
+    labor_report_endpoint = LaborReportEndpoint()
+    project_endpoint = ProjectEndpoint()
+    project_endpoint.delete_project_if_it_exist(PROJECT_NAME)
+    payload = CreateProject(
+        laborReasons=True
+    ).model_dump()
+    res = project_endpoint.create_project_api(json=payload)
+    project_id = res.json()['id']
+    hours = 6
+    reason = "Просто так"
+    payload = [
+        dict(
+            date=BasePage(driver=None).get_day_before_m_d_y(0),
+            projectId=project_id,
+            overtimeWork=hours,
+            hours=hours,
+            type="DEFAULT",
+            userId=USER_ID,
+            reason=reason,
+            overtimeReason=reason
+        )
+    ]
+    labor_report_endpoint.post_labor_report_api(json=payload)
+    number_day = BasePage(driver=None).get_day_after_ymd(1).split('-')[2]
+    yield res.json(), number_day, reason, hours
+    project_endpoint.delete_project_api(str(project_id))
 
 @pytest.fixture()
 def project_with_three_overtime_work():
@@ -1017,27 +1043,6 @@ def create_second_resume():
     yield payload['title']
     resume_endpoint.delete_resume_api(str(response.json()['id']))
 
-
-@pytest.fixture()
-def create_resume_to_autotest_user():
-    resume_endpoint = ResumeEndpoint()
-    user_endpoint = UserEndpoint()
-    user_id = user_endpoint.get_user_id_by_email('auto_testt@mail.rruu')
-    payload = dict(
-        userId=user_id,
-        title='резюме для авто',
-        version=1,
-        data=dict(
-            fullName='Авто Авто',
-            post='Автоматизатор',
-            experienceDate=BasePage(driver=None).get_day_before_m_d_y(2)
-        )
-    )
-    response = resume_endpoint.create_resume_api(json=payload)
-    yield payload['title']
-    resume_endpoint.delete_resume_api(str(response.json()['id']))
-
-
 @pytest.fixture()
 def create_holiday():
     calendar_endpoint = CalendarEndpoint()
@@ -1129,3 +1134,40 @@ def put_label_to_auto_user(project_with_two_resources):
     )
     labels_endpoint.put_label_api(json=payload)
 
+
+@pytest.fixture()
+def project_with_planned_resources():
+    project_endpoint = ProjectEndpoint()
+    project_endpoint.delete_project_if_it_exist('PlannedResourcesProject')
+    start_date, end_date = [day for day in BasePage(driver=None).get_full_work_week()]
+    start_date_pr = start_date.strftime("%m.%d.%Y")
+    end_date_pr = end_date.strftime("%m.%d.%Y")
+    start_date_dr = start_date.strftime("%d.%m.%Y")
+    end_date_dr = end_date.strftime("%d.%m.%Y")
+    payload = CreateProject(
+        code='PRP',
+        name='PlannedResourcesProject',
+        startDate=start_date_pr,
+        endDate=end_date_pr,
+        resources=[dict(
+            projectRoleId=1,
+            userId=USER_ID,
+            isProjectManager=True)
+        ]
+        ).model_dump()
+    res = project_endpoint.create_project_api(json=payload)
+    project_id = res.json()["id"]
+    slot_id = res.json()["slots"][0]['id']
+    payload = [dict(
+        hours = 4,
+        slotId = slot_id,
+        projectId = project_id,
+        projectRoleId = 1,
+        userId = USER_ID,
+        startOf = start_date_pr,
+        endOf = end_date_pr
+    )]
+    busy_percentages_endpoint = BusyPercentagesEndpoint()
+    busy_percentages_endpoint.create_busy_percentages_api(json=payload)
+    yield start_date_dr, end_date_dr, res.json()
+    project_endpoint.delete_project_api(str(res.json()['id']))

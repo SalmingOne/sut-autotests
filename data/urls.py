@@ -33,6 +33,7 @@ class Urls:
     gantt_start_editing_url = gantt_url + 'start-editing/'
     gantt_stage_status_url = gantt_url + 'stages/{id}/status/'
     gantt_task_status_url = gantt_url + 'tasks/{id}/status/'
+    busy_percentages_url = f'{api_url}' + 'busy-percentages/'
     schedule_url = f'{api_url}' + 'schedule/'
     labels_url = f'{api_url}' + 'labels/'
 
