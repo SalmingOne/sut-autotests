@@ -877,8 +877,7 @@ class ProjectCardPage(BasePage):
         self.element_is_visible(self.locators.DROVER_START_DATE).send_keys(self.get_day_after(1))
         self.element_is_visible(self.locators.DROVER_END_DATE).send_keys(self.get_day_after(5))
     
-    @testit.step("Внесение периода привлечения занятости c заданными параметрами")
-    @allure.step("Внесение периода привлечения занятости c заданными параметрами")
+    @allure_testit_step("Внесение периода привлечения занятости c заданными параметрами")
     def set_period_and_busy(self, start_date, end_date, period=8):
         # period это порядковый номер элемента, в зависимости от выбора радиобаттона
         # 8 - это 100% или 8 часов если не переключен радиобаттон (4 это 50% или 4 часа)
@@ -891,13 +890,11 @@ class ProjectCardPage(BasePage):
         self.element_is_visible(self.locators.DROVER_END_DATE).send_keys(Keys.CONTROL + "a")
         self.element_is_visible(self.locators.DROVER_END_DATE).send_keys(end_date)
 
-    @testit.step("Проверка периода привлечения с выбранным процентом привлечения")
-    @allure.step("Проверка периода привлечения с выбранным процентом привлечения")
-    def check_period_and_busy(self, start_date):
+    @allure_testit_step("Получение процентов/часов привлечения")
+    def get_busy(self, start_date):
         date_obj = datetime.strptime(start_date, "%d.%m.%Y")
         formatted_date = f"resultHours.{date_obj.strftime('%d-%m-%Y')}"
         busy = self.element_is_visible(self.locators.busy(formatted_date)).text        
-        assert busy == '50%', 'Период или занятость не соответствует'
         return busy
     
     @testit.step("Нажатие на поле 'Дата начала' в дровере")

@@ -59,7 +59,7 @@ class ProjectCardLocators:
     CHOSE_PERIOD_BUTTON = (By.CSS_SELECTOR, 'div[aria-haspopup="listbox"]')
     RESOURCE_PLAN_RADIOGROUP = (By.CSS_SELECTOR, 'div[role="radiogroup"]')
     CHECKED_RADIOGROUP = (By.XPATH, '//span[contains(@class, "Mui-checked")]//following-sibling::span[contains(@class, "MuiTypography-caption")]')
-    ADD_EMPLOYMENT_BUTTON = (By.CSS_SELECTOR, 'svg[data-testid="CalendarTodayOutlinedIcon"]')
+    ADD_EMPLOYMENT_BUTTON = (By.XPATH, '//button[@aria-label="Нажмите, чтобы выбрать период"]')
     RESOURCE_PLAN_TAB_HEADER = (By.CSS_SELECTOR, 'div[class="ag-header-cell-comp-wrapper"]')
     HIRE_HEADER = (By.XPATH, '//div[@class="ag-header-cell-comp-wrapper"]//h6')
     LOW_HEADER = (By.XPATH, '//div[@class="ag-header-cell-comp-wrapper"]//span[contains(@class,"MuiTypography-caption")]')
