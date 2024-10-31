@@ -15,7 +15,7 @@ class UserPage(BasePage):
     @allure.step("Проверяем есть ли пользователь в таблице")
     def check_user_is_not_in_table(self, last_name):
         time.sleep(1)
-        self.element_is_visible(self.locators.USER_SEARCH_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.action_triple_click(self.element_is_visible(self.locators.USER_SEARCH_FIELD))
         time.sleep(1)
         self.element_is_visible(self.locators.USER_SEARCH_FIELD).send_keys(Keys.BACK_SPACE)
         self.element_is_visible(self.locators.USER_SEARCH_FIELD).send_keys(f'{last_name}')
@@ -80,7 +80,7 @@ class UserPage(BasePage):
     def fired_user(self):
         self.element_is_visible(self.locators.USER_KEBABS).click()
         self.element_is_visible(self.locators.FIRED_BUTTON).click()
-        self.element_is_visible(self.locators.FIRED_ALERT_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.action_double_click(self.element_is_visible(self.locators.FIRED_ALERT_FIELD))
         self.element_is_visible(self.locators.FIRED_ALERT_FIELD).send_keys(self.get_day_before(0))
         self.element_is_visible(self.locators.SAVE_BUTTON).click()
         time.sleep(2)  # Без ожидания не успевает срабатывать анимация
@@ -161,7 +161,7 @@ class UserPage(BasePage):
         time.sleep(1)  # Без ожидания не успевает срабатывать анимация
         self.element_is_visible(self.locators.USER_KEBABS).click()
         self.element_is_visible(self.locators.FIRED_BUTTON).click()
-        self.element_is_visible(self.locators.FIRED_ALERT_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.action_double_click(self.element_is_visible(self.locators.FIRED_ALERT_FIELD))
         self.element_is_visible(self.locators.FIRED_ALERT_FIELD).send_keys(date)
         self.element_is_visible(self.locators.CALENDAR_BUTTON).click()
         assert not self.element_is_clickable(self.locators.DAY_BEFORE_SELECTED_DAY_PICKER,

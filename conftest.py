@@ -9,6 +9,7 @@ from data.urls import Urls
 from endpoints.affiliates_endpoint import AffiliatesEndpoint
 from endpoints.assignments_endpoint import AssignmentEndpoint
 from endpoints.departmens_endpoint import DepartmentsEndpoint
+from endpoints.labels_endpoint import LabelsEndpoint
 from endpoints.gantt_endpoint import GanttEndpoint
 from endpoints.labor_reports_endpoint import LaborReportEndpoint
 from endpoints.logs_endpoint import LogsEndpoint
@@ -500,34 +501,6 @@ def project_with_work_and_overtime_work():
     yield res.json()
     project_endpoint.delete_project_api(str(project_id))
 
-@pytest.fixture()
-def project_with_required_reasons_with_work_and_overtime_work():
-    labor_report_endpoint = LaborReportEndpoint()
-    project_endpoint = ProjectEndpoint()
-    project_endpoint.delete_project_if_it_exist(PROJECT_NAME)
-    payload = CreateProject(
-        laborReasons=True
-    ).model_dump()
-    res = project_endpoint.create_project_api(json=payload)
-    project_id = res.json()['id']
-    hours = 6
-    reason = "Просто так"
-    payload = [
-        dict(
-            date=BasePage(driver=None).get_day_before_m_d_y(0),
-            projectId=project_id,
-            overtimeWork=hours,
-            hours=hours,
-            type="DEFAULT",
-            userId=USER_ID,
-            reason=reason,
-            overtimeReason=reason
-        )
-    ]
-    labor_report_endpoint.post_labor_report_api(json=payload)
-    number_day = BasePage(driver=None).get_day_after_ymd(1).split('-')[2]
-    yield res.json(), number_day, reason, hours
-    project_endpoint.delete_project_api(str(project_id))
 
 @pytest.fixture()
 def project_with_three_overtime_work():
@@ -720,7 +693,9 @@ def project_with_assignment():
                    )
     assignment_endpoint = AssignmentEndpoint()
     assignment_endpoint.create_assignment_api(json=payload)
-    yield
+    number_day = BasePage(driver=None).get_day_after_ymd(0).split('-')[2]
+    number_day = number_day if number_day != '1' else BasePage(driver=None).get_day_after(1).split('.')[0]
+    yield response.json(), number_day
     project_endpoint.delete_project_api(str(response.json()['id']))
 
 
@@ -1113,28 +1088,6 @@ def create_filial_with_director():
     yield payload['name']
     filial_endpoint.delete_filial_if_it_exist('Филиал с директором') #Иначе пропадает пользователь
 
-
-@pytest.fixture()
-def put_label_to_auto_user(project_with_two_resources):
-    user_endpoint = UserEndpoint()
-    labels_endpoint = LabelsEndpoint()
-    auto_user_id = user_endpoint.get_user_id_by_email('auto_testt@mail.rruu')
-    auto_user_profile_id = user_endpoint.get_user_profile_id_by_user_id(str(auto_user_id))
-    user_profile_id = user_endpoint.get_user_profile_id_by_user_id(str(USER_ID))
-    payload = dict(
-        authorProfileId=user_profile_id,
-        receiverProfileId=auto_user_profile_id,
-        labels=[
-            dict(
-                mark=True,
-                comment='Хорошо работает',
-                projectId=project_with_two_resources['id']
-            )
-        ]
-    )
-    labels_endpoint.put_label_api(json=payload)
-
-
 @pytest.fixture()
 def project_with_planned_resources():
     project_endpoint = ProjectEndpoint()
@@ -1171,3 +1124,25 @@ def project_with_planned_resources():
     busy_percentages_endpoint.create_busy_percentages_api(json=payload)
     yield start_date_dr, end_date_dr, res.json()
     project_endpoint.delete_project_api(str(res.json()['id']))
+
+
+@pytest.fixture()
+def put_label_to_auto_user(project_with_two_resources):
+    user_endpoint = UserEndpoint()
+    labels_endpoint = LabelsEndpoint()
+    auto_user_id = user_endpoint.get_user_id_by_email('auto_testt@mail.rruu')
+    auto_user_profile_id = user_endpoint.get_user_profile_id_by_user_id(str(auto_user_id))
+    user_profile_id = user_endpoint.get_user_profile_id_by_user_id(str(USER_ID))
+    payload = dict(
+        authorProfileId=user_profile_id,
+        receiverProfileId=auto_user_profile_id,
+        labels=[
+            dict(
+                mark=True,
+                comment='Хорошо работает',
+                projectId=project_with_two_resources['id']
+            )
+        ]
+    )
+    labels_endpoint.put_label_api(json=payload)
+

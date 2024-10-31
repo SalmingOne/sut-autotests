@@ -550,6 +550,7 @@ class TestProjectCard:
         project_card_page = ProjectCardPage(driver)
         project_card_page.go_to_resource_plan_tab()
         project_card_page.change_radiobutton()
+        time.sleep(1)
         project_card_page.checking_cell_default_value()
         project_card_page.checking_cell_dropdown_list_values()
         project_card_page.checking_color_cell()
@@ -675,6 +676,7 @@ class TestProjectCard:
         all_project_page.go_project_page(simple_project['name'])
         project_card_page = ProjectCardPage(driver)
         project_card_page.go_to_resource_plan_tab()
+        time.sleep(1)
         # Получаем отображение таблицы "Ресурсный план" до изменений
         table_before = project_card_page.displaying_table_resource_plan()
         project_card_page.change_table_resource_plan()
@@ -702,15 +704,83 @@ class TestProjectCard:
         project_card_page.press_save_in_drover()
         # Получаем отображение таблицы "Ресурсный план" до сохранения
         table_before = project_card_page.displaying_table_resource_plan()
-        # Проверяем период отображения и процент привлечения
-        percentage_ui = project_card_page.check_period_and_busy(start_date, table_before)
+        # Получаем процент привлечения на фронте
+        percentage_ui = project_card_page.get_busy(start_date)
         project_card_page.press_submit_button()
         # Получаем отображение таблицы "Ресурсный план" после сохранения
         table_after = project_card_page.displaying_table_resource_plan()
         # Получаем busy_percentages после сохранения
         busy_percentages_endpoint = BusyPercentagesEndpoint()
         busy_percentages_api = busy_percentages_endpoint.get_busy_percentages_api(simple_project['id'])
-        percentage_api = set([entry['percentage'] for entry in busy_percentages_api])
-        assert int(percentage_ui[:-1]) in percentage_api, "Внесенные изменения не сохранились в БД"
+        percentage_api = [entry['percentage'] for entry in busy_percentages_api]
+        assert percentage_ui == '50%'
+        assert percentage_api == [50, 50, 50, 50, 50], "Внесенные изменения не сохранились в БД"
         assert table_before == table_after, "Данные в таблице не сохранились"
-        
+    
+    @testit.workItemIds(11791)
+    @testit.displayName('2.1.1.1. Превышение процента занятости для ресурса')
+    @pytest.mark.regress
+    @allure.title('id-11791 2.1.1.1. Превышение процента занятости для ресурса')
+    def test_overoccupancy_percentage_for_resource(self, simple_project, project_with_planned_resources, login, driver):
+        start_date = str(project_with_planned_resources[0])
+        end_date = str(project_with_planned_resources[1])
+        all_project_page = AllProjectPage(driver)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(simple_project['name'])
+        project_card_page = ProjectCardPage(driver)
+        project_card_page.go_to_resource_plan_tab()
+        project_card_page.change_radiobutton()
+        project_card_page.press_add_employment_button()
+        project_card_page.set_period_and_busy(start_date, end_date, 8)
+        project_card_page.press_save_in_drover()
+        project_card_page.check_color_cell()
+        project_card_page.check_save_button_not_clickable()
+
+    @testit.workItemIds(11788)
+    @testit.displayName('2.1.1.1.1. Добавление периодов привлечения и почасовой занятости для ресурса')
+    @pytest.mark.regress
+    @allure.title('id-11788 2.1.1.1.1. Добавление периодов привлечения и почасовой занятости для ресурса')
+    def test_adding_busy_hours_for_resource(self, simple_project, project_with_planned_resources, login, driver):
+        start_date = str(project_with_planned_resources[0])
+        end_date = str(project_with_planned_resources[1])
+        all_project_page = AllProjectPage(driver)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(simple_project['name'])
+        project_card_page = ProjectCardPage(driver)
+        project_card_page.go_to_resource_plan_tab()
+        project_card_page.press_add_employment_button()
+        project_card_page.set_period_and_busy(start_date, end_date, 4)
+        project_card_page.press_save_in_drover()
+        # Получаем отображение таблицы "Ресурсный план" до сохранения
+        table_before = project_card_page.displaying_table_resource_plan()
+        # Получаем процент привлечения на фронте
+        percentage_ui = project_card_page.get_busy(start_date)
+        project_card_page.press_submit_button()
+        # Получаем отображение таблицы "Ресурсный план" после сохранения
+        table_after = project_card_page.displaying_table_resource_plan()
+        # Получаем busy_hours после сохранения
+        busy_percentages_endpoint = BusyPercentagesEndpoint()
+        busy_percentages_api = busy_percentages_endpoint.get_busy_percentages_api(simple_project['id'])
+        percentage_api = [entry['percentage'] for entry in busy_percentages_api]
+        assert percentage_ui == '20'
+        assert percentage_api == [50, 50, 50, 50, 50], "Внесенные изменения не сохранились в БД"
+        assert table_before == table_after, "Данные в таблице не сохранились"
+    
+    @testit.workItemIds(11792)
+    @testit.displayName('2.1.1.1.1. Превышение суммы почасовой занятости для ресурса')
+    @pytest.mark.regress
+    @allure.title('id-11792 2.1.1.1.1. Превышение суммы почасовой занятости для ресурса')
+    def test_overoccupancy_hours_for_resource(self, simple_project, project_with_planned_resources, login, driver):
+        start_date = str(project_with_planned_resources[0])
+        end_date = str(project_with_planned_resources[1])
+        all_project_page = AllProjectPage(driver)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(simple_project['name'])
+        project_card_page = ProjectCardPage(driver)
+        project_card_page.go_to_resource_plan_tab()
+        project_card_page.press_add_employment_button()
+        project_card_page.set_period_and_busy(start_date, end_date, 8)
+        project_card_page.press_save_in_drover()
+        project_card_page.check_color_cell('hours')
+        project_card_page.check_save_button_not_clickable()
+    

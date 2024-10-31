@@ -24,9 +24,8 @@ class CreateProjectDrawerPage(BasePage):
         self.element_is_visible(self.locators.PROJECT_NAME_FIELD).send_keys(project_name)
         self.element_is_visible(self.locators.PROJECT_CODE_FIELD).send_keys(project_code)
         self.element_is_visible(self.locators.PROJECT_BEGIN_DATA_FIELD).click()
-        self.element_is_visible(self.locators.PROJECT_BEGIN_DATA_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.action_double_click(self.element_is_visible(self.locators.PROJECT_BEGIN_DATA_FIELD))
         self.element_is_visible(self.locators.PROJECT_BEGIN_DATA_FIELD).send_keys(Keys.BACK_SPACE)
-
         project_data = '01.10.2022'
         self.element_is_visible(self.locators.PROJECT_BEGIN_DATA_FIELD).send_keys(begin_date)
         if end_date is not None:

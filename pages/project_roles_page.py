@@ -36,7 +36,7 @@ class ProjectRolesPage(BasePage):
     @testit.step("Проверяем, что отображается введенный цвет")
     @allure.step("Проверяем, что отображается введенный цвет")
     def check_color_on_color_input(self):
-        self.element_is_visible(self.locators.COLOR_INPUT_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.action_triple_click(self.element_is_visible(self.locators.COLOR_INPUT_FIELD))
         self.element_is_visible(self.locators.COLOR_INPUT_FIELD).send_keys('#7f11e0')
         output_color = self.element_is_visible(self.locators.COLOR_INPUT_BUTTON).value_of_css_property(
             'background-color')

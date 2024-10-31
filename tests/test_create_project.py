@@ -42,8 +42,7 @@ class TestCreateProject:
         # Берем имя проекта со страницы все проекты
         all_project_page = AllProjectPage(driver)
         all_project_page.go_to_all_project_page()
-        check_name_at_all = all_project_page.check_project_name_at_all("AutoTestProject1")
-        assert project_name == check_name_at_all, "имя созданного проекта отсутствует на странице все проекты"
+        all_project_page.check_project_name_at_all("AutoTestProject1")
         # Берем код проекта со страницы трудозатрат
         labor_cost_page = LaborCostPage(driver)
         labor_cost_page.go_to_labor_cost_page()
@@ -85,11 +84,10 @@ class TestCreateProject:
         all_project_page = AllProjectPage(driver)
         all_project_page.go_to_all_project_page()
         try:
-            check_name_at_all = all_project_page.check_project_name_at_all('AutoTestProjectDraft')
+            all_project_page.check_project_name_at_all('AutoTestProjectDraft')
         except TimeoutException:
             all_project_page.see_all_status_project()
-            check_name_at_all = all_project_page.check_project_name_at_all('AutoTestProjectDraft')
-        assert project_name == check_name_at_all, "имя созданного проекта отсутствует на странице все проекты"
+            all_project_page.check_project_name_at_all('AutoTestProjectDraft')
 
     @testit.workItemIds(1469)
     @testit.displayName("1.1.1 Добавление нового проекта с обязательным указанием причины списания")

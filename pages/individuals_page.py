@@ -31,8 +31,9 @@ class IndividualsPage(BasePage):
                      ' tation ullamcorper suscipit lobortis nisl ut aliquip ex ea co')
         self.element_is_visible(locator).send_keys(bed_value)
         self.element_is_visible(self.locators.ROLE_DROPDOWN).click()
+        self.action_esc()
         error_text = self.element_is_visible(self.locators.MUI_ERROR).text
-        self.element_is_visible(locator).send_keys(Keys.CONTROL + 'a')
+        self.action_triple_click(self.element_is_visible(locator))
         self.element_is_visible(locator).send_keys('1')
         self.element_is_visible(self.locators.ROLE_DROPDOWN).click()
         assert error_text == 'Максимальное количество символов: 255',\
@@ -49,14 +50,16 @@ class IndividualsPage(BasePage):
                   self.locators.BANK_ACCOUNT_FIELD, self.locators.BANK_CORRESPONDENT_ACCOUNT_FIELD]
         for field in fields:
             self.check_255_symbol_in_field(field)
+        self.action_esc()
 
     @testit.step("Проверка поля email")
     @allure.step("Проверка поля email")
     def check_email(self):
         self.element_is_visible(self.locators.EMAIL_FIELD).send_keys('2')
         self.element_is_visible(self.locators.ROLE_DROPDOWN).click()
+        self.action_esc()
         error_text = self.element_is_visible(self.locators.MUI_ERROR).text
-        self.element_is_visible(self.locators.EMAIL_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.action_triple_click(self.element_is_visible(self.locators.EMAIL_FIELD))
         self.element_is_visible(self.locators.EMAIL_FIELD).send_keys('abs@abs.abs')
         self.element_is_visible(self.locators.ROLE_DROPDOWN).click()
         assert error_text == 'Некорректный email-адрес', "Не появилось сообщение о некорректном email"
@@ -98,7 +101,7 @@ class IndividualsPage(BasePage):
         self.element_is_visible(self.locators.BANK_BIC_FIELD).send_keys('1234567890')
         self.element_is_visible(self.locators.NAME_FIELD).click()
         error_text = self.element_is_visible(self.locators.MUI_ERROR).text
-        self.element_is_visible(self.locators.BANK_BIC_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.action_triple_click(self.element_is_visible(self.locators.BANK_BIC_FIELD))
         self.element_is_visible(self.locators.BANK_BIC_FIELD).send_keys('123456789')
         self.element_is_visible(self.locators.NAME_FIELD).click()
         assert error_text == 'Максимальное количество символов: 9', "Нет ошибки о превышении символов"
@@ -131,7 +134,7 @@ class IndividualsPage(BasePage):
     @allure.step("Проверка наличия физического лица в таблице")
     def check_individual_on_tab(self, full_name):
         time.sleep(1)
-        self.elements_are_visible(self.locators.SEARCH_TAB_FIELDS)[1].send_keys(Keys.CONTROL + 'a')
+        self.action_triple_click(self.elements_are_visible(self.locators.SEARCH_TAB_FIELDS)[1])
         time.sleep(1)
         self.elements_are_visible(self.locators.SEARCH_TAB_FIELDS)[1].send_keys(Keys.BACK_SPACE)
         self.elements_are_visible(self.locators.SEARCH_TAB_FIELDS)[1].send_keys(f'{full_name}')

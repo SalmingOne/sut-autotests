@@ -59,7 +59,7 @@ class ProjectCardLocators:
     CHOSE_PERIOD_BUTTON = (By.CSS_SELECTOR, 'div[aria-haspopup="listbox"]')
     RESOURCE_PLAN_RADIOGROUP = (By.CSS_SELECTOR, 'div[role="radiogroup"]')
     CHECKED_RADIOGROUP = (By.XPATH, '//span[contains(@class, "Mui-checked")]//following-sibling::span[contains(@class, "MuiTypography-caption")]')
-    ADD_EMPLOYMENT_BUTTON = (By.CSS_SELECTOR, 'svg[data-testid="CalendarTodayOutlinedIcon"]')
+    ADD_EMPLOYMENT_BUTTON = (By.XPATH, '//button[@aria-label="Нажмите, чтобы выбрать период"]')
     RESOURCE_PLAN_TAB_HEADER = (By.CSS_SELECTOR, 'div[class="ag-header-cell-comp-wrapper"]')
     HIRE_HEADER = (By.XPATH, '//div[@class="ag-header-cell-comp-wrapper"]//h6')
     LOW_HEADER = (By.XPATH, '//div[@class="ag-header-cell-comp-wrapper"]//span[contains(@class,"MuiTypography-caption")]')
@@ -77,8 +77,12 @@ class ProjectCardLocators:
     DROVER_END_DATE = (By.XPATH, '//label[text()="Дата окончания"]//following-sibling::div/input')
     DROVER_HELP_TEXT_END_DATE = (By.XPATH, '//label[text()="Дата окончания"]//following-sibling::p')
     DROVER_DROPDOWN_CALENDAR = (By.CSS_SELECTOR, '.MuiPickersPopper-paper')
+    def busy(self, start_date):
+        return (By.XPATH, f'//div[@col-id="{start_date}" and contains(@class, "ag-cell-value")]')
     def buttons_day_calendar(self, text):
         return (By.XPATH, f'//button[contains(@class,"MuiPickersDay-root") and text()="{text}"]')
+    def text_on_cell(self, text):
+        return (By.XPATH, f'//div[text()="{text}"]/..')
 
     # Локаторы вкладки Ход выполнения
     PROGRESS_TAB = (By.XPATH, '//button[text()="Ход выполнения"]')
