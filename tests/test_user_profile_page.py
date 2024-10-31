@@ -1124,3 +1124,34 @@ class TestUserProfilePage:
         assert user_profile_page.get_all_labels_text() == ['Дата создания', 'ФИО автора', 'Проект',
                                                            'Почему вы решили выдать такую метку?'], \
             "В метке есть не все поля(заголовки)"
+
+    @testit.workItemIds(1168)
+    @testit.displayName("10.2.3. Добавление карточки проекта в табе Опыт работы")
+    @pytest.mark.regress
+    @allure.title("id-1168 10.2.3. Добавление карточки проекта в табе Опыт работы")
+    def test_click_adding_project_card_in_work_experience_tab(self, project_with_two_resources, create_filial, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        time.sleep(6)
+        user_profile_page.go_to_experience_tab()
+        time.sleep(2)
+        if user_profile_page.check_experience_title():
+            user_profile_page.press_redact_button()
+            time.sleep(2)
+            user_profile_page.press_delete_icon()
+            user_profile_page.press_save_button()
+        # Проверяем создание с выбором работодателя
+        user_profile_page.check_work_experience_form()
+        assert user_profile_page.check_experience_title(), "Карточка проекта не добавлена"
+        user_profile_page.press_redact_button()
+        time.sleep(1)
+        user_profile_page.press_delete_icon()
+        user_profile_page.press_save_button()
+        # Проверяем создание с добавлением работодателя
+        user_profile_page.field_work_experience_form_with_new_employer()
+        assert user_profile_page.check_experience_title(), "Карточка проекта не добавлена"
+        user_profile_page.press_redact_button()
+        time.sleep(1)
+        user_profile_page.press_delete_icon()
+        user_profile_page.press_save_button()
+        time.sleep(0.2)

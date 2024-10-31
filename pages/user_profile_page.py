@@ -580,7 +580,7 @@ class UserProfilePage(BasePage):
     @allure.step("Получение даты за день до создания проекта")
     def get_day_before_create_project(self, project_name):
         project_endpoint = ProjectEndpoint()
-        date = project_endpoint.get_project_start_date_by_name(project_name)
+        date = project_endpoint.get_project_start_date_by_name(project_name)[0]
         f_date = date[8:10] + '.' + date[5:7] + '.' + date[0:4]
         day_before = datetime.strptime(f_date, "%d.%m.%Y") - timedelta(days=1)
         return day_before.strftime("%d.%m.%Y")
@@ -589,7 +589,18 @@ class UserProfilePage(BasePage):
     @allure.step("Получение даты после создания проекта")
     def get_day_after_create_project(self, project_name):
         project_endpoint = ProjectEndpoint()
-        date = project_endpoint.get_project_start_date_by_name(project_name)
+        date = project_endpoint.get_project_start_date_by_name(project_name)[0]
+        f_date = date[8:10] + '.' + date[5:7] + '.' + date[0:4]
+        day_before = datetime.strptime(f_date, "%d.%m.%Y") + timedelta(days=1)
+        return day_before.strftime("%d.%m.%Y")
+
+    @testit.step("Получение даты после окончания проекта")
+    @allure.step("Получение даты после окончания  проекта")
+    def get_day_after_end_project(self, project_name):
+        project_endpoint = ProjectEndpoint()
+        date = project_endpoint.get_project_start_date_by_name(project_name)[1]
+        if date is None:
+            return False
         f_date = date[8:10] + '.' + date[5:7] + '.' + date[0:4]
         day_before = datetime.strptime(f_date, "%d.%m.%Y") + timedelta(days=1)
         return day_before.strftime("%d.%m.%Y")
@@ -604,15 +615,60 @@ class UserProfilePage(BasePage):
         error_text = self.element_is_visible(self.locators.MUI_ERROR).text
         time.sleep(2)
         self.element_is_visible(self.locators.EXPERIENCES_BEGIN_DATA_INPUT).send_keys(Keys.CONTROL + 'a')
+        after_end_project = self.get_day_after_end_project(project_name)
+        if after_end_project:
+            self.element_is_visible(self.locators.EXPERIENCES_BEGIN_DATA_INPUT).send_keys(after_end_project)
+            self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_SLOT).click()
+            second_error_text = self.element_is_visible(self.locators.MUI_ERROR).text
+            assert second_error_text == 'Дата начала работы некорректна', "Можно ввести дату позже окончания проекта"
+            self.action_double_click(self.element_is_visible(self.locators.EXPERIENCES_BEGIN_DATA_INPUT))
         self.element_is_visible(self.locators.EXPERIENCES_BEGIN_DATA_INPUT).send_keys(
             self.get_day_after_create_project(project_name))
         self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_SLOT).click()
-        assert error_text == 'Дата начала работы некорректна', "Не появилось сообщение о некорректной дате"
+        assert error_text == 'Дата начала работы некорректна', "Можно ввести дату раньше начала проекта"
+
+    @testit.step("Проверка поля Дата окончания проекта")
+    @allure.step("Проверка поля Дата окончания проекта")
+    def check_end_date_field(self):
+        project_name = self.element_is_visible(self.locators.EXPERIENCES_PROJECT_FIELD).get_attribute('value')
+        before_create_project = self.get_day_before_create_project(project_name)
+        # Дата до начала работы
+        start_date = self.element_is_visible(self.locators.EXPERIENCES_BEGIN_DATA_INPUT).get_attribute('value')
+        day_before = datetime.strptime(start_date, "%d.%m.%Y") - timedelta(days=1)
+        self.element_is_visible(self.locators.EXPERIENCES_END_DATA_INPUT).send_keys(day_before.strftime("%d.%m.%Y"))
+        self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_SLOT).click()
+        assert self.element_is_visible(self.locators.MUI_ERROR).text == 'Дата окончания работы не может быть раньше начала'
+        # Дата до начала проекта
+        time.sleep(2)
+        self.action_double_click(self.element_is_visible(self.locators.EXPERIENCES_END_DATA_INPUT))
+        self.element_is_visible(self.locators.EXPERIENCES_END_DATA_INPUT).send_keys(before_create_project)
+        self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_SLOT).click()
+        assert self.element_is_visible(self.locators.MUI_ERROR).text == 'Дата окончания работы не может быть раньше начала', \
+            "Можно ввести дату раньше начала проекта"
+        # Дата позже конца проекта или позже текущей
+        time.sleep(2)
+        self.action_double_click(self.element_is_visible(self.locators.EXPERIENCES_END_DATA_INPUT))
+        after_end_project = self.get_day_after_end_project(project_name)
+        if after_end_project:
+            self.element_is_visible(self.locators.EXPERIENCES_END_DATA_INPUT).send_keys(after_end_project)
+            self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_SLOT).click()
+            assert self.element_is_visible(self.locators.MUI_ERROR).text == 'Дата окончания работы некорректна', \
+                "Можно ввести дату позже окончания проекта"
+            self.action_double_click(self.element_is_visible(self.locators.EXPERIENCES_END_DATA_INPUT))
+        else:
+            self.element_is_visible(self.locators.EXPERIENCES_END_DATA_INPUT).send_keys(self.get_day_before(-1))
+            self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_SLOT).click()
+            assert self.element_is_visible(self.locators.MUI_ERROR).text == 'Дата окончания работы некорректна'
+            self.action_double_click(self.element_is_visible(self.locators.EXPERIENCES_END_DATA_INPUT))
+
+        self.element_is_visible(self.locators.EXPERIENCES_END_DATA_INPUT).send_keys(self.get_day_before(0))
+        self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_SLOT).click()
 
     @testit.step("Проверка формы Опыт работы с выбором работодателя")
     @allure.step("Проверка формы Опыт работы с выбором работодателя")
     def check_work_experience_form(self):
         self.press_redact_button()
+        time.sleep(1)
         self.press_add_icon_button()
         self.check_disable_fields_in_work_experience_form()
         self.check_128_in_experience_tab()
@@ -628,15 +684,18 @@ class UserProfilePage(BasePage):
         self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_ACTION).click()
         time.sleep(1)
         self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
-
         self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_SLOT).click()
         time.sleep(1)
         self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
         self.check_start_date_field()
-
+        self.check_end_date_field()
         self.element_is_visible(self.locators.EXPERIENCES_KNOWLEDGE_FIELD).click()
         time.sleep(1)
-        self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
+        try:
+            self.elements_are_visible(self.locators.LI_MENU_ITEM, 2)[0].click()
+        except TimeoutException:
+            assert self.element_is_displayed(self.locators.check_text('Нет данных')), \
+                "При отсутствии знаний не отображается сообщение нет данных"
         self.press_save_button()
 
     @testit.step("Проверка максимального значения символов 64")
@@ -666,9 +725,11 @@ class UserProfilePage(BasePage):
     @testit.step("Проверка поля Дата начала при самостоятельном заполнении")
     @allure.step("Проверка поля Дата начала при самостоятельном заполнении")
     def check_custom_begin_data_field(self):
-        self.elements_are_visible(self.locators.EXPERIENCES_DATA_PICKER)[0].click()
-        assert not self.element_is_clickable(self.locators.NEXT_DAY_IN_PICKER, 1), "Можно выбрать следующую дату"
-        self.elements_are_visible(self.locators.EXPERIENCES_DATA_PICKER)[0].click()
+        self.action_double_click(self.element_is_visible(self.locators.EXPERIENCES_BEGIN_DATA_INPUT))
+        self.element_is_visible(self.locators.EXPERIENCES_BEGIN_DATA_INPUT).send_keys(self.get_day_before(-1))
+        self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_SLOT).click()
+        assert self.element_is_visible(self.locators.MUI_ERROR).text == 'Дата начала работы некорректна', \
+            "Не появилось сообщение о некорректной дате"
         self.element_is_visible(self.locators.EXPERIENCES_BEGIN_DATA_INPUT).send_keys(Keys.CONTROL + 'a')
         self.element_is_visible(self.locators.EXPERIENCES_BEGIN_DATA_INPUT).send_keys(self.get_day_before(22000))
         self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_SLOT).click()
