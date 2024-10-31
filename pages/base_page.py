@@ -55,6 +55,12 @@ class BasePage:
         action.double_click(element)
         action.perform()
 
+    @allure.step("тройной клик")
+    def action_triple_click(self, element):
+        actions = ActionChains(self.driver)
+        actions.click(element).click(element).click(element)
+        actions.perform()
+
     @allure.step("правый клик")
     def action_right_click(self, element):
         action = ActionChains(self.driver)

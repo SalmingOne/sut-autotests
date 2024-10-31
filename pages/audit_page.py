@@ -52,10 +52,7 @@ class AuditPage(BasePage):
     @allure.step("Очистить поле")
     def clear_date_field(self, field):
         field.click()
-        if platform.system() == 'Windows':
-            field.send_keys(Keys.CONTROL + 'a')
-        else:
-            field.send_keys(Keys.COMMAND + 'a')
+        self.action_double_click(field)
         field.send_keys(Keys.BACK_SPACE)
 
     @testit.step("Ввести интервал дат вручную")

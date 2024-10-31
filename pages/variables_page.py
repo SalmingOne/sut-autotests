@@ -43,7 +43,7 @@ class VariablesPage(BasePage):
         self.elements_are_visible(self.locators.ALL_KEBABS)[0].click()
         system_variable_menu = self.element_is_visible(self.locators.KEBAB_MENU_ITEM).text
         self.action_esc()
-        self.elements_are_visible(self.locators.ALL_SEARCH_FIELDS)[3].send_keys(Keys.CONTROL + 'a')
+        self.action_triple_click(self.elements_are_visible(self.locators.ALL_SEARCH_FIELDS)[3])
         self.elements_are_visible(self.locators.ALL_SEARCH_FIELDS)[3].send_keys('Задаётся пользователем')
         self.elements_are_visible(self.locators.ALL_KEBABS)[0].click()
         menu_items = self.elements_are_visible(self.locators.KEBAB_MENU_ITEM)

@@ -1,3 +1,5 @@
+import time
+
 import allure
 import testit
 from selenium.webdriver import Keys
@@ -41,10 +43,10 @@ class HolidaysReferencePage(BasePage):
         self.element_is_visible(self.locators.CLEAR_PRIORITY_DROPDOWN_BUTTON).click()
         self.element_is_visible(self.locators.TYPE_DROPDOWN).click()
         self.element_is_visible(self.locators.CLEAR_TYPE_DROPDOWN_BUTTON).click()
-        self.element_is_visible(self.locators.NAME_FIELD).send_keys(Keys.CONTROL + 'a')
-        self.element_is_visible(self.locators.NAME_FIELD).send_keys(Keys.BACK_SPACE)
-        self.element_is_visible(self.locators.DATE_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.action_double_click(self.element_is_visible(self.locators.DATE_FIELD))
         self.element_is_visible(self.locators.DATE_FIELD).send_keys(Keys.BACK_SPACE)
+        self.action_double_click(self.element_is_visible(self.locators.NAME_FIELD))
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(Keys.BACK_SPACE)
         self.element_is_visible(self.locators.DESCRIPTION_FIELD).click()
         assert self.element_is_displayed(self.locators.GOAL_REASON_FIELD_IS_REQUIRED), 'Отсутствует сообщение "Поле обязательно"'
         self.element_is_visible(self.locators.CANCEL_BUTTON).click()
@@ -69,11 +71,11 @@ class HolidaysReferencePage(BasePage):
     @testit.step("Изменение полей в дровере изменения праздничного дня")
     @allure.step("Изменение полей в дровере изменения праздничного дня")
     def change_holiday_field_values(self, name, date, description, priority=None):
-        self.element_is_visible(self.locators.NAME_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.action_double_click(self.element_is_visible(self.locators.NAME_FIELD))
         self.element_is_visible(self.locators.NAME_FIELD).send_keys(name)
-        self.element_is_visible(self.locators.DATE_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.action_double_click(self.element_is_visible(self.locators.DATE_FIELD))
         self.element_is_visible(self.locators.DATE_FIELD).send_keys(date)
-        self.element_is_visible(self.locators.DESCRIPTION_FIELD).send_keys(Keys.CONTROL + 'a')
+        self.action_double_click(self.element_is_visible(self.locators.DESCRIPTION_FIELD))
         self.element_is_visible(self.locators.DESCRIPTION_FIELD).send_keys(description)
         if priority:
             self.element_is_visible(self.locators.PRIORITY_DROPDOWN).click()
