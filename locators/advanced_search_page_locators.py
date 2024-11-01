@@ -56,6 +56,11 @@ class AdvancedSearchPageLocators:
     SEARCH_FIELDS = (By.CSS_SELECTOR, 'input[placeholder="Поиск"]')
     DEPARTMENTS_COLUMN = (By.CSS_SELECTOR, 'div[col-id="department"][role="gridcell"]')
 
+    NAME_SEARCH = (By.XPATH, '//div[@aria-colindex="2"]//input[@placeholder="Поиск"]')
+    STATUS_FILTER_BUTTON = (By.XPATH, '//div[@aria-colindex="5"]//button')
+    WORK_CHECKBOX = (By.XPATH, '//div[contains(@class,"ag-checkbox-label")][text()="Работает"]')
+    FIRED_CHECKBOX = (By.XPATH, '//div[contains(@class,"ag-checkbox-label")][text()="Уволен"]')
+    USER_LINK = (By.CSS_SELECTOR, 'a[target="_blank"]')
 
     def text_on_page(self, name):
         return (By.XPATH, f'//*[text()="{name}"]')

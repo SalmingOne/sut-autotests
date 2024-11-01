@@ -372,3 +372,24 @@ class AdvancedSearchPage(BasePage):
         self.element_is_visible(self.locators.ADVANCED_SEARCH).click()
         self.element_is_visible(self.locators.DEPARTMENTS_COLUMN, 15)
         return items
+
+    @allure_testit_step('Поиск сотрудника по фамилии')
+    def search_by_second_name(self, second_name):
+        self.action_double_click(self.element_is_visible(self.locators.NAME_SEARCH))
+        self.element_is_visible(self.locators.NAME_SEARCH).send_keys(second_name)
+
+    @allure_testit_step('Клик на имя пользователя')
+    def press_user_name(self):
+        self.elements_are_present(self.locators.USER_LINK)[0].click()
+
+    @allure_testit_step('Открытие фильтра по статусу')
+    def open_status_filter(self):
+        self.element_is_visible(self.locators.STATUS_FILTER_BUTTON).click()
+
+    @allure_testit_step('Нажатие чекбокса Работает')
+    def press_work_checkbox(self):
+        self.element_is_visible(self.locators.WORK_CHECKBOX).click()
+
+    @allure_testit_step('Нажатие чекбокса Уволен')
+    def press_fired_checkbox(self):
+        self.element_is_visible(self.locators.FIRED_CHECKBOX).click()

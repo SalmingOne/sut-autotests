@@ -1225,5 +1225,6 @@ class UserProfilePage(BasePage):
         assert len(self.elements_are_visible(self.locators.WORK_HOURS_IN_DAY)) == 24, \
             'Не над каждым днем отображаются рабочие часы'
 
-
-
+    @allure_testit_step('Получение статуса пользователя')
+    def get_user_status(self):
+        return self.element_is_visible(self.locators.STATUS_FIELD).get_attribute('value')

@@ -5,6 +5,7 @@ import pytest
 import testit
 
 from data.data import USER_NAME
+from pages.advanced_search_page import AdvancedSearchPage
 from pages.colleagues_page import ColleaguesPage
 from pages.schedule_page import SchedulePage
 from pages.user_profile_page import UserProfilePage
@@ -1155,3 +1156,38 @@ class TestUserProfilePage:
         user_profile_page.press_delete_icon()
         user_profile_page.press_save_button()
         time.sleep(0.2)
+
+    @testit.workItemIds(12566)
+    @testit.displayName("10.2.1. (Чек лист) Просмотр профиля сотрудника с разными статусами: Работает/Уволен")
+    @pytest.mark.regress
+    @allure.title("id-12566 10.2.1. (Чек лист) Просмотр профиля сотрудника с разными статусами: Работает/Уволен")
+    def test_viewing_employees_profile_with_statuses_working_fired(self, create_next_week_fired_user, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        advanced_search_page = AdvancedSearchPage(driver)
+        advanced_search_page.go_advanced_search_page()
+        advanced_search_page.open_status_filter()
+        advanced_search_page.press_work_checkbox()
+        advanced_search_page.action_esc()
+        advanced_search_page.press_user_name()
+        advanced_search_page.open_status_filter()
+        advanced_search_page.press_work_checkbox()
+        advanced_search_page.press_fired_checkbox()
+        advanced_search_page.action_esc()
+        advanced_search_page.press_user_name()
+        advanced_search_page.open_status_filter()
+        advanced_search_page.press_fired_checkbox()
+        advanced_search_page.action_esc()
+        advanced_search_page.search_by_second_name(create_next_week_fired_user)
+        advanced_search_page.press_user_name()
+        time.sleep(10)
+        open_windows = driver.window_handles
+        time.sleep(2)
+        driver.switch_to.window(open_windows[1])
+        time.sleep(1)
+        assert user_profile_page.get_user_status() == 'Работает', "Статус пользователя не Работает"
+        driver.switch_to.window(open_windows[2])
+        time.sleep(1)
+        assert user_profile_page.get_user_status() == 'Уволен', "Статус пользователя не Уволен"
+        driver.switch_to.window(open_windows[3])
+        time.sleep(1)
+        assert user_profile_page.get_user_status() == 'Работает', "Статус пользователя не Работает"
