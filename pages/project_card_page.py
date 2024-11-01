@@ -976,6 +976,10 @@ class ProjectCardPage(BasePage):
         #выбираем последнее значение в выпадающем списке
         self.elements_are_visible(self.locators.LI_MENU_ITEM)[8].click()
 
+    @allure_testit_step("Получение данных из 1й ячейки таблицы 'Ресурсный план'")
+    def get_value_cell(self):
+        return (self.elements_are_visible(self.locators.CELLS))[1].text
+
     @testit.step("Переключение временных интервалов")
     @allure.step("Переключение временных интервалов")
     def switching_time_intervals(self, period):
