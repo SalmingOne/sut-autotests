@@ -400,7 +400,7 @@ class UserProfilePage(BasePage):
     @testit.step("Проверка заголовка диплом")
     @allure.step("Проверка заголовка диплом")
     def check_diploma_title(self):
-        return self.element_is_displayed(self.locators.CHECK_DIPLOMA_TITLE, 1)
+        return self.element_is_displayed(self.locators.CHECK_DIPLOMA_TITLE, 2)
 
     @testit.step("Проверка заголовка сертификата")
     @allure.step("Проверка заголовка сертификата")
