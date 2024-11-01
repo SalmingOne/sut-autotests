@@ -784,3 +784,23 @@ class TestProjectCard:
         project_card_page.check_color_cell('hours')
         project_card_page.check_save_button_not_clickable()
     
+    @testit.workItemIds(554)
+    @testit.displayName('2.1.2.3. Сохранение данных при переключении временных периодов')
+    @pytest.mark.regress
+    @allure.title('id-554 2.1.2.3. Сохранение данных при переключении временных периодов')
+    def test_saving_data_when_switching_time_periods(self, simple_project, login, driver):
+        all_project_page = AllProjectPage(driver)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(simple_project['name'])
+        project_card_page = ProjectCardPage(driver)
+        project_card_page.go_to_resource_plan_tab()
+        project_card_page.change_table_resource_plan()
+        value = project_card_page.get_value_cell()
+        project_card_page.switching_time_intervals('quarter')
+        value_after_switching = project_card_page.get_value_cell()
+        assert value == value_after_switching, 'Данные после переключения интервалов не сохранились'
+        project_card_page.press_submit_button()
+        message = project_card_page.get_alert_message()
+        value_after_submit = project_card_page.get_value_cell()
+        assert value == value_after_submit, 'Данные после сохранения не сохранились'
+        assert message == 'Данные сохранены', 'Нет сообщения об успешном сохранении данных'
