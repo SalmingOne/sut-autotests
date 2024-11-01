@@ -1161,7 +1161,7 @@ class TestUserProfilePage:
     @testit.displayName("10.2.1. (Чек лист) Просмотр профиля сотрудника с разными статусами: Работает/Уволен")
     @pytest.mark.regress
     @allure.title("id-12566 10.2.1. (Чек лист) Просмотр профиля сотрудника с разными статусами: Работает/Уволен")
-    def test_click_adding_project_card_in_work_experience_tab(self, create_next_week_fired_user, login, driver):
+    def test_viewing_employees_profile_with_statuses_working_fired(self, create_next_week_fired_user, login, driver):
         user_profile_page = UserProfilePage(driver)
         advanced_search_page = AdvancedSearchPage(driver)
         advanced_search_page.go_advanced_search_page()
