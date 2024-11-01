@@ -43,7 +43,7 @@ class VariablesPage(BasePage):
         self.elements_are_visible(self.locators.ALL_KEBABS)[0].click()
         system_variable_menu = self.element_is_visible(self.locators.KEBAB_MENU_ITEM).text
         self.action_esc()
-        self.action_triple_click(self.elements_are_visible(self.locators.ALL_SEARCH_FIELDS)[3])
+        self.action_select_all_text(self.elements_are_visible(self.locators.ALL_SEARCH_FIELDS)[3])
         self.elements_are_visible(self.locators.ALL_SEARCH_FIELDS)[3].send_keys('Задаётся пользователем')
         self.elements_are_visible(self.locators.ALL_KEBABS)[0].click()
         menu_items = self.elements_are_visible(self.locators.KEBAB_MENU_ITEM)
@@ -223,9 +223,12 @@ class VariablesPage(BasePage):
     @testit.step("Редактирование переменной")
     @allure.step("Редактирование переменной")
     def editing_variable(self, new_name):
-        self.element_is_visible(self.locators.FIELD_NAME_INPUT).send_keys(Keys.CONTROL + 'a', new_name)
-        self.element_is_visible(self.locators.VARIABLE_NAME_INPUT).send_keys(Keys.CONTROL + 'a', new_name)
-        self.element_is_visible(self.locators.VARIABLE_VALUE_INPUT).send_keys(Keys.CONTROL + 'a', new_name)
+        self.action_select_all_text(self.element_is_visible(self.locators.FIELD_NAME_INPUT))
+        self.element_is_visible(self.locators.FIELD_NAME_INPUT).send_keys(new_name)
+        self.action_select_all_text(self.element_is_visible(self.locators.VARIABLE_NAME_INPUT))
+        self.element_is_visible(self.locators.VARIABLE_NAME_INPUT).send_keys(new_name)
+        self.action_select_all_text(self.element_is_visible(self.locators.VARIABLE_VALUE_INPUT))
+        self.element_is_visible(self.locators.VARIABLE_VALUE_INPUT).send_keys(new_name)
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
 
     @testit.step("Проверка наличия текста с предупреждением")

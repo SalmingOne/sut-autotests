@@ -130,7 +130,7 @@ class FilialPage(BasePage):
     def change_filial_address(self, name, new_address):
         self.element_is_visible(self.locators.kebab_by_filial_name(name)).click()
         self.element_is_visible(self.locators.REDACT_BUTTON).click()
-        self.action_triple_click(self.element_is_visible(self.locators.ADDRESS_FIELD))
+        self.action_select_all_text(self.element_is_visible(self.locators.ADDRESS_FIELD))
         self.element_is_visible(self.locators.ADDRESS_FIELD).send_keys(new_address)
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
 
@@ -255,12 +255,12 @@ class FilialPage(BasePage):
 
     @allure_testit_step("Очистка обязательных полей")
     def clearing_required_fields(self):
-        self.action_triple_click(self.element_is_visible(self.locators.NAME_FIELD))
+        self.action_select_all_text(self.element_is_visible(self.locators.NAME_FIELD))
         self.element_is_visible(self.locators.NAME_FIELD).send_keys(Keys.BACKSPACE)
 
     @allure_testit_step("Изменение имени филиала")
     def change_filial_name(self, name):
-        self.action_triple_click(self.element_is_visible(self.locators.NAME_FIELD))
+        self.action_select_all_text(self.element_is_visible(self.locators.NAME_FIELD))
         self.element_is_visible(self.locators.NAME_FIELD).send_keys(name)
 
     @allure_testit_step("Нажатие кнопки сохранить")

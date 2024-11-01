@@ -155,6 +155,7 @@ class LaborCostPageLocators:
     ADD_FILES_TEXT = (By.XPATH, '//input[@type="file"]//parent::label[@role="button"]')
     CHECK_TASK_FIELD = (By.XPATH, '//label[text()="Задача"]')
     DRAWER_SAVE_BUTTON = (By.XPATH, '//div[@name="type"]//following::button[@type="submit"]')
+    DRAWER_NAME = (By.XPATH, '//h6[text()="Добавление отсутствия"]')
     REDACT_DRAWER_SAVE_BUTTON = (By.XPATH, '//input[@type="tel"]//following::button[@type="submit"]')
     DRAWER_SAVE_BUTTON_DISABLE = (By.XPATH,
                                   '//div[@aria-label="Заполните все обязательные поля"]//button[@type="submit"]')

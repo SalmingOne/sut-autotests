@@ -50,7 +50,7 @@ class SchedulePageLocators:
     DAY_BEFORE_THIS_DAY_PICKER = (By.XPATH, '//button[contains(@class, "MuiPickersDay-today")]//preceding::button[1]')
     ADD_TAKE_OFF_DATA_BUTTON = (By.XPATH, '//button[text()="Добавить дату отработки"]')
     # Модальное окно первичного задания рабочих дней
-    TEXT_IN_MODAL = (By.XPATH, '//button[text()="Добавить дату отработки"]')
+    TEXT_IN_MODAL = (By.XPATH, '//p[text()="Укажите ваши рабочие дни"]')
     SUBMIT_IN_MODAL = (By.XPATH, '//button[text()="Сохранить"]')
 
     # Ошибки

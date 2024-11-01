@@ -167,12 +167,12 @@ class UserProfilePage(BasePage):
     @allure.step("Проверка ограничения в 255 символов для поля")
     def check_255_symbol_in_field(self, locator):
         bed_value = 'a' * 256
-        self.action_triple_click(self.element_is_visible(locator))
+        self.action_select_all_text(self.element_is_visible(locator))
         self.element_is_visible(locator).send_keys(bed_value)
         self.element_is_visible(self.locators.START_WORK_IN_RESUME).click()
         error_text = self.element_is_visible(self.locators.MUI_ERROR).text
         time.sleep(2)
-        self.action_triple_click(self.element_is_visible(locator))
+        self.action_select_all_text(self.element_is_visible(locator))
         self.element_is_visible(locator).send_keys('1')
         self.element_is_visible(self.locators.START_WORK_IN_RESUME).click()
         assert error_text == 'Максимальное количество символов: 255', \
@@ -278,9 +278,9 @@ class UserProfilePage(BasePage):
     def save_resume(self):
         resume_title = self.element_is_visible(self.locators.RESUME_TITLE_FIELD).get_attribute('value')
         self.element_is_visible(self.locators.RESUME_POST_FIELD).send_keys('Администратор')
-        self.action_triple_click(self.elements_are_visible(self.locators.DATE_PIKERS)[1])
+        self.action_select_all_text(self.elements_are_visible(self.locators.DATE_PIKERS)[1])
         self.elements_are_visible(self.locators.DATE_PIKERS)[1].send_keys('01.02.1990')
-        self.action_triple_click(self.elements_are_visible(self.locators.DATE_PIKERS)[2])
+        self.action_select_all_text(self.elements_are_visible(self.locators.DATE_PIKERS)[2])
         self.elements_are_visible(self.locators.DATE_PIKERS)[2].send_keys(self.get_day_before(0))
         self.element_is_visible(self.locators.SAVE_BUTTON).click()
         time.sleep(1)
@@ -298,7 +298,7 @@ class UserProfilePage(BasePage):
     @testit.step("Удаление резюме")
     @allure.step("Удаление резюме")
     def delete_resume(self, name):
-        self.action_triple_click(self.element_is_visible(self.locators.SEARCH_RESUME_NAME_FIELDS))
+        self.action_select_all_text(self.element_is_visible(self.locators.SEARCH_RESUME_NAME_FIELDS))
         self.element_is_visible(self.locators.SEARCH_RESUME_NAME_FIELDS).send_keys(name)
         time.sleep(1)
         self.elements_are_visible(self.locators.KEBAB_MENU)[0].click()
@@ -333,19 +333,19 @@ class UserProfilePage(BasePage):
     @allure.step("Добавление текста в поле дети")
     def change_children_text(self, text):
         time.sleep(1)
-        self.action_triple_click(self.element_is_visible(self.locators.CHILDREN_TEXT_AREA))
+        self.action_select_all_text(self.element_is_visible(self.locators.CHILDREN_TEXT_AREA))
         self.element_is_visible(self.locators.CHILDREN_TEXT_AREA).send_keys(text)
 
     @testit.step("Добавление текста в поле email")
     @allure.step("Добавление текста в поле email")
     def change_email_text(self, text):
-        self.action_triple_click(self.element_is_visible(self.locators.EMAIL_FIELD))
+        self.action_select_all_text(self.element_is_visible(self.locators.EMAIL_FIELD))
         self.element_is_visible(self.locators.EMAIL_FIELD).send_keys(text)
 
     @testit.step("Добавление текста в поле телефон")
     @allure.step("Добавление текста в поле телефон")
     def change_phone_text(self, text):
-        self.action_triple_click(self.element_is_visible(self.locators.PHONE_FIELD))
+        self.action_select_all_text(self.element_is_visible(self.locators.PHONE_FIELD))
         self.element_is_visible(self.locators.PHONE_FIELD).send_keys(text)
 
     @testit.step("Получение текста с поля email")
@@ -447,12 +447,12 @@ class UserProfilePage(BasePage):
     def check_128_symbol_in_field(self, locator, locator_to_click):
         bed_value = ('Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt'
                      ' ut laoreet dolore magna aliquam')
-        self.action_triple_click(self.element_is_visible(locator))
+        self.action_select_all_text(self.element_is_visible(locator))
         self.element_is_visible(locator).send_keys(bed_value)
         self.element_is_visible(locator_to_click).click()
         error_text = self.element_is_visible(self.locators.MUI_ERROR).text
         time.sleep(2)
-        self.action_triple_click(self.element_is_visible(locator))
+        self.action_select_all_text(self.element_is_visible(locator))
         self.element_is_visible(locator).send_keys('1')
         self.element_is_visible(locator_to_click).click()
         assert error_text == 'Максимальное количество символов: 128', \
@@ -572,7 +572,7 @@ class UserProfilePage(BasePage):
                      ' ut laoreet dolore magna aliquam')
         self.element_is_visible(self.locators.EXPERIENCES_EMPLOYER_FIELD).send_keys(bed_value)
         li_text = self.element_is_visible(self.locators.LI_MENU_ITEM).get_attribute('aria-label')
-        self.action_triple_click(self.element_is_visible(self.locators.EXPERIENCES_EMPLOYER_FIELD))
+        self.action_select_all_text(self.element_is_visible(self.locators.EXPERIENCES_EMPLOYER_FIELD))
         self.element_is_visible(self.locators.EXPERIENCES_EMPLOYER_FIELD).clear()
         assert li_text == 'Максимальное количество символов: 128', "Не появилось сообщение о превышении максимальной длины"
 
@@ -615,7 +615,7 @@ class UserProfilePage(BasePage):
         error_text = self.element_is_visible(self.locators.MUI_ERROR).text
         time.sleep(2)
         self.action_double_click(self.element_is_visible(self.locators.EXPERIENCES_BEGIN_DATA_INPUT))
-        self.element_is_visible(self.locators.EXPERIENCES_BEGIN_DATA_INPUT).send_keys(Keys.CONTROL + 'a')
+        self.action_select_all_text(self.element_is_visible(self.locators.EXPERIENCES_BEGIN_DATA_INPUT))
         after_end_project = self.get_day_after_end_project(project_name)
         if after_end_project:
             self.element_is_visible(self.locators.EXPERIENCES_BEGIN_DATA_INPUT).send_keys(after_end_project)
@@ -703,12 +703,12 @@ class UserProfilePage(BasePage):
     @allure.step("Проверка максимального значения символов 64")
     def check_64_symbol(self, locator, locator_to_click):
         bed_value = ('Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed dia')
-        self.action_triple_click(self.element_is_visible(locator))
+        self.action_select_all_text(self.element_is_visible(locator))
         self.element_is_visible(locator).send_keys(bed_value)
         self.element_is_visible(locator_to_click).click()
         error_text = self.element_is_visible(self.locators.MUI_ERROR).text
         time.sleep(2)
-        self.action_triple_click(self.element_is_visible(locator))
+        self.action_select_all_text(self.element_is_visible(locator))
         self.element_is_visible(locator).send_keys('1')
         self.element_is_visible(locator_to_click).click()
         assert error_text == 'Максимальное количество символов: 64', \
@@ -717,7 +717,7 @@ class UserProfilePage(BasePage):
     @testit.step("Проверка поля Работодатель при самостоятельном заполнении")
     @allure.step("Проверка поля Работодатель при самостоятельном заполнении")
     def field_custom_employer_field(self, employer_name):
-        self.action_triple_click(self.element_is_visible(self.locators.EXPERIENCES_EMPLOYER_FIELD))
+        self.action_select_all_text(self.element_is_visible(self.locators.EXPERIENCES_EMPLOYER_FIELD))
         self.element_is_visible(self.locators.EXPERIENCES_EMPLOYER_FIELD).send_keys(employer_name)
         li_text = self.element_is_visible(self.locators.LI_MENU_ITEM).get_attribute('aria-label')
         assert li_text == f'Добавить работодателя "{employer_name}"'
@@ -731,12 +731,12 @@ class UserProfilePage(BasePage):
         self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_SLOT).click()
         assert self.element_is_visible(self.locators.MUI_ERROR).text == 'Дата начала работы некорректна', \
             "Не появилось сообщение о некорректной дате"
-        self.action_triple_click(self.element_is_visible(self.locators.EXPERIENCES_BEGIN_DATA_INPUT))
+        self.action_select_all_text(self.element_is_visible(self.locators.EXPERIENCES_BEGIN_DATA_INPUT))
         self.element_is_visible(self.locators.EXPERIENCES_BEGIN_DATA_INPUT).send_keys(self.get_day_before(22000))
         self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_SLOT).click()
         error_text = self.element_is_visible(self.locators.MUI_ERROR).text
         time.sleep(2)
-        self.action_triple_click(self.element_is_visible(self.locators.EXPERIENCES_BEGIN_DATA_INPUT))
+        self.action_select_all_text(self.element_is_visible(self.locators.EXPERIENCES_BEGIN_DATA_INPUT))
         self.element_is_visible(self.locators.EXPERIENCES_BEGIN_DATA_INPUT).send_keys(self.get_day_before(2))
         self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_SLOT).click()
         assert error_text == 'Дата начала работы некорректна', "Не появилось сообщение о некорректной дате"
@@ -773,7 +773,7 @@ class UserProfilePage(BasePage):
     @testit.step("Проверка создания резюме с неуникальным именем")
     @allure.step("Проверка создания резюме с неуникальным именем")
     def check_resume_with_non_unique_name(self, name):
-        self.action_triple_click(self.element_is_visible(self.locators.RESUME_TITLE_FIELD))
+        self.action_select_all_text(self.element_is_visible(self.locators.RESUME_TITLE_FIELD))
         self.element_is_visible(self.locators.RESUME_TITLE_FIELD).send_keys(name)
         self.element_is_visible(self.locators.RESUME_POST_FIELD).send_keys('Администратор')
         self.action_double_click(self.elements_are_visible(self.locators.DATE_PIKERS)[1])
@@ -831,7 +831,7 @@ class UserProfilePage(BasePage):
     @testit.step("Проверка выбора даты начала работы в компании после текущего дня")
     @allure.step("Проверка выбора даты начала работы в компании после текущего дня")
     def check_entering_a_date_after_that_day_in_the_start_date_of_work_at_the_company_field(self):
-        self.action_triple_click(self.element_is_visible(self.locators.START_WORK_IN_RESUME))
+        self.action_select_all_text(self.element_is_visible(self.locators.START_WORK_IN_RESUME))
         self.element_is_visible(self.locators.START_WORK_IN_RESUME).send_keys(self.get_day_before(-1))
         self.element_is_visible(self.locators.RESUME_DIRECTION_FIELD).click()
         assert self.element_is_visible(self.locators.MUI_ERROR).text == 'Нельзя выбрать будущую дату', \
@@ -865,7 +865,7 @@ class UserProfilePage(BasePage):
     @testit.step("Отмена удаления резюме")
     @allure.step("Отмена удаления резюме")
     def cancel_delete_resume(self, name):
-        self.action_triple_click(self.element_is_visible(self.locators.SEARCH_RESUME_NAME_FIELDS))
+        self.action_select_all_text(self.element_is_visible(self.locators.SEARCH_RESUME_NAME_FIELDS))
         self.element_is_visible(self.locators.SEARCH_RESUME_NAME_FIELDS).send_keys(name)
         time.sleep(0.5)
         self.elements_are_visible(self.locators.KEBAB_MENU)[0].click()
@@ -876,7 +876,7 @@ class UserProfilePage(BasePage):
     @testit.step("Редактирование резюме")
     @allure.step("Редактирование резюме")
     def redact_resume(self, name):
-        self.action_triple_click(self.element_is_visible(self.locators.SEARCH_RESUME_NAME_FIELDS))
+        self.action_select_all_text(self.element_is_visible(self.locators.SEARCH_RESUME_NAME_FIELDS))
         self.element_is_visible(self.locators.SEARCH_RESUME_NAME_FIELDS).send_keys(name)
         time.sleep(0.5)
         self.elements_are_visible(self.locators.KEBAB_MENU, 7)[0].click()
@@ -887,7 +887,7 @@ class UserProfilePage(BasePage):
     @allure.step("Изменение данных в резюме")
     def change_resume(self, new_name):
         time.sleep(1)
-        self.action_triple_click(self.element_is_visible(self.locators.RESUME_TITLE_FIELD))
+        self.action_select_all_text(self.element_is_visible(self.locators.RESUME_TITLE_FIELD))
         self.element_is_visible(self.locators.RESUME_TITLE_FIELD).send_keys(new_name)
         time.sleep(1)
         self.action_double_click(self.elements_are_visible(self.locators.DATE_PIKERS)[1])
@@ -900,16 +900,16 @@ class UserProfilePage(BasePage):
     @allure.step("Очистка обязательных полей в резюме")
     def clear_required_fields(self):
         time.sleep(2)
-        self.action_triple_click(self.element_is_visible(self.locators.RESUME_FULL_NAME_FIELD))
+        self.action_select_all_text(self.element_is_visible(self.locators.RESUME_FULL_NAME_FIELD))
         self.element_is_visible(self.locators.RESUME_FULL_NAME_FIELD).send_keys(Keys.BACK_SPACE)
         time.sleep(0.5)
-        self.action_triple_click(self.element_is_visible(self.locators.RESUME_TITLE_FIELD))
+        self.action_select_all_text(self.element_is_visible(self.locators.RESUME_TITLE_FIELD))
         self.element_is_visible(self.locators.RESUME_TITLE_FIELD).send_keys(Keys.BACK_SPACE)
         time.sleep(0.5)
-        self.action_triple_click(self.element_is_visible(self.locators.RESUME_POST_FIELD))
+        self.action_select_all_text(self.element_is_visible(self.locators.RESUME_POST_FIELD))
         self.element_is_visible(self.locators.RESUME_POST_FIELD).send_keys(Keys.BACK_SPACE)
         time.sleep(0.5)
-        self.action_triple_click(self.element_is_visible(self.locators.START_WORK_IN_RESUME))
+        self.action_select_all_text(self.element_is_visible(self.locators.START_WORK_IN_RESUME))
         self.element_is_visible(self.locators.START_WORK_IN_RESUME).send_keys(Keys.BACK_SPACE)
         time.sleep(0.5)
         self.action_double_click(self.elements_are_visible(self.locators.DATE_PIKERS)[2])
@@ -991,7 +991,7 @@ class UserProfilePage(BasePage):
     @testit.step("Ввод текста в пустое поле заметки")
     @allure.step("Ввод текста в пустое поле заметки")
     def put_text_in_note(self, put_text):
-        self.action_triple_click(self.element_is_visible(self.locators.EDITOR_CONTENT))
+        self.action_select_all_text(self.element_is_visible(self.locators.EDITOR_CONTENT))
         self.element_is_visible(self.locators.EDITOR_CONTENT).send_keys(put_text)
 
     @testit.step("Сохранение заметки")
@@ -1041,7 +1041,7 @@ class UserProfilePage(BasePage):
     @testit.step("Заполнение поля проект")
     @allure.step("Заполнение поля проект")
     def field_project_field(self, project_name):
-        self.action_triple_click(self.element_is_visible(self.locators.EXPERIENCES_CUSTOM_PROJECT_FIELD))
+        self.action_select_all_text(self.element_is_visible(self.locators.EXPERIENCES_CUSTOM_PROJECT_FIELD))
         self.element_is_visible(self.locators.EXPERIENCES_CUSTOM_PROJECT_FIELD).send_keys(project_name)
 
     @testit.step("Получение текста поля проект")
@@ -1052,7 +1052,7 @@ class UserProfilePage(BasePage):
     @testit.step("Заполнение поля проектная роль")
     @allure.step("Заполнение поля проектная роль")
     def field_project_role_field(self, role_name):
-        self.action_triple_click(self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_SLOT))
+        self.action_select_all_text(self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_SLOT))
         self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_SLOT).send_keys(role_name)
 
     @testit.step("Получение текста поля проектная роль")
@@ -1077,7 +1077,7 @@ class UserProfilePage(BasePage):
         self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_SLOT).click()
         error_text = self.element_is_visible(self.locators.MUI_ERROR).text
         time.sleep(2)
-        self.action_triple_click(self.element_is_visible(self.locators.EXPERIENCES_END_DATA_INPUT))
+        self.action_select_all_text(self.element_is_visible(self.locators.EXPERIENCES_END_DATA_INPUT))
         self.element_is_visible(self.locators.EXPERIENCES_END_DATA_INPUT).send_keys(self.get_day_before(0))
         self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_SLOT).click()
         assert error_text == 'Дата окончания работы не может быть раньше начала', \

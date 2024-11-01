@@ -29,7 +29,7 @@ class AllProjectPageLocators:
     PROJECT_UNZIPPING_BUTTON = (By.XPATH, '//span[text()="Разархивировать"]')
     KEBAB_MENU = (By.CSS_SELECTOR, 'svg[data-testid="MoreHorizIcon"]')
     # Локаторы фильтрации проектов по статусам
-    STATUS_FILTER_BUTTON = (By.XPATH, '//div[@aria-colindex="6"]//button')
+    STATUS_FILTER_BUTTON = (By.XPATH, '//div[@aria-colindex="7"]//button')
     MARK_ALL_STATUS = (By.XPATH, '//div[text()="Выделить всё"]')
     #
     TAB_TITLE = (By.XPATH, '//h6[text()="Проекты"]')

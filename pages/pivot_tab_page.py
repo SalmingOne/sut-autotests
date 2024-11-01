@@ -4,9 +4,11 @@ import allure
 import testit
 from selenium.webdriver.common.by import By
 
+from locators.pivot_tab_filter_locators import PivotTabFilterPageLocators
 from locators.pivot_tab_page_locators import PivotTabPageLocators
 from pages.base_page import BasePage
 from data.models.create_project_model import CreateProject
+from data.data import PROJECT_NAME, USER_NAME
 
 
 class PivotTabPage(BasePage):
@@ -45,28 +47,29 @@ class PivotTabPage(BasePage):
     @allure.step("Берем id строки нужного проекта для дальнейшего поиска")
     def get_row_id(self, tab):
         if tab == "project":
-            row_id = self.element_is_visible(self.locators.GET_ROW_ID).get_attribute("row-id")
+            row_id = self.element_is_visible(self.locators.GET_ROW_ID, 10).get_attribute("row-id")
             return row_id
         elif tab == "user":
-            row_id = self.element_is_visible(self.locators.GET_ROW_ID_ON_USER).get_attribute("row-id")
+            row_id = self.element_is_visible(self.locators.GET_ROW_ID_ON_USER, 10).get_attribute("row-id")
             return row_id
 
     @testit.step("Берем сумму списанных часов за период по проекту")
     @allure.step("Берем сумму списанных часов за период по проекту")
     def get_sum_reason_on_project(self, period):
         row_id = self.get_row_id("project")
+        print(row_id)
         if period == "month":
-            period_sum = (By.XPATH, f'//div[@row-id="{row_id}"]//div[@aria-colindex="8"]/p')
+            period_sum = (By.XPATH, f'//div[@row-id="{row_id}"]//div[@aria-colindex="8"]')
             a = self.element_is_visible(period_sum).text
             print(a)
             return a
         elif period == "week":
-            period_sum = (By.XPATH, f'//div[@row-id="{row_id}"]//div[@aria-colindex="10"]//p')
+            period_sum = (By.XPATH, f'//div[@row-id="{row_id}"]//div[@aria-colindex="10"]')
             a = self.element_is_visible(period_sum).text
             print(a)
             return a
         elif period == "year":
-            period_sum = (By.XPATH, f'//div[@row-id="{row_id}"]//div[@aria-colindex="15"]//p')
+            period_sum = (By.XPATH, f'//div[@row-id="{row_id}"]//div[@aria-colindex="15"]')
             a = self.element_is_visible(period_sum).text
             print(a)
             return a
@@ -75,7 +78,7 @@ class PivotTabPage(BasePage):
     @allure.step("Берем сумму списанных часов за период по пользователю")
     def get_sum_reason_on_user(self):
         row_id = self.get_row_id("user")
-        period_sum = (By.XPATH, f'//div[@row-id="{row_id}"]//div[@col-id="workdaysHoursSum"]/p')
+        period_sum = (By.XPATH, f'//div[@row-id="{row_id}"]//div[@col-id="workdaysHoursSum"]')
         a = self.element_is_visible(period_sum).text
         print(a)
         return a
@@ -95,6 +98,13 @@ class PivotTabPage(BasePage):
     @testit.step("Открываем список проектов пользователя")
     @allure.step("Открываем список проектов пользователя")
     def open_project_list(self):
+        self.action_move_to_element(self.element_is_visible(self.locators.USERS_COLUMN))
+        self.element_is_visible(self.locators.OPEN_FILTER_BUTTON_USER_COLUMN).click()
+        self.element_is_visible(self.locators.FILTER_USER_COLUMN).click()
+        self.elements_are_present(self.locators.LISTBOX_ITEMS)[0].click()
+        self.element_is_visible(self.locators.SEARCH_INPUT).send_keys(USER_NAME)
+        self.elements_are_present(self.locators.LISTBOX_ITEMS)[0].click()
+        self.action_esc()
         self.element_is_visible(self.locators.OPEN_PROJECT_LIST).click()
 
     @testit.step("Открываем дровер фильтрации (отображение)")

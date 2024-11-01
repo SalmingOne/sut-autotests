@@ -55,6 +55,12 @@ class PivotTabPageLocators:
     PREVIOUS_PERIOD_BUTTON = (By.CSS_SELECTOR, 'svg[data-testid="ChevronLeftIcon"]')
     THIS_DAY_BUTTON = (By.XPATH, '//button[contains(@class, "DateInterval-setToday")]')
 
+    USERS_COLUMN = (By.XPATH, '//span[text()="Пользователь"]')
+    OPEN_FILTER_BUTTON_USER_COLUMN = (By.CSS_SELECTOR, 'span[ref="eMenu"')
+    FILTER_USER_COLUMN = (By.CSS_SELECTOR, 'span[aria-label="filter"]')
+    SEARCH_INPUT = (By.CSS_SELECTOR, 'input[aria-label="Search filter values"]')
+    LISTBOX_ITEMS = (By.CSS_SELECTOR, 'div[role="option"]')
+
     TAB_TITLE = (By.CSS_SELECTOR, 'span[class="ag-header-cell-text"]')
     COLUMN_TITLES = (By.XPATH, '//div[contains(@class,"ag-header-cell-")]//h6')
     TAB_HEADER_WEEK_TEXT = (By.XPATH, '//div[contains(@class,"ag-header-cell")]//span[contains(@class,"MuiTypography-caption")]')
