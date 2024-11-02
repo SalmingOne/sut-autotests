@@ -783,6 +783,31 @@ class TestProjectCard:
         project_card_page.press_save_in_drover()
         project_card_page.check_color_cell('hours')
         project_card_page.check_save_button_not_clickable()
+
+    @testit.workItemIds(11795)
+    @testit.displayName('2.1.1.1.1. Отмена добавления периодов привлечения и почасовой занятости для ресурса (таблица)')
+    @pytest.mark.regress
+    @allure.title('id-11795 2.1.1.1.1. Отмена добавления периодов привлечения и почасовой занятости для ресурса (таблица)')
+    def test_cancel_adding_busy_hours_for_resource(self, simple_project, project_with_planned_resources, login, driver):
+        start_date = str(project_with_planned_resources[0])
+        end_date = str(project_with_planned_resources[1])
+        all_project_page = AllProjectPage(driver)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(simple_project['name'])
+        project_card_page = ProjectCardPage(driver)
+        project_card_page.go_to_resource_plan_tab()
+        # Получаем отображение таблицы "Ресурсный план" до внесения изменений
+        table_before = project_card_page.displaying_table_resource_plan()
+        project_card_page.press_add_employment_button()
+        project_card_page.set_period_and_busy(start_date, end_date, 4)
+        project_card_page.press_save_in_drover()
+        # Получаем отображение таблицы "Ресурсный план" после внесения изменений
+        table_after = project_card_page.displaying_table_resource_plan()
+        assert table_before != table_after, 'Внесенные изменения не отображаются'
+        project_card_page.press_break_button()
+        # Получаем отображение таблицы "Ресурсный план" после отмены сохранения
+        table_after_break = project_card_page.displaying_table_resource_plan()
+        assert table_before == table_after_break, "Данные в таблице сохранились после отмены"
     
     @testit.workItemIds(554)
     @testit.displayName('2.1.2.3. Сохранение данных при переключении временных периодов')

@@ -881,14 +881,14 @@ class ProjectCardPage(BasePage):
     def set_period_and_busy(self, start_date, end_date, period=8):
         # period это порядковый номер элемента, в зависимости от выбора радиобаттона
         # 8 - это 100% или 8 часов если не переключен радиобаттон (4 это 50% или 4 часа)
-        self.element_is_visible(self.locators.DROVER_MENU, 10).click()
-        (self.elements_are_visible(self.locators.DROVER_MENU_ITEM, 10))[period].click()
         time.sleep(1)
-        self.action_triple_click(self.element_is_visible(self.locators.DROVER_START_DATE))
+        self.action_double_click(self.element_is_visible(self.locators.DROVER_START_DATE))
         self.element_is_visible(self.locators.DROVER_START_DATE).send_keys(start_date)
         time.sleep(1)
-        self.action_triple_click(self.element_is_visible(self.locators.DROVER_END_DATE))
+        self.element_is_visible(self.locators.DROVER_END_DATE).click()
         self.element_is_visible(self.locators.DROVER_END_DATE).send_keys(end_date)
+        self.element_is_visible(self.locators.DROVER_MENU, 10).click()
+        (self.elements_are_visible(self.locators.DROVER_MENU_ITEM, 10))[period].click()
 
     @allure_testit_step("Получение процентов/часов привлечения")
     def get_busy(self, start_date):
