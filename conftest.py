@@ -13,6 +13,7 @@ from endpoints.labels_endpoint import LabelsEndpoint
 from endpoints.gantt_endpoint import GanttEndpoint
 from endpoints.labor_reports_endpoint import LaborReportEndpoint
 from endpoints.logs_endpoint import LogsEndpoint
+from endpoints.personal_quality_endpoint import PersonalQualityEndpoint
 from endpoints.posts_endpoint import PostsEndpoint
 from endpoints.project_endpoint import ProjectEndpoint
 from endpoints.project_roles_endpoint import ProjectRolesEndpoint
@@ -1202,3 +1203,21 @@ def create_resume_to_autotest_user():
     response = resume_endpoint.create_resume_api(json=payload)
     yield payload['title']
     resume_endpoint.delete_resume_api(str(response.json()['id']))
+
+
+@pytest.fixture()
+def create_personal_quality():
+    persona_quality_endpoint = PersonalQualityEndpoint()
+    payload = dict(name='АААличное')
+    response = persona_quality_endpoint.create_personal_quality_api(json=payload)
+    yield response.json()
+    persona_quality_endpoint.delete_personal_quality_api(str(response.json()['id']))
+
+
+@pytest.fixture()
+def create_second_personal_quality():
+    persona_quality_endpoint = PersonalQualityEndpoint()
+    payload = dict(name='АААкачество')
+    response = persona_quality_endpoint.create_personal_quality_api(json=payload)
+    yield response.json()
+    persona_quality_endpoint.delete_personal_quality_api(str(response.json()['id']))

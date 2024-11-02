@@ -1240,3 +1240,18 @@ class TestUserProfilePage:
         user_profile_page.press_save_button()
         assert not user_profile_page.check_diploma_title(), "Диплом не удалился"
 
+    @testit.workItemIds(1271)
+    @testit.displayName("10.7.2. Выбор личного качества при редактировании профиля")
+    @pytest.mark.regress
+    @allure.title("id-1271 10.7.2. Выбор личного качества при редактировании профиля")
+    def test_selecting_personal_quality_when_editing_profile(self, create_personal_quality,
+                                                             create_second_personal_quality, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        time.sleep(6)
+        user_profile_page.press_redact_button()
+        time.sleep(1)
+        user_profile_page.check_search_qualities(create_personal_quality['name'], create_second_personal_quality['name'])
+        user_profile_page.check_choose_qualities(create_personal_quality['name'], create_second_personal_quality['name'])
+        user_profile_page.delete_qualiti(create_personal_quality['name'])
+        time.sleep(2)

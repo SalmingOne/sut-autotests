@@ -1237,3 +1237,27 @@ class UserProfilePage(BasePage):
         time.sleep(1)  # Без этого ожидания не всегда нажимается кнопка
         self.element_is_visible(self.locators.BREAK_BUTTON).click()
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+
+    @allure_testit_step('Проверка поиска качеств')
+    def check_search_qualities(self, qualiti1, qualiti2):
+        self.element_is_visible(self.locators.QUALITIES_INPUT).send_keys('ААА')
+        time.sleep(3)
+        dropdown_element = [element.text for element in self.elements_are_visible(self.locators.LI_MENU_ITEM)]
+        assert qualiti1 and qualiti2 in dropdown_element, "Не отображаются варианты качеств"
+
+    @allure_testit_step('Проверка сохранения выбранного качества')
+    def check_choose_qualities(self, qualiti1, qualiti2):
+        self.element_is_visible(self.locators.check_text(qualiti1)).click()
+        assert self.element_is_displayed(self.locators.check_text(qualiti1)), "В поле не отображается выбранное качество"
+        self.press_save_button()
+        time.sleep(2)
+        assert self.element_is_displayed(self.locators.check_text(qualiti1)), "Выбранное качество значение не сохранилось"
+        assert not self.element_is_displayed(self.locators.check_text(qualiti2), 2), \
+            "Сохранилось не выбранное качество"
+
+    @allure_testit_step('Удаление чипсы с качеством')
+    def delete_qualiti(self, name):
+        self.press_redact_button()
+        time.sleep(1)
+        self.element_is_visible(self.locators.delete_chips_icon(name)).click()
+        self.press_save_button()
