@@ -60,6 +60,8 @@ class UserProfilePageLocators:
     FACULTY_NAME = (By.CSS_SELECTOR, 'input[placeholder="Введите факультет"]')
     SPECIALIZATION_NAME = (By.CSS_SELECTOR, 'input[placeholder="Введите специальность"]')
     YEAR_OF_GRADUATION = (By.CSS_SELECTOR, 'input[placeholder="Введите год окончания"]')
+    ALL_DIPLOMA_INPUTS = (By.XPATH, '//div[contains(@class,"MuiPaper-rounded MuiPaper-elevation0")]//input')
+    ALL_DIPLOMA_PLACEHOLDER = (By.XPATH, '//div[contains(@class,"MuiPaper-rounded MuiPaper-elevation0")]//textarea[@placeholder]')
     DELETE_ICON = (By.CSS_SELECTOR, 'svg[data-testid="DeleteIcon"]')
     FILE_INPUT = (By.XPATH, '//div[@aria-label="Приложите файлы. Допустимый формат: PDF, DOCX, PNG, JPEG, JPG. Суммарный размер: <=5Мб"]//input[@type="file"]')
     FILE_INPUT_CHECK = (By.XPATH, '//div[@aria-label="Приложите файлы. Допустимый формат: PDF, DOCX, PNG, JPEG, JPG. Суммарный размер: <=5Мб"]//label')

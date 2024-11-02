@@ -1255,3 +1255,37 @@ class TestUserProfilePage:
         user_profile_page.check_choose_qualities(create_personal_quality['name'], create_second_personal_quality['name'])
         user_profile_page.delete_qualiti(create_personal_quality['name'])
         time.sleep(2)
+
+    @testit.workItemIds(1130)
+    @testit.displayName("10.2.2. Добавление карточки нового диплома в разделе Образование в личном профиле")
+    @pytest.mark.regress
+    @allure.title("id-1130 10.2.2. Добавление карточки нового диплома в разделе Образование в личном профиле")
+    def test_adding_diploma_to_education_tab_your_profile(self, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        time.sleep(6)
+        user_profile_page.go_to_education_tab()
+        if user_profile_page.check_diploma_title():
+            pass
+        else:
+            user_profile_page.add_simple_diploma()
+            time.sleep(1)
+            user_profile_page.go_to_education_tab()
+        time.sleep(1)
+        user_profile_page.press_redact_button()
+        time.sleep(1)
+        # Проверяем поля раздела образование
+        user_profile_page.check_education_form()
+        user_profile_page.press_delete_icon()
+        user_profile_page.press_save_button()
+        time.sleep(1)
+        before_save = user_profile_page.add_diploma('НИИЧАВО',
+                                      'Отдел Линейного Счастья',
+                                      'магистр-академик')
+        message = user_profile_page.get_alert_message()
+        time.sleep(2)
+        after_save = user_profile_page.get_all_value_diploma_card()
+        assert 'НИИЧАВО' and 'Отдел Линейного Счастья' and 'магистр-академик' in before_save, \
+            "В полях не отображаются введенные данные"
+        assert sorted(before_save[0:7]) == sorted(after_save), "Изменения не сохранились"
+        assert 'Данные сохранены' in message, "Не появилось сообщение Данные сохранены"
