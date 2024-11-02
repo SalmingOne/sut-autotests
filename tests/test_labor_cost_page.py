@@ -1,4 +1,5 @@
 import locale
+import platform
 import time
 
 import allure

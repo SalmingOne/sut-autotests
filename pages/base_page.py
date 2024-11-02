@@ -1,3 +1,4 @@
+import platform
 from datetime import datetime, timedelta
 
 import allure
@@ -58,7 +59,16 @@ class BasePage:
     @allure.step("тройной клик")
     def action_triple_click(self, element):
         actions = ActionChains(self.driver)
-        actions.click(element).click(element).click(element)
+        actions.click(element).click().click()
+        actions.perform()
+
+    @allure.step("Выделение всего текста в текстовом поле")
+    def action_select_all_text(self, element):
+        actions = ActionChains(self.driver)
+        if platform.system() == "Darwin":  # для macOS
+            actions.click(element).key_down(Keys.COMMAND).send_keys("a").key_up(Keys.COMMAND)
+        else:
+            actions.click(element).key_down(Keys.CONTROL).send_keys("a").key_up(Keys.CONTROL)
         actions.perform()
 
     @allure.step("правый клик")

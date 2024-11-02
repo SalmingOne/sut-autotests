@@ -848,7 +848,7 @@ class TestUserProfilePage:
         user_profile_page = UserProfilePage(driver)
         user_profile_page.go_to_user_profile()
         user_profile_page.press_redact_button()
-        time.sleep(2)       # без слип тайм не успевает прогрузиться
+        time.sleep(5)       # без слип тайм не успевает прогрузиться
         user_profile_page.add_contact_form()
         user_profile_page.filling_contact_form()
         user_profile_page.press_save_button()
@@ -886,12 +886,13 @@ class TestUserProfilePage:
         user_profile_page = UserProfilePage(driver)
         user_profile_page.go_to_user_profile()
         user_profile_page.press_redact_button()
-        time.sleep(2)  # без слип тайм не успевает прогрузиться
+        time.sleep(5)  # без слип тайм не успевает прогрузиться
         user_profile_page.add_contact_form()
         user_profile_page.press_save_button()
+        assert user_profile_page.get_all_mui_errors() == ['Поле обязательно',
+                                                          'Поле обязательно'], "Нет сообщения об обязательности полей"
         assert user_profile_page.get_my_profile_tab_color() == 'rgba(211, 47, 47, 1)', "Таб Информация о сотруднике не подсвечивается красным цветом."
         assert user_profile_page.get_alert_message() == ['На табе "Информация о сотруднике" не все поля были заполнены корректно'], "Нет сообщения о некорректном заполнении полей"
-        assert user_profile_page.get_all_mui_errors() == ['Поле обязательно', 'Поле обязательно'], "Нет сообщения об обязательности полей"
 
     @testit.workItemIds(1516)
     @testit.displayName("10.2.3. Ввод пробела в  поля дополнительных контактов в разделе Контакты")

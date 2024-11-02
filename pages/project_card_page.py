@@ -284,7 +284,7 @@ class ProjectCardPage(BasePage):
     @testit.step("Переход на вкладку Ресурсный план")
     @allure.step("Переход на вкладку Ресурсный план")
     def go_to_resource_plan_tab(self):
-        self.element_is_visible(self.locators.RESOURCE_PLAN_TAB).click()
+        self.element_is_visible(self.locators.RESOURCE_PLAN_TAB, 15).click()
         self.element_is_present(self.locators.ADD_EMPLOYMENT_BUTTON, 15)
 
     @testit.step("Проверка вкладки Ресурсный план")
@@ -586,7 +586,7 @@ class ProjectCardPage(BasePage):
     @testit.step("Изменение даты начала проекта")
     @allure.step("Изменение даты начала проекта")
     def change_start_date(self, date):
-        self.action_triple_click(self.element_is_visible(self.locators.BEGIN_DATA_FIELD))
+        self.action_select_all_text(self.element_is_visible(self.locators.BEGIN_DATA_FIELD))
         self.element_is_visible(self.locators.BEGIN_DATA_FIELD).send_keys(date)
 
     @testit.step("Нажатие кнопки Сохранить")
@@ -607,7 +607,7 @@ class ProjectCardPage(BasePage):
     @testit.step("Очистка поля код проекта")
     @allure.step("Очистка поля код проекта")
     def clear_code_field(self):
-        self.action_triple_click(self.element_is_visible(self.locators.CODE_FIELD))
+        self.action_select_all_text(self.element_is_visible(self.locators.CODE_FIELD))
         self.element_is_visible(self.locators.CODE_FIELD).send_keys(Keys.BACKSPACE)
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
 
@@ -624,7 +624,7 @@ class ProjectCardPage(BasePage):
     @testit.step("Изменение имени проекта")
     @allure.step("Изменение имени проекта")
     def change_project_name(self, name):
-        self.action_triple_click(self.element_is_visible(self.locators.NAME_FIELD))
+        self.action_select_all_text(self.element_is_visible(self.locators.NAME_FIELD))
         self.element_is_visible(self.locators.NAME_FIELD).send_keys(name)
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
 
@@ -636,21 +636,21 @@ class ProjectCardPage(BasePage):
     @testit.step("Изменение кода проекта")
     @allure.step("Изменение кода проекта")
     def change_project_code(self, code):
-        self.action_triple_click(self.element_is_visible(self.locators.CODE_FIELD))
+        self.action_select_all_text(self.element_is_visible(self.locators.CODE_FIELD))
         self.element_is_visible(self.locators.CODE_FIELD).send_keys(code)
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
 
     @testit.step("Очистка поля имя проекта")
     @allure.step("Очистка поля имя проекта")
     def clear_name_field(self):
-        self.action_triple_click(self.element_is_visible(self.locators.NAME_FIELD))
+        self.action_select_all_text(self.element_is_visible(self.locators.NAME_FIELD))
         self.element_is_visible(self.locators.NAME_FIELD).send_keys(Keys.BACKSPACE)
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
 
     @testit.step("Очистка поля дата начала проекта")
     @allure.step("Очистка поля дата начала проекта")
     def clear_start_project_date_field(self):
-        self.action_triple_click(self.element_is_visible(self.locators.BEGIN_DATA_FIELD))
+        self.action_select_all_text(self.element_is_visible(self.locators.BEGIN_DATA_FIELD))
         self.element_is_visible(self.locators.BEGIN_DATA_FIELD).send_keys(Keys.BACKSPACE)
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
 
@@ -800,7 +800,7 @@ class ProjectCardPage(BasePage):
     @testit.step("Заполнение поля Причина отклонения")
     @allure.step("Заполнение поля Причина отклонения")
     def field_modal_reason_field(self, text):
-        self.action_triple_click(self.element_is_visible(self.locators.REASON_TEXTAREA))
+        self.action_select_all_text(self.element_is_visible(self.locators.REASON_TEXTAREA))
         self.element_is_visible(self.locators.REASON_TEXTAREA).send_keys(text)
 
     @testit.step("Клик на ячейку со списанием по тексту")
@@ -882,7 +882,7 @@ class ProjectCardPage(BasePage):
         # period это порядковый номер элемента, в зависимости от выбора радиобаттона
         # 8 - это 100% или 8 часов если не переключен радиобаттон (4 это 50% или 4 часа)
         time.sleep(1)
-        self.action_double_click(self.element_is_visible(self.locators.DROVER_START_DATE))
+        self.action_select_all_text(self.element_is_visible(self.locators.DROVER_START_DATE))
         self.element_is_visible(self.locators.DROVER_START_DATE).send_keys(start_date)
         time.sleep(1)
         self.element_is_visible(self.locators.DROVER_END_DATE).click()

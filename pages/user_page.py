@@ -15,7 +15,7 @@ class UserPage(BasePage):
     @allure.step("Проверяем есть ли пользователь в таблице")
     def check_user_is_not_in_table(self, last_name):
         time.sleep(1)
-        self.action_triple_click(self.element_is_visible(self.locators.USER_SEARCH_FIELD))
+        self.action_select_all_text(self.element_is_visible(self.locators.USER_SEARCH_FIELD))
         time.sleep(1)
         self.element_is_visible(self.locators.USER_SEARCH_FIELD).send_keys(Keys.BACK_SPACE)
         self.element_is_visible(self.locators.USER_SEARCH_FIELD).send_keys(f'{last_name}')

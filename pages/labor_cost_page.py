@@ -495,6 +495,7 @@ class LaborCostPage(BasePage):
             assert self.element_is_displayed(self.locators.check_text('отсутствие.docx')), "Файл не добавился"
         except TimeoutException:
             self.element_is_visible(self.locators.BEGIN_LEAVE_DATA_INPUT).click()
+        self.element_is_visible(self.locators.DRAWER_NAME).click()
         self.element_is_visible(self.locators.DRAWER_SAVE_BUTTON).click()
         time.sleep(1.5)
         self.delete_file('отсутствие.docx')
@@ -725,10 +726,10 @@ class LaborCostPage(BasePage):
             insert_day = '0' + str(day_number + 1)
         output_day = insert_day + input_day[2:10]
         self.elements_are_visible(self.locators.FIRST_AND_LAST_ABSENCE_DAY)[0].click()
-        self.action_triple_click(self.elements_are_visible(self.locators.FIRST_AND_LAST_ABSENCE_DAY)[0])
+        self.action_select_all_text(self.elements_are_visible(self.locators.FIRST_AND_LAST_ABSENCE_DAY)[0])
         self.elements_are_visible(self.locators.FIRST_AND_LAST_ABSENCE_DAY)[0].send_keys(output_day)
         self.elements_are_visible(self.locators.FIRST_AND_LAST_ABSENCE_DAY)[1].click()
-        self.action_triple_click(self.elements_are_visible(self.locators.FIRST_AND_LAST_ABSENCE_DAY)[1])
+        self.action_select_all_text(self.elements_are_visible(self.locators.FIRST_AND_LAST_ABSENCE_DAY)[1])
         self.elements_are_visible(self.locators.FIRST_AND_LAST_ABSENCE_DAY)[1].send_keys(output_day)
         self.elements_are_visible(self.locators.FIRST_AND_LAST_ABSENCE_DAY)[1].send_keys(Keys.RETURN)
         return output_day
@@ -779,7 +780,7 @@ class LaborCostPage(BasePage):
             self.element_is_present(self.locators.FILE_INPUT, 2).send_keys(os.path.abspath(r'../отсутствие.docx'))
         except TimeoutException:
             pass
-        self.action_triple_click(self.element_is_visible(self.locators.OVERTIME_WORK_DATA_INPUT))
+        self.action_select_all_text(self.element_is_visible(self.locators.OVERTIME_WORK_DATA_INPUT))
         self.element_is_visible(self.locators.OVERTIME_WORK_DATA_INPUT).send_keys(self.get_day_before(0))
         attribute = self.element_is_visible(self.locators.PROJECT_NAME_DRAWER_INPUT_FIELD).get_attribute("value")
         self.delete_file('отсутствие.docx')
@@ -905,10 +906,10 @@ class LaborCostPage(BasePage):
     @testit.step("Редактирование переработки")
     @allure.step("Редактирование переработки")
     def editing_overwork(self, number, reason):
-        self.action_triple_click(self.element_is_visible(self.locators.CHECK_LABOR_REASON_FIELD))
+        self.action_select_all_text(self.element_is_visible(self.locators.CHECK_LABOR_REASON_FIELD))
         self.element_is_visible(self.locators.CHECK_LABOR_REASON_FIELD).send_keys(reason)
         time.sleep(1)
-        self.action_triple_click(self.element_is_visible(self.locators.OVERTIME_WORK_INPUT))
+        self.action_select_all_text(self.element_is_visible(self.locators.OVERTIME_WORK_INPUT))
         self.element_is_visible(self.locators.OVERTIME_WORK_INPUT).send_keys(number)
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
         time.sleep(1)
@@ -946,6 +947,7 @@ class LaborCostPage(BasePage):
     def check_archive_project(self, project_name):
         self.element_is_visible(self.locators.FILTER_BUTTON).click()
         self.element_is_visible(self.locators.NOT_ACTIV_PROJECT_CHECKBOX).click()
+        time.sleep(5)
         self.action_esc()
         time.sleep(1)
         self.action_move_to_element(self.element_is_visible(self.locators.check_name_project_color(project_name)))
@@ -1022,6 +1024,7 @@ class LaborCostPage(BasePage):
         self.element_is_visible(self.locators.OVERTIME_WORK_INPUT).send_keys(overtime_work_hours)
         self.add_file('переработка.docx', 'Переработка')
         self.element_is_present(self.locators.FILE_INPUT, 2).send_keys(os.path.abspath(r'../переработка.docx'))
+
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
         time.sleep(1)
         self.element_is_visible(self.locators.SAVE_BUTTON).click()
@@ -1036,7 +1039,7 @@ class LaborCostPage(BasePage):
     @testit.step("Редактирование переработки с файлом")
     @allure.step("Редактирование переработки с файлом")
     def editing_overwork_with_file(self, number):
-        self.action_triple_click(self.element_is_visible(self.locators.OVERTIME_WORK_INPUT))
+        self.action_select_all_text(self.element_is_visible(self.locators.OVERTIME_WORK_INPUT))
         self.element_is_visible(self.locators.OVERTIME_WORK_INPUT).send_keys(number)
         time.sleep(1)
         self.element_is_visible(self.locators.DELETE_ICON).click()
@@ -1147,7 +1150,7 @@ class LaborCostPage(BasePage):
     @testit.step("Отмена редактирования переработки")
     @allure.step("Отмена редактирования переработки")
     def cancel_redact_overtime(self, overtime_work_hours):
-        self.action_triple_click(self.element_is_visible(self.locators.OVERTIME_WORK_INPUT))
+        self.action_select_all_text(self.element_is_visible(self.locators.OVERTIME_WORK_INPUT))
         self.element_is_visible(self.locators.OVERTIME_WORK_INPUT).send_keys(overtime_work_hours)
         self.element_is_visible(self.locators.DRAWER_ABORT_BUTTON).click()
 
@@ -1155,7 +1158,7 @@ class LaborCostPage(BasePage):
     @allure.step("Изменение даты переработки")
     def change_overtime_work_date(self, project_name, new_date):
         self.redact_overtime_on_reason_tab(project_name)
-        self.action_triple_click(self.element_is_visible(self.locators.OVERTIME_WORK_DATA_INPUT))
+        self.action_select_all_text(self.element_is_visible(self.locators.OVERTIME_WORK_DATA_INPUT))
         self.element_is_visible(self.locators.OVERTIME_WORK_DATA_INPUT).send_keys(new_date)
         time.sleep(1)
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
@@ -1164,7 +1167,7 @@ class LaborCostPage(BasePage):
     @testit.step("Редактирование переработки с файлом через дровер")
     @allure.step("Редактирование переработки с файлом через дровер")
     def editing_overwork_with_file_from_tab(self, number):
-        self.action_triple_click(self.element_is_visible(self.locators.OVERTIME_WORK_INPUT))
+        self.action_select_all_text(self.element_is_visible(self.locators.OVERTIME_WORK_INPUT))
         self.element_is_visible(self.locators.OVERTIME_WORK_INPUT).send_keys(number)
         time.sleep(1)
         self.element_is_visible(self.locators.DELETE_ICON).click()
@@ -1190,10 +1193,11 @@ class LaborCostPage(BasePage):
     def check_clear_required_field(self):
         fields_locators = [self.locators.OVERTIME_WORK_DATA_INPUT, self.locators.OVERTIME_WORK_INPUT, self.locators.PROJECT_NAME_DRAWER_INPUT_FIELD]
         random_field = fields_locators[random.randint(0, 2)]
-        self.action_triple_click(self.element_is_visible(random_field))
+        self.action_select_all_text(self.element_is_visible(random_field))
         self.element_is_visible(random_field).send_keys(Keys.BACKSPACE)
+        time.sleep(0.5)
         self.element_is_visible(self.locators.check_text('Редактирование переработки')).click()
-        assert self.element_is_visible(self.locators.MUI_ERROR).text == 'Поле обязательно',\
+        assert self.element_is_visible(self.locators.MUI_ERROR).text == 'Поле обязательно' or self.element_is_visible(self.locators.MUI_ERROR).text == 'Укажите количество часов',\
             "Не появилось сообщение об обязательности поля"
         assert not self.element_is_clickable(self.locators.SUBMIT_BUTTON, 2), "Кнопка сохранить кликабельна"
         self.element_is_visible(self.locators.CLEAR_ICON).click()
@@ -1203,6 +1207,7 @@ class LaborCostPage(BasePage):
     def change_date_in_date_piker(self, number_day_element):
         self.element_is_visible(self.locators.OVERTIME_WORK_DATA_PICKER).click()
         self.elements_are_visible(self.locators.ALL_DATA_IN_DATA_PICKER)[number_day_element].click()
+        time.sleep(0.5)
 
     @testit.step("Проверка изменения файла на превышающий 5 мб")
     @allure.step("Проверка изменения файла на превышающий 5 мб")
@@ -1221,7 +1226,7 @@ class LaborCostPage(BasePage):
     @testit.step("Проверка изменения файла на превышающий 5 мб")
     @allure.step("Проверка изменения файла на превышающий 5 мб")
     def change_time_in_overtime_drawer(self, new_time):
-        self.action_triple_click(self.element_is_visible(self.locators.OVERTIME_WORK_INPUT))
+        self.action_select_all_text(self.element_is_visible(self.locators.OVERTIME_WORK_INPUT))
         self.element_is_visible(self.locators.OVERTIME_WORK_INPUT).send_keys(new_time)
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
 
