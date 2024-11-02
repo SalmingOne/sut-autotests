@@ -36,4 +36,5 @@ class Urls:
     busy_percentages_url = f'{api_url}' + 'busy-percentages/'
     schedule_url = f'{api_url}' + 'schedule/'
     labels_url = f'{api_url}' + 'labels/'
+    personal_quality_url = f'{api_url}' + 'personalQualities/'
 

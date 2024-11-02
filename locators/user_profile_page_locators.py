@@ -37,6 +37,9 @@ class UserProfilePageLocators:
     CONTACT_TYPE_FIELD = (By.CSS_SELECTOR, 'input[name="contacts.0.name"]')
     CONTACT_DETAILS_FIELD = (By.CSS_SELECTOR, 'input[name="contacts.0.value"]')
     CONTACT_DELETE_BUTTON = (By.CSS_SELECTOR, 'svg[data-testid="DeleteIcon"]')
+    QUALITIES_INPUT = (By.XPATH, '//div[@name="qualities"]//input')
+    def delete_chips_icon(self, text):
+        return (By.XPATH, f'//span[text()="{text}"]/..//*[@data-testid="CancelIcon"]')
 
     # Модальное окно с диалогом
     ALERT_DIALOG_DESCRIPTION = (By.CSS_SELECTOR, 'p[id="alert-dialog-description"]')
