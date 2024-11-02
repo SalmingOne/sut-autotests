@@ -847,6 +847,43 @@ def create_fired_user():
     else:
         response = user_endpoint.change_user(user_id=str(user_id), json=payload)
         print(response.status_code)
+    return payload["secondName"]
+
+
+@pytest.fixture()
+def create_next_week_fired_user():
+    user_endpoint = UserEndpoint()
+    department_endpoint = DepartmentsEndpoint()
+    post_endpoint = PostsEndpoint()
+    project_roles_endpoint = ProjectRolesEndpoint()
+    system_roles_endpoint = SystemRolesEndpoint()
+    first_system_role_id = system_roles_endpoint.get_all_system_roles_id()[0]
+    first_project_role_id = project_roles_endpoint.get_all_project_roles_id()[1]
+    first_post_id = post_endpoint.get_all_posts_id()[0]
+    first_department_id = department_endpoint.get_all_departments_id()[1]
+    user_id = user_endpoint.get_user_id_by_email('next_week_test@mail.ruru')
+    payload = dict(username="AutNext",
+                   name="Аскоро",
+                   secondName="Ауволят",
+                   gender="MALE",
+                   phone="",
+                   email="next_week_test@mail.ruru",
+                   hourlyWage=False,
+                   startWorkDate="2024-04-11",
+                   dismissalDate=BasePage(driver=None).get_day_before_ymd(-7),
+                   userAssignments=[],
+                   projectRoleIds=[first_project_role_id],
+                   postId=first_post_id,
+                   departmentId=first_department_id,
+                   systemRoleIds=[first_system_role_id]
+                   )
+    if user_id is None:
+        response = user_endpoint.create_user_api(json=payload)
+        print(response.status_code)
+    else:
+        response = user_endpoint.change_user(user_id=str(user_id), json=payload)
+        print(response.status_code)
+    return payload["secondName"]
 
 
 @pytest.fixture()
@@ -1146,3 +1183,22 @@ def put_label_to_auto_user(project_with_two_resources):
     )
     labels_endpoint.put_label_api(json=payload)
 
+
+@pytest.fixture()
+def create_resume_to_autotest_user():
+    resume_endpoint = ResumeEndpoint()
+    user_endpoint = UserEndpoint()
+    user_id = user_endpoint.get_user_id_by_email('auto_testt@mail.rruu')
+    payload = dict(
+        userId=user_id,
+        title='резюме для авто',
+        version=1,
+        data=dict(
+            fullName='Авто Авто',
+            post='Автоматизатор',
+            experienceDate=BasePage(driver=None).get_day_before_m_d_y(2)
+        )
+    )
+    response = resume_endpoint.create_resume_api(json=payload)
+    yield payload['title']
+    resume_endpoint.delete_resume_api(str(response.json()['id']))

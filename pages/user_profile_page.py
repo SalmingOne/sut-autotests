@@ -400,7 +400,7 @@ class UserProfilePage(BasePage):
     @testit.step("Проверка заголовка диплом")
     @allure.step("Проверка заголовка диплом")
     def check_diploma_title(self):
-        return self.element_is_displayed(self.locators.CHECK_DIPLOMA_TITLE, 1)
+        return self.element_is_displayed(self.locators.CHECK_DIPLOMA_TITLE, 2)
 
     @testit.step("Проверка заголовка сертификата")
     @allure.step("Проверка заголовка сертификата")
@@ -1152,14 +1152,13 @@ class UserProfilePage(BasePage):
         assert not self.element_is_clickable(self.locators.STATUS_FIELD, 1), "Поле статус можно редактировать"
 
     @allure_testit_step('Проверка формата работы')
-    def check_all_job_format(self):
+    def return_all_job_format(self):
         chips_text = [element.text for element in self.elements_are_visible(self.locators.JOB_FORMAT_CHIPS)]
         self.element_is_visible(self.locators.JOB_FORMAT_FIELD).click()
         dropdown_text = [element.text for element in self.elements_are_visible(self.locators.LI_MENU_ITEM)]
         dropdown_text.extend(chips_text)
         self.action_esc()
-        assert sorted(dropdown_text) == ['Активен', 'В декрете', 'Внештатник', 'Неактивен', 'Удалённо',
-                                         'Частичная занятость'], "В дропдауне есть не все форматы работы"
+        return sorted(dropdown_text)
 
     @allure_testit_step('Проверка некликабельности полей в Прием в компанию и Вступление в должность')
     def check_not_clickable_start_work_fields(self):
@@ -1225,5 +1224,16 @@ class UserProfilePage(BasePage):
         assert len(self.elements_are_visible(self.locators.WORK_HOURS_IN_DAY)) == 24, \
             'Не над каждым днем отображаются рабочие часы'
 
+    @allure_testit_step('Получение статуса пользователя')
+    def get_user_status(self):
+        return self.element_is_visible(self.locators.STATUS_FIELD).get_attribute('value')
 
+    @allure_testit_step('Получение формата работы пользователя')
+    def get_job_format(self):
+        return self.element_is_visible(self.locators.JOB_FORMAT_CHIPS).text
 
+    @allure_testit_step('Отмена редактирования профиля пользователя')
+    def abort_redact(self):
+        time.sleep(1)  # Без этого ожидания не всегда нажимается кнопка
+        self.element_is_visible(self.locators.BREAK_BUTTON).click()
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()

@@ -5,6 +5,7 @@ import pytest
 import testit
 
 from data.data import USER_NAME
+from pages.advanced_search_page import AdvancedSearchPage
 from pages.colleagues_page import ColleaguesPage
 from pages.schedule_page import SchedulePage
 from pages.user_profile_page import UserProfilePage
@@ -1085,7 +1086,9 @@ class TestUserProfilePage:
         assert activ_tab_name == 'ИНФОРМАЦИЯ О СОТРУДНИКЕ', "По умолчанию не открыта вкладка Информация о сотруднике"
         # Общая информация
         user_profile_page.check_not_clickable_information_bloc_fields()
-        user_profile_page.check_all_job_format()
+        assert user_profile_page.return_all_job_format() == ['Активен', 'В декрете', 'Внештатник', 'Неактивен',
+                                                             'Удалённо', 'Частичная занятость'], \
+            "В дропдауне есть не все форматы работы"
         user_profile_page.check_not_clickable_start_work_fields()
         # Контакты
         all_input = user_profile_page.get_all_input_values_text()
@@ -1156,3 +1159,85 @@ class TestUserProfilePage:
         user_profile_page.press_delete_icon()
         user_profile_page.press_save_button()
         time.sleep(0.2)
+
+    @testit.workItemIds(12566)
+    @testit.displayName("10.2.1. (Чек лист) Просмотр профиля сотрудника с разными статусами: Работает/Уволен")
+    @pytest.mark.regress
+    @allure.title("id-12566 10.2.1. (Чек лист) Просмотр профиля сотрудника с разными статусами: Работает/Уволен")
+    def test_viewing_employees_profile_with_statuses_working_fired(self, create_next_week_fired_user, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        advanced_search_page = AdvancedSearchPage(driver)
+        advanced_search_page.go_advanced_search_page()
+        advanced_search_page.open_status_filter()
+        advanced_search_page.press_work_checkbox()
+        advanced_search_page.action_esc()
+        advanced_search_page.press_user_name()
+        advanced_search_page.open_status_filter()
+        advanced_search_page.press_work_checkbox()
+        advanced_search_page.press_fired_checkbox()
+        advanced_search_page.action_esc()
+        advanced_search_page.press_user_name()
+        advanced_search_page.open_status_filter()
+        advanced_search_page.press_fired_checkbox()
+        advanced_search_page.action_esc()
+        advanced_search_page.search_by_second_name(create_next_week_fired_user)
+        advanced_search_page.press_user_name()
+        time.sleep(10)
+        open_windows = driver.window_handles
+        time.sleep(2)
+        driver.switch_to.window(open_windows[1])
+        time.sleep(1)
+        assert user_profile_page.get_user_status() == 'Работает', "Статус пользователя не Работает"
+        driver.switch_to.window(open_windows[2])
+        time.sleep(1)
+        assert user_profile_page.get_user_status() == 'Уволен', "Статус пользователя не Уволен"
+        driver.switch_to.window(open_windows[3])
+        time.sleep(1)
+        assert user_profile_page.get_user_status() == 'Работает', "Статус пользователя не Работает"
+
+    @testit.workItemIds(12592)
+    @testit.displayName("10. Просмотр Формата работы в профиле сотрудника")
+    @pytest.mark.regress
+    @allure.title("id-12592 10. Просмотр Формата работы в профиле сотрудника")
+    def test_viewing_job_format_in_employees_profile(self, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        time.sleep(6)
+        user_profile_page.press_redact_button()
+        assert user_profile_page.return_all_job_format() == ['Активен', 'В декрете', 'Внештатник', 'Неактивен',
+                                                             'Удалённо', 'Частичная занятость'], \
+            "В дропдауне есть не все форматы работы"
+        user_profile_page.abort_redact()
+        advanced_search_page = AdvancedSearchPage(driver)
+        advanced_search_page.go_advanced_search_page()
+        advanced_search_page.open_status_filter()
+        advanced_search_page.press_work_checkbox()
+        advanced_search_page.action_esc()
+        advanced_search_page.press_user_name()
+        open_windows = driver.window_handles
+        time.sleep(2)
+        driver.switch_to.window(open_windows[1])
+        assert user_profile_page.get_job_format() == 'Не работает', "Отображается не корректный формат работы"
+
+    @testit.workItemIds(1141)
+    @testit.displayName("10.2.2. Удаление карточки диплома в разделе Образование в личном профиле сотрудника")
+    @pytest.mark.regress
+    @allure.title("id-1141 10.2.2. Удаление карточки диплома в разделе Образование в личном профиле сотрудника")
+    def test_deleting_diploma_card_in_profile(self, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        time.sleep(6)
+        user_profile_page.go_to_education_tab()
+        if user_profile_page.check_diploma_title():
+            pass
+        else:
+            user_profile_page.add_simple_diploma()
+            time.sleep(1)
+            user_profile_page.go_to_education_tab()
+        assert user_profile_page.check_diploma_title(), "Отсутствует диплом для удаления"
+        user_profile_page.press_redact_button()
+        time.sleep(1)
+        user_profile_page.press_delete_icon()
+        user_profile_page.press_save_button()
+        assert not user_profile_page.check_diploma_title(), "Диплом не удалился"
+

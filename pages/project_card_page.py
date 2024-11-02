@@ -881,14 +881,14 @@ class ProjectCardPage(BasePage):
     def set_period_and_busy(self, start_date, end_date, period=8):
         # period это порядковый номер элемента, в зависимости от выбора радиобаттона
         # 8 - это 100% или 8 часов если не переключен радиобаттон (4 это 50% или 4 часа)
-        self.element_is_visible(self.locators.DROVER_MENU, 10).click()
-        (self.elements_are_visible(self.locators.DROVER_MENU_ITEM, 10))[period].click()
         time.sleep(1)
         self.action_select_all_text(self.element_is_visible(self.locators.DROVER_START_DATE))
         self.element_is_visible(self.locators.DROVER_START_DATE).send_keys(start_date)
         time.sleep(1)
-        self.action_select_all_text(self.element_is_visible(self.locators.DROVER_END_DATE))
+        self.element_is_visible(self.locators.DROVER_END_DATE).click()
         self.element_is_visible(self.locators.DROVER_END_DATE).send_keys(end_date)
+        self.element_is_visible(self.locators.DROVER_MENU, 10).click()
+        (self.elements_are_visible(self.locators.DROVER_MENU_ITEM, 10))[period].click()
 
     @allure_testit_step("Получение процентов/часов привлечения")
     def get_busy(self, start_date):
@@ -975,6 +975,10 @@ class ProjectCardPage(BasePage):
         self.action_double_click(self.elements_are_visible(self.locators.CELLS)[1])
         #выбираем последнее значение в выпадающем списке
         self.elements_are_visible(self.locators.LI_MENU_ITEM)[8].click()
+
+    @allure_testit_step("Получение данных из 1й ячейки таблицы 'Ресурсный план'")
+    def get_value_cell(self):
+        return (self.elements_are_visible(self.locators.CELLS))[1].text
 
     @testit.step("Переключение временных интервалов")
     @allure.step("Переключение временных интервалов")
