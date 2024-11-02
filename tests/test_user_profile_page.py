@@ -1218,3 +1218,25 @@ class TestUserProfilePage:
         driver.switch_to.window(open_windows[1])
         assert user_profile_page.get_job_format() == 'Не работает', "Отображается не корректный формат работы"
 
+    @testit.workItemIds(1141)
+    @testit.displayName("10.2.2. Удаление карточки диплома в разделе Образование в личном профиле сотрудника")
+    @pytest.mark.regress
+    @allure.title("id-1141 10.2.2. Удаление карточки диплома в разделе Образование в личном профиле сотрудника")
+    def test_deleting_diploma_card_in_profile(self, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        time.sleep(6)
+        user_profile_page.go_to_education_tab()
+        if user_profile_page.check_diploma_title():
+            pass
+        else:
+            user_profile_page.add_simple_diploma()
+            time.sleep(1)
+            user_profile_page.go_to_education_tab()
+        assert user_profile_page.check_diploma_title(), "Отсутствует диплом для удаления"
+        user_profile_page.press_redact_button()
+        time.sleep(1)
+        user_profile_page.press_delete_icon()
+        user_profile_page.press_save_button()
+        assert not user_profile_page.check_diploma_title(), "Диплом не удалился"
+
