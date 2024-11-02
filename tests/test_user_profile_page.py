@@ -1085,7 +1085,9 @@ class TestUserProfilePage:
         assert activ_tab_name == 'ИНФОРМАЦИЯ О СОТРУДНИКЕ', "По умолчанию не открыта вкладка Информация о сотруднике"
         # Общая информация
         user_profile_page.check_not_clickable_information_bloc_fields()
-        user_profile_page.check_all_job_format()
+        assert user_profile_page.return_all_job_format() == ['Активен', 'В декрете', 'Внештатник', 'Неактивен',
+                                                             'Удалённо', 'Частичная занятость'], \
+            "В дропдауне есть не все форматы работы"
         user_profile_page.check_not_clickable_start_work_fields()
         # Контакты
         all_input = user_profile_page.get_all_input_values_text()
@@ -1191,3 +1193,28 @@ class TestUserProfilePage:
         driver.switch_to.window(open_windows[3])
         time.sleep(1)
         assert user_profile_page.get_user_status() == 'Работает', "Статус пользователя не Работает"
+
+    @testit.workItemIds(12592)
+    @testit.displayName("10. Просмотр Формата работы в профиле сотрудника")
+    @pytest.mark.regress
+    @allure.title("id-12592 10. Просмотр Формата работы в профиле сотрудника")
+    def test_viewing_job_format_in_employees_profile(self, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        time.sleep(6)
+        user_profile_page.press_redact_button()
+        assert user_profile_page.return_all_job_format() == ['Активен', 'В декрете', 'Внештатник', 'Неактивен',
+                                                             'Удалённо', 'Частичная занятость'], \
+            "В дропдауне есть не все форматы работы"
+        user_profile_page.abort_redact()
+        advanced_search_page = AdvancedSearchPage(driver)
+        advanced_search_page.go_advanced_search_page()
+        advanced_search_page.open_status_filter()
+        advanced_search_page.press_work_checkbox()
+        advanced_search_page.action_esc()
+        advanced_search_page.press_user_name()
+        open_windows = driver.window_handles
+        time.sleep(2)
+        driver.switch_to.window(open_windows[1])
+        assert user_profile_page.get_job_format() == 'Не работает', "Отображается не корректный формат работы"
+
