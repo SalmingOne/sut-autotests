@@ -929,4 +929,4 @@ class TestLaborCostPage:
         assert not labor_cost_page.get_status_of_saving(), "Данные сохранены"
         assert ("Сумма часов не может превышать 24 за текущий день" in
                 labor_cost_page.get_alert_message()), 'Нет сообщения об ошибке'
-        assert int(labor_cost_page.get_day_total_raw(number_day-1)) == labor_cost_page.get_all_values_by_day(number_day)
+        assert int(labor_cost_page.get_day_total_raw(number_day-1)) == labor_cost_page.get_all_values_by_day(number_day), 'Неправильная сумма часов'
