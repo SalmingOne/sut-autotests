@@ -487,7 +487,7 @@ class TestProjectCard:
         all_project_page.go_project_page(simple_project['name'])
         project_card_page = ProjectCardPage(driver)
         project_card_page.go_to_resource_plan_tab()
-        project_card_page.change_radiobutton()
+        project_card_page.change_radiobutton_percent()
         project_card_page.press_add_employment_button()
         project_card_page.check_drover_resource_plan_tab()
 
@@ -501,7 +501,7 @@ class TestProjectCard:
         all_project_page.go_project_page(simple_project['name'])
         project_card_page = ProjectCardPage(driver)
         project_card_page.go_to_resource_plan_tab()
-        project_card_page.change_radiobutton()
+        project_card_page.change_radiobutton_percent()
         # Получаем отображение таблицы "Ресурсный план" до изменений
         table_before = project_card_page.displaying_table_resource_plan()
         project_card_page.press_add_employment_button()
@@ -522,7 +522,7 @@ class TestProjectCard:
         all_project_page.go_project_page(simple_project['name'])
         project_card_page = ProjectCardPage(driver)
         project_card_page.go_to_resource_plan_tab()
-        project_card_page.change_radiobutton()
+        project_card_page.change_radiobutton_percent()
         # Получаем отображение таблицы "Ресурсный план" до изменений
         table_before = project_card_page.displaying_table_resource_plan()
         project_card_page.press_add_employment_button()
@@ -549,7 +549,7 @@ class TestProjectCard:
         all_project_page.go_project_page(simple_project['name'])
         project_card_page = ProjectCardPage(driver)
         project_card_page.go_to_resource_plan_tab()
-        project_card_page.change_radiobutton()
+        project_card_page.change_radiobutton_percent()
         time.sleep(1)
         project_card_page.checking_cell_default_value()
         project_card_page.checking_cell_dropdown_list_values()
@@ -565,7 +565,7 @@ class TestProjectCard:
         all_project_page.go_project_page(simple_project['name'])
         project_card_page = ProjectCardPage(driver)
         project_card_page.go_to_resource_plan_tab()
-        project_card_page.change_radiobutton()
+        project_card_page.change_radiobutton_percent()
         # Получаем отображение таблицы "Ресурсный план" до изменений
         table_before = project_card_page.displaying_table_resource_plan()
         project_card_page.change_table_resource_plan()
@@ -660,7 +660,7 @@ class TestProjectCard:
         start_date = project_card_page.get_project_start_date()
         end_date = project_card_page.get_project_end_date()
         project_card_page.go_to_resource_plan_tab()
-        project_card_page.change_radiobutton()
+        project_card_page.change_radiobutton_percent()
         project_card_page.press_add_employment_button()
         project_card_page.press_start_date_in_drover()
         project_card_page.check_dropdown_calendar()
@@ -698,7 +698,7 @@ class TestProjectCard:
         all_project_page.go_project_page(simple_project['name'])
         project_card_page = ProjectCardPage(driver)
         project_card_page.go_to_resource_plan_tab()
-        project_card_page.change_radiobutton()
+        project_card_page.change_radiobutton_percent()
         project_card_page.press_add_employment_button()
         project_card_page.set_period_and_busy(start_date, end_date, 4)
         project_card_page.press_save_in_drover()
@@ -729,7 +729,7 @@ class TestProjectCard:
         all_project_page.go_project_page(simple_project['name'])
         project_card_page = ProjectCardPage(driver)
         project_card_page.go_to_resource_plan_tab()
-        project_card_page.change_radiobutton()
+        project_card_page.change_radiobutton_percent()
         project_card_page.press_add_employment_button()
         project_card_page.set_period_and_busy(start_date, end_date, 8)
         project_card_page.press_save_in_drover()
@@ -850,4 +850,27 @@ class TestProjectCard:
         project_card_page.press_break_button()
         value_after_break = project_card_page.get_value_cell()
         assert value != value_after_break, 'Данные в таблице сохранились после отмены'
+    
+    @testit.workItemIds(11826)
+    @testit.displayName('2.1.2.4 Переключение режима отображения трудозатрат проценты/часы')
+    @pytest.mark.regress
+    @allure.title('id-11826 2.1.2.4 Переключение режима отображения трудозатрат проценты/часы')
+    def test_switch_display_mode_of_labor_costs_percentage_hours(self, simple_project, login, driver):
+        all_project_page = AllProjectPage(driver)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(simple_project['name'])
+        project_card_page = ProjectCardPage(driver)
+        project_card_page.go_to_resource_plan_tab()
+        project_card_page.press_add_employment_button()
+        start_date, end_date = project_card_page.get_full_work_week()
+        project_card_page.set_period_and_busy(start_date.strftime("%d.%m.%Y"), end_date.strftime("%d.%m.%Y"))
+        project_card_page.press_save_in_drover()
+        list_hours = project_card_page.displaying_table_resource_plan()
+        index = list_hours.index("40")
+        project_card_page.change_radiobutton_percent()
+        list_percentage = project_card_page.displaying_table_resource_plan()
+        assert list_percentage[index] == "100%"
+        project_card_page.change_radiobutton_hour()
+        list_hours_after = project_card_page.displaying_table_resource_plan()
+        assert list_hours == list_hours_after
     

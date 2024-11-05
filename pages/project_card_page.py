@@ -322,10 +322,13 @@ class ProjectCardPage(BasePage):
         assert self.element_is_visible(self.locators.TEAM_TAB).get_attribute('aria-selected') == 'true', \
             "Ссылка не ведет на вкладку Команда"
 
-    @testit.step("Переключение радиобаттона на значение 'Проценты'")
-    @allure.step("Переключение радиобаттона на значение 'Проценты'")
-    def change_radiobutton(self):
-        self.element_is_visible(self.locators.CHANGE_RADIOGROUP, 15).click()
+    @allure_testit_step("Переключение радиобаттона на значение 'Проценты'")
+    def change_radiobutton_percent(self):
+        self.element_is_visible(self.locators.CHANGE_RADIOGROUP_PERCENT, 15).click()
+
+    @allure_testit_step("Переключение радиобаттона на значение 'Часы'")
+    def change_radiobutton_hour(self):
+        self.element_is_visible(self.locators.CHANGE_RADIOGROUP_HOUR, 15).click()
 
 
     @testit.step("Нажатие на кнопку добавления процента занятости")
@@ -929,14 +932,10 @@ class ProjectCardPage(BasePage):
     def press_cancel_in_drover(self):
         self.element_is_visible(self.locators.DROVER_ABORT_BUTTON).click()
         
-    @testit.step("Получение данных таблицы 'Ресурсный план'")
-    @allure.step("Получение данных таблицы 'Ресурсный план'")
+    @allure_testit_step("Получение данных таблицы 'Ресурсный план'")
     def displaying_table_resource_plan(self):
         list_cells = []
-        # Ищем все элементы cell на веб-странице и добавляем их в список
-        # Пока временно первых 10 ячеек, позже заменю на те где были изменения
         cells = self.elements_are_visible(self.locators.CELLS)
-        # Обходим каждый элемент в списке и достаем значение
         for cell in cells:
             list_cells.append(cell.text)
         return list_cells
