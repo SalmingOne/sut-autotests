@@ -892,15 +892,7 @@ class TestProjectCard:
         project_card_page.chose_period('Месяц (по дням)')
         list_month = project_card_page.displaying_table_resource_plan()
         list_quarter = list(map(int, [x for x in list_quarter if x != '-' and x != '0']))
-        list_week = []
-        summa = 0
-        for i in list_month:
-            if i != '-':
-                summa += int(i)
-            else:
-                if summa != 0:
-                    list_week.append(summa)
-                    summa = 0
+        list_week = project_card_page.converting_list_hours_day_to_list_week(list_month)
         assert list_quarter == list_week, 'Сумма часов по дням за неделю не равна значению часов в неделю'
         project_card_page.chose_period('Год')
         list_year = project_card_page.displaying_table_resource_plan()

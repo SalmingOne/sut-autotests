@@ -1036,4 +1036,17 @@ class ProjectCardPage(BasePage):
     @allure_testit_step("Проверка некликабельности кнопки Сохранить")
     def check_save_button_not_clickable(self):
         assert not self.element_is_clickable(self.locators.SAVE_BUTTON), "кнопка Сохранить кликабельна"
+
+    @allure_testit_step("Преобразование списка часов по дням в список по неделям")
+    def converting_list_hours_day_to_list_week(self, list_month):
+        list_week = []
+        summa = 0
+        for i in list_month:
+            if i != '-':
+                summa += int(i)
+            else:
+                if summa != 0:
+                    list_week.append(summa)
+                    summa = 0
+        return list_week
     
