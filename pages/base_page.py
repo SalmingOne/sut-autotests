@@ -128,6 +128,10 @@ class BasePage:
     def get_day_before_ymd(self, amount_of_days):
         day_before = datetime.now() - timedelta(days=amount_of_days)
         return day_before.strftime("%Y-%m-%d")
+
+    @allure.step("Получение номера дня недели")
+    def get_number_day_week(self):
+        return datetime.now().isoweekday()
     
     @allure.step("Получение следующей даты отличной от текущей на N дней (DD.MM.YYYY)")
     def get_day_after(self, amount_of_days):

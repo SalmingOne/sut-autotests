@@ -646,6 +646,11 @@ class LaborCostPage(BasePage):
     def get_day_total_raw(self, number_day):
         return self.elements_are_visible(self.locators.ALL_IN_TOTAL)[number_day].text
 
+    @testit.step("Получаем цвет ячейки в строке Итого")
+    @allure.step("Получаем цвет ячейки в строке Итого")
+    def get_color_day_total_raw(self, number_day):
+        return self.elements_are_visible(self.locators.ALL_IN_TOTAL)[number_day].value_of_css_property('color')
+
     @testit.step("Сохраняем трудозатраты")
     @allure.step("Сохраняем трудозатраты")
     def save_labor_reason(self):
@@ -1317,3 +1322,13 @@ class LaborCostPage(BasePage):
     @allure_testit_step("Отмена редактирования таблицы трудозатрат")
     def cancel_editing_labor_cost(self):
         self.element_is_visible(self.locators.DISABLE_BUTTON).click()
+
+    @allure_testit_step("Проверка сохранения")
+    def get_status_of_saving(self):
+        return self.element_is_visible(self.locators.SAVE_BUTTON).get_attribute('disabled')
+
+    @allure_testit_step("Получение значений полей для каждого проекта за день")
+    def get_all_values_by_day(self, number_day):
+        projects = self.get_all_project_name_on_tab()
+        values = [int(self.get_project_day_cell_contents(project, number_day)) for project in projects if self.get_project_day_cell_contents(project, number_day) != '']
+        return sum(values)
