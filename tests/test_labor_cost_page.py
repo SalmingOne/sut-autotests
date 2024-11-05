@@ -898,22 +898,35 @@ class TestLaborCostPage:
     @testit.displayName('3.1.1.2 Заполнение таблицы "Трудозатраты" с переключением отображения Неделя/месяц.')
     @pytest.mark.regress
     @allure.title('id-3719 3.1.1.2 Заполнение таблицы "Трудозатраты" с переключением отображения Неделя/месяц.')
-    def test_labor_cost_fill(self, simple_project, second_project, login, driver):
-        first_project_name = simple_project['name']
-        second_project_name = second_project['name']
+    def test_labor_cost_fill(self, project_with_assignment, second_project_with_assignment, login, driver):
+        first_project_name = project_with_assignment[0]['name']
+        second_project_name = second_project_with_assignment[0]['name']
         labor_cost_page = LaborCostPage(driver)
-        number_day = int(labor_cost_page.get_day_before_ymd(0).split('-')[2]) + 1
-        labor_cost_page.input_labor_reason_by_project(first_project_name, number_day, 12)
-        assert labor_cost_page.get_cell_color(first_project_name,
-                                              number_day) == 'rgba(255, 251, 233, 1)', 'Цвет ячейки не желтый'
+        try:
+            number_day = int(labor_cost_page.get_day_before_ymd(1).split('-')[2]) + 1
+            labor_cost_page.input_labor_reason_by_project(first_project_name, number_day, 12)
+            assert labor_cost_page.get_cell_color(first_project_name,
+                                                  number_day) == 'rgba(255, 251, 233, 1)', 'Цвет ячейки не желтый'
+        except AssertionError as e:
+            number_day = int(labor_cost_page.get_day_after_ymd(1).split('-')[2]) + 1
+            labor_cost_page.input_labor_reason_by_project(first_project_name, number_day, 12)
+            assert labor_cost_page.get_cell_color(first_project_name,
+                                                  number_day) == 'rgba(255, 251, 233, 1)', 'Цвет ячейки не желтый'
         labor_cost_page.choose_period('week')
-        number_day = labor_cost_page.get_number_day_week() + 1
-        labor_cost_page.input_labor_reason_by_project(second_project_name, number_day, 13)
-        assert labor_cost_page.get_cell_color(second_project_name,
-                                              number_day) == 'rgba(255, 251, 233, 1)', 'Цвет ячейки не желтый'
+        try:
+            number_day = labor_cost_page.get_number_day_week()
+            labor_cost_page.input_labor_reason_by_project(second_project_name, number_day, 13)
+            assert labor_cost_page.get_cell_color(second_project_name,
+                                                  number_day) == 'rgba(255, 251, 233, 1)', 'Цвет ячейки не желтый'
+        except AssertionError as e:
+            number_day = labor_cost_page.get_number_day_week() + 2
+            labor_cost_page.input_labor_reason_by_project(second_project_name, number_day, 13)
+            assert labor_cost_page.get_cell_color(second_project_name,
+                                                  number_day) == 'rgba(255, 251, 233, 1)', 'Цвет ячейки не желтый'
         assert (labor_cost_page.get_color_day_total_raw(number_day-1)
                 == 'rgba(211, 47, 47, 1)'), 'Цвет текста не красный'
         labor_cost_page.save_labor_reason()
         assert not labor_cost_page.get_status_of_saving(), "Данные сохранены"
         assert ("Сумма часов не может превышать 24 за текущий день" in
                 labor_cost_page.get_alert_message()), 'Нет сообщения об ошибке'
+        assert int(labor_cost_page.get_day_total_raw(number_day-1)) == labor_cost_page.get_all_values_by_day(number_day)

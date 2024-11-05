@@ -1326,3 +1326,9 @@ class LaborCostPage(BasePage):
     @allure_testit_step("Проверка сохранения")
     def get_status_of_saving(self):
         return self.element_is_visible(self.locators.SAVE_BUTTON).get_attribute('disabled')
+
+    @allure_testit_step("Получение значений полей для каждого проекта за день")
+    def get_all_values_by_day(self, number_day):
+        projects = self.get_all_project_name_on_tab()
+        values = [int(self.get_project_day_cell_contents(project, number_day)) for project in projects if self.get_project_day_cell_contents(project, number_day) != '']
+        return sum(values)

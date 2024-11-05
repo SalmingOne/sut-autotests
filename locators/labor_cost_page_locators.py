@@ -20,7 +20,7 @@ class LaborCostPageLocators:
     def check_name_project_color(self, project_name):
         return (By.XPATH, f'//div[@aria-label="{project_name}"]/a')
 
-    ALL_PROJECT_NAMES = (By.CSS_SELECTOR, 'div[basewrapprops]')
+    ALL_PROJECT_NAMES = (By.XPATH, '//div[contains(@class,"project-row MuiBox-root")]//div[@basewrapprops]')
     OPEN_TASKS_LIST_BUTTON = (By.XPATH, "//div[@basewrapprops]/preceding-sibling::div")
     # Дни в привязке к проекту
     RANDOM_DAYS_BY_PROJECT = (
