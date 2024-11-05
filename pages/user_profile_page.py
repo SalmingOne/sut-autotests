@@ -1261,3 +1261,31 @@ class UserProfilePage(BasePage):
         time.sleep(1)
         self.element_is_visible(self.locators.delete_chips_icon(name)).click()
         self.press_save_button()
+
+    @allure_testit_step('Добавление диплома')
+    def add_diploma(self, institution_name, faculty, specialization):
+        self.press_redact_button()
+        time.sleep(1)
+        self.element_is_visible(self.locators.ADD_ICON).click()
+        self.element_is_visible(self.locators.INSTITUTION_NAME).send_keys(institution_name)
+        self.element_is_visible(self.locators.DIRECTION).click()
+        self.elements_are_visible(self.locators.NOT_SELECTED_LI)[0].click()
+        self.element_is_visible(self.locators.EDUCATION_FORM).click()
+        self.elements_are_visible(self.locators.NOT_SELECTED_LI)[0].click()
+        self.element_is_visible(self.locators.EDUCATION_LEVEL).click()
+        self.elements_are_visible(self.locators.NOT_SELECTED_LI)[0].click()
+        self.element_is_visible(self.locators.FACULTY).send_keys(faculty)
+        self.element_is_visible(self.locators.SPECIALIZATION_NAME).send_keys(specialization)
+        self.element_is_visible(self.locators.YEAR_OF_GRADUATION).send_keys('2024')
+        all_field = [element.get_attribute('value') for element in self.elements_are_present(self.locators.ALL_DIPLOMA_INPUTS)]
+        self.press_save_button()
+        return all_field
+
+    @allure_testit_step('Получение значений полей сохраненного диплома')
+    def get_all_value_diploma_card(self):
+        all_field = [element.get_attribute('value') for element in
+                     self.elements_are_present(self.locators.ALL_DIPLOMA_INPUTS)]
+        all_placeholder = [element.get_attribute('value') for element in
+                           self.elements_are_present(self.locators.ALL_DIPLOMA_PLACEHOLDER)]
+        all_field.extend(all_placeholder)
+        return all_field
