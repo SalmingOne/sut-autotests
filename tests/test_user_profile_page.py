@@ -1290,3 +1290,33 @@ class TestUserProfilePage:
             "В полях не отображаются введенные данные"
         assert sorted(before_save[0:7]) == sorted(after_save), "Изменения не сохранились"
         assert 'Данные сохранены' in message, "Не появилось сообщение Данные сохранены"
+
+    @testit.workItemIds(3254)
+    @testit.displayName("10.6.1.8. Сохранение изменений в резюме")
+    @pytest.mark.regress
+    @allure.title("id-3254 10.6.1.8. Сохранение изменений в резюме")
+    def test_saving_changes_to_resume(self, create_resume, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        time.sleep(6)
+        user_profile_page.go_to_resume_tab()
+        time.sleep(0.5)
+        user_profile_page.redact_resume(create_resume)
+        time.sleep(1)
+        before = user_profile_page.get_all_fields()
+        user_profile_page.change_mandatory_fields_in_resume('Новое имя резюме',
+                                                            'Новое имя сотрудника',
+                                                            '10.10.2024',
+                                                            '10.10.2023')
+        time.sleep(1)
+        after_redact = user_profile_page.get_all_fields()
+        user_profile_page.press_save_button()
+        user_profile_page.search_resume('Новое имя резюме')
+        user_profile_page.check_resume_kebab_menu()
+        user_profile_page.redact_resume('Новое имя резюме')
+        time.sleep(1)
+        after = user_profile_page.get_all_fields()
+        assert after == after_redact, "Изменения не сохранились после нажатия кнопки сохранить"
+        assert 'Новое имя резюме' and 'Новое имя сотрудника' and '10.10.2024' and '10.10.2023' in after, \
+            "В полях разделов структуры резюме не отображаются изменения"
+        assert before != after, "Данные в резюме не изменились после редактирования"

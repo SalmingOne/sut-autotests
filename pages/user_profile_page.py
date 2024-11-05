@@ -1289,3 +1289,20 @@ class UserProfilePage(BasePage):
                            self.elements_are_present(self.locators.ALL_DIPLOMA_PLACEHOLDER)]
         all_field.extend(all_placeholder)
         return all_field
+
+    @allure_testit_step('Изменение обязательных полей резюме')
+    def change_mandatory_fields_in_resume(self, resume_name, user_name, start_work, start_work_in_company):
+        self.action_select_all_text(self.element_is_visible(self.locators.RESUME_TITLE_FIELD))
+        self.element_is_visible(self.locators.RESUME_TITLE_FIELD).send_keys(resume_name)
+        self.action_select_all_text(self.element_is_visible(self.locators.RESUME_FULL_NAME_FIELD))
+        self.element_is_visible(self.locators.RESUME_FULL_NAME_FIELD).send_keys(user_name)
+        self.action_select_all_text(self.elements_are_visible(self.locators.DATE_PIKERS)[0])
+        self.elements_are_visible(self.locators.DATE_PIKERS)[0].send_keys(start_work_in_company)
+        self.action_select_all_text(self.elements_are_visible(self.locators.DATE_PIKERS)[2])
+        self.elements_are_visible(self.locators.DATE_PIKERS)[2].send_keys(start_work)
+
+    @allure_testit_step('Поиск резюме по имени')
+    def search_resume(self, name):
+        self.action_select_all_text(self.element_is_visible(self.locators.SEARCH_RESUME_NAME_FIELDS))
+        self.element_is_visible(self.locators.SEARCH_RESUME_NAME_FIELDS).send_keys(name)
+        time.sleep(0.5)
