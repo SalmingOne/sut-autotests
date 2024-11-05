@@ -930,3 +930,30 @@ class TestLaborCostPage:
         assert ("Сумма часов не может превышать 24 за текущий день" in
                 labor_cost_page.get_alert_message()), 'Нет сообщения об ошибке'
         assert int(labor_cost_page.get_day_total_raw(number_day-1)) == labor_cost_page.get_all_values_by_day(number_day), 'Неправильная сумма часов'
+
+    @testit.workItemIds(11935)
+    @testit.displayName('3.1.1.9. Редактирование/отмена редактирования списаний трудозатрат с причиной из раздела "Заявления"')
+    @pytest.mark.regress
+    @allure.title('id-11935 3.1.1.9. Редактирование/отмена редактирования списаний трудозатрат с причиной из раздела "Заявления"')
+    def test_edit_cancel_reason_for_labor_cost_in_statements(self, project_with_added_labor_reason, login, driver):
+        labor_cost_page = LaborCostPage(driver)
+        time.sleep(1)
+        labor_cost_page.redact_overtime_on_reason_tab(project_with_added_labor_reason['name'])
+        source_data = labor_cost_page.get_labor_cost_value_on_drawer()
+        labor_cost_page.cancel_redact_labor_cost(8, 'Первая причина это ты, а вторая все твои мечты')
+        labor_cost_page.redact_overtime_on_reason_tab(project_with_added_labor_reason['name'])
+        labor_cost_page.check_values_on_reason_tab(project_with_added_labor_reason['name'], source_data[0], source_data[1])
+        value_after_canceling = labor_cost_page.get_labor_cost_value_on_drawer()
+        labor_cost_page.redact_labor_cost(8,'Третья это все твои слова, Я им не поверил едва. '
+                                            'Четвёртая причина это ложь, Кто прав, кто виноват - не разберёшь,')
+        time.sleep(1)
+        labor_cost_page.check_values_on_reason_tab(project_with_added_labor_reason['name'], '8',
+                                                   'Третья это все твои слова, Я им не поверил едва. '
+                                                   'Четвёртая причина это ложь, Кто прав, кто виноват - не разберёшь,')
+        labor_cost_page.redact_overtime_on_reason_tab(project_with_added_labor_reason['name'])
+        value_after_saving = labor_cost_page.get_labor_cost_value_on_drawer()
+        assert value_after_canceling == source_data, 'Данные изменились при отмене'
+        assert value_after_saving != source_data, 'Данные не изменились при сохранении'
+
+
+

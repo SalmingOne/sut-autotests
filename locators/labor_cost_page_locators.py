@@ -213,9 +213,15 @@ class LaborCostPageLocators:
     OVERTIME_WORK_PROJECTS_SEARCH_FIELD = (By.XPATH, '//div[@aria-colindex="2"]//input[@placeholder="Поиск"]')
     ALL_OVERTIME_WORK_KEBABS = (By.XPATH, '//div[@aria-colindex="8"]//*[@data-testid="MoreHorizIcon"]')
 
+    LABOR_COST_SUBMIT_BUTTON = (By.XPATH, "//form[contains(@class, 'MuiBox-root')]//button[@type='submit']")
 
     def check_projeck_on_reason_tab(self, project_mame):
         return By.XPATH, f'//div[@class="ag-cell ag-cell-not-inline-editing ag-cell-normal-height ag-cell-value"]//div[@aria-label="{project_mame}"]'
+
+    def check_values_on_reason_tab(self, project_name):
+        hours_cell = By.XPATH, f'//div[@class="ag-cell ag-cell-not-inline-editing ag-cell-normal-height ag-cell-value"]//div[@aria-label="{project_name}"]/../../div[@col-id="hours"]'
+        reason_cell = By.XPATH, f'//div[@class="ag-cell ag-cell-not-inline-editing ag-cell-normal-height ag-cell-value"]//div[@aria-label="{project_name}"]/../../div[@col-id="reason"]'
+        return hours_cell, reason_cell
 
     LI_MENU_ITEM = (By.CSS_SELECTOR, 'li[role="option"]')
 
