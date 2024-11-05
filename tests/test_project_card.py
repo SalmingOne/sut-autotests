@@ -874,3 +874,36 @@ class TestProjectCard:
         list_hours_after = project_card_page.displaying_table_resource_plan()
         assert list_hours == list_hours_after
     
+    @testit.workItemIds(11781)
+    @testit.displayName('2.1.2.2 Отображение часов при заполнении таблицы во временном интервале "Квартал"')
+    @pytest.mark.regress
+    @allure.title('id-11781 2.1.2.2 Отображение часов при заполнении таблицы во временном интервале "Квартал"')
+    def test_displaying_hours_when_table_full_in_quarter(self, simple_project, login, driver):
+        all_project_page = AllProjectPage(driver)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(simple_project['name'])
+        project_card_page = ProjectCardPage(driver)
+        project_card_page.go_to_resource_plan_tab()
+        project_card_page.press_add_employment_button()
+        start_date, end_date = project_card_page.get_current_month_start_end()
+        project_card_page.set_period_and_busy(start_date.strftime("%d.%m.%Y"), end_date.strftime("%d.%m.%Y"))
+        project_card_page.press_save_in_drover()
+        list_quarter = project_card_page.displaying_table_resource_plan()
+        project_card_page.chose_period('Месяц (по дням)')
+        list_month = project_card_page.displaying_table_resource_plan()
+        list_quarter = list(map(int, [x for x in list_quarter if x != '-' and x != '0']))
+        list_week = []
+        summa = 0
+        for i in list_month:
+            if i != '-':
+                summa += int(i)
+            else:
+                if summa != 0:
+                    list_week.append(summa)
+                    summa = 0
+        assert list_quarter == list_week, 'Сумма часов по дням за неделю не равна значению часов в неделю'
+        project_card_page.chose_period('Год')
+        list_year = project_card_page.displaying_table_resource_plan()
+        assert sum(list(map(int, [x for x in list_year if x != '-']))) == sum(list(map(int, [x for x in list_month if x != '-']))), \
+            'Сумма часов по дням за месяц не равна значению часов в месяц'
+    
