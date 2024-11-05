@@ -869,8 +869,8 @@ class TestProjectCard:
         index = list_hours.index("40")
         project_card_page.change_radiobutton_percent()
         list_percentage = project_card_page.displaying_table_resource_plan()
-        assert list_percentage[index] == "100%"
+        assert list_percentage[index] == "100%", 'Трудозатраты в таблице не перевелись из часов в проценты '
         project_card_page.change_radiobutton_hour()
         list_hours_after = project_card_page.displaying_table_resource_plan()
-        assert list_hours == list_hours_after
+        assert list_hours == list_hours_after, 'Трудозатраты в таблице не перевелись из процентов в часы '
     
