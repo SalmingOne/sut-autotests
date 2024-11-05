@@ -153,6 +153,15 @@ class BasePage:
         last_day_of_week = first_day_of_week + timedelta(days=6)
         return first_day_of_week, last_day_of_week
     
+    @allure.step("Получение первого и последнего дней текущего месяца")
+    def get_current_month_start_end(self):
+        first_day_of_month = datetime.now().replace(day=1)
+        next_month = datetime.now().month % 12 + 1
+        next_month_year = datetime.now().year + (1 if datetime.now().month == 12 else 0)
+        first_day_next_month = datetime(next_month_year, next_month, 1)
+        last_day_of_month = first_day_next_month - timedelta(days=1)
+        return first_day_of_month, last_day_of_month
+    
     @allure.step("Получение следующей недели от заданной начальной даты")
     def get_next_week(self, start_date):
         first_day_of_week = start_date + timedelta(days=7 - start_date.weekday())
