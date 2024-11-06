@@ -63,6 +63,18 @@ def simple_project():
 
 
 @pytest.fixture()
+def simple_project_with_description():
+    project_endpoint = ProjectEndpoint()
+    project_endpoint.delete_project_if_it_exist(PROJECT_NAME)
+    payload = CreateProject(
+        description='Длинное описание проекта'
+    ).model_dump()
+    response = project_endpoint.create_project_api(json=payload)
+    yield response.json()
+    project_endpoint.delete_project_api(str(response.json()['id']))
+
+
+@pytest.fixture()
 def archive_project():
     project_endpoint = ProjectEndpoint()
     project_endpoint.delete_project_if_it_exist(PROJECT_NAME)

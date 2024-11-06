@@ -887,6 +887,7 @@ class UserProfilePage(BasePage):
     @allure.step("Изменение данных в резюме")
     def change_resume(self, new_name):
         time.sleep(1)
+        self.check_save_and_save_as_new_buttons_not_active()
         self.action_select_all_text(self.element_is_visible(self.locators.RESUME_TITLE_FIELD))
         self.element_is_visible(self.locators.RESUME_TITLE_FIELD).send_keys(new_name)
         time.sleep(1)
@@ -894,7 +895,18 @@ class UserProfilePage(BasePage):
         self.elements_are_visible(self.locators.DATE_PIKERS)[1].send_keys('01.02.1990')
         self.action_double_click(self.elements_are_visible(self.locators.DATE_PIKERS)[2])
         self.elements_are_visible(self.locators.DATE_PIKERS)[2].send_keys(self.get_day_before(0))
+        self.check_save_and_save_as_new_buttons()
         self.element_is_visible(self.locators.SAVE_BUTTON).click()
+
+    @allure_testit_step("Проверка активности кнопок Сохранить и Сохранить как новое")
+    def check_save_and_save_as_new_buttons(self):
+        assert self.element_is_clickable(self.locators.SAVE_BUTTON), "Кнопка сохранить не активна"
+        assert self.element_is_clickable(self.locators.SAVE_AS_NEW_BUTTON), "Кнопка сохранить как новое не активна"
+
+    @allure_testit_step("Проверка не активности кнопок Сохранить и Сохранить как новое")
+    def check_save_and_save_as_new_buttons_not_active(self):
+        assert not self.element_is_clickable(self.locators.SAVE_BUTTON, 2), "Кнопка сохранить активна"
+        assert not self.element_is_clickable(self.locators.SAVE_AS_NEW_BUTTON, 2), "Кнопка сохранить как новое активна"
 
     @testit.step("Очистка обязательных полей в резюме")
     @allure.step("Очистка обязательных полей в резюме")
