@@ -940,12 +940,14 @@ class TestLaborCostPage:
         time.sleep(2)
         labor_cost_page.redact_overtime_on_reason_tab(project_with_added_labor_reason['name'])
         source_data = labor_cost_page.get_labor_cost_value_on_drawer()
-        labor_cost_page.cancel_redact_labor_cost(8, 'Первая причина это ты, а вторая все твои мечты')
+        labor_cost_page.redact_labor_cost(8, 'Первая причина это ты, а вторая все твои мечты')
+        labor_cost_page.cancel_changes_labor_cost_drawer()
         labor_cost_page.redact_overtime_on_reason_tab(project_with_added_labor_reason['name'])
         labor_cost_page.check_values_on_reason_tab(project_with_added_labor_reason['name'], source_data[0], source_data[1])
         value_after_canceling = labor_cost_page.get_labor_cost_value_on_drawer()
         labor_cost_page.redact_labor_cost(8,'Третья это все твои слова, Я им не поверил едва. '
                                             'Четвёртая причина это ложь, Кто прав, кто виноват - не разберёшь,')
+        labor_cost_page.save_changes_labor_cost_drawer()
         time.sleep(1)
         labor_cost_page.check_values_on_reason_tab(project_with_added_labor_reason['name'], '8',
                                                    'Третья это все твои слова, Я им не поверил едва. '
@@ -956,4 +958,22 @@ class TestLaborCostPage:
         assert value_after_saving != source_data, 'Данные не изменились при сохранении'
 
 
-
+    @testit.workItemIds(11936)
+    @testit.displayName('3.1.1.9. Н. Изменение данных на невалидные при редактировании списаний трудозатрат с причиной из раздела "Заявления"')
+    @pytest.mark.regress
+    @allure.title('id-11936 3.1.1.9. Н. Изменение данных на невалидные при редактировании списаний трудозатрат с причиной из раздела "Заявления"')
+    def test_invalid_data_for_labor_cost_on_editing(self, project_with_added_labor_reason, second_project_with_work, login, driver):
+        labor_cost_page = LaborCostPage(driver)
+        labor_cost_page.redact_overtime_on_reason_tab(project_with_added_labor_reason['name'])
+        labor_cost_page.redact_labor_cost(hours='25')
+        hours_over_24 = labor_cost_page.get_labor_cost_value_on_drawer()
+        labor_cost_page.redact_labor_cost(hours='-5')
+        hours_less_0 = labor_cost_page.get_labor_cost_value_on_drawer()
+        labor_cost_page.redact_labor_cost(hours='24')
+        labor_cost_page.save_changes_labor_cost_drawer()
+        errors = labor_cost_page.get_alert_message()
+        labor_cost_page.redact_labor_cost(hours=' ', reason=' ')
+        assert not labor_cost_page.save_changes_labor_cost_drawer(), "Кнопка сохранения активна"
+        assert 'Сумма часов не может превышать 24 за текущий день' in errors, "Нет сообщения об ошибке"
+        assert hours_over_24 != '25', "Значение больше 24 отображается в поле"
+        assert hours_less_0 != '-5', "Значение меньше 0 отображается в поле"

@@ -315,6 +315,50 @@ def project_with_required_reasons_with_work_and_overtime_work():
 
 
 @pytest.fixture()
+def second_project_with_work():
+    labor_report_endpoint = LaborReportEndpoint()
+    project_endpoint = ProjectEndpoint()
+    project_endpoint.delete_project_if_it_exist('SecondProject')
+    project_endpoint = ProjectEndpoint()
+    user_endpoint = UserEndpoint()
+    user_id = user_endpoint.get_user_id_by_email('auto_testt@mail.rruu')
+    project_endpoint.delete_project_if_it_exist('SecondProject')
+    payload = CreateProject(
+        name='SecondProject',
+        code='SECP',
+        resources=[dict(
+            projectRoleId=1,
+            userId=user_id,
+            isProjectManager=True
+        )
+        ]
+    ).model_dump()
+    res = project_endpoint.create_project_api(json=payload)
+    payload = dict(projectRoleId=1,
+                   projectId=res.json()["id"],
+                   userId=USER_ID,
+                   isProjectManager=True,
+                   startDate=CreateProject().startDate
+                   )
+    assignment_endpoint = AssignmentEndpoint()
+    assignment_endpoint.create_assignment_api(json=payload)
+    project_id = res.json()['id']
+    hours = 3
+    payload = [
+        dict(
+            date=BasePage(driver=None).get_day_before_m_d_y(0),
+            projectId=project_id,
+            hours=hours,
+            type="DEFAULT",
+            userId=USER_ID,
+        )
+    ]
+    labor_report_endpoint.post_labor_report_api(json=payload)
+    yield res.json()
+    project_endpoint.delete_project_api(str(res.json()['id']))
+
+
+@pytest.fixture()
 def project_with_added_labor_reason():
     labor_report_endpoint = LaborReportEndpoint()
     project_endpoint = ProjectEndpoint()
