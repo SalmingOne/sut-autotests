@@ -609,7 +609,7 @@ class TestProjectCard:
         all_project_page.go_to_all_project_page()
         all_project_page.go_project_page(no_resources_project['name'])
         project_card_page = ProjectCardPage(driver)
-        project_card_page.go_to_resource_plan_tab()
+        project_card_page.go_to_resource_plan_tab_without_verification()
         project_card_page.check_resource_plan_tab_without_resources()
 
     @testit.workItemIds(1955)
@@ -734,7 +734,8 @@ class TestProjectCard:
         project_card_page.set_period_and_busy(start_date, end_date, 8)
         project_card_page.press_save_in_drover()
         project_card_page.check_color_cell()
-        project_card_page.check_save_button_not_clickable()
+        save_button = project_card_page.check_save_button_is_clickable()
+        assert not save_button, "кнопка Сохранить кликабельна" 
 
     @testit.workItemIds(11788)
     @testit.displayName('2.1.1.1.1. Добавление периодов привлечения и почасовой занятости для ресурса')
@@ -782,7 +783,8 @@ class TestProjectCard:
         project_card_page.set_period_and_busy(start_date, end_date, 8)
         project_card_page.press_save_in_drover()
         project_card_page.check_color_cell('hours')
-        project_card_page.check_save_button_not_clickable()
+        save_button = project_card_page.check_save_button_is_clickable()
+        assert not save_button, "кнопка Сохранить кликабельна"
 
     @testit.workItemIds(11795)
     @testit.displayName('2.1.1.1.1. Отмена добавления периодов привлечения и почасовой занятости для ресурса (таблица)')
@@ -891,12 +893,12 @@ class TestProjectCard:
         list_quarter = project_card_page.displaying_table_resource_plan()
         project_card_page.chose_period('Месяц (по дням)')
         list_month = project_card_page.displaying_table_resource_plan()
-        list_quarter = list(map(int, [x for x in list_quarter if x != '-' and x != '0']))
+        list_quarter = [int(x) for x in list_quarter if x != '-' and x != '0']
         list_week = project_card_page.converting_list_hours_day_to_list_week(list_month)
         assert list_quarter == list_week, 'Сумма часов по дням за неделю не равна значению часов в неделю'
         project_card_page.chose_period('Год')
         list_year = project_card_page.displaying_table_resource_plan()
-        assert sum(list(map(int, [x for x in list_year if x != '-']))) == sum(list(map(int, [x for x in list_month if x != '-']))), \
+        assert sum([int(x) for x in list_year if x != '-']) == sum([int(x) for x in list_month if x != '-']), \
             'Сумма часов по дням за месяц не равна значению часов в месяц'
     
     @testit.workItemIds(11783)
@@ -918,11 +920,11 @@ class TestProjectCard:
         project_card_page.chose_period('Квартал')
         list_week = project_card_page.converting_list_hours_day_to_list_week(list_month)
         list_quarter = project_card_page.displaying_table_resource_plan()
-        list_quarter = list(map(int, [x for x in list_quarter if x != '-' and x != '0']))
+        list_quarter = [int(x) for x in list_quarter if x != '-' and x != '0']
         assert list_quarter == list_week, 'Сумма часов по дням за неделю не равна значению часов в неделю'
         project_card_page.chose_period('Год')
         list_year = project_card_page.displaying_table_resource_plan()
-        assert sum(list(map(int, [x for x in list_year if x != '-']))) == sum(list(map(int, [x for x in list_month if x != '-']))), \
+        assert sum([int(x) for x in list_year if x != '-']) == sum([int(x) for x in list_month if x != '-']), \
             'Сумма часов по дням за месяц не равна значению часов в месяц'
         
     @testit.workItemIds(11785)
@@ -943,12 +945,12 @@ class TestProjectCard:
         list_year = project_card_page.displaying_table_resource_plan()
         project_card_page.chose_period('Квартал')
         list_quarter = project_card_page.displaying_table_resource_plan()
-        list_quarter = list(map(int, [x for x in list_quarter if x != '-' and x != '0']))
+        list_quarter = [int(x) for x in list_quarter if x != '-' and x != '0']
         project_card_page.chose_period('Месяц (по дням)')
         list_month = project_card_page.displaying_table_resource_plan()
         list_week = project_card_page.converting_list_hours_day_to_list_week(list_month)
         assert list_quarter == list_week, 'Сумма часов по дням за неделю не равна значению часов в неделю'
-        assert sum(list(map(int, [x for x in list_year if x != '-']))) == sum(list(map(int, [x for x in list_month if x != '-']))), \
+        assert sum([int(x) for x in list_year if x != '-']) == sum([int(x) for x in list_month if x != '-']), \
             'Сумма часов по дням за месяц не равна значению часов в месяц'
     
         
@@ -982,4 +984,36 @@ class TestProjectCard:
         assert message == 'Свойства проекта успешно изменены', "Не появилось сообщение об изменении проекта"
         assert before_start_date != after_start_date, "Дата начала проекта не изменилась"
         assert after_start_date == new_start_date, "Дата начала проекта не изменилась на указанную"
+    
+    @testit.workItemIds(142)
+    @testit.displayName("1.3.2.1 Отмена редактирования даты начала проекта с выхождением запланированных \
+                        периодов привлечения за дату начала проекта.")
+    @pytest.mark.regress
+    @allure.title("id-142 1.3.2.1 Отмена редактирования даты начала проекта с выхождением запланированных \
+                  периодов привлечения за дату начала проекта.")
+    def test_cancel_editing_start_date_project_with_out_boundary_planned_resources\
+        (self, project_with_planned_resources, login, driver):
+        all_project_page = AllProjectPage(driver)
+        time.sleep(0.5)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(project_with_planned_resources[2]['name'])
+        project_card_page = ProjectCardPage(driver)
+        before_start_date = project_card_page.get_project_start_date()
+        new_start_date = (datetime.strptime(before_start_date, \
+                                            "%d.%m.%Y").date() + timedelta(1)).strftime("%d.%m.%Y")
+        project_card_page.change_start_date(new_start_date)
+        project_card_page.press_submit_button()
+        project_card_page.check_project_boundaries_modal_window()
+        project_card_page.press_modal_abort_button()
+        after_start_date = project_card_page.get_project_start_date()
+        save_button = project_card_page.check_save_button_is_clickable()
+        assert save_button, "кнопка Сохранить не кликабельна"
+        assert before_start_date != after_start_date, 'Дата начала проекта не изменилась'
+        project_card_page.press_break_button()
+        after_break_start_date = project_card_page.get_project_start_date()
+        
+        save_button = project_card_page.check_save_button_is_clickable()
+        assert not save_button, "кнопка Сохранить кликабельна"
+        assert after_break_start_date == before_start_date, \
+            'Дата начала проекта не вернулась к исходной после отмены'
     
