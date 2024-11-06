@@ -937,7 +937,7 @@ class TestLaborCostPage:
     @allure.title('id-11935 3.1.1.9. Редактирование/отмена редактирования списаний трудозатрат с причиной из раздела "Заявления"')
     def test_edit_cancel_reason_for_labor_cost_in_statements(self, project_with_added_labor_reason, login, driver):
         labor_cost_page = LaborCostPage(driver)
-        time.sleep(1)
+        time.sleep(2)
         labor_cost_page.redact_overtime_on_reason_tab(project_with_added_labor_reason['name'])
         source_data = labor_cost_page.get_labor_cost_value_on_drawer()
         labor_cost_page.cancel_redact_labor_cost(8, 'Первая причина это ты, а вторая все твои мечты')

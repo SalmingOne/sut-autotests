@@ -1357,5 +1357,5 @@ class LaborCostPage(BasePage):
 
     @allure_testit_step("Проверка значений полей Кол-во часов и Причина в таблице Причины")
     def check_values_on_reason_tab(self, project_name, hours, reason):
-        assert hours == self.element_is_visible(self.locators.check_values_on_reason_tab(project_name)[0]).text, 'Неправильное значение часов в таблице Причины'
-        assert reason == self.element_is_visible(self.locators.check_values_on_reason_tab(project_name)[1]).text, 'Неправильное значение причины в таблице Причины'
+        assert hours == self.element_is_visible(self.locators.check_hours_value_on_reason_tab(project_name)).text, 'Неправильное значение часов в таблице Причины'
+        assert reason == self.element_is_visible(self.locators.check_reason_value_on_reason_tab(project_name)).text, 'Неправильное значение причины в таблице Причины'

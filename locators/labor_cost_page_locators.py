@@ -218,10 +218,11 @@ class LaborCostPageLocators:
     def check_projeck_on_reason_tab(self, project_mame):
         return By.XPATH, f'//div[@class="ag-cell ag-cell-not-inline-editing ag-cell-normal-height ag-cell-value"]//div[@aria-label="{project_mame}"]'
 
-    def check_values_on_reason_tab(self, project_name):
-        hours_cell = By.XPATH, f'//div[@class="ag-cell ag-cell-not-inline-editing ag-cell-normal-height ag-cell-value"]//div[@aria-label="{project_name}"]/../../div[@col-id="hours"]'
-        reason_cell = By.XPATH, f'//div[@class="ag-cell ag-cell-not-inline-editing ag-cell-normal-height ag-cell-value"]//div[@aria-label="{project_name}"]/../../div[@col-id="reason"]'
-        return hours_cell, reason_cell
+    def check_hours_value_on_reason_tab(self, project_name):
+        return By.XPATH, f'//div[@class="ag-cell ag-cell-not-inline-editing ag-cell-normal-height ag-cell-value"]//div[@aria-label="{project_name}"]/../../div[@col-id="hours"]'
+
+    def check_reason_value_on_reason_tab(self, project_name):
+        return By.XPATH, f'//div[@class="ag-cell ag-cell-not-inline-editing ag-cell-normal-height ag-cell-value"]//div[@aria-label="{project_name}"]/../../div[@col-id="reason"]'
 
     LI_MENU_ITEM = (By.CSS_SELECTOR, 'li[role="option"]')
 
