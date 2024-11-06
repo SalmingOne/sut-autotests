@@ -63,6 +63,18 @@ def simple_project():
 
 
 @pytest.fixture()
+def simple_project_with_description():
+    project_endpoint = ProjectEndpoint()
+    project_endpoint.delete_project_if_it_exist(PROJECT_NAME)
+    payload = CreateProject(
+        description='Длинное описание проекта'
+    ).model_dump()
+    response = project_endpoint.create_project_api(json=payload)
+    yield response.json()
+    project_endpoint.delete_project_api(str(response.json()['id']))
+
+
+@pytest.fixture()
 def archive_project():
     project_endpoint = ProjectEndpoint()
     project_endpoint.delete_project_if_it_exist(PROJECT_NAME)
@@ -272,6 +284,79 @@ def project_with_overtime_work():
     project_endpoint.delete_project_api(str(project_id))
 
 
+@pytest.fixture()
+def project_with_required_reasons_with_work_and_overtime_work():
+    labor_report_endpoint = LaborReportEndpoint()
+    project_endpoint = ProjectEndpoint()
+    project_endpoint.delete_project_if_it_exist(PROJECT_NAME)
+    payload = CreateProject(
+        laborReasons=True
+    ).model_dump()
+    res = project_endpoint.create_project_api(json=payload)
+    project_id = res.json()['id']
+    hours = 6
+    reason = "Просто так"
+    payload = [
+        dict(
+            date=BasePage(driver=None).get_day_before_m_d_y(0),
+            projectId=project_id,
+            overtimeWork=hours,
+            hours=hours,
+            type="DEFAULT",
+            userId=USER_ID,
+            reason=reason,
+            overtimeReason=reason
+        )
+    ]
+    labor_report_endpoint.post_labor_report_api(json=payload)
+    number_day = BasePage(driver=None).get_day_after_ymd(1).split('-')[2]
+    yield res.json(), number_day, reason, hours
+    project_endpoint.delete_project_api(str(project_id))
+
+
+@pytest.fixture()
+def project_with_added_labor_reason():
+    labor_report_endpoint = LaborReportEndpoint()
+    project_endpoint = ProjectEndpoint()
+    project_endpoint.delete_project_if_it_exist(PROJECT_NAME)
+    project_endpoint = ProjectEndpoint()
+    user_endpoint = UserEndpoint()
+    user_id = user_endpoint.get_user_id_by_email('auto_testt@mail.rruu')
+    project_endpoint.delete_project_if_it_exist(PROJECT_NAME)
+    payload = CreateProject(
+        laborReasons=True,
+        resources=[dict(
+            projectRoleId=1,
+            userId=user_id,
+            isProjectManager=True
+        )
+        ]
+    ).model_dump()
+    res = project_endpoint.create_project_api(json=payload)
+    payload = dict(projectRoleId=1,
+                   projectId=res.json()["id"],
+                   userId=USER_ID,
+                   isProjectManager=True,
+                   startDate=CreateProject().startDate
+                   )
+    assignment_endpoint = AssignmentEndpoint()
+    assignment_endpoint.create_assignment_api(json=payload)
+    project_id = res.json()['id']
+    hours = 6
+    reason = "Просто так"
+    payload = [
+        dict(
+            date=BasePage(driver=None).get_day_before_m_d_y(0),
+            projectId=project_id,
+            hours=hours,
+            type="DEFAULT",
+            userId=USER_ID,
+            reason=reason,
+        )
+    ]
+    labor_report_endpoint.post_labor_report_api(json=payload)
+    yield res.json()
+    project_endpoint.delete_project_api(str(res.json()['id']))
 @pytest.fixture()
 def project_with_rejected_labor_report():
     labor_report_endpoint = LaborReportEndpoint()
