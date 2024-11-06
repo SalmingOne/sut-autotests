@@ -735,7 +735,7 @@ class TestProjectCard:
         project_card_page.press_save_in_drover()
         project_card_page.check_color_cell()
         save_button = project_card_page.check_save_button_is_clickable()
-        assert not save_button, "кнопка Сохранить кликабельна" 
+        assert not save_button, "Кнопка Сохранить кликабельна" 
 
     @testit.workItemIds(11788)
     @testit.displayName('2.1.1.1.1. Добавление периодов привлечения и почасовой занятости для ресурса')
@@ -784,7 +784,7 @@ class TestProjectCard:
         project_card_page.press_save_in_drover()
         project_card_page.check_color_cell('hours')
         save_button = project_card_page.check_save_button_is_clickable()
-        assert not save_button, "кнопка Сохранить кликабельна"
+        assert not save_button, "Кнопка Сохранить кликабельна"
 
     @testit.workItemIds(11795)
     @testit.displayName('2.1.1.1.1. Отмена добавления периодов привлечения и почасовой занятости для ресурса (таблица)')
@@ -1007,13 +1007,13 @@ class TestProjectCard:
         project_card_page.press_modal_abort_button()
         after_start_date = project_card_page.get_project_start_date()
         save_button = project_card_page.check_save_button_is_clickable()
-        assert save_button, "кнопка Сохранить не кликабельна"
+        assert save_button, "Кнопка Сохранить не кликабельна"
         assert before_start_date != after_start_date, 'Дата начала проекта не изменилась'
         project_card_page.press_break_button()
         after_break_start_date = project_card_page.get_project_start_date()
         
         save_button = project_card_page.check_save_button_is_clickable()
-        assert not save_button, "кнопка Сохранить кликабельна"
+        assert not save_button, "Кнопка Сохранить кликабельна"
         assert after_break_start_date == before_start_date, \
             'Дата начала проекта не вернулась к исходной после отмены'
     
