@@ -581,6 +581,11 @@ class ProjectCardPage(BasePage):
     def get_project_start_date(self):
         return self.element_is_visible(self.locators.BEGIN_DATA_FIELD).get_attribute("value")
     
+    @allure_testit_step("Проверка даты начала проекта в заголовке")
+    def check_project_start_date_in_title(self, start_date):
+        assert self.element_is_visible(self.locators.text_on_page(start_date)), \
+            f"В заголовке не новая дата начала проекта"
+    
     @testit.step("Получение даты окончания проекта")
     @allure.step("Получение даты окончания проекта")
     def get_project_end_date(self):
@@ -1050,3 +1055,13 @@ class ProjectCardPage(BasePage):
                     summa = 0
         return list_week
     
+    @allure_testit_step("Проверка модального окна 'Границы проекта'")
+    def check_project_boundaries_modal_window(self):
+        assert self.element_is_visible(self.locators.ALERT_DIALOG_TITLE).text in ['Границы проекта'], \
+            "Нет заголовка модального окна"
+        assert self.element_is_visible(self.locators.ALERT_DIALOG_DESCRIPTION).text == ("Существуют периоды привлечения,"
+            " выходящие за новую дату начала/дату окончания проекта. В результате выполнения данной операции,"
+             " такие периоды привлечения будут удалены и восстановить их будет невозможно."), \
+                "Нет сообщения о выхождение за границы проекта"
+        assert self.element_is_displayed(self.locators.MODAL_SUBMIT_BUTTON), "В модальном окне нет кнопки Подтвердить"
+        assert self.element_is_displayed(self.locators.MODAL_ABORT_BUTTON), "В модальном окне нет кнопки Отменить"
