@@ -1293,9 +1293,13 @@ class LaborCostPage(BasePage):
         return self.element_is_displayed(self.locators.TOOLTIP)
 
     @allure_testit_step('Проверка отклонения трудозатрат')
-    def field_is_rejected(self, task_name, number_day):
-        return 'rejected' in self.element_is_visible(self.locators.get_day_by_project(task_name, number_day)).find_element(By.XPATH, "..").get_attribute("class")
-
+    def field_is_rejected(self, name, number_day):
+        try:
+            return 'rejected' in self.element_is_visible(self.locators.get_day_by_project(name, number_day)).find_element(By.XPATH, "..").get_attribute("class")
+        except TimeoutException:
+            return 'rejected' in self.element_is_visible(
+                self.locators.get_day_by_task(name, number_day)).find_element(By.XPATH, "..").get_attribute(
+                "class")
     @allure_testit_step('Получение информации о возможности ввода в ячейку задачи')
     def get_status_of_field_task(self, task_name, number_day):
         return self.element_is_visible(self.locators.get_day_by_task(task_name, number_day)).get_attribute('disabled')
@@ -1311,8 +1315,8 @@ class LaborCostPage(BasePage):
         return self.element_is_visible(self.locators.NOTIFICATIONS_SUMMARY).text
 
     @allure_testit_step("Открыть список задачи")
-    def open_tasks_list(self):
-        self.elements_are_visible(self.locators.OPEN_TASKS_LIST_BUTTON)[0].click()
+    def open_tasks_list(self, project_name):
+        self.element_is_visible(self.locators.open_task_list_by_project(project_name)).click()
 
     @allure_testit_step("Получить цвет ячейки")
     def get_cell_color(self, project_name, number_day):
@@ -1364,3 +1368,17 @@ class LaborCostPage(BasePage):
             assert hours == self.element_is_visible(self.locators.check_hours_value_on_reason_tab(project_name)).text, 'Неправильное значение часов в таблице Причины'
         if reason != '':
             assert reason == self.element_is_visible(self.locators.check_reason_value_on_reason_tab(project_name)).text, 'Неправильное значение причины в таблице Причины'
+
+    @allure_testit_step("Нажать на ячейку дня задачи для редактирования списания")
+    def click_cell_in_labor_cost_table_by_task(self, task_name, number_day):
+        self.element_is_visible(self.locators.get_day_by_task(task_name, number_day)).click()
+
+    @allure_testit_step("Получить значение в ячейке дня задачи")
+    def get_task_day_cell_contents(self, task_name, number_day):
+        time.sleep(1)
+        return self.element_is_visible(self.locators.get_day_by_task(task_name, number_day)).get_attribute(
+            'placeholder')
+
+    @allure_testit_step("Перейти в карточку проекта")
+    def go_to_project_card(self, project_name):
+        self.element_is_visible(self.locators.check_project_name(project_name)).click()

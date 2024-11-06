@@ -21,7 +21,13 @@ class LaborCostPageLocators:
         return (By.XPATH, f'//div[@aria-label="{project_name}"]/a')
 
     ALL_PROJECT_NAMES = (By.XPATH, '//div[contains(@class,"project-row MuiBox-root")]//div[@basewrapprops]')
-    OPEN_TASKS_LIST_BUTTON = (By.XPATH, "//div[@basewrapprops]/preceding-sibling::div")
+
+    def open_task_list_by_project(self, project_name):
+        return (By.XPATH, f"//div[@aria-label='{project_name}']/preceding-sibling::div")
+
+    def check_project_name(self, project_name):
+        return (By.XPATH, f"//div[@aria-label='{project_name}']")
+
     # Дни в привязке к проекту
     RANDOM_DAYS_BY_PROJECT = (
         By.XPATH,
