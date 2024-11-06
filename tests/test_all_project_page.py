@@ -21,7 +21,7 @@ class TestProjectPage:
     @testit.displayName("1.2.1. Просмотр страницы всех проектов системы")
     @pytest.mark.smoke
     @allure.title("id-949 1.2.1. Просмотр страницы всех проектов системы")
-    def test_view_all_projects_page(self, login, driver):
+    def test_view_all_projects_page(self, simple_project_with_description, login, driver):
         projects_page = AllProjectPage(driver)
         projects_page.check_all_projects_tab_menu_item()
         projects_page.check_title()
@@ -29,6 +29,9 @@ class TestProjectPage:
         projects_page.check_only_my_projects_checkbox()
         projects_page.check_tab_column_titles()
         projects_page.check_action_menu_items()
+        projects_page.move_to_project_name(simple_project_with_description['name'])
+        assert (simple_project_with_description['name'] and simple_project_with_description['description'] in
+                projects_page.get_tooltip(), 'Не отображается тултип с названием и описанием проекта')
 
     @testit.workItemIds(3144)
     @testit.displayName("1.2.1. Просмотр своих проектов")

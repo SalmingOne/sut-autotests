@@ -894,7 +894,13 @@ class UserProfilePage(BasePage):
         self.elements_are_visible(self.locators.DATE_PIKERS)[1].send_keys('01.02.1990')
         self.action_double_click(self.elements_are_visible(self.locators.DATE_PIKERS)[2])
         self.elements_are_visible(self.locators.DATE_PIKERS)[2].send_keys(self.get_day_before(0))
+        self.check_save_and_save_as_new_buttons()
         self.element_is_visible(self.locators.SAVE_BUTTON).click()
+
+    @allure_testit_step("Проверка активности кнопок Сохранить и Сохранить как новое")
+    def check_save_and_save_as_new_buttons(self):
+        assert self.element_is_clickable(self.locators.SAVE_BUTTON), "Кнопка сохранить не активна"
+        assert self.element_is_clickable(self.locators.SAVE_AS_NEW_BUTTON), "Кнопка сохранить как новое не активна"
 
     @testit.step("Очистка обязательных полей в резюме")
     @allure.step("Очистка обязательных полей в резюме")
