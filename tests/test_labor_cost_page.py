@@ -998,7 +998,7 @@ class TestLaborCostPage:
         labor_cost_page.redact_labor_cost(hours=7, reason='Другая причина совсем непохожая на старую')
         labor_cost_page.save_changes_labor_cost_drawer()
         assert labor_cost_page.get_task_day_cell_contents(task_name, number_day) == '7', 'Значение не изменилось'
-        assert not labor_cost_page.field_is_rejected(task_name, number_day), "Поле не отображается отклоненным"
+        assert not labor_cost_page.field_is_rejected(task_name, number_day), "Поле отображается отклоненным"
         labor_cost_page.save_labor_reason()
         driver.refresh()
         assert f'Пользователь {user_name} внёс изменения в трудозатраты на проекте {project_name} с {first.strftime('%d.%m.%Y')} по {last.strftime('%d.%m.%Y')}' == labor_cost_page.get_notification_text(), "Нет уведомления об изменениях"
@@ -1006,3 +1006,19 @@ class TestLaborCostPage:
         labor_cost_page.go_to_project_card(project_name)
         project_card_page.go_to_progress_tab()
         project_card_page.check_wait_approved_reason_on_tab()
+
+    @testit.workItemIds(3726)
+    @testit.displayName('3.1.1.8. Отмена внесений изменений в отклонённые списания трудозатрат по проекту с обязательным указанием причин списания.')
+    @pytest.mark.regress
+    @allure.title('id-3726 3.1.1.8. Отмена внесений изменений в отклонённые списания трудозатрат по проекту с обязательным указанием причин списания.')
+    def test_cancel_edit_task_rejected_labor_cost_with_required_reasons(self, project_with_rejected_task_labor_cost, login, driver):
+        labor_cost_page = LaborCostPage(driver)
+        project_name = project_with_rejected_task_labor_cost[0]['name']
+        number_day = project_with_rejected_task_labor_cost[1]
+        task_name = project_with_rejected_task_labor_cost[2]
+        labor_cost_page.open_tasks_list(project_name)
+        labor_cost_page.click_cell_in_labor_cost_table_by_task(task_name, number_day)
+        labor_cost_page.redact_labor_cost(hours=7, reason='Из-за ретроградного Меркурия всё пошло не по плану')
+        labor_cost_page.cancel_changes_labor_cost_drawer()
+        assert labor_cost_page.get_task_day_cell_contents(task_name, number_day) == '3', "Значение в ячейке изменилось"
+        assert labor_cost_page.field_is_rejected(task_name, number_day), "Поле отображается не отклоненным"
