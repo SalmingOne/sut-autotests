@@ -585,6 +585,8 @@ def project_with_rejected_task_labor_cost():
     labor_report_endpoint = LaborReportEndpoint()
     project_endpoint = ProjectEndpoint()
     project_endpoint.delete_project_if_it_exist(PROJECT_NAME)
+    user_endpoint = UserEndpoint()
+    user_name = user_endpoint.get_user_by_id(str(USER_ID)).json()['fullName']
     payload = CreateProject(
         laborReasons=True,
         resources=[dict(
@@ -668,7 +670,7 @@ def project_with_rejected_task_labor_cost():
     ]
     labor_report_endpoint.put_labor_reports(json=payload)
     number_day = BasePage(driver=None).get_day_after_ymd(1).split('-')[2]
-    yield res.json(), number_day, taskName
+    yield res.json(), number_day, taskName, user_name
     project_endpoint.delete_project_api(str(project_id))
 
 

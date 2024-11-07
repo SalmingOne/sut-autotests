@@ -1338,13 +1338,21 @@ class LaborCostPage(BasePage):
         return sum(values)
 
     @allure_testit_step("Редактирование списания")
-    def redact_labor_cost(self, hours=None, reason=None, ):
+    def redact_labor_cost(self, hours=None, reason=None):
         if hours is not None:
             self.action_select_all_text(self.element_is_visible(self.locators.INPUT_HOUR_FIELD))
             self.element_is_visible(self.locators.INPUT_HOUR_FIELD).send_keys(hours)
         if reason is not None:
             self.action_select_all_text(self.element_is_visible(self.locators.LABOR_REASON_FIELD))
             self.element_is_visible(self.locators.LABOR_REASON_FIELD).send_keys(reason)
+
+    @allure_testit_step("Проверка отображения дровера редактирования списаний")
+    def check_labor_cost_drawer_view(self):
+        assert self.element_is_displayed(self.locators.DRAWER_LABOR_COST_NAME)
+        assert self.element_is_displayed(self.locators.INPUT_HOUR_FIELD)
+        assert self.element_is_displayed(self.locators.LABOR_REASON_FIELD)
+        assert self.element_is_displayed(self.locators.LABOR_COST_SUBMIT_BUTTON)
+        assert self.element_is_displayed(self.locators.DRAWER_ABORT_BUTTON)
 
     @allure_testit_step("Сохранение редактирования списания")
     def save_changes_labor_cost_drawer(self):
