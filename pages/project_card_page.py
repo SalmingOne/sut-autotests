@@ -281,14 +281,17 @@ class ProjectCardPage(BasePage):
         self.element_is_visible(self.locators.ABORT_BUTTON).click()
         assert titles_text == ['Проектная роль', 'Ресурс', 'Ставка привлечения', 'Дата назначения пользователя на слот', 'Дата снятия пользователя со слота', 'Действия'], "Не корректные заголовки таблицы"
 
-    @testit.step("Переход на вкладку Ресурсный план")
-    @allure.step("Переход на вкладку Ресурсный план")
+    @allure_testit_step("Переход на вкладку Ресурсный план")
     def go_to_resource_plan_tab(self):
         self.element_is_visible(self.locators.RESOURCE_PLAN_TAB, 15).click()
         self.element_is_present(self.locators.ADD_EMPLOYMENT_BUTTON, 25)
 
     @allure_testit_step("Переход на вкладку Ресурсный план без ожидания")
     def go_to_resource_plan_tab_not_wait(self):
+        self.element_is_visible(self.locators.RESOURCE_PLAN_TAB, 15).click()
+
+    @allure_testit_step("Переход на вкладку Ресурсный план без проверки")
+    def go_to_resource_plan_tab_without_verification(self):
         self.element_is_visible(self.locators.RESOURCE_PLAN_TAB, 15).click()
 
     @testit.step("Проверка вкладки Ресурсный план")
@@ -586,6 +589,11 @@ class ProjectCardPage(BasePage):
     @allure.step("Получение даты начала проекта")
     def get_project_start_date(self):
         return self.element_is_visible(self.locators.BEGIN_DATA_FIELD).get_attribute("value")
+    
+    @allure_testit_step("Проверка даты начала проекта в заголовке")
+    def check_project_start_date_in_title(self, start_date):
+        assert self.element_is_visible(self.locators.text_on_page(start_date)), \
+            f"В заголовке не новая дата начала проекта"
     
     @testit.step("Получение даты окончания проекта")
     @allure.step("Получение даты окончания проекта")
@@ -1038,9 +1046,9 @@ class ProjectCardPage(BasePage):
         color_cell = self.element_is_visible(self.locators.text_on_cell(maximum)).value_of_css_property('background-color')
         assert color_cell == 'rgba(255, 236, 229, 1)', "Цвет ячейки превышающей максимальную занятость, не красного цвета"
     
-    @allure_testit_step("Проверка некликабельности кнопки Сохранить")
-    def check_save_button_not_clickable(self):
-        assert not self.element_is_clickable(self.locators.SAVE_BUTTON), "кнопка Сохранить кликабельна"
+    @allure_testit_step("Проверка кликабельности кнопки Сохранить")
+    def check_save_button_is_clickable(self):
+        return self.element_is_clickable(self.locators.SAVE_BUTTON)
 
     @allure_testit_step("Преобразование списка часов по дням в список по неделям")
     def converting_list_hours_day_to_list_week(self, list_month):
@@ -1055,3 +1063,13 @@ class ProjectCardPage(BasePage):
                     summa = 0
         return list_week
     
+    @allure_testit_step("Проверка модального окна 'Границы проекта'")
+    def check_project_boundaries_modal_window(self):
+        assert self.element_is_visible(self.locators.ALERT_DIALOG_TITLE).text in ['Границы проекта'], \
+            "Нет заголовка модального окна"
+        assert self.element_is_visible(self.locators.ALERT_DIALOG_DESCRIPTION).text == ("Существуют периоды привлечения,"
+            " выходящие за новую дату начала/дату окончания проекта. В результате выполнения данной операции,"
+             " такие периоды привлечения будут удалены и восстановить их будет невозможно."), \
+                "Нет сообщения о выхождение за границы проекта"
+        assert self.element_is_displayed(self.locators.MODAL_SUBMIT_BUTTON), "В модальном окне нет кнопки Подтвердить"
+        assert self.element_is_displayed(self.locators.MODAL_ABORT_BUTTON), "В модальном окне нет кнопки Отменить"

@@ -7,6 +7,7 @@ from selenium.webdriver.common.by import By
 
 from locators.all_project_page_locators import AllProjectPageLocators
 from pages.base_page import BasePage
+from utils.concat_testit_allure_step import allure_testit_step
 
 
 class AllProjectPage(BasePage):
@@ -60,6 +61,7 @@ class AllProjectPage(BasePage):
     def check_all_projects_tab_menu_item(self):
         time.sleep(2)
         self.action_move_to_element(self.element_is_visible(self.locators.TAB_PROJECTS))
+        time.sleep(2)
         menu_items = self.elements_are_visible(self.locators.ALL_PROJECTS_MENU_ITEMS)
         menu_items_names = []
         for item in menu_items:
@@ -91,8 +93,8 @@ class AllProjectPage(BasePage):
         tab_title_names = []
         for title in tab_titles:
             tab_title_names.append(title.text)
-        assert tab_title_names == ['Название', 'Код', 'Дата начала', 'Дата окончания', 'Приоритет',
-                                   'Статус', 'Действия'], "В таблице есть не все столбцы"
+        assert tab_title_names == ['Название', 'Код', 'Руководитель проекта', 'Дата начала', 'Дата окончания',
+                                   'Приоритет', 'Статус', 'Действия'], "В таблице есть не все столбцы"
 
     @testit.step("Проверяем наличие всех пунктов меню Действия")
     @allure.step("Проверяем наличие всех пунктов меню Действия")
@@ -103,6 +105,7 @@ class AllProjectPage(BasePage):
         for item in menu_items:
             menu_items_names.append(item.text)
         assert menu_items_names == ['В архив', 'Удалить'], "Есть не все пункты меню Действия"
+        self.action_esc()
 
     @testit.step("Получаем все имена проектов на странице")
     @allure.step("Получаем все имена проектов на странице")
@@ -230,3 +233,11 @@ class AllProjectPage(BasePage):
         assert self.element_is_displayed(self.locators.SUBMIT_BUTTON), \
             "В модальном окне отсутствует кнопка подтвердить"
         self.element_is_visible(self.locators.MODAL_ABORT_BUTTON).click()
+
+    @allure_testit_step("Получение текста тултипа")
+    def get_tooltip(self):
+        return self.element_is_visible(self.locators.TOOLTIP).text
+
+    @allure_testit_step("Наведение курсора на имя проекта")
+    def move_to_project_name(self, project_name):
+        self.action_move_to_element(self.element_is_visible(self.locators.check_project_name_on_tab(project_name)))

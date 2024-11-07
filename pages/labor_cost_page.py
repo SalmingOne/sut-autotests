@@ -1335,3 +1335,30 @@ class LaborCostPage(BasePage):
         projects = self.get_all_project_name_on_tab()
         values = [int(self.get_project_day_cell_contents(project, number_day)) for project in projects if self.get_project_day_cell_contents(project, number_day) != '']
         return sum(values)
+
+    @allure_testit_step("Отмена редактирования списания")
+    def cancel_redact_labor_cost(self, overtime_work_hours, reason):
+        self.action_select_all_text(self.element_is_visible(self.locators.INPUT_HOUR_FIELD))
+        self.element_is_visible(self.locators.INPUT_HOUR_FIELD).send_keys(overtime_work_hours)
+        self.action_select_all_text(self.element_is_visible(self.locators.LABOR_REASON_FIELD))
+        self.element_is_visible(self.locators.LABOR_REASON_FIELD).send_keys(reason)
+        self.element_is_visible(self.locators.DRAWER_ABORT_BUTTON).click()
+
+    @allure_testit_step("Редактирование списания")
+    def redact_labor_cost(self, overtime_work_hours, reason):
+        self.action_select_all_text(self.element_is_visible(self.locators.INPUT_HOUR_FIELD))
+        self.element_is_visible(self.locators.INPUT_HOUR_FIELD).send_keys(overtime_work_hours)
+        self.action_select_all_text(self.element_is_visible(self.locators.LABOR_REASON_FIELD))
+        self.element_is_visible(self.locators.LABOR_REASON_FIELD).send_keys(reason)
+        self.element_is_visible(self.locators.LABOR_COST_SUBMIT_BUTTON).click()
+
+    @allure_testit_step("Получение значений полей из дровера редактирования списания")
+    def get_labor_cost_value_on_drawer(self):
+        hours = self.element_is_visible(self.locators.INPUT_HOUR_FIELD).get_attribute('value')
+        reason = self.element_is_visible(self.locators.LABOR_REASON_FIELD).get_attribute('value')
+        return hours, reason
+
+    @allure_testit_step("Проверка значений полей Кол-во часов и Причина в таблице Причины")
+    def check_values_on_reason_tab(self, project_name, hours, reason):
+        assert hours == self.element_is_visible(self.locators.check_hours_value_on_reason_tab(project_name)).text, 'Неправильное значение часов в таблице Причины'
+        assert reason == self.element_is_visible(self.locators.check_reason_value_on_reason_tab(project_name)).text, 'Неправильное значение причины в таблице Причины'

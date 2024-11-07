@@ -43,5 +43,7 @@ class AllProjectPageLocators:
 
     ALERT_MESSAGE = (By.XPATH, '//div[contains(@class, "MuiAlert-message")]')
 
+    TOOLTIP = (By.XPATH, '//div[contains(@class,"MuiTooltip")]//p')
+
 
 

@@ -20,3 +20,4 @@ class CreateProject(BaseModel):
     mandatoryAttachFiles: bool = False
     resources: list = [Resource().model_dump()]
     automaticLaborReports: bool = False
+    description: str = None
