@@ -994,14 +994,14 @@ class TestLaborCostPage:
         labor_cost_page.open_tasks_list(project_name)
         labor_cost_page.click_cell_in_labor_cost_table_by_task(task_name, number_day)
         labor_cost_page.check_labor_cost_drawer_view(labor_cost_page.get_day_after(0))
-        assert ('3', 'Причина') == labor_cost_page.get_labor_cost_value_on_drawer()
+        assert ('3', 'Причина') == labor_cost_page.get_labor_cost_value_on_drawer(), 'В поле не отображаются ранее сохраненные значения'
         labor_cost_page.redact_labor_cost(hours=7, reason='Другая причина совсем непохожая на старую')
         labor_cost_page.save_changes_labor_cost_drawer()
-        assert labor_cost_page.get_task_day_cell_contents(task_name, number_day) == '7'
-        assert not labor_cost_page.field_is_rejected(task_name, number_day)
+        assert labor_cost_page.get_task_day_cell_contents(task_name, number_day) == '7', 'Значение не изменилось'
+        assert not labor_cost_page.field_is_rejected(task_name, number_day), "Поле не отображается отклоненным"
         labor_cost_page.save_labor_reason()
         driver.refresh()
-        assert f'Пользователь {user_name} внёс изменения в трудозатраты на проекте {project_name} с {first.strftime('%d.%m.%Y')} по {last.strftime('%d.%m.%Y')}' == labor_cost_page.get_notification_text()
+        assert f'Пользователь {user_name} внёс изменения в трудозатраты на проекте {project_name} с {first.strftime('%d.%m.%Y')} по {last.strftime('%d.%m.%Y')}' == labor_cost_page.get_notification_text(), "Нет уведомления об изменениях"
         labor_cost_page.action_esc()
         labor_cost_page.go_to_project_card(project_name)
         project_card_page.go_to_progress_tab()

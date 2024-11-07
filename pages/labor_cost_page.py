@@ -1348,13 +1348,13 @@ class LaborCostPage(BasePage):
 
     @allure_testit_step("Проверка отображения дровера редактирования списаний")
     def check_labor_cost_drawer_view(self, data=None):
-        assert self.element_is_displayed(self.locators.DRAWER_LABOR_COST_NAME)
+        assert self.element_is_displayed(self.locators.DRAWER_LABOR_COST_NAME), 'Название не отображается'
         if data is not None:
-            assert data in self.element_is_visible(self.locators.DRAWER_LABOR_COST_NAME).text
-        assert self.element_is_displayed(self.locators.INPUT_HOUR_FIELD)
-        assert self.element_is_displayed(self.locators.LABOR_REASON_FIELD)
-        assert self.element_is_displayed(self.locators.LABOR_COST_SUBMIT_BUTTON)
-        assert self.element_is_displayed(self.locators.DRAWER_ABORT_BUTTON)
+            assert data in self.element_is_visible(self.locators.DRAWER_LABOR_COST_NAME).text, "В названии нет даты"
+        assert self.element_is_displayed(self.locators.INPUT_HOUR_FIELD), "Нет поля Количество часов"
+        assert self.element_is_displayed(self.locators.LABOR_REASON_FIELD), "Нет поля Причина"
+        assert self.element_is_displayed(self.locators.LABOR_COST_SUBMIT_BUTTON), "Нет кнопки сохранения"
+        assert self.element_is_displayed(self.locators.DRAWER_ABORT_BUTTON), "Нет кнопки отмены"
 
     @allure_testit_step("Сохранение редактирования списания")
     def save_changes_labor_cost_drawer(self):
