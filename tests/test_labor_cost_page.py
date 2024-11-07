@@ -984,25 +984,25 @@ class TestLaborCostPage:
     @pytest.mark.regress
     @allure.title('id-3725 3.1.1.8 Внесение изменений в отклонённые списания трудозатрат по задачам на проекте с обязательным указанием причин списания.')
     def test_edit_task_rejected_labor_cost_with_required_reasons(self, project_with_rejected_task_labor_cost, login, driver):
-            labor_cost_page = LaborCostPage(driver)
-            project_card_page = ProjectCardPage(driver)
-            first, last = project_card_page.get_current_week_start_end()
-            project_name = project_with_rejected_task_labor_cost[0]['name']
-            number_day = project_with_rejected_task_labor_cost[1]
-            task_name = project_with_rejected_task_labor_cost[2]
-            user_name = project_with_rejected_task_labor_cost[3]
-            labor_cost_page.open_tasks_list(project_name)
-            labor_cost_page.click_cell_in_labor_cost_table_by_task(task_name, number_day)
-            labor_cost_page.check_labor_cost_drawer_view(labor_cost_page.get_day_after(0))
-            assert ('3', 'Причина') == labor_cost_page.get_labor_cost_value_on_drawer()
-            labor_cost_page.redact_labor_cost(hours=7, reason='Другая причина совсем непохожая на старую')
-            labor_cost_page.save_changes_labor_cost_drawer()
-            assert labor_cost_page.get_task_day_cell_contents(task_name, number_day) == '7'
-            assert not labor_cost_page.field_is_rejected(task_name, number_day)
-            labor_cost_page.save_labor_reason()
-            driver.refresh()
-            assert f'Пользователь {user_name} внёс изменения в трудозатраты на проекте {project_name} с {first.strftime('%d.%m.%Y')} по {last.strftime('%d.%m.%Y')}' == labor_cost_page.get_notification_text()
-            labor_cost_page.action_esc()
-            labor_cost_page.go_to_project_card(project_name)
-            project_card_page.go_to_progress_tab()
-            project_card_page.check_wait_approved_reason_on_tab()
+        labor_cost_page = LaborCostPage(driver)
+        project_card_page = ProjectCardPage(driver)
+        first, last = project_card_page.get_current_week_start_end()
+        project_name = project_with_rejected_task_labor_cost[0]['name']
+        number_day = project_with_rejected_task_labor_cost[1]
+        task_name = project_with_rejected_task_labor_cost[2]
+        user_name = project_with_rejected_task_labor_cost[3]
+        labor_cost_page.open_tasks_list(project_name)
+        labor_cost_page.click_cell_in_labor_cost_table_by_task(task_name, number_day)
+        labor_cost_page.check_labor_cost_drawer_view(labor_cost_page.get_day_after(0))
+        assert ('3', 'Причина') == labor_cost_page.get_labor_cost_value_on_drawer()
+        labor_cost_page.redact_labor_cost(hours=7, reason='Другая причина совсем непохожая на старую')
+        labor_cost_page.save_changes_labor_cost_drawer()
+        assert labor_cost_page.get_task_day_cell_contents(task_name, number_day) == '7'
+        assert not labor_cost_page.field_is_rejected(task_name, number_day)
+        labor_cost_page.save_labor_reason()
+        driver.refresh()
+        assert f'Пользователь {user_name} внёс изменения в трудозатраты на проекте {project_name} с {first.strftime('%d.%m.%Y')} по {last.strftime('%d.%m.%Y')}' == labor_cost_page.get_notification_text()
+        labor_cost_page.action_esc()
+        labor_cost_page.go_to_project_card(project_name)
+        project_card_page.go_to_progress_tab()
+        project_card_page.check_wait_approved_reason_on_tab()
