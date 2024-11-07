@@ -951,3 +951,35 @@ class TestProjectCard:
         assert sum(list(map(int, [x for x in list_year if x != '-']))) == sum(list(map(int, [x for x in list_month if x != '-']))), \
             'Сумма часов по дням за месяц не равна значению часов в месяц'
     
+        
+    @testit.workItemIds(140)
+    @testit.displayName("1.3.2.1 Подтверждение изменения даты начала проекта с выхождением запланированных \
+                        периодов привлечения за дату начала проекта.")
+    @pytest.mark.regress
+    @allure.title("id-140 1.3.2.1 Подтверждение изменения даты начала проекта с выхождением запланированных \
+                  периодов привлечения за дату начала проекта.")
+    def test_confirmation_change_start_date_project_with_out_boundary_planned_resources\
+        (self, project_with_planned_resources, login, driver):
+        all_project_page = AllProjectPage(driver)
+        time.sleep(0.5)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(project_with_planned_resources[2]['name'])
+        project_card_page = ProjectCardPage(driver)
+        before_start_date = project_card_page.get_project_start_date()
+        before_end_date = project_card_page.get_project_end_date()
+        new_start_date = (datetime.strptime(before_start_date, "%d.%m.%Y").date() + timedelta(1)).strftime("%d.%m.%Y")
+        project_card_page.change_start_date(new_start_date)
+        project_card_page.press_submit_button()
+        project_card_page.check_project_boundaries_modal_window()
+        project_card_page.press_modal_submit_button()
+        message = project_card_page.get_alert_message()
+        after_start_date = project_card_page.get_project_start_date()
+        project_card_page.check_project_start_date_in_title(new_start_date)
+        project_card_page.go_to_resource_plan_tab()
+        project_card_page.press_add_employment_button()
+        project_card_page.press_start_date_in_drover()
+        project_card_page.check_dates_outside_project_boundaries(new_start_date, before_end_date)        
+        assert message == 'Свойства проекта успешно изменены', "Не появилось сообщение об изменении проекта"
+        assert before_start_date != after_start_date, "Дата начала проекта не изменилась"
+        assert after_start_date == new_start_date, "Дата начала проекта не изменилась на указанную"
+    
