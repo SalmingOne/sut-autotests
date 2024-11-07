@@ -735,7 +735,8 @@ class TestProjectCard:
         project_card_page.set_period_and_busy(start_date, end_date, 8)
         project_card_page.press_save_in_drover()
         project_card_page.check_color_cell()
-        project_card_page.check_save_button_not_clickable()
+        save_button = project_card_page.check_save_button_is_clickable()
+        assert not save_button, "Кнопка Сохранить кликабельна"
 
     @testit.workItemIds(11788)
     @testit.displayName('2.1.1.1.1. Добавление периодов привлечения и почасовой занятости для ресурса')
@@ -783,7 +784,8 @@ class TestProjectCard:
         project_card_page.set_period_and_busy(start_date, end_date, 8)
         project_card_page.press_save_in_drover()
         project_card_page.check_color_cell('hours')
-        project_card_page.check_save_button_not_clickable()
+        save_button = project_card_page.check_save_button_is_clickable()
+        assert not save_button, "Кнопка Сохранить кликабельна"
 
     @testit.workItemIds(11795)
     @testit.displayName('2.1.1.1.1. Отмена добавления периодов привлечения и почасовой занятости для ресурса (таблица)')
@@ -892,12 +894,12 @@ class TestProjectCard:
         list_quarter = project_card_page.displaying_table_resource_plan()
         project_card_page.chose_period('Месяц (по дням)')
         list_month = project_card_page.displaying_table_resource_plan()
-        list_quarter = list(map(int, [x for x in list_quarter if x != '-' and x != '0']))
+        list_quarter = [int(x) for x in list_quarter if x != '-' and x != '0']
         list_week = project_card_page.converting_list_hours_day_to_list_week(list_month)
         assert list_quarter == list_week, 'Сумма часов по дням за неделю не равна значению часов в неделю'
         project_card_page.chose_period('Год')
         list_year = project_card_page.displaying_table_resource_plan()
-        assert sum(list(map(int, [x for x in list_year if x != '-']))) == sum(list(map(int, [x for x in list_month if x != '-']))), \
+        assert sum([int(x) for x in list_year if x != '-']) == sum([int(x) for x in list_month if x != '-']), \
             'Сумма часов по дням за месяц не равна значению часов в месяц'
     
     @testit.workItemIds(11783)
@@ -919,11 +921,11 @@ class TestProjectCard:
         project_card_page.chose_period('Квартал')
         list_week = project_card_page.converting_list_hours_day_to_list_week(list_month)
         list_quarter = project_card_page.displaying_table_resource_plan()
-        list_quarter = list(map(int, [x for x in list_quarter if x != '-' and x != '0']))
+        list_quarter = [int(x) for x in list_quarter if x != '-' and x != '0']
         assert list_quarter == list_week, 'Сумма часов по дням за неделю не равна значению часов в неделю'
         project_card_page.chose_period('Год')
         list_year = project_card_page.displaying_table_resource_plan()
-        assert sum(list(map(int, [x for x in list_year if x != '-']))) == sum(list(map(int, [x for x in list_month if x != '-']))), \
+        assert sum([int(x) for x in list_year if x != '-']) == sum([int(x) for x in list_month if x != '-']), \
             'Сумма часов по дням за месяц не равна значению часов в месяц'
 
     @testit.workItemIds(11785)
