@@ -993,7 +993,8 @@ class TestLaborCostPage:
             user_name = project_with_rejected_task_labor_cost[3]
             labor_cost_page.open_tasks_list(project_name)
             labor_cost_page.click_cell_in_labor_cost_table_by_task(task_name, number_day)
-            labor_cost_page.check_labor_cost_drawer_view()
+            labor_cost_page.check_labor_cost_drawer_view(labor_cost_page.get_day_after(0))
+            assert ('3', 'Причина') == labor_cost_page.get_labor_cost_value_on_drawer()
             labor_cost_page.redact_labor_cost(hours=7, reason='Другая причина совсем непохожая на старую')
             labor_cost_page.save_changes_labor_cost_drawer()
             assert labor_cost_page.get_task_day_cell_contents(task_name, number_day) == '7'

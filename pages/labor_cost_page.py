@@ -1347,8 +1347,10 @@ class LaborCostPage(BasePage):
             self.element_is_visible(self.locators.LABOR_REASON_FIELD).send_keys(reason)
 
     @allure_testit_step("Проверка отображения дровера редактирования списаний")
-    def check_labor_cost_drawer_view(self):
+    def check_labor_cost_drawer_view(self, data=None):
         assert self.element_is_displayed(self.locators.DRAWER_LABOR_COST_NAME)
+        if data is not None:
+            assert data in self.element_is_visible(self.locators.DRAWER_LABOR_COST_NAME).text
         assert self.element_is_displayed(self.locators.INPUT_HOUR_FIELD)
         assert self.element_is_displayed(self.locators.LABOR_REASON_FIELD)
         assert self.element_is_displayed(self.locators.LABOR_COST_SUBMIT_BUTTON)
