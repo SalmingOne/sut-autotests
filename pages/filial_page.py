@@ -242,6 +242,7 @@ class FilialPage(BasePage):
     @testit.step("Отмена удаления филиала")
     @allure.step("Отмена удаления филиала")
     def cansel_delete_filial(self, name):
+        time.sleep(0.5)
         self.element_is_visible(self.locators.kebab_by_filial_name(name)).click()
         time.sleep(1)
         self.element_is_visible(self.locators.KEBAB_DELETE_BUTTON).click()

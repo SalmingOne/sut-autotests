@@ -285,7 +285,11 @@ class ProjectCardPage(BasePage):
     @allure.step("Переход на вкладку Ресурсный план")
     def go_to_resource_plan_tab(self):
         self.element_is_visible(self.locators.RESOURCE_PLAN_TAB, 15).click()
-        self.element_is_present(self.locators.ADD_EMPLOYMENT_BUTTON, 15)
+        self.element_is_present(self.locators.ADD_EMPLOYMENT_BUTTON, 25)
+
+    @allure_testit_step("Переход на вкладку Ресурсный план без ожидания")
+    def go_to_resource_plan_tab_not_wait(self):
+        self.element_is_visible(self.locators.RESOURCE_PLAN_TAB, 15).click()
 
     @testit.step("Проверка вкладки Ресурсный план")
     @allure.step("Проверка вкладки Ресурсный план")
@@ -308,7 +312,7 @@ class ProjectCardPage(BasePage):
     @testit.step("Проверка сообщения в табе Ресурсный план без ресурсов")
     @allure.step("Проверка сообщения в табе Ресурсный план без ресурсов")
     def check_message_without_resources(self):
-        all_messages = self.elements_are_visible(self.locators.TEXT_NO_RESOURCES, 15)
+        all_messages = self.elements_are_visible(self.locators.TEXT_NO_RESOURCES, 25)
         data = []
         for message in all_messages:
             data.append(message.text)
@@ -319,7 +323,7 @@ class ProjectCardPage(BasePage):
     @allure.step("Проверка ссылки на добавление новых ресурсов в проект")
     def check_link_to_add_new_resources(self):
         self.element_is_visible(self.locators.LINK_NO_RESOURCES).click()
-        assert self.element_is_visible(self.locators.TEAM_TAB).get_attribute('aria-selected') == 'true', \
+        assert self.element_is_visible(self.locators.TEAM_TAB, 15).get_attribute('aria-selected') == 'true', \
             "Ссылка не ведет на вкладку Команда"
 
     @allure_testit_step("Переключение радиобаттона на значение 'Проценты'")
@@ -410,6 +414,7 @@ class ProjectCardPage(BasePage):
         self.check_chose_period_list_in_progress_tab()
         self.check_team_tab_next_previous_buttons()
         self.check_progress_tab_save_and_break_buttons()
+        time.sleep(1)
         self.check_progress_tab_headers_text()
         self.check_progress_tab_done_and_clear_icon()
         self.check_progress_tab_action_approve()
@@ -440,7 +445,8 @@ class ProjectCardPage(BasePage):
         text = []
         for item in all_items:
             text.append(item.text)
-        assert sorted(text) == ['', 'Дата', 'Действия', 'Действия', 'Кол-во часов', 'Пользователь', 'Пользователь', 'Причина', 'Статус согласования', 'Файл'], ("В таблицах на вкладке Ход выполнения есть"
+        assert sorted(text) == ['', 'Дата', 'Действия', 'Действия', 'Кол-во часов', 'Пользователь', 'Пользователь',
+                                'Причина', 'Статус согласования', 'Файл'], ("В таблицах на вкладке Ход выполнения есть"
                                                                              " не все заголовки")
 
     @testit.step("Проверка наличия иконок согласовать и не согласовать")
@@ -955,17 +961,16 @@ class ProjectCardPage(BasePage):
     @testit.step("Проверка окрашивания ячеек в зависимости от выбранного значения")
     @allure.step("Проверка окрашивания ячеек в зависимости от выбранного значения")
     def checking_color_cell(self):
-        value = (self.elements_are_visible(self.locators.CELLS))[2]
         color_cell = []
         for i in range(9):
-           self.action_double_click(value)
-           self.elements_are_visible(self.locators.LI_MENU_ITEM)[i].click()
-           color = value.value_of_css_property('background-color')
-           color_cell.append(color)
-
-        assert color_cell == ['rgba(0, 0, 0, 0)', 'rgba(223, 244, 255, 0.3)', 'rgba(223, 244, 255, 0.3)',\
-                              'rgba(223, 244, 255, 0.3)', 'rgba(223, 244, 255, 0.6)', 'rgba(223, 244, 255, 0.6)',\
-                                 'rgba(223, 244, 255, 0.6)', 'rgba(223, 244, 255, 0.6)', 'rgba(204, 231, 246, 1)'], \
+            self.action_double_click(self.elements_are_visible(self.locators.CELLS)[2])
+            self.elements_are_visible(self.locators.LI_MENU_ITEM)[i].click()
+            time.sleep(0.2)
+            color = self.elements_are_visible(self.locators.CELLS)[2].value_of_css_property('background-color')
+            color_cell.append(color)
+        assert color_cell == ['rgba(0, 0, 0, 0)', 'rgba(223, 244, 255, 0.3)', 'rgba(223, 244, 255, 0.3)',
+                              'rgba(223, 244, 255, 0.3)', 'rgba(223, 244, 255, 0.6)', 'rgba(223, 244, 255, 0.6)',
+                              'rgba(223, 244, 255, 0.6)', 'rgba(223, 244, 255, 0.6)', 'rgba(204, 231, 246, 1)'], \
             "Цвет заливки ячеек не соответствует"
 
     @testit.step("Внести изменения в таблицу 'Ресурсный план'")

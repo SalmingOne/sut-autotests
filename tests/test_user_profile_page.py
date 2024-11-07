@@ -473,8 +473,7 @@ class TestUserProfilePage:
         colleagues_page.go_colleagues_page()
         colleagues_page.search_user('АвтоСПроектом')
         colleagues_page.go_to_watch_the_user_eyes()
-        time.sleep(3)  
-        user_profile_page = UserProfilePage(driver)
+        time.sleep(3)
         user_profile_page.go_to_user_profile()
         time.sleep(3)        
         user_name = user_profile_page.get_title()
@@ -1071,6 +1070,7 @@ class TestUserProfilePage:
         colleagues_page.go_to_watch_the_user_eyes()
         schedule_page = SchedulePage(driver)
         schedule_page.go_to_schedule_page()
+        time.sleep(3)
         if schedule_page.check_text_on_modal():
             schedule_page.press_submit_button_in_modal()
         else:
@@ -1186,13 +1186,13 @@ class TestUserProfilePage:
         open_windows = driver.window_handles
         time.sleep(2)
         driver.switch_to.window(open_windows[1])
-        time.sleep(1)
+        time.sleep(3)
         assert user_profile_page.get_user_status() == 'Работает', "Статус пользователя не Работает"
         driver.switch_to.window(open_windows[2])
-        time.sleep(1)
+        time.sleep(3)
         assert user_profile_page.get_user_status() == 'Уволен', "Статус пользователя не Уволен"
         driver.switch_to.window(open_windows[3])
-        time.sleep(1)
+        time.sleep(3)
         assert user_profile_page.get_user_status() == 'Работает', "Статус пользователя не Работает"
 
     @testit.workItemIds(12592)

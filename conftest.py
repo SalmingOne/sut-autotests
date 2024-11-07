@@ -9,6 +9,7 @@ from data.urls import Urls
 from endpoints.affiliates_endpoint import AffiliatesEndpoint
 from endpoints.assignments_endpoint import AssignmentEndpoint
 from endpoints.departmens_endpoint import DepartmentsEndpoint
+from endpoints.file_endpoint import FilesEndpoint
 from endpoints.labels_endpoint import LabelsEndpoint
 from endpoints.gantt_endpoint import GanttEndpoint
 from endpoints.labor_reports_endpoint import LaborReportEndpoint
@@ -20,6 +21,7 @@ from endpoints.project_roles_endpoint import ProjectRolesEndpoint
 from endpoints.resume_endpoint import ResumeEndpoint
 from endpoints.search_profile_endpoint import SearchProfileEndpoint
 from endpoints.skills_endpoint import SkillsEndpoint
+from endpoints.statement_files_endpoint import StatementFilesEndpoint
 from endpoints.system_roles_endpoint import SystemRolesEndpoint
 
 from endpoints.users_endpoint import UserEndpoint
@@ -1251,3 +1253,30 @@ def create_second_personal_quality():
     response = persona_quality_endpoint.create_personal_quality_api(json=payload)
     yield response.json()
     persona_quality_endpoint.delete_personal_quality_api(str(response.json()['id']))
+
+
+@pytest.fixture()
+def add_all_statement_files():
+    statement_files_endpoint = StatementFilesEndpoint()
+    files_endpoint = FilesEndpoint()
+    all_type_file = statement_files_endpoint.get_all_statement_files_types()
+    if 'DIS' not in all_type_file:
+        fp = open('../data/files/увольнение.docx', 'rb')
+        files = {'file': fp}
+        add_file = files_endpoint.post_file(files)
+        statement_files_endpoint.post_statement_file(add_file.json()['id'], 'DIS')
+    if 'ADM' not in all_type_file:
+        fp = open('../data/files/административный.docx', 'rb')
+        files = {'file': fp}
+        add_file = files_endpoint.post_file(files)
+        statement_files_endpoint.post_statement_file(add_file.json()['id'], 'ADM')
+    if 'MAT' not in all_type_file:
+        fp = open('../data/files/декретный отпуск.docx', 'rb')
+        files = {'file': fp}
+        add_file = files_endpoint.post_file(files)
+        statement_files_endpoint.post_statement_file(add_file.json()['id'], 'MAT')
+    if 'VAC' not in all_type_file:
+        fp = open('../data/files/ежегодный.docx', 'rb')
+        files = {'file': fp}
+        add_file = files_endpoint.post_file(files)
+        statement_files_endpoint.post_statement_file(add_file.json()['id'], 'VAC')

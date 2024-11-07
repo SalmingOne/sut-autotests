@@ -682,6 +682,7 @@ class TestLaborCostPage:
         today = labor_cost_page.get_date_list_from_today()
         # Перенос переработки на день с трудозатратами
         labor_cost_page.change_overtime_work_date(project_with_work_and_overtime_work['name'], labor_cost_page.get_day_before(-1))
+        time.sleep(1)
         work = labor_cost_page.get_project_day_cell_contents(
             project_with_work_and_overtime_work['name'],
             today[1] + 1
@@ -690,6 +691,7 @@ class TestLaborCostPage:
         # Перенос переработки на день без трудозатрат
         labor_cost_page.change_overtime_work_date(project_with_work_and_overtime_work['name'],
                                                   labor_cost_page.get_day_before(-3))
+        time.sleep(3)
         zero_work = labor_cost_page.get_project_day_cell_contents(
             project_with_work_and_overtime_work['name'],
             today[3] + 1
@@ -698,6 +700,7 @@ class TestLaborCostPage:
         # Перенос переработки с дня без трудозатрат
         labor_cost_page.change_overtime_work_date(project_with_work_and_overtime_work['name'],
                                                   labor_cost_page.get_day_before(-4))
+        time.sleep(1)
         empty_work = labor_cost_page.get_project_day_cell_contents(
             project_with_work_and_overtime_work['name'],
             today[3] + 1
@@ -706,6 +709,7 @@ class TestLaborCostPage:
         # Перенос переработки на изначальный день
         labor_cost_page.change_overtime_work_date(project_with_work_and_overtime_work['name'],
                                                   labor_cost_page.get_day_before(-2))
+        time.sleep(1)
         work_and_overtime = labor_cost_page.get_project_day_cell_contents(
             project_with_work_and_overtime_work['name'],
             today[2] + 1

@@ -83,6 +83,7 @@ class TestCreateProject:
         # Берем имя проекта со страницы все проекты
         all_project_page = AllProjectPage(driver)
         all_project_page.go_to_all_project_page()
+        time.sleep(2)
         all_project_page.see_all_status_project()
         try:
             all_project_page.check_project_name_at_all('AutoTestProjectDraft')

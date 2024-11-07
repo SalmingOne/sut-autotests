@@ -25,7 +25,7 @@ class TestVariablesPage:
     @testit.displayName("6.3.1.3 Создание переменной в таблице переменных")
     @pytest.mark.smoke
     @allure.title("id-1278 6.3.1.3 Создание переменной в таблице переменных")
-    def test_create_a_variable(self, login, driver):
+    def test_create_a_variable(self, login, add_all_statement_files, driver):
         variables_page = VariablesPage(driver)
         variables_page.go_to_variables_page()
         variables_page.create_variable(

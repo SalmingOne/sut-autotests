@@ -543,10 +543,11 @@ class TestProjectCard:
     @testit.displayName('2.1.1.2. Отображение заливки ячеек при выборе процента привлечения ресурса')
     @pytest.mark.regress
     @allure.title('id-384 2.1.1.2. Отображение заливки ячеек при выборе процента привлечения ресурса')
-    def test_displaying_cell_fill_percentage_resource_attraction(self, simple_project, login, driver):
+    def test_displaying_cell_fill_percentage_resource_attraction(self, project_with_two_resources, login, driver):
         all_project_page = AllProjectPage(driver)
         all_project_page.go_to_all_project_page()
-        all_project_page.go_project_page(simple_project['name'])
+        time.sleep(1)
+        all_project_page.go_project_page(project_with_two_resources['name'])
         project_card_page = ProjectCardPage(driver)
         project_card_page.go_to_resource_plan_tab()
         project_card_page.change_radiobutton_percent()
@@ -609,7 +610,8 @@ class TestProjectCard:
         all_project_page.go_to_all_project_page()
         all_project_page.go_project_page(no_resources_project['name'])
         project_card_page = ProjectCardPage(driver)
-        project_card_page.go_to_resource_plan_tab()
+        time.sleep(2)
+        project_card_page.go_to_resource_plan_tab_not_wait()
         project_card_page.check_resource_plan_tab_without_resources()
 
     @testit.workItemIds(1955)
@@ -813,10 +815,10 @@ class TestProjectCard:
     @testit.displayName('2.1.2.3. Сохранение данных при переключении временных периодов')
     @pytest.mark.regress
     @allure.title('id-554 2.1.2.3. Сохранение данных при переключении временных периодов')
-    def test_saving_data_when_switching_time_periods(self, simple_project, login, driver):
+    def test_saving_data_when_switching_time_periods(self, project_with_two_resources, login, driver):
         all_project_page = AllProjectPage(driver)
         all_project_page.go_to_all_project_page()
-        all_project_page.go_project_page(simple_project['name'])
+        all_project_page.go_project_page(project_with_two_resources['name'])
         project_card_page = ProjectCardPage(driver)
         project_card_page.go_to_resource_plan_tab()
         project_card_page.change_table_resource_plan()

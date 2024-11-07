@@ -8,7 +8,7 @@ from pages.user_page import UserPage
 
 
 @allure.suite("Пользователи")
-class TestUsersPage:
+class TestColleaguesPage:
 
     @testit.workItemIds(981)
     @testit.displayName("4.9.1. Просмотр страницы коллег пользователя в разделе Коллеги")
