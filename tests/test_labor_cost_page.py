@@ -1022,3 +1022,26 @@ class TestLaborCostPage:
         labor_cost_page.cancel_changes_labor_cost_drawer()
         assert labor_cost_page.get_task_day_cell_contents(task_name, number_day) == '3', "Значение в ячейке изменилось"
         assert labor_cost_page.field_is_rejected(task_name, number_day), "Поле отображается не отклоненным"
+
+    @testit.workItemIds(3727)
+    @testit.displayName('3.1.1.8 Внесение изменений в отклонённые списания трудозатрат по проекту.')
+    @pytest.mark.regress
+    @allure.title('id-3727 3.1.1.8 Внесение изменений в отклонённые списания трудозатрат по проекту.')
+    def test_edit_rejected_labor_cost(self, project_with_rejected_labor_cost_without_reason, login, driver):
+        labor_cost_page = LaborCostPage(driver)
+        project_card_page = ProjectCardPage(driver)
+        first, last = labor_cost_page.get_current_week_start_end()
+        project_name = project_with_rejected_labor_cost_without_reason[0]['name']
+        number_day = project_with_rejected_labor_cost_without_reason[1]
+        user_name = project_with_rejected_labor_cost_without_reason[2]
+        labor_cost_page.redact_labor_cost_table_by_project(project_name, number_day, 8)
+        assert labor_cost_page.get_cell_color(project_name, number_day) in ['rgba(255, 251, 233, 1)', 'rgba(255, 236, 229, 1)'], 'Цвет не желтый/красный(выходной)'
+        labor_cost_page.save_labor_reason()
+        assert labor_cost_page.get_project_day_cell_contents(project_name, number_day) == '8', 'Значение не изменилось'
+        assert not labor_cost_page.field_is_rejected(project_name, number_day), "Поле отображается отклоненным"
+        driver.refresh()
+        assert f'Пользователь {user_name} внёс изменения в трудозатраты на проекте {project_name} с {first.strftime('%d.%m.%Y')} по {last.strftime('%d.%m.%Y')}' == labor_cost_page.get_notification_text(), "Нет уведомления об изменениях"
+        labor_cost_page.action_esc()
+        labor_cost_page.go_to_project_card(project_name)
+        project_card_page.go_to_progress_tab()
+        project_card_page.check_wait_approved_reason_on_tab()

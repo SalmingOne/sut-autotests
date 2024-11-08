@@ -1311,7 +1311,7 @@ class LaborCostPage(BasePage):
     @allure_testit_step('Получение текста уведомления')
     def get_notification_text(self, notification_id = 0):
         self.element_is_visible(self.locators.NOTIFICATIONS_ICON).click()
-        self.elements_are_visible(self.locators.NOTIFICATIONS_SUMMARY_BUTTON,30)[notification_id].click()
+        self.elements_are_visible(self.locators.NOTIFICATIONS_SUMMARY_BUTTON,60)[notification_id].click()
         return self.element_is_visible(self.locators.NOTIFICATIONS_SUMMARY).text
 
     @allure_testit_step("Открыть список задачи")
@@ -1383,10 +1383,22 @@ class LaborCostPage(BasePage):
     def click_cell_in_labor_cost_table_by_task(self, task_name, number_day):
         self.element_is_visible(self.locators.get_day_by_task(task_name, number_day)).click()
 
+    @allure_testit_step("Отредактировать значение в ячейке проекта")
+    def redact_labor_cost_table_by_project(self, project_name, number_day, hours):
+        self.element_is_visible(self.locators.get_day_by_project(project_name, number_day)).click()
+        self.action_select_all_text(self.element_is_visible(self.locators.get_day_by_project(project_name, number_day)))
+        self.element_is_visible(self.locators.get_day_by_project(project_name, number_day)).send_keys(hours)
+        self.element_is_visible(self.locators.get_day_by_project(project_name, number_day)).send_keys(Keys.ENTER)
+
     @allure_testit_step("Получить значение в ячейке дня задачи")
     def get_task_day_cell_contents(self, task_name, number_day):
         time.sleep(1)
         return self.element_is_visible(self.locators.get_day_by_task(task_name, number_day)).get_attribute(
+            'placeholder')
+
+    @allure_testit_step("Получить значение в ячейке дня проекта")
+    def get_project_day_cell_contents(self, project_name, number_day):
+        return self.element_is_visible(self.locators.get_day_by_project(project_name, number_day)).get_attribute(
             'placeholder')
 
     @allure_testit_step("Перейти в карточку проекта")
