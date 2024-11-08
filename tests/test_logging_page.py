@@ -71,7 +71,7 @@ class TestLoggingPage:
     @testit.displayName('6.4.3 Отмена включения логирования')
     @pytest.mark.regress
     @allure.title('id-1412 6.4.3 Отмена включения логирования')
-    def test_cancel_enable_logging(self, logging_off, login, driver):
+    def test_cancel_on_logging(self, logging_off, login, driver):
         logging_page = LoggingPage(driver)
         logging_page.go_to_audit_page()
         logging_page.change_audit_setting(status='Вкл', level='Все', depth='Неделя')
