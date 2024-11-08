@@ -21,7 +21,13 @@ class LaborCostPageLocators:
         return (By.XPATH, f'//div[@aria-label="{project_name}"]/a')
 
     ALL_PROJECT_NAMES = (By.XPATH, '//div[contains(@class,"project-row MuiBox-root")]//div[@basewrapprops]')
-    OPEN_TASKS_LIST_BUTTON = (By.XPATH, "//div[@basewrapprops]/preceding-sibling::div")
+
+    def open_task_list_by_project(self, project_name):
+        return (By.XPATH, f"//div[@aria-label='{project_name}']/preceding-sibling::div")
+
+    def check_project_name(self, project_name):
+        return (By.XPATH, f"//div[@aria-label='{project_name}']")
+
     # Дни в привязке к проекту
     RANDOM_DAYS_BY_PROJECT = (
         By.XPATH,
@@ -214,6 +220,7 @@ class LaborCostPageLocators:
     ALL_OVERTIME_WORK_KEBABS = (By.XPATH, '//div[@aria-colindex="8"]//*[@data-testid="MoreHorizIcon"]')
 
     LABOR_COST_SUBMIT_BUTTON = (By.XPATH, "//form[contains(@class, 'MuiBox-root')]//button[@type='submit']")
+    DRAWER_LABOR_COST_NAME = (By.XPATH, "//h6[contains(text(),'Списание') and contains(text(), '.')]")
 
     def check_projeck_on_reason_tab(self, project_mame):
         return By.XPATH, f'//div[@class="ag-cell ag-cell-not-inline-editing ag-cell-normal-height ag-cell-value"]//div[@aria-label="{project_mame}"]'
