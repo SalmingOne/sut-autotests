@@ -1062,3 +1062,29 @@ class TestLaborCostPage:
         labor_cost_page.cancel_editing_labor_cost()
         assert labor_cost_page.get_project_day_cell_contents(project_name, number_day) == '3', 'Значение изменилось'
         assert labor_cost_page.field_is_rejected(project_name, number_day), "Поле отображается не отклоненным"
+
+    @testit.workItemIds(3737)
+    @testit.displayName('3.1.1.8 Внесение изменений в отклонённые списания трудозатрат по проекту с обязательным указанием причин списания.')
+    @pytest.mark.regress
+    @allure.title('id-3737 3.1.1.8 Внесение изменений в отклонённые списания трудозатрат по проекту с обязательным указанием причин списания.')
+    def test_edit_rejected_labor_cost_with_required_reasons(self, project_with_rejected_labor_cost, login, driver):
+        labor_cost_page = LaborCostPage(driver)
+        project_card_page = ProjectCardPage(driver)
+        first, last = labor_cost_page.get_current_week_start_end()
+        project_name = project_with_rejected_labor_cost[0]['name']
+        number_day = project_with_rejected_labor_cost[1]
+        user_name = project_with_rejected_labor_cost[2]
+        labor_cost_page.click_cell_in_labor_cost_table_by_project(project_name, number_day)
+        labor_cost_page.check_labor_cost_drawer_view(labor_cost_page.get_day_after(1))
+        assert ('3', 'Причина') == labor_cost_page.get_labor_cost_value_on_drawer(), 'В поле не отображаются ранее сохраненные значения'
+        labor_cost_page.redact_labor_cost(hours=7, reason='Другая причина совсем непохожая на старую')
+        labor_cost_page.save_changes_labor_cost_drawer()
+        assert labor_cost_page.get_project_day_cell_contents(project_name, number_day) == '7', 'Значение не изменилось'
+        assert not labor_cost_page.field_is_rejected(project_name, number_day), "Поле отображается отклоненным"
+        labor_cost_page.save_labor_reason()
+        driver.refresh()
+        assert f'Пользователь {user_name} внёс изменения в трудозатраты на проекте {project_name} с {first.strftime('%d.%m.%Y')} по {last.strftime('%d.%m.%Y')}' == labor_cost_page.get_notification_text(), "Нет уведомления об изменениях"
+        labor_cost_page.action_esc()
+        labor_cost_page.go_to_project_card(project_name)
+        project_card_page.go_to_progress_tab()
+        project_card_page.check_wait_approved_reason_on_tab()
