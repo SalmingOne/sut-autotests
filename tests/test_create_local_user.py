@@ -1,3 +1,5 @@
+import time
+
 import allure
 import pytest
 import testit
@@ -50,3 +52,4 @@ class TestCreateLocalUser:
         create_local_user_page.go_to_create_local_user_drawer()
         create_local_user_page.field_required_fields('AutoTester1', 'Автоматов', 'auto@mail.ruru', 'yes')
         assert create_local_user_page.check_massage() == 'Пользователь с таким логином/почтой уже добавлен в систему', "Не появилось сообщение о совпадении логинов"
+        time.sleep(10)  # Следующий тест падает каждый прогон. Возможно это ожидание поможет

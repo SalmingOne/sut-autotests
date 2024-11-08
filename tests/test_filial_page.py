@@ -202,3 +202,14 @@ class TestFilialPage:
         director_after_save = filial_page.get_director_field()
         assert employees_before_delete != employees_after_delete, 'Изменения не сохранились'
         assert director_before_delete == director_after_save, 'Изменения не сохранились'
+
+    @testit.workItemIds(10725)
+    @testit.displayName("6.1.3.4. Удаление пользователя из ЮЛ")
+    @pytest.mark.smoke
+    @allure.title("id-10725 6.1.3.4. Удаление пользователя из ЮЛ")
+    def test_removing_a_user_from_the_filial(self, create_filial, login, driver):
+        filial_page = FilialPage(driver)
+        filial_page.go_to_filial_page()
+        time.sleep(1)
+        filial_page.add_first_user_to_filial(create_filial)
+        filial_page.check_removing_user_from_filial(create_filial)

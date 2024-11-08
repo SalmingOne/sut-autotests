@@ -56,6 +56,7 @@ class VariablesPage(BasePage):
     @testit.step("Создание переменной")
     @allure.step("Создание переменной")
     def create_variable(self, field_name, variable_name, variable_value):
+        time.sleep(1)
         self.element_is_visible(self.locators.ADD_VARIABLE_BUTTON).click()
         self.element_is_visible(self.locators.FIELD_NAME_INPUT).send_keys(field_name)
         self.element_is_visible(self.locators.VARIABLE_NAME_INPUT).send_keys(variable_name)

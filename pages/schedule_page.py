@@ -100,7 +100,7 @@ class SchedulePage(BasePage):
     def check_taking_time_off_fields(self):
         fields = self.get_drawer_fields_title()
         assert fields == ['Полный день', 'Дата отгула\u2009*', 'Начало отгула', 'Длительность', 'Окончание отгула',
-                          'Дата отработки\u2009*', 'Начало отработки', 'Длительность', 'Окончание отработки'],\
+                          'Дата отработки', 'Начало отработки', 'Длительность', 'Окончание отработки'],\
             'В дровере есть не все поля'
 
     @testit.step("Проверка выбора даты отгула раньше сегодняшней")
@@ -168,6 +168,7 @@ class SchedulePage(BasePage):
     @testit.step("Редактирование начала работы и начала перерыва")
     @allure.step("Редактирование начала работы и начала перерыва")
     def editing_a_specific_day(self, start_work, start_break):
+        time.sleep(1)
         self.action_select_all_text(self.element_is_visible(self.locators.START_WORK))
         self.element_is_visible(self.locators.START_WORK).send_keys(start_work)
         self.element_is_visible(self.locators.LI_MENU_ITEM).click()
@@ -179,11 +180,12 @@ class SchedulePage(BasePage):
     @testit.step("Проверка наличия модального окна первого запуска")
     @allure.step("Проверка наличия модального окна первого запуска")
     def check_text_on_modal(self):
-        return self.element_is_displayed(self.locators.TEXT_IN_MODAL, 2)
+        return self.element_is_displayed(self.locators.TEXT_IN_MODAL, 3)
 
     @testit.step("Нажатие кнопки сохранить модального окна первого запуска")
     @allure.step("Нажатие кнопки сохранить модального окна первого запуска")
     def press_submit_button_in_modal(self):
+        time.sleep(1)
         self.element_is_visible(self.locators.SUBMIT_IN_MODAL).click()
 
     @testit.step("Снятие выбора со всех чекбоксов")
@@ -354,6 +356,7 @@ class SchedulePage(BasePage):
     @testit.step("Добавление перерыва до начала рабочего дня")
     @allure.step("Добавление перерыва до начала рабочего дня")
     def add_break_before_working_day(self):
+        time.sleep(1)
         self.action_select_all_text(self.element_is_visible(self.locators.START_BREAK))
         self.element_is_visible(self.locators.START_BREAK).send_keys('07:00')
         self.element_is_visible(self.locators.LI_MENU_ITEM).click()
@@ -372,6 +375,7 @@ class SchedulePage(BasePage):
     @testit.step("Добавление перерыва после рабочего дня")
     @allure.step("Добавление перерыва после рабочего дня")
     def add_break_after_working_day(self):
+        time.sleep(1)
         self.action_select_all_text(self.element_is_visible(self.locators.START_BREAK))
         self.element_is_visible(self.locators.START_BREAK).send_keys('20:00')
         self.element_is_visible(self.locators.LI_MENU_ITEM).click()
@@ -385,6 +389,7 @@ class SchedulePage(BasePage):
     @testit.step("Проверка добавление перерыва на время начала рабочего дня")
     @allure.step("Проверка добавление перерыва на время начала рабочего дня")
     def check_add_break_in_start_work_time(self):
+        time.sleep(1)
         self.action_select_all_text(self.element_is_visible(self.locators.START_BREAK))
         self.element_is_visible(self.locators.START_BREAK).send_keys('09:00')
         self.element_is_visible(self.locators.LI_MENU_ITEM).click()
@@ -401,6 +406,7 @@ class SchedulePage(BasePage):
     @testit.step("Проверка добавление перерыва в последний час рабочего дня")
     @allure.step("Проверка добавление перерыва в последний час рабочего дня")
     def check_add_break_for_hour_before_end_work_time(self):
+        time.sleep(1)
         self.action_select_all_text(self.element_is_visible(self.locators.START_BREAK))
         self.element_is_visible(self.locators.START_BREAK).send_keys('17:00')
         self.element_is_visible(self.locators.LI_MENU_ITEM).click()

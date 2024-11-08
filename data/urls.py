@@ -37,4 +37,7 @@ class Urls:
     schedule_url = f'{api_url}' + 'schedule/'
     labels_url = f'{api_url}' + 'labels/'
     personal_quality_url = f'{api_url}' + 'personalQualities/'
+    statement_files_url = f'{api_url}' + 'statement-files/'
+    files_url = f'{api_url}' + 'files/'
+    files_application_template_url = f'{api_url}' + 'files/applicationTemplate/'
 

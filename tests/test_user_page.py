@@ -42,6 +42,7 @@ class TestUsersPage:
         user_page.check_user_is_not_in_table('Автотестов')
         # Проверяем восстановление пользователя
         user_page.restore_user()
+        time.sleep(2)
         assert user_page.get_user_status() == 'Работает', "Пользователь не восстановлен"
         # Увольняем пользователя после теста
         user_page.fired_user()
@@ -152,7 +153,7 @@ class TestUsersPage:
     @testit.displayName("4.6 Запланированное увольнение пользователя / отмена увольнения")
     @pytest.mark.regress
     @allure.title("id-11854 4.6 Запланированное увольнение пользователя / отмена увольнения")
-    def test_planned_user_termination_cancellation_of_termination(self,
+    def test_planned_user_termination_cancellation_of_termination(self, add_all_statement_files,
                                                                   create_user_whit_one_project_role_and_no_assignments,
                                                                   login, driver):
         user_page = UserPage(driver)

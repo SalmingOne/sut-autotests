@@ -749,7 +749,9 @@ class LaborCostPage(BasePage):
     @testit.step("Проверяем удаление заявления")
     @allure.step("Проверяем удаление заявления")
     def check_delete_absense(self):
+        time.sleep(0.5)
         self.elements_are_visible(self.locators.ALL_ABSENCE_KEBABS)[0].click()
+        time.sleep(0.5)
         self.element_is_visible(self.locators.KEBABS_DEL_MENU_ITEM).click()
         description_text = self.element_is_visible(self.locators.DRAWER_DESCRIPTION_TEXT).text
         self.element_is_visible(self.locators.DEL_ACCEPT_BUTTON).click()
@@ -1163,6 +1165,7 @@ class LaborCostPage(BasePage):
     @allure.step("Изменение даты переработки")
     def change_overtime_work_date(self, project_name, new_date):
         self.redact_overtime_on_reason_tab(project_name)
+        time.sleep(0.5)
         self.action_select_all_text(self.element_is_visible(self.locators.OVERTIME_WORK_DATA_INPUT))
         self.element_is_visible(self.locators.OVERTIME_WORK_DATA_INPUT).send_keys(new_date)
         time.sleep(1)

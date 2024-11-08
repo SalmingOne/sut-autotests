@@ -31,7 +31,7 @@ class ProjectCardLocators:
     SOURCE_ICON = (By.XPATH, '//div[contains(@class,"react-flow__node")]')
 
     # Локаторы вкладки Команда
-    TEAM_TAB = (By.XPATH, '//button[text()="Команда"]')
+    TEAM_TAB = (By.XPATH, '//div[text()="Команда"]')
     REDACT_BUTTON = (By.XPATH, '//button[text()="Редактировать"]')
     TO_EXCEL_BUTTON = (By.XPATH, '//button[text()="Экспорт в Excel"]')
     TEAM_TAB_FILTER_BUTTON = (By.XPATH, '//h6[text()="Отображение"]/..')
@@ -55,7 +55,7 @@ class ProjectCardLocators:
     MODAL_ABORT_BUTTON = (By.XPATH, '//p[@id="alert-dialog-description"]//following::button[text()="Отменить"]')
 
     # Локаторы вкладки Ресурсный план
-    RESOURCE_PLAN_TAB = (By.XPATH, '//button[text()="Ресурсный план"]')
+    RESOURCE_PLAN_TAB = (By.XPATH, '//div[text()="Ресурсный план"]')
     CHOSE_PERIOD_BUTTON = (By.CSS_SELECTOR, 'div[aria-haspopup="listbox"]')
     RESOURCE_PLAN_RADIOGROUP = (By.CSS_SELECTOR, 'div[role="radiogroup"]')
     CHECKED_RADIOGROUP = (By.XPATH, '//span[contains(@class, "Mui-checked")]//following-sibling::span[contains(@class, "MuiTypography-caption")]')

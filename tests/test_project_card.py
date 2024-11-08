@@ -543,10 +543,11 @@ class TestProjectCard:
     @testit.displayName('2.1.1.2. Отображение заливки ячеек при выборе процента привлечения ресурса')
     @pytest.mark.regress
     @allure.title('id-384 2.1.1.2. Отображение заливки ячеек при выборе процента привлечения ресурса')
-    def test_displaying_cell_fill_percentage_resource_attraction(self, simple_project, login, driver):
+    def test_displaying_cell_fill_percentage_resource_attraction(self, project_with_two_resources, login, driver):
         all_project_page = AllProjectPage(driver)
         all_project_page.go_to_all_project_page()
-        all_project_page.go_project_page(simple_project['name'])
+        time.sleep(1)
+        all_project_page.go_project_page(project_with_two_resources['name'])
         project_card_page = ProjectCardPage(driver)
         project_card_page.go_to_resource_plan_tab()
         project_card_page.change_radiobutton_percent()
@@ -735,7 +736,7 @@ class TestProjectCard:
         project_card_page.press_save_in_drover()
         project_card_page.check_color_cell()
         save_button = project_card_page.check_save_button_is_clickable()
-        assert not save_button, "Кнопка Сохранить кликабельна" 
+        assert not save_button, "Кнопка Сохранить кликабельна"
 
     @testit.workItemIds(11788)
     @testit.displayName('2.1.1.1.1. Добавление периодов привлечения и почасовой занятости для ресурса')
@@ -815,10 +816,10 @@ class TestProjectCard:
     @testit.displayName('2.1.2.3. Сохранение данных при переключении временных периодов')
     @pytest.mark.regress
     @allure.title('id-554 2.1.2.3. Сохранение данных при переключении временных периодов')
-    def test_saving_data_when_switching_time_periods(self, simple_project, login, driver):
+    def test_saving_data_when_switching_time_periods(self, project_with_two_resources, login, driver):
         all_project_page = AllProjectPage(driver)
         all_project_page.go_to_all_project_page()
-        all_project_page.go_project_page(simple_project['name'])
+        all_project_page.go_project_page(project_with_two_resources['name'])
         project_card_page = ProjectCardPage(driver)
         project_card_page.go_to_resource_plan_tab()
         project_card_page.change_table_resource_plan()
@@ -926,7 +927,7 @@ class TestProjectCard:
         list_year = project_card_page.displaying_table_resource_plan()
         assert sum([int(x) for x in list_year if x != '-']) == sum([int(x) for x in list_month if x != '-']), \
             'Сумма часов по дням за месяц не равна значению часов в месяц'
-        
+
     @testit.workItemIds(11785)
     @testit.displayName('2.1.2.2 Отображение часов при заполнении таблицы во временном интервале "Год"')
     @pytest.mark.regress
@@ -952,8 +953,8 @@ class TestProjectCard:
         assert list_quarter == list_week, 'Сумма часов по дням за неделю не равна значению часов в неделю'
         assert sum([int(x) for x in list_year if x != '-']) == sum([int(x) for x in list_month if x != '-']), \
             'Сумма часов по дням за месяц не равна значению часов в месяц'
-    
-        
+
+
     @testit.workItemIds(140)
     @testit.displayName("1.3.2.1 Подтверждение изменения даты начала проекта с выхождением запланированных \
                         периодов привлечения за дату начала проекта.")
@@ -980,11 +981,11 @@ class TestProjectCard:
         project_card_page.go_to_resource_plan_tab()
         project_card_page.press_add_employment_button()
         project_card_page.press_start_date_in_drover()
-        project_card_page.check_dates_outside_project_boundaries(new_start_date, before_end_date)        
+        project_card_page.check_dates_outside_project_boundaries(new_start_date, before_end_date)
         assert message == 'Свойства проекта успешно изменены', "Не появилось сообщение об изменении проекта"
         assert before_start_date != after_start_date, "Дата начала проекта не изменилась"
         assert after_start_date == new_start_date, "Дата начала проекта не изменилась на указанную"
-    
+
     @testit.workItemIds(142)
     @testit.displayName("1.3.2.1 Отмена редактирования даты начала проекта с выхождением запланированных \
                         периодов привлечения за дату начала проекта.")
@@ -1011,9 +1012,8 @@ class TestProjectCard:
         assert before_start_date != after_start_date, 'Дата начала проекта не изменилась'
         project_card_page.press_break_button()
         after_break_start_date = project_card_page.get_project_start_date()
-        
+
         save_button = project_card_page.check_save_button_is_clickable()
         assert not save_button, "Кнопка Сохранить кликабельна"
         assert after_break_start_date == before_start_date, \
             'Дата начала проекта не вернулась к исходной после отмены'
-    
