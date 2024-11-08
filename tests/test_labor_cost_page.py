@@ -1049,3 +1049,16 @@ class TestLaborCostPage:
         labor_cost_page.go_to_project_card(project_name)
         project_card_page.go_to_progress_tab()
         project_card_page.check_wait_approved_reason_on_tab()
+
+    @testit.workItemIds(3728)
+    @testit.displayName('3.1.1.8 Отмена внесений изменений в отклонённые списания трудозатрат по проекту.')
+    @pytest.mark.regress
+    @allure.title('id-3728 3.1.1.8 Отмена внесений изменений в отклонённые списания трудозатрат по проекту.')
+    def test_cancel_edit_rejected_labor_cost(self, project_with_rejected_labor_cost_without_reason, login, driver):
+        labor_cost_page = LaborCostPage(driver)
+        project_name = project_with_rejected_labor_cost_without_reason[0]['name']
+        number_day = project_with_rejected_labor_cost_without_reason[1]
+        labor_cost_page.redact_labor_cost_table_by_project(project_name, number_day, 8)
+        labor_cost_page.cancel_editing_labor_cost()
+        assert labor_cost_page.get_project_day_cell_contents(project_name, number_day) == '3', 'Значение изменилось'
+        assert labor_cost_page.field_is_rejected(project_name, number_day), "Поле отображается не отклоненным"
