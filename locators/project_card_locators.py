@@ -86,7 +86,7 @@ class ProjectCardLocators:
         return (By.XPATH, f'//div[text()="{text}"]/..')
 
     # Локаторы вкладки Ход выполнения
-    PROGRESS_TAB = (By.XPATH, '//button[text()="Ход выполнения"]')
+    PROGRESS_TAB = (By.XPATH, '//div[text()="Ход выполнения"]')
     PROGRESS_TAB_HEADER = (By.CSS_SELECTOR, 'span[class="ag-header-cell-text"]')
     CHECKED_CHECKBOXES = (By.XPATH, '//span[contains(@class, "Mui-checked")]')
     LABOR_COLOR = (By.XPATH, '//div[@aria-colindex="1"]/div[contains(@class,"MuiBox-root")]//descendant::div')

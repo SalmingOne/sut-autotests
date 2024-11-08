@@ -11,6 +11,7 @@ from endpoints.project_endpoint import ProjectEndpoint
 from pages.all_project_page import AllProjectPage
 from pages.labor_cost_page import LaborCostPage
 from locators.labor_cost_page_locators import LaborCostPageLocators
+from pages.project_card_page import ProjectCardPage
 from pages.user_page import UserPage
 
 
@@ -819,7 +820,7 @@ class TestLaborCostPage:
         number_day = project_with_stopped_task[1]
         labor_cost_page = LaborCostPage(driver)
         labor_cost_page.go_to_labor_cost_page()
-        labor_cost_page.open_tasks_list()
+        labor_cost_page.open_tasks_list(project_with_stopped_task[0]['name'])
         assert labor_cost_page.get_status_of_field_task(task_name, number_day), 'Ячейка активна для ввода'
 
     @testit.workItemIds(3139)
@@ -831,7 +832,7 @@ class TestLaborCostPage:
         number_day = project_with_completed_task[1]
         labor_cost_page = LaborCostPage(driver)
         labor_cost_page.go_to_labor_cost_page()
-        labor_cost_page.open_tasks_list()
+        labor_cost_page.open_tasks_list(project_with_completed_task[0]['name'])
         assert labor_cost_page.get_status_of_field_task(task_name, number_day), 'Ячейка активна для ввода'
 
     @testit.workItemIds(3724)
@@ -977,3 +978,47 @@ class TestLaborCostPage:
         assert 'Сумма часов не может превышать 24 за текущий день' in errors, "Нет сообщения об ошибке"
         assert hours_over_24 != '25', "Значение больше 24 отображается в поле"
         assert hours_less_0 != '-5', "Значение меньше 0 отображается в поле"
+
+    @testit.workItemIds(3725)
+    @testit.displayName('3.1.1.8 Внесение изменений в отклонённые списания трудозатрат по задачам на проекте с обязательным указанием причин списания.')
+    @pytest.mark.regress
+    @allure.title('id-3725 3.1.1.8 Внесение изменений в отклонённые списания трудозатрат по задачам на проекте с обязательным указанием причин списания.')
+    def test_edit_task_rejected_labor_cost_with_required_reasons(self, project_with_rejected_task_labor_cost, login, driver):
+        labor_cost_page = LaborCostPage(driver)
+        project_card_page = ProjectCardPage(driver)
+        first, last = project_card_page.get_current_week_start_end()
+        project_name = project_with_rejected_task_labor_cost[0]['name']
+        number_day = project_with_rejected_task_labor_cost[1]
+        task_name = project_with_rejected_task_labor_cost[2]
+        user_name = project_with_rejected_task_labor_cost[3]
+        labor_cost_page.open_tasks_list(project_name)
+        labor_cost_page.click_cell_in_labor_cost_table_by_task(task_name, number_day)
+        labor_cost_page.check_labor_cost_drawer_view(labor_cost_page.get_day_after(0))
+        assert ('3', 'Причина') == labor_cost_page.get_labor_cost_value_on_drawer(), 'В поле не отображаются ранее сохраненные значения'
+        labor_cost_page.redact_labor_cost(hours=7, reason='Другая причина совсем непохожая на старую')
+        labor_cost_page.save_changes_labor_cost_drawer()
+        assert labor_cost_page.get_task_day_cell_contents(task_name, number_day) == '7', 'Значение не изменилось'
+        assert not labor_cost_page.field_is_rejected(task_name, number_day), "Поле отображается отклоненным"
+        labor_cost_page.save_labor_reason()
+        driver.refresh()
+        assert f'Пользователь {user_name} внёс изменения в трудозатраты на проекте {project_name} с {first.strftime('%d.%m.%Y')} по {last.strftime('%d.%m.%Y')}' == labor_cost_page.get_notification_text(), "Нет уведомления об изменениях"
+        labor_cost_page.action_esc()
+        labor_cost_page.go_to_project_card(project_name)
+        project_card_page.go_to_progress_tab()
+        project_card_page.check_wait_approved_reason_on_tab()
+
+    @testit.workItemIds(3726)
+    @testit.displayName('3.1.1.8. Отмена внесений изменений в отклонённые списания трудозатрат по проекту с обязательным указанием причин списания.')
+    @pytest.mark.regress
+    @allure.title('id-3726 3.1.1.8. Отмена внесений изменений в отклонённые списания трудозатрат по проекту с обязательным указанием причин списания.')
+    def test_cancel_edit_task_rejected_labor_cost_with_required_reasons(self, project_with_rejected_task_labor_cost, login, driver):
+        labor_cost_page = LaborCostPage(driver)
+        project_name = project_with_rejected_task_labor_cost[0]['name']
+        number_day = project_with_rejected_task_labor_cost[1]
+        task_name = project_with_rejected_task_labor_cost[2]
+        labor_cost_page.open_tasks_list(project_name)
+        labor_cost_page.click_cell_in_labor_cost_table_by_task(task_name, number_day)
+        labor_cost_page.redact_labor_cost(hours=7, reason='Из-за ретроградного Меркурия всё пошло не по плану')
+        labor_cost_page.cancel_changes_labor_cost_drawer()
+        assert labor_cost_page.get_task_day_cell_contents(task_name, number_day) == '3', "Значение в ячейке изменилось"
+        assert labor_cost_page.field_is_rejected(task_name, number_day), "Поле отображается не отклоненным"

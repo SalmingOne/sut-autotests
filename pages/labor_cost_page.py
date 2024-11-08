@@ -1293,9 +1293,13 @@ class LaborCostPage(BasePage):
         return self.element_is_displayed(self.locators.TOOLTIP)
 
     @allure_testit_step('Проверка отклонения трудозатрат')
-    def field_is_rejected(self, task_name, number_day):
-        return 'rejected' in self.element_is_visible(self.locators.get_day_by_project(task_name, number_day)).find_element(By.XPATH, "..").get_attribute("class")
-
+    def field_is_rejected(self, name, number_day):
+        try:
+            return 'rejected' in self.element_is_visible(self.locators.get_day_by_project(name, number_day)).find_element(By.XPATH, "..").get_attribute("class")
+        except TimeoutException:
+            return 'rejected' in self.element_is_visible(
+                self.locators.get_day_by_task(name, number_day)).find_element(By.XPATH, "..").get_attribute(
+                "class")
     @allure_testit_step('Получение информации о возможности ввода в ячейку задачи')
     def get_status_of_field_task(self, task_name, number_day):
         return self.element_is_visible(self.locators.get_day_by_task(task_name, number_day)).get_attribute('disabled')
@@ -1311,8 +1315,8 @@ class LaborCostPage(BasePage):
         return self.element_is_visible(self.locators.NOTIFICATIONS_SUMMARY).text
 
     @allure_testit_step("Открыть список задачи")
-    def open_tasks_list(self):
-        self.elements_are_visible(self.locators.OPEN_TASKS_LIST_BUTTON)[0].click()
+    def open_tasks_list(self, project_name):
+        self.element_is_visible(self.locators.open_task_list_by_project(project_name)).click()
 
     @allure_testit_step("Получить цвет ячейки")
     def get_cell_color(self, project_name, number_day):
@@ -1334,13 +1338,23 @@ class LaborCostPage(BasePage):
         return sum(values)
 
     @allure_testit_step("Редактирование списания")
-    def redact_labor_cost(self, hours=None, reason=None, ):
+    def redact_labor_cost(self, hours=None, reason=None):
         if hours is not None:
             self.action_select_all_text(self.element_is_visible(self.locators.INPUT_HOUR_FIELD))
             self.element_is_visible(self.locators.INPUT_HOUR_FIELD).send_keys(hours)
         if reason is not None:
             self.action_select_all_text(self.element_is_visible(self.locators.LABOR_REASON_FIELD))
             self.element_is_visible(self.locators.LABOR_REASON_FIELD).send_keys(reason)
+
+    @allure_testit_step("Проверка отображения дровера редактирования списаний")
+    def check_labor_cost_drawer_view(self, data=None):
+        assert self.element_is_displayed(self.locators.DRAWER_LABOR_COST_NAME), 'Название не отображается'
+        if data is not None:
+            assert data in self.element_is_visible(self.locators.DRAWER_LABOR_COST_NAME).text, "В названии нет даты"
+        assert self.element_is_displayed(self.locators.INPUT_HOUR_FIELD), "Нет поля Количество часов"
+        assert self.element_is_displayed(self.locators.LABOR_REASON_FIELD), "Нет поля Причина"
+        assert self.element_is_displayed(self.locators.LABOR_COST_SUBMIT_BUTTON), "Нет кнопки сохранения"
+        assert self.element_is_displayed(self.locators.DRAWER_ABORT_BUTTON), "Нет кнопки отмены"
 
     @allure_testit_step("Сохранение редактирования списания")
     def save_changes_labor_cost_drawer(self):
@@ -1364,3 +1378,17 @@ class LaborCostPage(BasePage):
             assert hours == self.element_is_visible(self.locators.check_hours_value_on_reason_tab(project_name)).text, 'Неправильное значение часов в таблице Причины'
         if reason != '':
             assert reason == self.element_is_visible(self.locators.check_reason_value_on_reason_tab(project_name)).text, 'Неправильное значение причины в таблице Причины'
+
+    @allure_testit_step("Нажать на ячейку дня задачи для редактирования списания")
+    def click_cell_in_labor_cost_table_by_task(self, task_name, number_day):
+        self.element_is_visible(self.locators.get_day_by_task(task_name, number_day)).click()
+
+    @allure_testit_step("Получить значение в ячейке дня задачи")
+    def get_task_day_cell_contents(self, task_name, number_day):
+        time.sleep(1)
+        return self.element_is_visible(self.locators.get_day_by_task(task_name, number_day)).get_attribute(
+            'placeholder')
+
+    @allure_testit_step("Перейти в карточку проекта")
+    def go_to_project_card(self, project_name):
+        self.element_is_visible(self.locators.check_project_name(project_name)).click()
