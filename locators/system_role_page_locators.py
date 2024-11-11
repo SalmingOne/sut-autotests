@@ -15,7 +15,11 @@ class SystemRolePageLocators:
     SUBMIT_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
     ALL_NAMES_IN_DROPDOWN = (By.CSS_SELECTOR, 'li[aria-label]')
     ROLE_FIELD = (By.CSS_SELECTOR, 'input[class^="MuiOutlinedInput-input MuiInputBase-input MuiInputBase-inputAdornedEnd"]')
-    DELETE_ROLE_ICON = (By.CSS_SELECTOR, 'svg[data-testid="DeleteIcon"]')
+    LI_MENU_ITEM = (By.CSS_SELECTOR, 'button[aria-label="Открыть"]')
+    DELETE_ROLE_ICON = (By.XPATH, '//*[@data-testid="DeleteIcon"]/..')
+
+    # Тултип
+    TOOLTIP_ROLE_ICON = (By.XPATH, '//*[@data-testid="DeleteIcon"]/../..')
 
     def get_name_in_dropdown(self, role_name):
         return By.CSS_SELECTOR, f'li[aria-label="{role_name}"]'

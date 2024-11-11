@@ -290,10 +290,6 @@ class ProjectCardPage(BasePage):
     def go_to_resource_plan_tab_not_wait(self):
         self.element_is_visible(self.locators.RESOURCE_PLAN_TAB, 15).click()
 
-    @allure_testit_step("Переход на вкладку Ресурсный план без проверки")
-    def go_to_resource_plan_tab_without_verification(self):
-        self.element_is_visible(self.locators.RESOURCE_PLAN_TAB, 15).click()
-
     @testit.step("Проверка вкладки Ресурсный план")
     @allure.step("Проверка вкладки Ресурсный план")
     def check_resource_plan_tab(self):
