@@ -610,7 +610,7 @@ class TestProjectCard:
         all_project_page.go_to_all_project_page()
         all_project_page.go_project_page(no_resources_project['name'])
         project_card_page = ProjectCardPage(driver)
-        project_card_page.go_to_resource_plan_tab_without_verification()
+        project_card_page.go_to_resource_plan_tab_not_wait()
         project_card_page.check_resource_plan_tab_without_resources()
 
     @testit.workItemIds(1955)
