@@ -23,7 +23,7 @@ from endpoints.search_profile_endpoint import SearchProfileEndpoint
 from endpoints.skills_endpoint import SkillsEndpoint
 from endpoints.statement_files_endpoint import StatementFilesEndpoint
 from endpoints.system_roles_endpoint import SystemRolesEndpoint
-
+from endpoints.attraction_rates_endpoint import AttractionRatesEndpoint
 from endpoints.users_endpoint import UserEndpoint
 from endpoints.calendar_endpoint import CalendarEndpoint
 from endpoints.variables_endpoint import VariablesEndpoint
@@ -1593,3 +1593,25 @@ def add_all_statement_files():
         files = {'file': fp}
         add_file = files_endpoint.post_file(files)
         statement_files_endpoint.post_statement_file(add_file.json()['id'], 'VAC')
+
+
+@pytest.fixture()
+def attraction_rate_to_delete():
+    user_endpoint = UserEndpoint()
+    user_name = user_endpoint.get_user_by_id(str(USER_ID)).json()['fullName']
+    attraction_rate_endpoint = AttractionRatesEndpoint()
+    payload = dict(
+        name='Авто',
+        type='ByUser',
+        size='100',
+        dateActionAttractionRateFrom=BasePage(driver=None).get_day_before_y_m_d(0),
+        targetIds=[
+            USER_ID
+        ]
+    )
+    res = attraction_rate_endpoint.create_attraction_rate(payload)
+    yield res.json()['name'], user_name
+    if res.json()['id'] in [item['id'] for item in attraction_rate_endpoint.get_attraction_rates().json()]:
+        attraction_rate_endpoint.delete_attraction_rate(str(res.json()['id']))
+    else:
+        pass

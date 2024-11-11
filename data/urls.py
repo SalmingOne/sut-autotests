@@ -40,4 +40,5 @@ class Urls:
     statement_files_url = f'{api_url}' + 'statement-files/'
     files_url = f'{api_url}' + 'files/'
     files_application_template_url = f'{api_url}' + 'files/applicationTemplate/'
+    attraction_rates_url = f'{api_url}' + 'attraction-rates/'
 
