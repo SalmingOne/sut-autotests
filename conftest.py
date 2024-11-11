@@ -675,6 +675,51 @@ def project_with_rejected_task_labor_cost():
     yield res.json(), number_day, taskName, user_name
     project_endpoint.delete_project_api(str(project_id))
 
+@pytest.fixture()
+def project_with_rejected_labor_cost():
+    labor_report_endpoint = LaborReportEndpoint()
+    project_endpoint = ProjectEndpoint()
+    project_endpoint.delete_project_if_it_exist(PROJECT_NAME)
+    user_endpoint = UserEndpoint()
+    user_name = user_endpoint.get_user_by_id(str(USER_ID)).json()['fullName']
+    payload = CreateProject(
+        laborReasons=True,
+        resources=[dict(
+            projectRoleId=1,
+            userId=USER_ID,
+            isProjectManager=True
+        )]
+    ).model_dump()
+    res = project_endpoint.create_project_api(json=payload)
+    project_id = res.json()['id']
+
+    payload = [
+        dict(
+            hours=3,
+            date=BasePage(driver=None).get_day_after_ymd(1),
+            reason="Причина",
+            userId=USER_ID,
+            type='DEFAULT',
+            projectId=res.json()["id"],
+        )
+    ]
+
+    labor_report_endpoint.post_labor_report_api(json=payload)
+    rejection_reason = 'Просто так'
+    ids = labor_report_endpoint.get_labor_reports_by_project_api(str(res.json()["id"]),
+                                                                 BasePage(driver=None).get_day_after_ymd(0),
+                                                                 BasePage(driver=None).get_day_after_ymd(2))
+    payload = [
+        dict(
+            ids=ids,
+            rejectionReason=rejection_reason,
+            approvalStatus='REJECTED',
+        )
+    ]
+    labor_report_endpoint.put_labor_reports(json=payload)
+    number_day = BasePage(driver=None).get_day_after_ymd(2).split('-')[2]
+    yield res.json(), number_day, user_name
+    project_endpoint.delete_project_api(str(project_id))
 
 @pytest.fixture()
 def project_with_rejected_labor_cost_without_reason():

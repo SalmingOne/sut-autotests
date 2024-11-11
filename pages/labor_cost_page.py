@@ -1386,6 +1386,10 @@ class LaborCostPage(BasePage):
     def click_cell_in_labor_cost_table_by_task(self, task_name, number_day):
         self.element_is_visible(self.locators.get_day_by_task(task_name, number_day)).click()
 
+    @allure_testit_step("Нажать на ячейку дня проекта для редактирования списания")
+    def click_cell_in_labor_cost_table_by_project(self, project_name, number_day):
+        self.element_is_visible(self.locators.get_day_by_project(project_name, number_day)).click()
+
     @allure_testit_step("Отредактировать значение в ячейке проекта")
     def redact_labor_cost_table_by_project(self, project_name, number_day, hours):
         self.element_is_visible(self.locators.get_day_by_project(project_name, number_day)).click()
