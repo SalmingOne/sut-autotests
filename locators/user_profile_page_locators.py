@@ -91,6 +91,7 @@ class UserProfilePageLocators:
 
     EXPERIENCES_DATA_PICKER = (By.CSS_SELECTOR, 'button[aria-label="Choose date"]')
     NEXT_DAY_IN_PICKER = (By.XPATH, '//button[contains(@class, "today")]//following::button[1]')
+    EXPERIENCES_CHECK_CARD = (By.XPATH, '//div[contains(@name,"employer")]')
     EXPERIENCES_TITLE = (By.XPATH, '//h6[text()="Проект"]')
     EXPERIENCES_BEGIN_DATA_INPUT = (By.XPATH, '//label[text()="Дата начала работы"]/..//input')
     EXPERIENCES_END_DATA_INPUT = (By.XPATH, '//label[text()="Дата окончания работы"]/..//input')
