@@ -289,3 +289,8 @@ class FilialPage(BasePage):
         except TimeoutException:
             # Тултип пустого поля
             return "Директор"
+
+    @allure_testit_step("Получение ставок привлечения по филиалу")
+    def get_attraction_rates_by_filial(self):
+        self.element_is_visible(self.locators.OPEN_ICON_ATTRACTION_RATES_FIELD).click()
+        return [element.text for element in self.elements_are_visible(self.locators.ATTRACTION_RATES)]

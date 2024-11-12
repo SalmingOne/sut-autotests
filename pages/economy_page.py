@@ -24,6 +24,6 @@ class EconomyPage(BasePage):
 
     @allure_testit_step('Проверка элементов в модальном окне подтверждения удаления ставки')
     def check_modal_window(self, attraction_rate_name):
-        assert self.element_is_displayed(self.locators.APPLY_DELETING_BUTTON)
-        assert self.element_is_displayed(self.locators.DISCARD_DELETING_BUTTON)
-        assert f'Вы уверены, что хотите удалить выбранную ставку "{attraction_rate_name}"?' == self.element_is_visible(self.locators.DELETING_MODAL_WINDOW_TEXT).text
+        assert self.element_is_displayed(self.locators.APPLY_DELETING_BUTTON), "Нет кнопки Подтвердить"
+        assert self.element_is_displayed(self.locators.DISCARD_DELETING_BUTTON), 'Нет кнопки Отменить'
+        assert f'Вы уверены, что хотите удалить выбранную ставку "{attraction_rate_name}"?' == self.element_is_visible(self.locators.DELETING_MODAL_WINDOW_TEXT).text, 'Некорекнтый текст описания'

@@ -3,6 +3,7 @@ import time
 import allure
 import testit
 from selenium.webdriver import Keys
+from utils.concat_testit_allure_step import allure_testit_step
 
 from locators.project_roles_page_locators import ProjectRolesPageLocators
 from pages.base_page import BasePage
@@ -130,3 +131,15 @@ class ProjectRolesPage(BasePage):
         for name in all_menu_items:
             item_names.append(name.text)
         assert item_names == ['Редактировать', 'Удалить'], "Не все пункты есть в кебаб меню"
+
+    @allure_testit_step("Открыть дровер редактирования проектной роли")
+    def redact_project_role_by_name(self, name):
+        element = self.element_is_visible(self.locators.get_role_kebab_menu_by_name(name))
+        self.action_move_to_element(element)
+        element.click()
+        self.element_is_visible(self.locators.REDACT_BUTTON_IN_KEBAB_MENU).click()
+
+    @allure_testit_step("Получение ставок привлечения по проектной роли")
+    def get_attraction_rates_by_role(self):
+        self.element_is_visible(self.locators.OPEN_ICON_ATTRACTION_RATES_FIELD).click()
+        return [element.text for element in self.elements_are_visible(self.locators.ATTRACTION_RATES)]

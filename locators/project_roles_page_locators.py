@@ -28,6 +28,13 @@ class ProjectRolesPageLocators:
     ROLE_SEARCH_FIELD = (By.CSS_SELECTOR, 'input[placeholder="Поиск"]')
     ROLE_KEBABS = (By.CSS_SELECTOR, 'svg[data-testid="MoreHorizIcon"]')
     DEL_BUTTON_IN_KEBAB_MENU = (By.XPATH, '//span[text()="Удалить"]')
+    REDACT_BUTTON_IN_KEBAB_MENU = (By.XPATH, '//span[text()="Редактировать"]')
     KEBAB_MENU_ITEMS = (By.XPATH, '//li[contains(@class, "MuiMenuItem-gutters")]/span[contains(@class,"MuiTypography-caption")]')
     PROJECT_ROLES_TAB_HEADERS = (By.XPATH, '//div[@class="ag-header-cell-comp-wrapper"]//h6')
     FILTER_ICONS = (By.CSS_SELECTOR, 'span[class="ag-icon ag-icon-filter"]')
+
+    def get_role_kebab_menu_by_name(self, name):
+        return By.XPATH, f'//div[text()="{name}"]/../following-sibling::div[@aria-colindex="5"]//button'
+
+    OPEN_ICON_ATTRACTION_RATES_FIELD = (By.CSS_SELECTOR, 'svg[data-testid="ArrowDropDownIcon"]')
+    ATTRACTION_RATES = (By.XPATH, "//ul[contains(@class, 'MuiAutocomplete-listbox')]//li")

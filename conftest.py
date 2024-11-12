@@ -1596,12 +1596,12 @@ def add_all_statement_files():
 
 
 @pytest.fixture()
-def attraction_rate_to_delete():
+def attraction_rate_by_user_to_delete():
     user_endpoint = UserEndpoint()
     user_name = user_endpoint.get_user_by_id(str(USER_ID)).json()['fullName']
     attraction_rate_endpoint = AttractionRatesEndpoint()
     payload = dict(
-        name='Авто',
+        name='По пользователю',
         type='ByUser',
         size='100',
         dateActionAttractionRateFrom=BasePage(driver=None).get_day_before_y_m_d(0),
@@ -1611,6 +1611,50 @@ def attraction_rate_to_delete():
     )
     res = attraction_rate_endpoint.create_attraction_rate(payload)
     yield res.json()['name'], user_name
+    if res.json()['id'] in [item['id'] for item in attraction_rate_endpoint.get_attraction_rates().json()]:
+        attraction_rate_endpoint.delete_attraction_rate(str(res.json()['id']))
+    else:
+        pass
+
+@pytest.fixture()
+def attraction_rate_by_slot_to_delete():
+    user_endpoint = UserEndpoint()
+    user_name = user_endpoint.get_user_by_id(str(USER_ID)).json()['fullName']
+    attraction_rate_endpoint = AttractionRatesEndpoint()
+    payload = dict(
+        name='По cлоту',
+        type='BySlot',
+        size='100',
+        dateActionAttractionRateFrom=BasePage(driver=None).get_day_before_y_m_d(0),
+        targetIds=[
+            6  # ID роли Тестировщик
+        ]
+    )
+    res = attraction_rate_endpoint.create_attraction_rate(payload)
+    yield res.json()['name']
+    if res.json()['id'] in [item['id'] for item in attraction_rate_endpoint.get_attraction_rates().json()]:
+        attraction_rate_endpoint.delete_attraction_rate(str(res.json()['id']))
+    else:
+        pass
+
+@pytest.fixture()
+def attraction_rate_by_affiliate_to_delete():
+    filial_endpoint = AffiliatesEndpoint()
+    payload = dict(name='Авто', address='г. Москва')
+    response = filial_endpoint.create_affiliates_api(json=payload)
+    attraction_rate_endpoint = AttractionRatesEndpoint()
+    payload = dict(
+        name='По ЮЛ',
+        type='ByAffiliate',
+        size='100',
+        dateActionAttractionRateFrom=BasePage(driver=None).get_day_before_y_m_d(0),
+        targetIds=[
+            response.json()['id']
+        ]
+    )
+    res = attraction_rate_endpoint.create_attraction_rate(payload)
+    yield res.json()['name'], response.json()['name']
+    filial_endpoint.delete_affiliates_api(str(response.json()['id']))
     if res.json()['id'] in [item['id'] for item in attraction_rate_endpoint.get_attraction_rates().json()]:
         attraction_rate_endpoint.delete_attraction_rate(str(res.json()['id']))
     else:
