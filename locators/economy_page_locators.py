@@ -14,3 +14,4 @@ class EconomyPageLocators:
     APPLY_DELETING_BUTTON = (By.XPATH, f"//button[text()='Подтвердить']")
     DISCARD_DELETING_BUTTON = (By.XPATH, f"//button[text()='Отменить']")
     DELETING_MODAL_WINDOW_TEXT = (By.CSS_SELECTOR, 'p[id="alert-dialog-description"]')
+    ALERT_TEXT = (By.XPATH, '//div[contains(@class, "MuiAlert-message")]')

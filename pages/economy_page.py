@@ -27,3 +27,11 @@ class EconomyPage(BasePage):
         assert self.element_is_displayed(self.locators.APPLY_DELETING_BUTTON), "Нет кнопки Подтвердить"
         assert self.element_is_displayed(self.locators.DISCARD_DELETING_BUTTON), 'Нет кнопки Отменить'
         assert f'Вы уверены, что хотите удалить выбранную ставку "{attraction_rate_name}"?' == self.element_is_visible(self.locators.DELETING_MODAL_WINDOW_TEXT).text, 'Некорекнтый текст описания'
+
+    @allure_testit_step("Берем текст всех сообщений системы")
+    def get_alert_message(self):
+        all_alerts = self.elements_are_visible(self.locators.ALERT_TEXT)
+        data = []
+        for alert in all_alerts:
+            data.append(alert.text)
+        return data

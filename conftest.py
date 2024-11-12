@@ -21,6 +21,7 @@ from endpoints.project_roles_endpoint import ProjectRolesEndpoint
 from endpoints.resume_endpoint import ResumeEndpoint
 from endpoints.search_profile_endpoint import SearchProfileEndpoint
 from endpoints.skills_endpoint import SkillsEndpoint
+from endpoints.slots_endpoint import SlotsEndpoint
 from endpoints.statement_files_endpoint import StatementFilesEndpoint
 from endpoints.system_roles_endpoint import SystemRolesEndpoint
 from endpoints.attraction_rates_endpoint import AttractionRatesEndpoint
@@ -1659,3 +1660,47 @@ def attraction_rate_by_affiliate_to_delete():
         attraction_rate_endpoint.delete_attraction_rate(str(res.json()['id']))
     else:
         pass
+
+@pytest.fixture()
+def attraction_rate_with_project():
+    slots_endpoint = SlotsEndpoint()
+    attraction_rate_endpoint = AttractionRatesEndpoint()
+    project_endpoint = ProjectEndpoint()
+    user_endpoint = UserEndpoint()
+    user_id = user_endpoint.get_user_id_by_email('auto_testt@mail.rruu')
+    project_endpoint.delete_project_if_it_exist(PROJECT_NAME)
+    payload = CreateProject(
+        resources=[dict(
+            projectRoleId=1,
+            userId=user_id,
+            isProjectManager=True
+        )
+        ]
+    ).model_dump()
+    response = project_endpoint.create_project_api(json=payload)
+    payload = dict(
+        name='По cлоту',
+        type='BySlot',
+        size='100',
+        dateActionAttractionRateFrom=BasePage(driver=None).get_day_before_y_m_d(0),
+        targetIds=[
+            6  # ID роли Тестировщик
+        ]
+    )
+    res = attraction_rate_endpoint.create_attraction_rate(payload)
+    payload = [
+            dict(
+                projectRoleId=6,
+                attractionRateId=res.json()['id'],
+                disabled=False,
+                assignments=[
+                    dict(
+                        userId=USER_ID
+                    )
+                ]
+        )
+    ]
+    slots_endpoint.create_slot(response.json()['id'], payload)
+    yield res.json()['name']
+    project_endpoint.delete_project_api(str(response.json()['id']))
+    attraction_rate_endpoint.delete_attraction_rate(str(res.json()['id']))
