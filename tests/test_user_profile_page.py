@@ -1356,3 +1356,28 @@ class TestUserProfilePage:
         user_profile_page.check_start_and_end_fields(project_with_assignment[0]['name'])
         # Проверка даты начала и конца работы проекта без даты окончания. Закомментировано до решения бага
         # user_profile_page.check_start_and_end_fields(project_with_assignment_and_no_end_date['name'])
+
+    @testit.workItemIds(11923)
+    @testit.displayName("10.2.3. Редактирование полей если выбранный Работодатель существует в системе")
+    @pytest.mark.regress
+    @allure.title("id-11923 10.2.3. Редактирование полей если выбранный Работодатель существует в системе")
+    def test_editing_fields_if_the_selected_employer_exists(self, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        time.sleep(6)
+        user_profile_page.go_to_experience_tab()
+        time.sleep(1)
+        # Создаем карточку проекта если нет
+        if user_profile_page.check_experience_title():
+            pass
+        else:
+            user_profile_page.field_experience_form_with_exists_employer()
+
+        before = user_profile_page.get_all_fields()
+        project_endpoint = ProjectEndpoint()
+        project_names_api = project_endpoint.get_project_name_for_current_user()
+        user_profile_page.press_redact_button()
+        project_names = user_profile_page.get_experience_projects_value()
+        assert sorted(project_names) == sorted(project_names_api)
+        # Блокируется багом
+        user_profile_page.check_change_experience_projects()
