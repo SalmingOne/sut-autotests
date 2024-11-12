@@ -54,6 +54,10 @@ class ProjectCardLocators:
     MODAL_SUBMIT_BUTTON = (By.XPATH, '//p[@id="alert-dialog-description"]//following::button[text()="Подтвердить"]')
     MODAL_ABORT_BUTTON = (By.XPATH, '//p[@id="alert-dialog-description"]//following::button[text()="Отменить"]')
 
+    def get_attraction_rate_by_user(self, user_name):
+        return By.XPATH, f"//input[@value='{user_name}']/ancestor::div/following-sibling::div[@col-id='attractionRateId']//button[@aria-label='Открыть']"
+
+    ATTRACTION_RATES = (By.XPATH, "//ul[contains(@class, 'MuiAutocomplete-listbox')]//li")
     # Локаторы вкладки Ресурсный план
     RESOURCE_PLAN_TAB = (By.XPATH, '//div[text()="Ресурсный план"]')
     CHOSE_PERIOD_BUTTON = (By.CSS_SELECTOR, 'div[aria-haspopup="listbox"]')
