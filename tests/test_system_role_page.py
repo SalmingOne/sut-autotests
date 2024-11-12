@@ -25,7 +25,7 @@ class TestSystemRolePage:
 
     @testit.workItemIds(3529)
     @testit.displayName("7.2.4 Проверка невозможности удаления системной роли 'Пользователь'")
-    @pytest.mark.smoke
+    @pytest.mark.regress
     @allure.title("id-3529 7.2.4 Проверка невозможности удаления системной роли 'Пользователь'")
     def test_checking_impossibility_deleting_system_role_user(self, login, driver):
         system_role_page = SystemRolePage(driver)
@@ -35,4 +35,21 @@ class TestSystemRolePage:
         assert system_role_page.get_tooltip_text_impossibility_deleting_system_role_user() == \
             'Системную роль "Пользователь" удалить нельзя.', \
             "Отсутствует тултип о невозможности удаления системной роли"
+        
+    @testit.workItemIds(3504)
+    @testit.displayName("7.2.2 (Чек-лист) Проверка ограничений при создании системной роли")
+    @pytest.mark.regress
+    @allure.title("id-3504 7.2.2 (Чек-лист) Проверка ограничений при создании системной роли")
+    def test_checking_impossibility_deleting_system_role_user(self, login, driver):
+        system_role_page = SystemRolePage(driver)
+        system_role_page.go_to_system_roles_page()
+        system_role_page.press_add_system_role_button()
+        # Проверка на обязательные поля
+        system_role_page.check_required_fields()
+        # Проверка на обязательность тэгов
+        system_role_page.check_required_tags('Контролер')
+        # Проверка на уникальность названия системной роли
+        system_role_page.check_uniqueness_system_role_name('Пользователь')
+        # Проверка на превышение символов в названии системной роли
+        system_role_page.check_char_limit_system_role_name()
     
