@@ -18,6 +18,18 @@ class SystemRolePage(BasePage):
         self.element_is_visible(self.locators.INPUT_ROLE_FIELD).send_keys(role_name)
         self.elements_are_visible(self.locators.ALL_TAG_CHECKBOXES)[1].click()
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+
+    @allure_testit_step("Нажатие на кнопку добавления системной роли")
+    def press_add_system_role_button(self):
+        self.element_is_visible(self.locators.CREATE_SYSTEM_ROLE_BUTTON).click()
+
+    @allure_testit_step("Нажатие на кнопку Сохранить")
+    def press_submit_button(self):
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+
+    @allure_testit_step("Нажатие на кнопку Отменить")
+    def press_abort_button(self):
+        self.element_is_visible(self.locators.ABORT_BUTTON).click()
         
     @allure_testit_step("Проверка наличия системной роли в дропдауне")
     def check_role_name_in_dropdown(self, role_name):
@@ -52,4 +64,43 @@ class SystemRolePage(BasePage):
         self.element_is_visible(self.locators.get_name_in_dropdown(role_name)).click()
         self.element_is_visible(self.locators.DELETE_ROLE_ICON).click()
         self.element_is_visible(self.locators.SUBMIT_DELETE_ROLE_BUTTON).click()
+
+    @allure_testit_step("Проверка на обязательные поля")
+    def check_required_fields(self):
+        self.press_submit_button()
+        assert self.get_color_field() == 'rgb(211, 47, 47)', "Поле 'Название системной роли' не выделятся красным цветом"
+        assert self.element_is_visible(self.locators.HELPER_TEXT).text == 'Поле обязательно', \
+            "Под полем не отображается подсказка 'Поле обязательно'"
+        
+    @allure_testit_step("Проверка на обязательность тэгов")
+    def check_required_tags(self, role_name):        
+        self.element_is_visible(self.locators.INPUT_ROLE_FIELD).send_keys(role_name)
+        self.press_submit_button()
+        assert ('У новой роли должен быть хотя бы один тег' in self.get_all_alert_message(self.locators.ALERT_MESSAGE)), \
+            "Не появилось сообщение о необходимости выбрать хотя бы один тег"
+        
+    @allure_testit_step("Проверка на уникальность названия системной роли")
+    def check_uniqueness_system_role_name(self, role_name):
+        self.elements_are_visible(self.locators.ALL_TAG_CHECKBOXES)[1].click()
+        self.action_double_click(self.element_is_visible(self.locators.INPUT_ROLE_FIELD))
+        self.element_is_visible(self.locators.INPUT_ROLE_FIELD).send_keys(role_name)
+        self.press_submit_button()
+        assert self.element_is_visible(self.locators.HELPER_TEXT).text == 'Системная роль с таким названием уже существует', \
+            "Под полем не отображается подсказка что системная роль с таким названием уже существует"
+        assert self.get_color_field() == 'rgb(211, 47, 47)', "Поле 'Название системной роли' не выделятся красным цветом"
+        assert ('Системная роль с таким названием уже существует' in self.get_all_alert_message(self.locators.ALERT_MESSAGE)), \
+            "Не появилось сообщение о существовании роли с таким названием"
+        
+    @allure_testit_step("Проверка на превышение символов в названии системной роли")
+    def check_char_limit_system_role_name(self):
+        self.action_double_click(self.element_is_visible(self.locators.INPUT_ROLE_FIELD))
+        self.element_is_visible(self.locators.INPUT_ROLE_FIELD).send_keys('A'*101)
+        self.press_submit_button()
+        assert self.get_color_field() == 'rgb(211, 47, 47)', "Поле 'Название системной роли' не выделятся красным цветом"
+        assert self.element_is_visible(self.locators.HELPER_TEXT).text == 'Максимальное количество символов: 100', \
+            "Под полем не появилось сообщение о превышении допустимого количества символов"
+        
+    @allure_testit_step("Получение цвета выделения поля")
+    def get_color_field(self):
+        return self.element_is_present(self.locators.BORDER_COLOR).value_of_css_property('border-color')
     
