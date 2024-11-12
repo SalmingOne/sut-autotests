@@ -54,3 +54,16 @@ class TestEconomyPage:
         assert (
             attraction_rate not in filial_page.get_attraction_rates_by_filial() for
             attraction_rate in attraction_rates_to_delete), 'Ставка привлечения отображается в выпадающем списке таба Филиалы'
+
+    @testit.workItemIds(3607)
+    @testit.displayName("16.3.1.7. Удаление ставки привлечения, если она используется хотя бы на одном проекте")
+    @pytest.mark.regress
+    @allure.title("id-3607 16.3.1.7. Удаление ставки привлечения, если она используется хотя бы на одном проекте")
+    def test_delete_attraction_rate_with_project(self, attraction_rate_with_project, login, driver):
+        economy_page = EconomyPage(driver)
+        economy_page.go_to_economy_page()
+        time.sleep(3)
+        economy_page.open_kebab_menu(attraction_rate_with_project, 'Удалить')
+        economy_page.apply_deleting()
+        assert 'Вы не можете удалить эту ставку, так как она используется в расчете!' in economy_page.get_alert_message(), 'Нет предупреждения о невозможности удаления ставки привлечения'
+
