@@ -4,7 +4,7 @@ from selenium.webdriver.common.by import By
 class ProjectCardLocators:
     AUTOR_NAME = (By.XPATH, '//a[contains(@class, "MuiTypography-root MuiTypography-button")]')
     # Локаторы вкладки Описание
-    DESCRIPTION_TAB = (By.XPATH, '//button[text()="Описание"]')
+    DESCRIPTION_TAB = (By.XPATH, '//div[text()="Описание"]')
     DESCRIPTION_TAB_TITLE = (By.XPATH, '//h6[text()="Описание"]')
     NAME_FIELD = (By.CSS_SELECTOR, 'input[name="name"]')
     NAME_FIELD_COLOR = (By.XPATH, '//input[@name="name"]//following-sibling::fieldset')

@@ -1015,6 +1015,37 @@ def project_with_assignment():
     yield response.json(), number_day
     project_endpoint.delete_project_api(str(response.json()['id']))
 
+
+@pytest.fixture()
+def project_with_assignment_and_no_end_date():
+    project_endpoint = ProjectEndpoint()
+    user_endpoint = UserEndpoint()
+    user_id = user_endpoint.get_user_id_by_email('auto_testt@mail.rruu')
+    project_endpoint.delete_project_if_it_exist('No End')
+    payload = CreateProject(
+        name='No End',
+        code='Noe',
+        endDate=None,
+        resources=[dict(
+            projectRoleId=2,
+            userId=user_id,
+            isProjectManager=True
+        )
+        ]
+    ).model_dump()
+    response = project_endpoint.create_project_api(json=payload)
+    payload = dict(projectRoleId=2,
+                   projectId=response.json()["id"],
+                   userId=USER_ID,
+                   isProjectManager=True,
+                   startDate=CreateProject().startDate
+                   )
+    assignment_endpoint = AssignmentEndpoint()
+    assignment_endpoint.create_assignment_api(json=payload)
+    yield response.json()
+    project_endpoint.delete_project_api(str(response.json()['id']))
+
+
 @pytest.fixture()
 def second_project_with_assignment():
     project_endpoint = ProjectEndpoint()

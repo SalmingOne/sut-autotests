@@ -6,6 +6,7 @@ import requests
 from data.urls import Urls
 
 from endpoints.auth_endpoint import AuthEndpoint
+from utils.concat_testit_allure_step import allure_testit_step
 
 
 class UserEndpoint:
@@ -121,3 +122,8 @@ class UserEndpoint:
     def get_user_profile_id_by_user_id(self, user_id):
         response = self.get_user_by_id(user_id)
         return response.json()['profile']['id']
+
+    @allure_testit_step('API. Получение проектов пользователя по id')
+    def get_user_project_roles_by_user_id(self, user_id):
+        response = self.get_user_by_id(user_id)
+        return [item['name'] for item in response.json()['projectRoles']]
