@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import BaseModel
 
 from data.data import USER_ID, PROJECT_NAME
@@ -13,7 +15,7 @@ class CreateProject(BaseModel):
     code: str = 'ATP'
     name: str = PROJECT_NAME
     startDate: str = '01.10.2022'
-    endDate: str = '12.21.2029'
+    endDate: Optional[str] = '12.21.2029'
     status: str = 'ACTIVE'
     selfAdding: bool = True
     laborReasons: bool = False

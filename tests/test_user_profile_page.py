@@ -5,6 +5,7 @@ import pytest
 import testit
 
 from data.data import USER_NAME
+from endpoints.project_endpoint import ProjectEndpoint
 from pages.advanced_search_page import AdvancedSearchPage
 from pages.colleagues_page import ColleaguesPage
 from pages.schedule_page import SchedulePage
@@ -1320,3 +1321,38 @@ class TestUserProfilePage:
         assert 'Новое имя резюме' and 'Новое имя сотрудника' and '10.10.2024' and '10.10.2023' in after, \
             "В полях разделов структуры резюме не отображаются изменения"
         assert before != after, "Данные в резюме не изменились после редактирования"
+
+    @testit.workItemIds(12214)
+    @testit.displayName("10.2.3. Проверка условий заполнения полей в карточке проекта если выбран работодатель на табе Опыт работы")
+    @pytest.mark.regress
+    @allure.title("id-12214 10.2.3. Проверка условий заполнения полей в карточке проекта если выбран работодатель на табе Опыт работы")
+    def test_checking_conditions_of_fields_if_employer_selected(self, project_with_assignment,
+                                                                project_with_assignment_and_no_end_date, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        time.sleep(6)
+        user_profile_page.go_to_experience_tab()
+        time.sleep(2)
+        if user_profile_page.check_experience_title():
+            user_profile_page.press_redact_button()
+            time.sleep(2)
+            user_profile_page.press_delete_icon()
+            user_profile_page.press_save_button()
+        # Сравниваем проекты на которые назначен пользователь
+        project_names = user_profile_page.check_conditions_of_fields_if_employer_selected()
+        project_endpoint = ProjectEndpoint()
+        project_names_api = project_endpoint.get_project_name_for_current_user()
+        assert sorted(project_names) == sorted(project_names_api), \
+            "Отображаются не все проекты на которые в текущий момент назначен пользователь"
+        # Сравниваем проектные роли первого проекта
+        first_project_role = project_with_assignment[0]['slots'][0]['role']['name']
+        first_project_role_ui = user_profile_page.get_project_roles(project_with_assignment[0]['name'])
+        assert [first_project_role] == first_project_role_ui, "Проектные роли из API и UI не совпадают"
+        # Сравниваем проектные роли второго проекта
+        second_project_role = project_with_assignment_and_no_end_date['slots'][0]['role']['name']
+        second_project_role_ui = user_profile_page.get_project_roles(project_with_assignment_and_no_end_date['name'])
+        assert [second_project_role] == second_project_role_ui, "Проектные роли из API и UI не совпадают"
+        # Проверка даты начала и конца работы проекта с датой окончания
+        user_profile_page.check_start_and_end_fields(project_with_assignment[0]['name'])
+        # Проверка даты начала и конца работы проекта без даты окончания. Закомментировано до решения бага
+        # user_profile_page.check_start_and_end_fields(project_with_assignment_and_no_end_date['name'])
