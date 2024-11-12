@@ -22,6 +22,10 @@ class EconomyPage(BasePage):
     def apply_deleting(self):
         self.element_is_visible(self.locators.APPLY_DELETING_BUTTON).click()
 
+    @allure_testit_step('Отменить удаление в модальном окне')
+    def cancel_deleting(self):
+        self.element_is_visible(self.locators.DISCARD_DELETING_BUTTON).click()
+
     @allure_testit_step('Проверка элементов в модальном окне подтверждения удаления ставки')
     def check_modal_window(self, attraction_rate_name):
         assert self.element_is_displayed(self.locators.APPLY_DELETING_BUTTON), "Нет кнопки Подтвердить"
@@ -35,3 +39,7 @@ class EconomyPage(BasePage):
         for alert in all_alerts:
             data.append(alert.text)
         return data
+
+    @allure_testit_step("Получить все ставки привлечения")
+    def get_all_attraction_rates(self):
+        return [element.text for element in self.elements_are_visible(self.locators.ATTRACTION_RATES)]

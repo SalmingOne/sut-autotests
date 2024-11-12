@@ -67,3 +67,15 @@ class TestEconomyPage:
         economy_page.apply_deleting()
         assert 'Вы не можете удалить эту ставку, так как она используется в расчете!' in economy_page.get_alert_message(), 'Нет предупреждения о невозможности удаления ставки привлечения'
 
+    @testit.workItemIds(3608)
+    @testit.displayName("16.3.1.7. Отмена удаления ставки привлечения, если она НЕ используется на проектах")
+    @pytest.mark.regress
+    @allure.title("id-3608 16.3.1.7. Отмена удаления ставки привлечения, если она НЕ используется на проектах")
+    def test_cancel_attraction_rate_delete(self, attraction_rate_by_user_to_delete, login, driver):
+        economy_page = EconomyPage(driver)
+        economy_page.go_to_economy_page()
+        time.sleep(3)
+        economy_page.open_kebab_menu(attraction_rate_by_user_to_delete[0], 'Удалить')
+        economy_page.check_modal_window(attraction_rate_by_user_to_delete[0])
+        economy_page.cancel_deleting()
+        assert attraction_rate_by_user_to_delete[0] in economy_page.get_all_attraction_rates(), 'Ставка привлечения удалена'
