@@ -1,6 +1,7 @@
 from locators.system_role_page_locators import SystemRolePageLocators
 from utils.concat_testit_allure_step import allure_testit_step
 from pages.base_page import BasePage
+import time
 
 
 class SystemRolePage(BasePage):
@@ -10,15 +11,15 @@ class SystemRolePage(BasePage):
     def go_to_system_roles_page(self):
         self.element_is_visible(self.locators.SETTING_ICON).click()
         self.element_is_visible(self.locators.SYSTEM_ROLE).click()
+        time.sleep(2)
         self.element_is_visible(self.locators.ADMIN_SYSTEM_ROLE_TAB).click()
 
-    @allure_testit_step("Проверка создания системной роли")
-    def check_create_system_role(self, role_name):
+    @allure_testit_step("Создание системной роли")
+    def create_system_role(self, role_name):
         self.element_is_visible(self.locators.CREATE_SYSTEM_ROLE_BUTTON).click()
         self.element_is_visible(self.locators.INPUT_ROLE_FIELD).send_keys(role_name)
         self.elements_are_visible(self.locators.ALL_TAG_CHECKBOXES)[1].click()
-        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
-
+        
     @allure_testit_step("Нажатие на кнопку добавления системной роли")
     def press_add_system_role_button(self):
         self.element_is_visible(self.locators.CREATE_SYSTEM_ROLE_BUTTON).click()
@@ -34,6 +35,10 @@ class SystemRolePage(BasePage):
     @allure_testit_step("Проверка наличия системной роли в дропдауне")
     def check_role_name_in_dropdown(self, role_name):
         assert role_name in self.get_all_role_names(), 'Роли нет в дропдауне'
+
+    @allure_testit_step("Проверка отсутствия системной роли в дропдауне")
+    def check_role_name_not_in_dropdown(self, role_name):
+        assert not role_name in self.get_all_role_names(), 'Роль есть в дропдауне'
 
     @allure_testit_step("Получение списка системных ролей в дропдауне")
     def get_all_role_names(self):
