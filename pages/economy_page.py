@@ -1,4 +1,5 @@
 import time
+from enum import Enum, auto
 
 from locators.economy_page_locators import EconomyPageLocators
 from pages.base_page import BasePage
@@ -7,6 +8,11 @@ from utils.concat_testit_allure_step import allure_testit_step
 
 class EconomyPage(BasePage):
     locators = EconomyPageLocators()
+
+    class AttractionType(Enum):
+        ByUser = auto()
+        BySlot = auto()
+        ByFilial = auto()
 
     @allure_testit_step('Переход на страницу Экономика')
     def go_to_economy_page(self):
@@ -43,3 +49,26 @@ class EconomyPage(BasePage):
     @allure_testit_step("Получить все ставки привлечения")
     def get_all_attraction_rates(self):
         return [element.text for element in self.elements_are_visible(self.locators.ATTRACTION_RATES)]
+
+    @allure_testit_step("Настройки фильтра отображения")
+    def click_checkbox_in_filter_attraction_rates(self, type: AttractionType = None):
+        from selenium.common import ElementClickInterceptedException
+        try:
+            self.element_is_visible(self.locators.FILTER_ICON).click()
+        except ElementClickInterceptedException:
+            pass
+        match type:
+            case self.AttractionType.ByUser:
+                self.elements_are_visible(self.locators.CHECKBOXES)[0].click()
+            case self.AttractionType.BySlot:
+                self.elements_are_visible(self.locators.CHECKBOXES)[1].click()
+            case self.AttractionType.ByFilial:
+                self.elements_are_visible(self.locators.CHECKBOXES)[2].click()
+            case _:
+                for element in self.elements_are_visible(self.locators.CHECKBOXES, 10):
+                    element.click()
+
+    @allure_testit_step("Получить типы, отображенные на странице")
+    def get_all_attraction_rates_types(self):
+        return set(element.text for element in self.elements_are_visible(self.locators.ATTRACTION_RATES_TYPES))
+

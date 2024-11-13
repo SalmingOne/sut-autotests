@@ -79,3 +79,19 @@ class TestEconomyPage:
         economy_page.check_modal_window(attraction_rate_by_user_to_delete[0])
         economy_page.cancel_deleting()
         assert attraction_rate_by_user_to_delete[0] in economy_page.get_all_attraction_rates(), 'Ставка привлечения удалена'
+
+    @testit.workItemIds(10119)
+    @testit.displayName('16.3.1.3. Фильтрация таблицы "Ставки привлечения" через "Отображение"')
+    @pytest.mark.regress
+    @allure.title('id-10119 16.3.1.3. Фильтрация таблицы "Ставки привлечения" через "Отображение"')
+    def test_filter_attraction_rates(self, attraction_rate_by_user_to_delete, attraction_rate_by_slot_to_delete, attraction_rate_by_affiliate_to_delete, login, driver):
+        economy_page = EconomyPage(driver)
+        economy_page.go_to_economy_page()
+        time.sleep(3)
+        economy_page.click_checkbox_in_filter_attraction_rates()
+        economy_page.click_checkbox_in_filter_attraction_rates(economy_page.AttractionType.ByUser)
+        assert {'По человеку'} == economy_page.get_all_attraction_rates_types(), 'Неправильная работа фильтра'
+        economy_page.click_checkbox_in_filter_attraction_rates(economy_page.AttractionType.ByFilial)
+        assert {'По человеку', 'По филиалу'} == economy_page.get_all_attraction_rates_types(), 'Неправильная работа фильтра'
+        economy_page.click_checkbox_in_filter_attraction_rates(economy_page.AttractionType.BySlot)
+        assert {'По человеку', 'По филиалу', 'По слоту'} == economy_page.get_all_attraction_rates_types(), 'Неправильная работа фильтра'
