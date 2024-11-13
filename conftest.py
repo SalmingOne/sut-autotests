@@ -962,6 +962,7 @@ def project_with_assignment():
     project_endpoint = ProjectEndpoint()
     user_endpoint = UserEndpoint()
     user_id = user_endpoint.get_user_id_by_email('auto_testt@mail.rruu')
+    user_name = user_endpoint.get_user_by_id(str(USER_ID)).json()['fullName']
     project_endpoint.delete_project_if_it_exist(PROJECT_NAME)
     payload = CreateProject(
         resources=[dict(
@@ -982,7 +983,7 @@ def project_with_assignment():
     assignment_endpoint.create_assignment_api(json=payload)
     number_day = BasePage(driver=None).get_day_after_ymd(0).split('-')[2]
     number_day = number_day if number_day != '1' else BasePage(driver=None).get_day_after(1).split('.')[0]
-    yield response.json(), number_day
+    yield response.json(), number_day, user_name
     project_endpoint.delete_project_api(str(response.json()['id']))
 
 
@@ -1717,10 +1718,10 @@ def create_filial_with_added_user():
 
 @pytest.fixture()
 def delete_filial_and_attraction_rate():
-    def _delete_filial_and_attraction_rate(rate_name, filial_id):
+    def _delete_filial_and_attraction_rate(rate_name, filial_name):
         attraction_rate_endpoint = AttractionRatesEndpoint()
         filial_endpoint = AffiliatesEndpoint()
-        filial_endpoint.delete_affiliates_api(str(filial_id))
+        filial_endpoint.delete_filial_by_name_api(filial_name)
         for rate in attraction_rate_endpoint.get_attraction_rates().json():
             if rate['name'] == rate_name:
                 attraction_rate_endpoint.delete_attraction_rate(str(rate['id']))

@@ -125,6 +125,7 @@ class TestEconomyPage:
             filial_page.go_to_filial_page()
             filial_page.open_redact_filial(create_filial_with_added_user[0]['name'])
             assert 'Ставка' in filial_page.get_attraction_rates_by_filial(), 'Ставка привлечения не отображается в выпадающем списке таба Филиалы'
-            delete_filial_and_attraction_rate('Ставка', create_filial_with_added_user[0]['id'])
+            delete_filial_and_attraction_rate('Ставка', create_filial_with_added_user[0]['name'])
         except:
-            delete_filial_and_attraction_rate('Ставка', create_filial_with_added_user[0]['id'])
+            delete_filial_and_attraction_rate('Ставка', create_filial_with_added_user[0]['name'])
+            raise
