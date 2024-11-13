@@ -1705,3 +1705,23 @@ def attraction_rate_with_project():
     yield res.json()['name']
     project_endpoint.delete_project_api(str(response.json()['id']))
     attraction_rate_endpoint.delete_attraction_rate(str(res.json()['id']))
+
+@pytest.fixture()
+def create_filial_with_added_user():
+    filial_endpoint = AffiliatesEndpoint()
+    user_endpoint = UserEndpoint()
+    user = user_endpoint.get_user_by_id(str(USER_ID)).json()
+    payload = dict(name='Крутой филиал', address='г. Москва', employees=[user])
+    response = filial_endpoint.create_affiliates_api(json=payload)
+    yield response.json(), user['fullName']
+
+@pytest.fixture()
+def delete_filial_and_attraction_rate():
+    def _delete_filial_and_attraction_rate(rate_name, filial_id):
+        attraction_rate_endpoint = AttractionRatesEndpoint()
+        filial_endpoint = AffiliatesEndpoint()
+        filial_endpoint.delete_affiliates_api(str(filial_id))
+        for rate in attraction_rate_endpoint.get_attraction_rates().json():
+            if rate['name'] == rate_name:
+                attraction_rate_endpoint.delete_attraction_rate(str(rate['id']))
+    return _delete_filial_and_attraction_rate

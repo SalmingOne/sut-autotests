@@ -95,3 +95,36 @@ class TestEconomyPage:
         assert {'По человеку', 'По филиалу'} == economy_page.get_all_attraction_rates_types(), 'Неправильная работа фильтра'
         economy_page.click_checkbox_in_filter_attraction_rates(economy_page.AttractionType.BySlot)
         assert {'По человеку', 'По филиалу', 'По слоту'} == economy_page.get_all_attraction_rates_types(), 'Неправильная работа фильтра'
+
+    @testit.workItemIds(3579)
+    @testit.displayName('16.3.1.5.1. Создание новой ставки привлечения с типом слота "Филиал" без использования компонентов')
+    @pytest.mark.regress
+    @allure.title('id-3579 16.3.1.5.1. Создание новой ставки привлечения с типом слота "Филиал" без использования компонентов')
+    def test_create_attraction_rate_type_filial(self, project_with_assignment, create_filial_with_added_user, login, driver,
+                                              delete_filial_and_attraction_rate):
+        try:
+            economy_page = EconomyPage(driver)
+            all_project_page = AllProjectPage(driver)
+            project_card_page = ProjectCardPage(driver)
+            filial_page = FilialPage(driver)
+            economy_page.go_to_economy_page()
+            time.sleep(5)
+            economy_page.open_create_drawer()
+            economy_page.fill_fields_in_drawer('Ставка', create_filial_with_added_user[0]['name'], economy_page.AttractionType.ByFilial, 100)
+            economy_page.save_changes()
+            economy_page.check_attraction_rate_row('Ставка', 'По филиалу', 100)
+            economy_page.open_kebab_menu('Ставка', 'История ставки')
+            economy_page.check_dates(economy_page.get_day_before(0), economy_page.get_day_before(0))
+            economy_page.action_esc()
+            all_project_page.go_to_all_project_page()
+            all_project_page.go_project_page(project_with_assignment[0]['name'])
+            project_card_page.go_to_team_tab()
+            project_card_page.go_to_redact_team()
+            assert 'Ставка' in project_card_page.get_attraction_rates_by_user(create_filial_with_added_user[1]) , 'Ставка привлечения не отображается в выпадающем списке таба Команда'
+            project_card_page.press_abort_button()
+            filial_page.go_to_filial_page()
+            filial_page.open_redact_filial(create_filial_with_added_user[0]['name'])
+            assert 'Ставка' in filial_page.get_attraction_rates_by_filial(), 'Ставка привлечения не отображается в выпадающем списке таба Филиалы'
+            delete_filial_and_attraction_rate('Ставка', create_filial_with_added_user[0]['id'])
+        except:
+            delete_filial_and_attraction_rate('Ставка', create_filial_with_added_user[0]['id'])
