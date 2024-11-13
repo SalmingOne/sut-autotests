@@ -410,7 +410,7 @@ class UserProfilePage(BasePage):
     @testit.step("Проверка заголовка опыт работы")
     @allure.step("Проверка заголовка опыт работы")
     def check_experience_title(self):
-        return self.element_is_displayed(self.locators.EXPERIENCES_TITLE, 1)
+        return self.element_is_displayed(self.locators.EXPERIENCES_CHECK_CARD, 1)
 
     @testit.step("Добавление простого диплома")
     @allure.step("Добавление простого диплома")
@@ -682,7 +682,6 @@ class UserProfilePage(BasePage):
         specializations = self.get_dropdown_menu_items(self.locators.EXPERIENCES_SPECIALIZATION_ACTION)
         assert specializations == ['Инжиниринг', 'Административно-управленческий персонал',
                                    'Блок ИТ'], "Не все значения в дропдауне Вид деятельности"
-        self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_ACTION).click()
         time.sleep(1)
         self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
         self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_SLOT).click()

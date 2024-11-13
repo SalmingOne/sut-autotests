@@ -181,3 +181,28 @@ class TestAdvancedSearchPage:
         assert not advanced_search_page.get_break_search_button_clickable(), \
             "Кнопка Сбросить поиск активна"
         assert menu_items == ['Все коллеги', 'Оргструктура', 'Расширенный поиск'], "Есть не все пункты меню"
+
+    @testit.workItemIds(12409)
+    @testit.displayName("10.3.4. Поиск без сохранения измененных фильтров")
+    @pytest.mark.regress
+    @allure.title("id-12409 10.3.4. Поиск без сохранения измененных фильтров")
+    def test_search_without_saving_changed_filters(self, create_advanced_search, login, driver):
+        advanced_search_page = AdvancedSearchPage(driver)
+        time.sleep(1)
+        advanced_search_page.go_advanced_search_page()
+        advanced_search_page.open_saved_search(create_advanced_search)
+        before = advanced_search_page.get_all_fields()
+        advanced_search_page.check_search_modal_window_elements(create_advanced_search)
+        advanced_search_page.field_search_string(0,
+                                                 'Отдел',
+                                                 'Равно',
+                                                 'Отдел тестирования')
+        after_change = advanced_search_page.get_all_fields()
+        assert after_change == ['Отдел', 'Равно', 'Отдел тестирования'], "Параметры поиска не изменились"
+        advanced_search_page.press_search_button()
+        assert set(advanced_search_page.get_all_depart_column_values()) == {'Отдел тестирования'}, \
+            'Поиск по новым параметрам не осуществляется'
+        advanced_search_page.open_saved_search(create_advanced_search)
+        after = advanced_search_page.get_all_fields()
+        assert before == after, "Внесенные изменения сохранились в фильтрах"
+
