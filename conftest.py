@@ -20,7 +20,7 @@ from endpoints.project_endpoint import ProjectEndpoint
 from endpoints.project_roles_endpoint import ProjectRolesEndpoint
 from endpoints.resume_endpoint import ResumeEndpoint
 from endpoints.search_profile_endpoint import SearchProfileEndpoint
-from endpoints.skills_endpoint import SkillsEndpoint
+from endpoints.skills_and_knowledge_endpoint import SkillsAndKnowledgeEndpoint
 from endpoints.slots_endpoint import SlotsEndpoint
 from endpoints.statement_files_endpoint import StatementFilesEndpoint
 from endpoints.system_roles_endpoint import SystemRolesEndpoint
@@ -946,45 +946,15 @@ def logging_on():
 
 
 @pytest.fixture()
-def skills():
-    skills_endpoint = SkillsEndpoint()
-    if skills_endpoint.return_len_skills() >= 2:
+def skills_and_knowledge():
+    skills_and_knowledge_endpoint = SkillsAndKnowledgeEndpoint()
+    if skills_and_knowledge_endpoint.return_len_skills_and_knowledge() >= 2:
         pass
     else:
-        payload = dict(name='Selenium', tags=[])
-        skills_endpoint.create_skills_api(json=payload)
-        payload = dict(name='Pytest', tags=[])
-        skills_endpoint.create_skills_api(json=payload)
-
-
-@pytest.fixture()
-def create_skill():
-    skills_endpoint = SkillsEndpoint()
-    payload = dict(name='ABCD', tags=[])
-    response = skills_endpoint.create_skills_api(json=payload)
-    yield payload['name']
-    skills_endpoint.delete_skill_api(str(response.json()['id']))
-
-
-@pytest.fixture()
-def create_second_skill():
-    skills_endpoint = SkillsEndpoint()
-    payload = dict(name='AABBCCDD', tags=[])
-    response = skills_endpoint.create_skills_api(json=payload)
-    yield payload['name']
-    skills_endpoint.delete_skill_api(str(response.json()['id']))
-
-
-@pytest.fixture()
-def create_skill_to_delete():
-    skills_endpoint = SkillsEndpoint()
-    payload = dict(name='ABCD', tags=[])
-    response = skills_endpoint.create_skills_api(json=payload)
-    yield payload['name']
-    if skills_endpoint.check_skill_by_id(str(response.json()['id'])):
-        skills_endpoint.delete_skill_api(str(response.json()['id']))
-    else:
-        pass
+        payload = dict(name='Selenium', type='skill')
+        skills_and_knowledge_endpoint.create_skills_and_knowledge_api(json=payload)
+        payload = dict(name='Pytest', type='knowledge')
+        skills_and_knowledge_endpoint.create_skills_and_knowledge_api(json=payload)
 
 
 @pytest.fixture()
