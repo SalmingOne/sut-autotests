@@ -15,4 +15,7 @@ class EconomyPageLocators:
     DISCARD_DELETING_BUTTON = (By.XPATH, f"//button[text()='Отменить']")
     DELETING_MODAL_WINDOW_TEXT = (By.CSS_SELECTOR, 'p[id="alert-dialog-description"]')
     ALERT_TEXT = (By.XPATH, '//div[contains(@class, "MuiAlert-message")]')
-    ATTRACTION_RATES = (By.XPATH, f"//div[@col-id='name' and not(contains(@aria-sort, 'ascending'))]")
+    ATTRACTION_RATES = (By.XPATH, f"//div[@col-id='name' and not(@aria-sort)]")
+    FILTER_ICON = (By.CSS_SELECTOR, 'svg[data-testid="TuneIcon"]')
+    CHECKBOXES = (By.XPATH, "//h6[text()='Отображение']/../..//input[@type='checkbox']/..")
+    ATTRACTION_RATES_TYPES = (By.XPATH, f"//div[@col-id='type' and not(@aria-sort)]")
