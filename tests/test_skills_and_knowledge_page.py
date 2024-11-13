@@ -23,10 +23,10 @@ class TestSkillsAndKnowledgePage:
         skills_and_knowledge_page.check_kebab_menu_item()
 
     @testit.workItemIds(10464)
-    @testit.displayName("10.4.1.2 Добавление данных в справочник Знания")
+    @testit.displayName("10.4.1.2 Добавление данных в справочник Навыки и знания")
     @pytest.mark.smoke
-    @allure.title("id-10464 10.4.1.2 Добавление данных в справочник Знания")
-    def test_adding_the_knowledge_directory(self, login, driver):
+    @allure.title("id-10464 10.4.1.2 Добавление данных в справочник Навыки и знания")
+    def test_adding_data_to_skills_and_knowledge_directory(self, login, driver):
         skills_and_knowledge_page = SkillsAndKnowledgePage(driver)
         skills_endpoint = SkillsAndKnowledgeEndpoint()
         skills_and_knowledge_page.go_to_skills_page()
