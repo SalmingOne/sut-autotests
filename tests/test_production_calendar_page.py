@@ -12,7 +12,7 @@ class TestProductionCalendarPage:
 
     @testit.workItemIds(3902)
     @testit.displayName("5.1. Просмотр производственного календаря")
-    @pytest.mark.regress
+    @pytest.mark.smoke
     @allure.title("id-3902 5.1. Просмотр производственного календаря")
     def test_view_your_production_calendar(self, login, driver):
         production_calendar_page = ProductionCalendarPage(driver)
