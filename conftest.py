@@ -1726,3 +1726,14 @@ def delete_filial_and_attraction_rate():
             if rate['name'] == rate_name:
                 attraction_rate_endpoint.delete_attraction_rate(str(rate['id']))
     return _delete_filial_and_attraction_rate
+
+@pytest.fixture()
+def delete_attraction_rate():
+
+    def _delete_attraction_rate(rate_name):
+        attraction_rate_endpoint = AttractionRatesEndpoint()
+        filial_endpoint = AffiliatesEndpoint()
+        for rate in attraction_rate_endpoint.get_attraction_rates().json():
+            if rate['name'] == rate_name:
+                attraction_rate_endpoint.delete_attraction_rate(str(rate['id']))
+    return _delete_attraction_rate

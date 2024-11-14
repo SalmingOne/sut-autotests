@@ -90,11 +90,11 @@ class TestEconomyPage:
         time.sleep(3)
         economy_page.click_checkbox_in_filter_attraction_rates()
         economy_page.click_checkbox_in_filter_attraction_rates(economy_page.AttractionType.ByUser)
-        assert {'По человеку'} == economy_page.get_all_attraction_rates_types(), 'Неправильная работа фильтра'
+        assert {'По человек'} == economy_page.get_all_attraction_rates_types(), 'Неправильная работа фильтра'
         economy_page.click_checkbox_in_filter_attraction_rates(economy_page.AttractionType.ByFilial)
         assert {'По человеку', 'По филиалу'} == economy_page.get_all_attraction_rates_types(), 'Неправильная работа фильтра'
         economy_page.click_checkbox_in_filter_attraction_rates(economy_page.AttractionType.BySlot)
-        assert {'По человеку', 'По филиалу', 'По слоту'} == economy_page.get_all_attraction_rates_types(), 'Неправильная работа фильтра'
+        assert {'По человек', 'По филиалу', 'По слоту'} == economy_page.get_all_attraction_rates_types(), 'Неправильная работа фильтра'
 
     @testit.workItemIds(3579)
     @testit.displayName('16.3.1.5.1. Создание новой ставки привлечения с типом слота "Филиал" без использования компонентов')
@@ -128,4 +128,32 @@ class TestEconomyPage:
             delete_filial_and_attraction_rate('Ставка', create_filial_with_added_user[0]['name'])
         except:
             delete_filial_and_attraction_rate('Ставка', create_filial_with_added_user[0]['name'])
+            raise
+
+    @testit.workItemIds(3580)
+    @testit.displayName('16.3.1.5.1. Создание ставки привлечения с типом ставки  "Человек" без использования компонентов')
+    @pytest.mark.regress
+    @allure.title('id-3580 16.3.1.5.1. Создание ставки привлечения с типом ставки  "Человек" без использования компонентов')
+    def test_create_attraction_rate_type_user(self, project_with_assignment, login, driver, delete_attraction_rate):
+        try:
+            economy_page = EconomyPage(driver)
+            all_project_page = AllProjectPage(driver)
+            project_card_page = ProjectCardPage(driver)
+            economy_page.go_to_economy_page()
+            time.sleep(5)
+            economy_page.open_create_drawer()
+            economy_page.fill_fields_in_drawer('Ставка', project_with_assignment[2] , economy_page.AttractionType.ByUser, 100)
+            economy_page.save_changes()
+            economy_page.check_attraction_rate_row('Ставка', 'По человеку', 100)
+            economy_page.open_kebab_menu('Ставка', 'История ставки')
+            economy_page.check_dates(economy_page.get_day_before(0), economy_page.get_day_before(0))
+            economy_page.action_esc()
+            all_project_page.go_to_all_project_page()
+            all_project_page.go_project_page(project_with_assignment[0]['name'])
+            project_card_page.go_to_team_tab()
+            project_card_page.go_to_redact_team()
+            assert 'Ставка' in project_card_page.get_attraction_rates_by_user(project_with_assignment[2]) , 'Ставка привлечения не отображается в выпадающем списке таба Команда'
+            delete_attraction_rate('Ставка')
+        except:
+            delete_attraction_rate('Ставка')
             raise
