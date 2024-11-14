@@ -45,7 +45,8 @@ class SkillsAndKnowledgePage(BasePage):
 
     @allure_testit_step('Проверка полей дровера добавления знания или навыка')
     def check_drawer_fields(self):
-        assert self.element_is_displayed(self.locators.text_on_page('Добавление навыка/знания'))
+        assert self.element_is_displayed(self.locators.text_on_page('Добавление навыка/знания')), \
+            "Нет заголовка дровера добавления навыка/знания"
         name_error = self.check_max_field_length(
             self.locators.NAME_FIELD,
             64,
