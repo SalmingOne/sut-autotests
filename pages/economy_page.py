@@ -72,3 +72,39 @@ class EconomyPage(BasePage):
     def get_all_attraction_rates_types(self):
         return set(element.text for element in self.elements_are_visible(self.locators.ATTRACTION_RATES_TYPES))
 
+    @allure_testit_step("Открыть дровер создания ставки привлечения")
+    def open_create_drawer(self):
+        self.element_is_visible(self.locators.CREATE_ATTRACTION_RATE_BUTTON).click()
+
+    @allure_testit_step("Заполнить обязательные поля")
+    def fill_fields_in_drawer(self, attraction_rate_name, target_name, type: AttractionType, size):
+        self.element_is_visible(self.locators.ATTRACTION_RATE_NAME_FIELD).send_keys(attraction_rate_name)
+        self.element_is_visible(self.locators.ATTRACTION_RATE_TYPE_DROPDOWN).click()
+        match type:
+            case self.AttractionType.ByUser:
+                self.elements_are_visible(self.locators.DRAWER_LI_ITEMS)[0].click()
+            case self.AttractionType.BySlot:
+                self.elements_are_visible(self.locators.DRAWER_LI_ITEMS)[1].click()
+            case self.AttractionType.ByFilial:
+                self.elements_are_visible(self.locators.DRAWER_LI_ITEMS)[2].click()
+        self.element_is_visible(self.locators.ATTRACTION_RATE_TARGET_FIELD).send_keys(target_name)
+        self.elements_are_visible(self.locators.DRAWER_LI_ITEMS)[0].click()
+        self.action_esc()
+        self.element_is_visible(self.locators.ATTRACTION_RATE_SIZE_FIELD).send_keys(size)
+
+    @allure_testit_step("Сохранить добавление\изменение ставки привлечения")
+    def save_changes(self):
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+
+    @allure_testit_step("Проверить даты создания и даты изменения")
+    def check_dates(self, update_date, start_date):
+        assert update_date == self.element_is_visible(self.locators.UPDATE_DATE).text, 'Неправильная дата изменения'
+        assert start_date == self.element_is_visible(self.locators.START_DATE).text, 'Неправильная дата создания'
+
+    @allure_testit_step("Проверить отображение ставки привлечения в таблице")
+    def check_attraction_rate_row(self, attraction_rate_name, type, size):
+        assert self.element_is_displayed(self.locators.get_attraction_rate(attraction_rate_name)), 'Не отображается название ставки'
+        assert self.element_is_visible(self.locators.get_attraction_rate_type(attraction_rate_name)).text == type, 'Не отображается тип ставки'
+        assert int(float(self.element_is_visible(self.locators.get_attraction_rate_size(attraction_rate_name)).text)) == size, 'Не отображается размер ставки'
+
+
