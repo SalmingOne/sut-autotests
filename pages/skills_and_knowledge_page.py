@@ -1,7 +1,5 @@
 import time
 
-import allure
-import testit
 from selenium.webdriver import Keys
 
 from locators.skills_and_knowledge_page_locators import SkillsAndKnowledgePageLocators
@@ -50,7 +48,9 @@ class SkillsAndKnowledgePage(BasePage):
         name_error = self.check_max_field_length(
             self.locators.NAME_FIELD,
             64,
-            self.locators.text_on_page('Добавление навыка/знания')
+            self.locators.NAME_FIELD_COLOR,
+            self.locators.text_on_page('Добавление навыка/знания'),
+            'AAA'
         )
         assert name_error == 'Превышено допустимое количество символов: 64', "Не соблюдена максимальная длина поля Имя"
         self.element_is_visible(self.locators.TYPE_FIELD).click()
@@ -59,7 +59,9 @@ class SkillsAndKnowledgePage(BasePage):
         name_error = self.check_max_field_length(
             self.locators.DESCRIPTION_FIELD,
             1000,
-            self.locators.text_on_page('Добавление навыка/знания')
+            self.locators.DESCRIPTION_FIELD_COLOR,
+            self.locators.text_on_page('Добавление навыка/знания'),
+            'AAA'
         )
         assert name_error == 'Превышено допустимое количество символов: 1000', \
             "Не соблюдена максимальная длина поля Описание"
@@ -67,13 +69,18 @@ class SkillsAndKnowledgePage(BasePage):
         assert self.element_is_displayed(self.locators.BREAK_BUTTON), "Отсутствует кнопка Отменить"
 
     @allure_testit_step('Проверка максимальной длины поля')
-    def check_max_field_length(self, locator, max_length, locator_to_click):
+    def check_max_field_length(self, locator, max_length, locator_to_color, locator_to_click, new_value):
         self.action_select_all_text(self.element_is_visible(locator))
         self.element_is_visible(locator).send_keys('A' * (max_length + 1))
         self.element_is_visible(locator_to_click).click()
         error = self.element_is_visible(self.locators.MUI_ERROR).text
+        name_field_color = self.element_is_present(locator_to_color).value_of_css_property('border-color')
+        assert name_field_color == 'rgb(211, 47, 47)', "Цвет поля Название не красный"
+        time.sleep(1)
+        assert not self.element_is_clickable(self.locators.SUBMIT_BUTTON, 2), \
+            "Кнопка Добавить активна при не корректном заполнении поля"
         self.action_select_all_text(self.element_is_visible(locator))
-        self.element_is_visible(locator).send_keys('AAA')
+        self.element_is_visible(locator).send_keys(new_value)
         self.element_is_visible(locator_to_click).click()
         return error
 
@@ -92,5 +99,63 @@ class SkillsAndKnowledgePage(BasePage):
         description = self.element_is_visible(self.locators.DESCRIPTION_FIELD).get_attribute('value')
         return [name, description]
 
+    @allure_testit_step('Проверка ответа при не заполнении обязательных полей')
+    def check_empty_mandatory_fields(self):
+        assert not self.element_is_clickable(self.locators.SUBMIT_BUTTON, 2), \
+            "Кнопка Добавить активна до заполнения обязательных полей"
+        # Поле Название
+        self.element_is_visible(self.locators.NAME_FIELD).click()
+        self.element_is_visible(self.locators.text_on_page('Добавление навыка/знания')).click()
+        assert self.element_is_visible(self.locators.MUI_ERROR).text == 'Поле обязательно', \
+            "Нет сообщения об обязательности поля Название"
+        name_field_color = self.element_is_present(self.locators.NAME_FIELD_COLOR).value_of_css_property('border-color')
+        assert name_field_color == 'rgb(211, 47, 47)', "Цвет поля Название не красный"
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys('Имя')
+        # Кнопка добавить после заполнения обязательных полей
+        self.element_is_visible(self.locators.text_on_page('Добавление навыка/знания')).click()
+        assert self.element_is_clickable(self.locators.SUBMIT_BUTTON, 2), \
+            "Кнопка Добавить не активна после заполнения обязательных полей"
+        # Поле Тип
+        self.action_select_all_text(self.element_is_visible(self.locators.TYPE_FIELD))
+        self.element_is_visible(self.locators.TYPE_FIELD).send_keys(Keys.BACK_SPACE)
+        self.element_is_visible(self.locators.text_on_page('Добавление навыка/знания')).click()
+        assert self.element_is_visible(self.locators.MUI_ERROR).text == 'Поле обязательно', \
+            "Нет сообщения об обязательности поля Тип"
+        type_field_color = self.element_is_present(self.locators.TYPE_FIELD_COLOR).value_of_css_property('border-color')
+        assert type_field_color == 'rgb(211, 47, 47)', "Цвет поля Тип не красный"
+        self.element_is_visible(self.locators.BREAK_BUTTON).click()
 
+    @allure_testit_step('Проверка отклика при совпадении имени навыка/знания')
+    def check_skill_same_name(self, name):
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(name)
+        self.element_is_visible(self.locators.text_on_page('Добавление навыка/знания')).click()
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+        time.sleep(1)
+        assert not self.element_is_clickable(self.locators.SUBMIT_BUTTON, 2), \
+            "Кнопка Добавить активна при не корректном заполнении полей"
+        assert self.element_is_visible(self.locators.MUI_ERROR).text == 'Навык/Знание с данным названием уже существует', \
+            "Нет сообщения о совпадении имен"
+        name_field_color = self.element_is_present(self.locators.NAME_FIELD_COLOR).value_of_css_property('border-color')
+        assert name_field_color == 'rgb(211, 47, 47)', "Цвет поля Название не красный"
+        self.element_is_visible(self.locators.BREAK_BUTTON).click()
+
+    @allure_testit_step('Проверка ответа при превышении количества допустимых символов')
+    def check_exceeded_characters_in_fields(self):
+        name_error = self.check_max_field_length(
+            self.locators.NAME_FIELD,
+            64,
+            self.locators.NAME_FIELD_COLOR,
+            self.locators.text_on_page('Добавление навыка/знания'),
+            'AAA'
+        )
+        assert name_error == 'Превышено допустимое количество символов: 64', "Не соблюдена максимальная длина поля Имя"
+        name_error = self.check_max_field_length(
+            self.locators.DESCRIPTION_FIELD,
+            1000,
+            self.locators.DESCRIPTION_FIELD_COLOR,
+            self.locators.text_on_page('Добавление навыка/знания'),
+            'AAA'
+        )
+        assert name_error == 'Превышено допустимое количество символов: 1000', \
+            "Не соблюдена максимальная длина поля Описание"
 

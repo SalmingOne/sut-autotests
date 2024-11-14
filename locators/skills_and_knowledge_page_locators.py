@@ -17,8 +17,11 @@ class SkillsAndKnowledgePageLocators:
     KEBABS_DELETE_MENU_ITEM = (By.XPATH, '//span[text()="Удалить"]')
     # Дровер добавления знания
     NAME_FIELD = (By.CSS_SELECTOR, 'input[name="name"]')
+    NAME_FIELD_COLOR = (By.XPATH, '//input[@name="name"]//following-sibling::fieldset')
     TYPE_FIELD = (By.XPATH, '//div[@name="type"]//input')
+    TYPE_FIELD_COLOR = (By.XPATH, '//div[@name="type"]//following-sibling::fieldset')
     DESCRIPTION_FIELD = (By.CSS_SELECTOR, 'input[name="description"]')
+    DESCRIPTION_FIELD_COLOR = (By.XPATH, '//input[@name="description"]//following-sibling::fieldset')
 
 
     CANSEL_ICON = (By.CSS_SELECTOR, 'svg[data-testid="CancelIcon"]')
