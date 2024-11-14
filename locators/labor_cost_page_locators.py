@@ -150,8 +150,7 @@ class LaborCostPageLocators:
     ADMINISTRATIVE_LEAVE = (By.CSS_SELECTOR, 'li[data-option-index="2"]')
     MATERNITY_LEAVE = (By.CSS_SELECTOR, 'li[data-option-index="3"]')
     # Дровер добавления отсутствия
-    BEGIN_LEAVE_DATA_INPUT = (By.XPATH,
-                              '//div[contains(@class, "MuiInputBase-colorPrimary MuiInputBase-formControl MuiInputBase-adornedEnd")]//input')
+    BEGIN_LEAVE_DATA_INPUT = (By.CSS_SELECTOR, 'input[placeholder= "ДД.MM.ГГГГ"]')
     BEGIN_LEAVE_DATA_PICKER_BUTTON = (By.XPATH,
                               '//div[contains(@class, "MuiInputBase-colorPrimary MuiInputBase-formControl MuiInputBase-adornedEnd")]//button')
     ALL_DATA_IN_DATA_PICKER = (By.XPATH, '//button[contains(@class, "MuiPickersDay-dayWithMargin")]')

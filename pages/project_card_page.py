@@ -305,6 +305,7 @@ class ProjectCardPage(BasePage):
     @testit.step("Проверка вкладки Ресурсный план без ресурсов")
     @allure.step("Проверка вкладки Ресурсный план без ресурсов")
     def check_resource_plan_tab_without_resources(self):
+        time.sleep(1)
         self.check_message_without_resources()
         self.check_link_to_add_new_resources()
 

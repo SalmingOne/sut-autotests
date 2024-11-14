@@ -54,7 +54,7 @@ class GanttPage(BasePage):
         self.check_default_period()
         self.check_chose_period_list()
         self.check_gantt_base_plan_button()
-        assert self.get_column_header() == ['№', 'Фазы и задачи', 'Начало', 'Окончание', 'План. трудозатраты',
+        assert self.get_column_header() == ['№', 'Фазы и задачи', 'Начало', 'Окончание', 'План. трудозатраты (Ч.)',
                                             'Действия'], "Есть не все заголовки по умолчанию"
         self.check_fields_filter()
 
@@ -121,8 +121,8 @@ class GanttPage(BasePage):
     def check_fields_filter(self):
         self.element_is_visible(self.locators.FIELDS_FILTER).click()
         assert self.get_all_checkboxes_text() == ['Таблица', 'Диаграмма', 'Слоты/исполнители', 'Начало', 'Окончание',
-                                                  'Факт. начало', 'Факт. окончание', 'План. трудозатраты',
-                                                  'План. длительность задач', 'Затраченное время', 'Статус'], \
+                                                  'Факт. начало', 'Факт. окончание', 'План. трудозатраты (Ч.)',
+                                                  'План. длительность задач (Д.)', 'Затраченное время (Ч.)', 'Статус'], \
             "Есть не все чекбоксы"
         self.action_esc()
 

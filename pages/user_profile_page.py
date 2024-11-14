@@ -98,11 +98,9 @@ class UserProfilePage(BasePage):
     @testit.step("Берем цвет вкладки Опыт работы")
     @allure.step("Берем цвет вкладки Опыт работы")
     def get_experience_tab_color(self):
-        self.element_is_visible(self.locators.CERTIFICATE_TAB_BUTTON).click()
-        color = self.element_is_visible(self.locators.EXPERIENCES_TAB_BUTTON).value_of_css_property('background-color')
-        self.element_is_visible(self.locators.EXPERIENCES_TAB_BUTTON).click()
-        return color
-
+        time.sleep(2)
+        return self.element_is_visible(self.locators.EXPERIENCES_TAB_BUTTON).value_of_css_property('background-color')
+        
     @testit.step("Берем цвет вкладки Информация о сотруднике")
     @allure.step("Берем цвет вкладки Информация о сотруднике")
     def get_my_profile_tab_color(self):
@@ -433,12 +431,11 @@ class UserProfilePage(BasePage):
     @allure.step("Получение значений выпадающего списка")
     def get_dropdown_menu_items(self, locator):
         self.element_is_visible(locator).click()
-        time.sleep(1)
         all_items = self.elements_are_visible(self.locators.LI_MENU_ITEM)
         menu_item_text = []
         for item in all_items:
             menu_item_text.append(item.text)
-        self.element_is_visible(locator).send_keys(Keys.RETURN)
+        self.action_esc()
         return menu_item_text
 
     @testit.step("Проверка ограничения в 128 символов для поля")
@@ -477,9 +474,7 @@ class UserProfilePage(BasePage):
     @testit.step("Проверка содержания раздела образование")
     @allure.step("Проверка содержания раздела образование")
     def check_education_form(self):
-        time.sleep(1)
         educations = self.get_dropdown_menu_items(self.locators.EDUCATION_FORM)
-        time.sleep(1)
         directions = self.get_dropdown_menu_items(self.locators.DIRECTION)
         levels = self.get_dropdown_menu_items(self.locators.EDUCATION_LEVEL)
         self.check_128_symbol_in_field(self.locators.FACULTY_NAME, self.locators.EDUCATION_FORM)
