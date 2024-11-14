@@ -1132,7 +1132,7 @@ class TestUserProfilePage:
 
     @testit.workItemIds(1168)
     @testit.displayName("10.2.3. Добавление карточки проекта в табе Опыт работы")
-    @pytest.mark.regress
+    @pytest.mark.smoke
     @allure.title("id-1168 10.2.3. Добавление карточки проекта в табе Опыт работы")
     def test_click_adding_project_card_in_work_experience_tab(self, project_with_two_resources, create_filial, login, driver):
         user_profile_page = UserProfilePage(driver)
