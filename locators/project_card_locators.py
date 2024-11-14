@@ -31,7 +31,7 @@ class ProjectCardLocators:
     SOURCE_ICON = (By.XPATH, '//div[contains(@class,"react-flow__node")]')
 
     # Локаторы вкладки Команда
-    TEAM_TAB = (By.XPATH, '//div[text()="Команда"]')
+    TEAM_TAB = (By.XPATH, '//div[text()="Команда"]/..')
     REDACT_BUTTON = (By.XPATH, '//button[text()="Редактировать"]')
     TO_EXCEL_BUTTON = (By.XPATH, '//button[text()="Экспорт в Excel"]')
     TEAM_TAB_FILTER_BUTTON = (By.XPATH, '//h6[text()="Отображение"]/..')

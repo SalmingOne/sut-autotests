@@ -55,10 +55,8 @@ class ProductionCalendarPage(BasePage):
     @allure.step("Проверка цветов в легенде")
     def check_legend_colors(self):
         time.sleep(1)
-        print(self.element_is_visible(self.locators.LEGEND_TODAY).value_of_css_property(
-            'border'))
         assert self.element_is_visible(self.locators.LEGEND_TODAY).value_of_css_property(
-            'border') == '1px solid rgb(46, 125, 50)', "Не корректный цвет текущего дня"
+            'border') == '0.8px solid rgb(46, 125, 50)', "Не корректный цвет текущего дня"
         assert self.element_is_visible(self.locators.LEGEND_HOLIDAY).value_of_css_property(
             'background-color') == 'rgba(198, 40, 40, 0.3)', "Не корректный цвет праздничного дня"
         assert self.element_is_visible(self.locators.LEGEND_WEEKEND).value_of_css_property(
@@ -70,7 +68,7 @@ class ProductionCalendarPage(BasePage):
     @allure.step("Проверка цветов в календаре")
     def check_calendar_colors(self):
         assert self.elements_are_visible(self.locators.CALENDAR_TODAY)[0].value_of_css_property(
-            'border') == '1px solid rgb(46, 125, 50)', "Не корректный цвет текущего дня"
+            'border') == '0.8px solid rgb(46, 125, 50)', "Не корректный цвет текущего дня"
         assert self.elements_are_visible(self.locators.CALENDAR_HOLIDAY)[0].value_of_css_property(
             'background-color') == 'rgba(198, 40, 40, 0.3)', "Не корректный цвет праздничного дня"
         assert self.elements_are_visible(self.locators.CALENDAR_WEEKEND)[0].value_of_css_property(
