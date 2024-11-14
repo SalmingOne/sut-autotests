@@ -94,7 +94,7 @@ class TestEconomyPage:
         economy_page.click_checkbox_in_filter_attraction_rates(economy_page.AttractionType.ByFilial)
         assert {'По человеку', 'По филиалу'} == economy_page.get_all_attraction_rates_types(), 'Неправильная работа фильтра'
         economy_page.click_checkbox_in_filter_attraction_rates(economy_page.AttractionType.BySlot)
-        assert {'По человек', 'По филиалу', 'По слоту'} == economy_page.get_all_attraction_rates_types(), 'Неправильная работа фильтра'
+        assert {'По человеку', 'По филиалу', 'По слоту'} == economy_page.get_all_attraction_rates_types(), 'Неправильная работа фильтра'
 
     @testit.workItemIds(3579)
     @testit.displayName('16.3.1.5.1. Создание новой ставки привлечения с типом слота "Филиал" без использования компонентов')
