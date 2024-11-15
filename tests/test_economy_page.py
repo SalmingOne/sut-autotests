@@ -32,7 +32,7 @@ class TestEconomyPage:
         for attraction_rate in attraction_rates_to_delete:
             time.sleep(3)
             economy_page.open_kebab_menu(attraction_rate, 'Удалить')
-            economy_page.check_modal_window(attraction_rate)
+            economy_page.check_modal_window_delete(attraction_rate)
             economy_page.apply_deleting()
         all_project_page.go_to_all_project_page()
         all_project_page.go_project_page(project_with_tester_assignment[0]['name'])
@@ -76,7 +76,7 @@ class TestEconomyPage:
         economy_page.go_to_economy_page()
         time.sleep(3)
         economy_page.open_kebab_menu(attraction_rate_by_user_to_delete[0], 'Удалить')
-        economy_page.check_modal_window(attraction_rate_by_user_to_delete[0])
+        economy_page.check_modal_window_delete(attraction_rate_by_user_to_delete[0])
         economy_page.cancel_deleting()
         assert attraction_rate_by_user_to_delete[0] in economy_page.get_all_attraction_rates(), 'Ставка привлечения удалена'
 
@@ -189,3 +189,16 @@ class TestEconomyPage:
         except:
             delete_attraction_rate('Ставка')
             raise
+
+    @testit.workItemIds(3639)
+    @testit.displayName('16.3.1.5.1. Отмена создания ставки привлечения в конструкторе')
+    @pytest.mark.regress
+    @allure.title('id-3639 16.3.1.5.1. Отмена создания ставки привлечения в конструкторе')
+    def test_cancel_create_attraction_rate(self, login, driver, ):
+        economy_page = EconomyPage(driver)
+        economy_page.go_to_economy_page()
+        time.sleep(5)
+        economy_page.open_create_drawer()
+        economy_page.fill_fields_in_drawer('Ставка', 'Тестировщик', economy_page.AttractionType.BySlot,
+                                           100)
+        economy_page.discard_changes()
