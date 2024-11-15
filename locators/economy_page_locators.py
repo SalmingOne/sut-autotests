@@ -41,3 +41,6 @@ class EconomyPageLocators:
     DRAWER_LI_ITEMS = (By.TAG_NAME, 'li')
     UPDATE_DATE = (By.CSS_SELECTOR, "div[col-id='updateDate'][role='gridcell']")
     START_DATE = (By.CSS_SELECTOR, "div[col-id='startDate'][role='gridcell']")
+    END_DATE = (By.CSS_SELECTOR, "div[col-id='endDate'][role='gridcell']")
+    ATTRACTION_RATE_SIZE_MODAL_VIEW = (By.XPATH, "//div[@col-id='updateDate'][@role='gridcell']//following-sibling::div[@col-id='size']")
+    ATTRACTION_RATE_STATUS_MODAL_VIEW = (By.XPATH, "//div[@col-id='updateDate'][@role='gridcell']//following-sibling::div[@aria-colindex='5']")
