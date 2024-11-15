@@ -20,7 +20,7 @@ class EconomyPageLocators:
     def get_kebab_action(self, action):
         return By.XPATH, f"//span[text()='{action}']"
 
-    APPLY_DELETING_BUTTON = (By.XPATH, f"//button[text()='Подтвердить']")
+    APPLY_MODAL_WINDOW_BUTTON = (By.XPATH, f"//button[text()='Подтвердить']")
     DISCARD_DELETING_BUTTON = (By.XPATH, f"//button[text()='Отменить']")
     DELETING_MODAL_WINDOW_TEXT = (By.CSS_SELECTOR, 'p[id="alert-dialog-description"]')
     ALERT_TEXT = (By.XPATH, '//div[contains(@class, "MuiAlert-message")]')
@@ -33,6 +33,10 @@ class EconomyPageLocators:
     ATTRACTION_RATE_TARGET_FIELD = (By.XPATH, "//div[@name='targetIds']//input")
     ATTRACTION_RATE_SIZE_FIELD = (By.CSS_SELECTOR, "input[name='size']")
     SUBMIT_BUTTON = (By.CSS_SELECTOR, "button[type='submit']")
+    DISCARD_BUTTON = (By.XPATH, "//button[text()='Отменить']")
+    DISCARD_MODAL_WINDOW_BUTTON = (By.XPATH, f"//button[text()='Отмена']")
+    MODAL_WINDOW_TITLE = (By.XPATH, "//h6[text()='Внесенные изменения не сохранятся']")
+    MODAL_WINDOW_SUBTITLE = (By.XPATH, "//p[text()='Закрыть режим редактирования?']")
     ATTRACTION_RATE_TYPE_DROPDOWN = (By.XPATH, "//div[@name='type']//button")
     DRAWER_LI_ITEMS = (By.TAG_NAME, 'li')
     UPDATE_DATE = (By.CSS_SELECTOR, "div[col-id='updateDate'][role='gridcell']")
