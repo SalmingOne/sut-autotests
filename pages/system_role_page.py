@@ -46,8 +46,8 @@ class SystemRolePage(BasePage):
         all_roles_element = self.elements_are_visible(self.locators.ALL_NAMES_IN_DROPDOWN)
         data =[]
         for element in all_roles_element:
-            self.action_move_to_element(element)
-            data.append(element.get_attribute('aria-label'))
+            data.append(element.text)
+        self.action_esc()
         return data
 
     @allure_testit_step("Выбор системной роли в дропдауне")
@@ -108,4 +108,25 @@ class SystemRolePage(BasePage):
     @allure_testit_step("Получение цвета выделения поля")
     def get_color_field(self):
         return self.element_is_present(self.locators.BORDER_COLOR).value_of_css_property('border-color')
+    
+    @allure_testit_step("Создание копии системной роли")
+    def creating_copy_system_role(self, role_name):
+        self.press_copy()
+        self.check_modal_window_creating_copy(role_name)
+        self.press_submit_button()
+        role_name_copy = f'{role_name}_копия'
+        assert role_name_copy in (self.element_is_visible(self.locators.INPUT_ROLE_FIELD)).get_attribute('value')
+        self.press_submit_button()
+        return role_name_copy
+
+    @allure_testit_step("Нажатие на кнопку Копия")
+    def press_copy(self):
+        self.element_is_visible(self.locators.COPY_SYSTEM_ROLE).click()
+    
+    @allure_testit_step('Проверка модального окна создания копии')
+    def check_modal_window_creating_copy(self, role_name):
+        assert self.element_is_displayed(self.locators.SUBMIT_BUTTON), "Нет кнопки Подтвердить"
+        assert self.element_is_displayed(self.locators.ABORT_BUTTON), 'Нет кнопки Отменить'
+        assert f'Вы действительно хотите создать копию системной роли "{role_name}"?' \
+            == self.element_is_visible(self.locators.ALERT_DIALOG).text, 'Некорректный вопрос подтверждения'
     
