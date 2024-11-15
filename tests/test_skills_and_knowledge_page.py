@@ -39,3 +39,20 @@ class TestSkillsAndKnowledgePage:
         assert skills_and_knowledge_page.check_skill_name_on_page('AAA'), \
             "Имя знания не отображается на странице справочника"
         skills_endpoint.delete_skills_and_knowledge_by_name_api('AAA')
+
+    @testit.workItemIds(10481)
+    @testit.displayName("10.4.1.2 (Чек-лист) Негативные проверки при добавлении данных в справочник Знания и навыки")
+    @pytest.mark.regress
+    @allure.title("id-10481 10.4.1.2 (Чек-лист) Негативные проверки при добавлении данных в справочник Знания и навыки")
+    def test_negative_checks_when_adding_data_to_skills_and_knowledge_directory(self, create_skill, login, driver):
+        skills_and_knowledge_page = SkillsAndKnowledgePage(driver)
+        skills_endpoint = SkillsAndKnowledgeEndpoint()
+        skills_and_knowledge_page.go_to_skills_page()
+        time.sleep(2)
+        skills_and_knowledge_page.press_add_skill_button()
+        skills_and_knowledge_page.check_empty_mandatory_fields()
+        skills_and_knowledge_page.press_add_skill_button()
+        skills_and_knowledge_page.check_skill_same_name(create_skill['name'])
+        skills_and_knowledge_page.press_add_skill_button()
+        skills_and_knowledge_page.check_exceeded_characters_in_fields()
+
