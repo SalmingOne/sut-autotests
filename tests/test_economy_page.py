@@ -17,7 +17,7 @@ class TestEconomyPage:
     @testit.displayName("16.3.1.7. Удаление ставки привлечения")
     @pytest.mark.regress
     @allure.title("id-3606 16.3.1.7. Удаление ставки привлечения")
-    def test_delete_attraction_rate(self, project_with_assignment, attraction_rate_by_user_to_delete, attraction_rate_by_slot_to_delete, attraction_rate_by_affiliate_to_delete, login, driver):
+    def test_delete_attraction_rate(self, project_with_tester_assignment, attraction_rate_by_user_to_delete, attraction_rate_by_slot_to_delete, attraction_rate_by_affiliate_to_delete, login, driver):
         economy_page = EconomyPage(driver)
         all_project_page = AllProjectPage(driver)
         project_card_page = ProjectCardPage(driver)
@@ -32,10 +32,10 @@ class TestEconomyPage:
         for attraction_rate in attraction_rates_to_delete:
             time.sleep(3)
             economy_page.open_kebab_menu(attraction_rate, 'Удалить')
-            economy_page.check_modal_window(attraction_rate)
+            economy_page.check_modal_window_delete(attraction_rate)
             economy_page.apply_deleting()
         all_project_page.go_to_all_project_page()
-        all_project_page.go_project_page(project_with_assignment[0]['name'])
+        all_project_page.go_project_page(project_with_tester_assignment[0]['name'])
         project_card_page.go_to_team_tab()
         project_card_page.go_to_redact_team()
         assert (attraction_rate not in project_card_page.get_attraction_rates_by_user(attraction_rate_by_user_to_delete[1]) for
@@ -76,7 +76,7 @@ class TestEconomyPage:
         economy_page.go_to_economy_page()
         time.sleep(3)
         economy_page.open_kebab_menu(attraction_rate_by_user_to_delete[0], 'Удалить')
-        economy_page.check_modal_window(attraction_rate_by_user_to_delete[0])
+        economy_page.check_modal_window_delete(attraction_rate_by_user_to_delete[0])
         economy_page.cancel_deleting()
         assert attraction_rate_by_user_to_delete[0] in economy_page.get_all_attraction_rates(), 'Ставка привлечения удалена'
 
@@ -129,3 +129,76 @@ class TestEconomyPage:
         except:
             delete_filial_and_attraction_rate('Ставка', create_filial_with_added_user[0]['name'])
             raise
+
+    @testit.workItemIds(3580)
+    @testit.displayName('16.3.1.5.1. Создание ставки привлечения с типом ставки  "Человек" без использования компонентов')
+    @pytest.mark.regress
+    @allure.title('id-3580 16.3.1.5.1. Создание ставки привлечения с типом ставки  "Человек" без использования компонентов')
+    def test_create_attraction_rate_type_user(self, project_with_assignment, login, driver, delete_attraction_rate):
+        try:
+            economy_page = EconomyPage(driver)
+            all_project_page = AllProjectPage(driver)
+            project_card_page = ProjectCardPage(driver)
+            economy_page.go_to_economy_page()
+            time.sleep(5)
+            economy_page.open_create_drawer()
+            economy_page.fill_fields_in_drawer('Ставка', project_with_assignment[2] , economy_page.AttractionType.ByUser, 100)
+            economy_page.save_changes()
+            economy_page.check_attraction_rate_row('Ставка', 'По человеку', 100)
+            economy_page.open_kebab_menu('Ставка', 'История ставки')
+            economy_page.check_dates(economy_page.get_day_before(0), economy_page.get_day_before(0))
+            economy_page.action_esc()
+            all_project_page.go_to_all_project_page()
+            all_project_page.go_project_page(project_with_assignment[0]['name'])
+            project_card_page.go_to_team_tab()
+            project_card_page.go_to_redact_team()
+            assert 'Ставка' in project_card_page.get_attraction_rates_by_user(project_with_assignment[2]) , 'Ставка привлечения не отображается в выпадающем списке таба Команда'
+            delete_attraction_rate('Ставка')
+        except:
+            delete_attraction_rate('Ставка')
+            raise
+
+    @testit.workItemIds(3610)
+    @testit.displayName(
+        '16.3.1.5.1. Создание ставки привлечения с типом ставки  "Слот" без использования компонентов')
+    @pytest.mark.regress
+    @allure.title(
+        'id-3610 16.3.1.5.1. Создание ставки привлечения с типом ставки  "Слот" без использования компонентов')
+    def test_create_attraction_rate_type_slot(self, project_with_tester_assignment, login, driver, delete_attraction_rate):
+        try:
+            economy_page = EconomyPage(driver)
+            all_project_page = AllProjectPage(driver)
+            project_card_page = ProjectCardPage(driver)
+            economy_page.go_to_economy_page()
+            time.sleep(5)
+            economy_page.open_create_drawer()
+            economy_page.fill_fields_in_drawer('Ставка', 'Тестировщик', economy_page.AttractionType.BySlot,
+                                               100)
+            economy_page.save_changes()
+            economy_page.check_attraction_rate_row('Ставка', 'По слоту', 100)
+            economy_page.open_kebab_menu('Ставка', 'История ставки')
+            economy_page.check_dates(economy_page.get_day_before(0), economy_page.get_day_before(0))
+            economy_page.action_esc()
+            all_project_page.go_to_all_project_page()
+            all_project_page.go_project_page(project_with_tester_assignment[0]['name'])
+            project_card_page.go_to_team_tab()
+            project_card_page.go_to_redact_team()
+            assert 'Ставка' in project_card_page.get_attraction_rates_by_user(
+                project_with_tester_assignment[2]), 'Ставка привлечения не отображается в выпадающем списке таба Команда'
+            delete_attraction_rate('Ставка')
+        except:
+            delete_attraction_rate('Ставка')
+            raise
+
+    @testit.workItemIds(3639)
+    @testit.displayName('16.3.1.5.1. Отмена создания ставки привлечения в конструкторе')
+    @pytest.mark.regress
+    @allure.title('id-3639 16.3.1.5.1. Отмена создания ставки привлечения в конструкторе')
+    def test_cancel_create_attraction_rate(self, login, driver, ):
+        economy_page = EconomyPage(driver)
+        economy_page.go_to_economy_page()
+        time.sleep(5)
+        economy_page.open_create_drawer()
+        economy_page.fill_fields_in_drawer('Ставка', 'Тестировщик', economy_page.AttractionType.BySlot,
+                                           100)
+        economy_page.discard_changes()

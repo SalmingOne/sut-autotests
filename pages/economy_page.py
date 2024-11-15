@@ -26,15 +26,15 @@ class EconomyPage(BasePage):
 
     @allure_testit_step('Подтвердить удаление в модальном окне')
     def apply_deleting(self):
-        self.element_is_visible(self.locators.APPLY_DELETING_BUTTON).click()
+        self.element_is_visible(self.locators.APPLY_MODAL_WINDOW_BUTTON).click()
 
     @allure_testit_step('Отменить удаление в модальном окне')
     def cancel_deleting(self):
         self.element_is_visible(self.locators.DISCARD_DELETING_BUTTON).click()
 
     @allure_testit_step('Проверка элементов в модальном окне подтверждения удаления ставки')
-    def check_modal_window(self, attraction_rate_name):
-        assert self.element_is_displayed(self.locators.APPLY_DELETING_BUTTON), "Нет кнопки Подтвердить"
+    def check_modal_window_delete(self, attraction_rate_name):
+        assert self.element_is_displayed(self.locators.APPLY_MODAL_WINDOW_BUTTON), "Нет кнопки Подтвердить"
         assert self.element_is_displayed(self.locators.DISCARD_DELETING_BUTTON), 'Нет кнопки Отменить'
         assert f'Вы уверены, что хотите удалить выбранную ставку "{attraction_rate_name}"?' == self.element_is_visible(self.locators.DELETING_MODAL_WINDOW_TEXT).text, 'Некорекнтый текст описания'
 
@@ -95,6 +95,14 @@ class EconomyPage(BasePage):
     @allure_testit_step("Сохранить добавление\изменение ставки привлечения")
     def save_changes(self):
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+
+    def discard_changes(self):
+        self.element_is_visible(self.locators.DISCARD_BUTTON).click()
+        assert self.element_is_displayed(self.locators.APPLY_MODAL_WINDOW_BUTTON), "Нет кнопки Подтвердить"
+        assert self.element_is_displayed(self.locators.DISCARD_MODAL_WINDOW_BUTTON), 'Нет кнопки Отмена'
+        assert self.element_is_displayed(self.locators.MODAL_WINDOW_TITLE), 'Нет название модального окна'
+        assert self.element_is_displayed(self.locators.MODAL_WINDOW_SUBTITLE), "Нет текста модального окна"
+        self.element_is_visible(self.locators.APPLY_MODAL_WINDOW_BUTTON).click()
 
     @allure_testit_step("Проверить даты создания и даты изменения")
     def check_dates(self, update_date, start_date):
