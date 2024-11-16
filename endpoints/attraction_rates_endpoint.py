@@ -28,3 +28,10 @@ class AttractionRatesEndpoint:
         self.response = requests.get(Urls.attraction_rates_url, headers=header, verify=False)
         self.response_json = self.response.json()
         return self.response
+
+    @allure.step("Изменить ставку привлечения")
+    def change_attraction_rate(self, attraction_id, json):
+        header = AuthEndpoint().get_header_token_api()
+        self.response = requests.put(Urls.attraction_rates_url + attraction_id, json=json, headers=header, verify=False)
+        self.response_json = self.response.json()
+        return self.response

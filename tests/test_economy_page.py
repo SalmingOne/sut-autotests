@@ -202,3 +202,29 @@ class TestEconomyPage:
         economy_page.fill_fields_in_drawer('Ставка', 'Тестировщик', economy_page.AttractionType.BySlot,
                                            100)
         economy_page.discard_changes()
+
+    @testit.workItemIds(4307)
+    @testit.displayName('16.3.1.8. Просмотр истории изменения для новой ставки из таблицы')
+    @pytest.mark.regress
+    @allure.title('id-4307 16.3.1.8. Просмотр истории изменения для новой ставки из таблицы')
+    def test_view_change_history_for_new_attraction_rate(self, attraction_rate_by_user_to_delete, login, driver, ):
+        economy_page = EconomyPage(driver)
+        economy_page.go_to_economy_page()
+        time.sleep(5)
+        economy_page.open_kebab_menu(attraction_rate_by_user_to_delete[0], 'История ставки')
+        today = economy_page.get_day_before(0)
+        economy_page.check_changes_window(today, today,'', 100, "действует")
+
+    @testit.workItemIds(4308)
+    @testit.displayName('16.3.1.8. Просмотр истории изменения для измененной ставки в конструкторе ставки ')
+    @pytest.mark.regress
+    @allure.title('id-4308 16.3.1.8. Просмотр истории изменения для измененной ставки в конструкторе ставки ')
+    def test_view_change_history_for_changed_attraction_rate(self, changed_attraction_rate, login, driver, ):
+        economy_page = EconomyPage(driver)
+        economy_page.go_to_economy_page()
+        time.sleep(5)
+        economy_page.open_kebab_menu(changed_attraction_rate[0], 'История ставки')
+        today = economy_page.get_day_before(0)
+        economy_page.check_changes_window(today, today, '', 1000, "действует")
+        economy_page.check_changes_window(today, today, today, 100, "архив", 1)
+
