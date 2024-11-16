@@ -1774,3 +1774,32 @@ def delete_attraction_rate():
             if rate['name'] == rate_name:
                 attraction_rate_endpoint.delete_attraction_rate(str(rate['id']))
     return _delete_attraction_rate
+
+
+@pytest.fixture()
+def changed_attraction_rate():
+    user_endpoint = UserEndpoint()
+    user_name = user_endpoint.get_user_by_id(str(USER_ID)).json()['fullName']
+    attraction_rate_endpoint = AttractionRatesEndpoint()
+    payload = dict(
+        name='По пользователю',
+        type='ByUser',
+        size='100',
+        dateActionAttractionRateFrom=BasePage(driver=None).get_day_before_y_m_d(0),
+        targetIds=[
+            USER_ID
+        ]
+    )
+    res = attraction_rate_endpoint.create_attraction_rate(payload)
+    payload = dict(
+        dateActionAttractionRateFrom=BasePage(driver=None).get_day_before_y_m_d(0),
+        size='1000',
+    )
+    response = attraction_rate_endpoint.change_attraction_rate(str(res.json()['id']), payload)
+    yield res.json()['name'], user_name
+    items = [item['id'] for item in attraction_rate_endpoint.get_attraction_rates().json()]
+    if response.json()['id'] in items:
+        attraction_rate_endpoint.delete_attraction_rate(str(response.json()['id']))
+        attraction_rate_endpoint.delete_attraction_rate(str(response.json()['id'] - 1))
+    else:
+        pass

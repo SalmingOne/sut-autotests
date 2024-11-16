@@ -96,6 +96,7 @@ class EconomyPage(BasePage):
     def save_changes(self):
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
 
+    @allure_testit_step("Отменить добавление\изменение ставки привлечения")
     def discard_changes(self):
         self.element_is_visible(self.locators.DISCARD_BUTTON).click()
         assert self.element_is_displayed(self.locators.APPLY_MODAL_WINDOW_BUTTON), "Нет кнопки Подтвердить"
@@ -110,6 +111,7 @@ class EconomyPage(BasePage):
         assert start_date == self.elements_are_visible(self.locators.START_DATE)[row_number].text, 'Неправильная дата создания'
         assert end_date == self.elements_are_visible(self.locators.END_DATE)[row_number].text, 'Неправильная дата окончания'
 
+    @allure_testit_step("Проверить строки в истории изменений")
     def check_changes_window(self, update_date, start_date, end_date, size, status, row_number = 0):
         self.check_dates(update_date, start_date, end_date, row_number)
         assert size == int(float(self.elements_are_visible(self.locators.ATTRACTION_RATE_SIZE_MODAL_VIEW)[row_number].text)), 'Не отображается размер ставки'
