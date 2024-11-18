@@ -92,4 +92,18 @@ class TestSystemRolePage:
         user_page.check_system_role_in_drover(role_name_copy)
         id_role_copy = system_roles_endpoint.get_user_system_role_id(role_name_copy)
         system_roles_endpoint.delete_system_role_id(id_role_copy)
+
+    @testit.workItemIds(3539)
+    @testit.displayName("7.2.6 Отмена создания копии системной роли")
+    @pytest.mark.regress
+    @allure.title("id-3539 7.2.6 Отмена создания копии системной роли")
+    def test_cancel_create_copy_system_role(self, login, driver):
+        system_role_page = SystemRolePage(driver)
+        system_role_page.go_to_system_roles_page()
+        system_role_page.select_role_name_in_dropdown('Пользователь')
+        system_role_page.check_submit_button_is_not_visible()
+        system_role_page.press_copy()
+        system_role_page.check_modal_window_creating_copy('Пользователь')
+        system_role_page.press_abort_button()
+        system_role_page.check_role_name_not_in_dropdown('Пользователь_копия')
     
