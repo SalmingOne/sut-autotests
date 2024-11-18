@@ -410,7 +410,7 @@ class UserProfilePage(BasePage):
     @testit.step("Проверка заголовка опыт работы")
     @allure.step("Проверка заголовка опыт работы")
     def check_experience_title(self):
-        return self.element_is_displayed(self.locators.EXPERIENCES_TITLE, 1)
+        return self.element_is_displayed(self.locators.EXPERIENCES_CHECK_CARD, 1)
 
     @testit.step("Добавление простого диплома")
     @allure.step("Добавление простого диплома")
@@ -658,7 +658,7 @@ class UserProfilePage(BasePage):
         else:
             self.element_is_visible(self.locators.EXPERIENCES_END_DATA_INPUT).send_keys(self.get_day_before(-1))
             self.element_is_visible(self.locators.EXPERIENCES_TITLE).click()
-            assert self.element_is_visible(self.locators.MUI_ERROR).text == 'Дата окончания работы некорректна'\
+            assert self.element_is_visible(self.locators.MUI_ERROR).text == 'Дата окончания работы некорректна', \
                 "Можно ввести завтрашнюю дату"
             self.action_double_click(self.element_is_visible(self.locators.EXPERIENCES_END_DATA_INPUT))
 
@@ -1405,3 +1405,22 @@ class UserProfilePage(BasePage):
         b = self.element_is_visible(self.locators.EXPERIENCES_BEGIN_DATA_INPUT).get_attribute('value')
         c = self.element_is_visible(self.locators.EXPERIENCES_END_DATA_INPUT).get_attribute('value')
         assert [a, b, c] == ['', '', ''], "Поля Проектная роль, Дата начала проекта и Дата окончания проекта не очистились"
+
+
+    def press_li_menu_item_with_return_item_text(self, number_element):
+        item_text = self.elements_are_visible(self.locators.LI_MENU_ITEM)[number_element].text
+        self.element_is_visible(self.locators.LI_MENU_ITEM).click()
+        return item_text
+
+    def get_chips_values(self):
+        return [item.text for item in self.elements_are_visible(self.locators.EXPERIENCES_KNOWLEDGE_CHIPS)]
+
+    def get_skills_dropdown_items(self):
+        self.element_is_visible(self.locators.EXPERIENCES_KNOWLEDGE_WHEN_FIELD).click()
+        return [item.text for item in self.elements_are_present(self.locators.LI_MENU_ITEM)]
+
+    def field_start_and_end_date(self):
+        self.element_is_visible(self.locators.EXPERIENCES_BEGIN_DATA_INPUT).send_keys(self.get_day_before(7))
+        self.element_is_visible(self.locators.EXPERIENCES_END_DATA_INPUT).send_keys(self.get_day_before(3))
+        return self.get_day_before(7), self.get_day_before(3)
+

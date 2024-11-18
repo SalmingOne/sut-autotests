@@ -58,3 +58,6 @@ class SkillsEndpoint:
             return True
         else:
             return False
+
+    def get_all_skills_name_api(self):
+        return [item['name'] for item in self.get_all_skills_api().json()]
