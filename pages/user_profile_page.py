@@ -678,6 +678,7 @@ class UserProfilePage(BasePage):
         assert specializations == ['Инжиниринг', 'Административно-управленческий персонал',
                                    'Блок ИТ'], "Не все значения в дропдауне Вид деятельности"
         time.sleep(1)
+        self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_ACTION).click()
         self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
         self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_SLOT).click()
         time.sleep(1)
