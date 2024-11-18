@@ -31,6 +31,10 @@ class SystemRolePage(BasePage):
     @allure_testit_step("Нажатие на кнопку Отменить")
     def press_abort_button(self):
         self.element_is_visible(self.locators.ABORT_BUTTON).click()
+
+    @allure_testit_step("Проверка отсутствия кнопки Сохранить")
+    def check_submit_button_is_not_visible(self):
+        self.element_is_not_visible(self.locators.SUBMIT_BUTTON)
         
     @allure_testit_step("Проверка наличия системной роли в дропдауне")
     def check_role_name_in_dropdown(self, role_name):
