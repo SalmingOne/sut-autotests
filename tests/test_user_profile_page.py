@@ -1373,17 +1373,14 @@ class TestUserProfilePage:
             pass
         else:
             user_profile_page.field_experience_form_with_exists_employer()
-
-        before = user_profile_page.get_all_fields()
         project_endpoint = ProjectEndpoint()
         project_names_api = project_endpoint.get_project_name_for_current_user()
         user_profile_page.press_redact_button()
         time.sleep(1)
         project_names = user_profile_page.get_experience_projects_value()
         assert sorted(project_names) == sorted(project_names_api)
-        # Блокируется багом
         user_profile_page.check_change_experience_projects()
-        # Сравниваем проектные роли первого проекта
+        # Сравниваем проектные
         first_project_role = project_with_assignment[0]['slots'][0]['role']['name']
         first_project_role_ui = user_profile_page.get_project_roles(project_with_assignment[0]['name'])
         assert [first_project_role] == first_project_role_ui, "Проектные роли из API и UI не совпадают"
@@ -1398,7 +1395,7 @@ class TestUserProfilePage:
         assert role_name == after_change_project[4], "Новое значение проектной роли не отображается в поле"
         assert filed_date[0] == after_change_project[5], "Новое значение даты начала не отображается в поле"
         assert filed_date[1] == after_change_project[6], "Новое значение даты окончания не отображается в поле"
-
+        # Поле Знания
         skill_endpoint = SkillsEndpoint()
         api_skills = skill_endpoint.get_all_skills_name_api()
         chips_value = user_profile_page.get_chips_values()
@@ -1408,9 +1405,8 @@ class TestUserProfilePage:
             "В выпадающем списке отображаются не все значения из справочника Знания и навыки"
         new_skill = user_profile_page.press_li_menu_item_with_return_item_text(0)
         assert new_skill in user_profile_page.get_chips_values(), "В поле Знания и навыки не отображается новое знание"
-
         user_profile_page.press_save_button()
         after = user_profile_page.get_all_fields()
-        assert project_with_assignment[0]['name'] and role_name and filed_date[0] and filed_date[1] in after
-        time.sleep(5)
-
+        user_profile_page.delete_experience()
+        assert project_with_assignment[0]['name'] and role_name and filed_date[0] and filed_date[1] in after, \
+            "В карточке не отображаются изменения"
