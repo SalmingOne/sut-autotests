@@ -910,24 +910,29 @@ class TestLaborCostPage:
         try:
             number_day = int(labor_cost_page.get_day_before_ymd(1).split('-')[2]) + 1
             labor_cost_page.input_labor_reason_by_project(first_project_name, number_day, 12)
+            time.sleep(2)
             assert labor_cost_page.get_cell_color(first_project_name,
                                                   number_day) == 'rgba(255, 251, 233, 1)', 'Цвет ячейки не желтый'
         except AssertionError as e:
             number_day = int(labor_cost_page.get_day_after_ymd(1).split('-')[2]) + 1
             labor_cost_page.input_labor_reason_by_project(first_project_name, number_day, 12)
+            time.sleep(2)
             assert labor_cost_page.get_cell_color(first_project_name,
                                                   number_day) == 'rgba(255, 251, 233, 1)', 'Цвет ячейки не желтый'
         labor_cost_page.choose_period('week')
         try:
             number_day = labor_cost_page.get_number_day_week()
             labor_cost_page.input_labor_reason_by_project(second_project_name, number_day, 13)
+            time.sleep(2)
             assert labor_cost_page.get_cell_color(second_project_name,
                                                   number_day) == 'rgba(255, 251, 233, 1)', 'Цвет ячейки не желтый'
         except AssertionError as e:
             number_day = labor_cost_page.get_number_day_week() + 2
             labor_cost_page.input_labor_reason_by_project(second_project_name, number_day, 13)
+            time.sleep(2)
             assert labor_cost_page.get_cell_color(second_project_name,
                                                   number_day) == 'rgba(255, 251, 233, 1)', 'Цвет ячейки не желтый'
+        time.sleep(2)
         assert (labor_cost_page.get_color_day_total_raw(number_day-1)
                 == 'rgba(211, 47, 47, 1)'), 'Цвет текста не красный'
         labor_cost_page.save_labor_reason()

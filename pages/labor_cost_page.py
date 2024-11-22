@@ -23,6 +23,7 @@ class LaborCostPage(BasePage):
     @testit.step("Переход на таблицу трудозатрат через меню")
     @allure.step("Переход на таблицу трудозатрат через меню")
     def go_to_labor_cost_page(self):
+        time.sleep(1)
         self.action_move_to_element(self.element_is_visible(self.locators.TAB_ACTIVITY))
         self.element_is_visible(self.locators.TAB_LABOR_COST_TABLE).click()
 
@@ -666,6 +667,7 @@ class LaborCostPage(BasePage):
     @testit.step("Открываем дровер добавления переработки")
     @allure.step("Открываем дровер добавления переработки")
     def open_overtime_drover(self):
+        time.sleep(1)
         self.action_move_to_element(self.element_is_visible(self.locators.ADD_OVERTIME_WORK_BUTTON))
         self.element_is_visible(self.locators.ADD_OVERTIME_WORK_BUTTON).click()
 
@@ -807,6 +809,7 @@ class LaborCostPage(BasePage):
     @testit.step("Удаление файла")
     @allure.step("Удаление файла")
     def delete_file(self, name):
+        time.sleep(1)
         os.remove(rf'../{name}')
 
     @testit.step("Нажатие кнопки добавления себя на проект")

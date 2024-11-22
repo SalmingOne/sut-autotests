@@ -295,6 +295,7 @@ class TestCreateProject:
         assert error == 'Указанное название проекта уже используется в системе', \
             'Не появилась ошибка о неуникальном названии проекта'
         create_project_drawer_page.press_break_button()
+        create_project_drawer_page.press_confirm_button()
         # Неуникальный код проекта
         create_project_drawer_page.go_to_create_project_drawer_from_menu()
         create_project_drawer_page.create_project(
@@ -308,6 +309,7 @@ class TestCreateProject:
         assert error == 'Указанный код проекта уже используется в системе', \
             'Не появилась ошибка о неуникальном коде проекта'
         create_project_drawer_page.press_break_button()
+        create_project_drawer_page.press_confirm_button()
         # Дата окончания раньше даты начала
         create_project_drawer_page.go_to_create_project_drawer_from_menu()
         create_project_drawer_page.create_project(
@@ -322,6 +324,7 @@ class TestCreateProject:
         assert error == 'Дата окончания проекта не должна быть раньше даты начала', \
             'Не появилась ошибка о несоответствии даты начала и окончания проекта'
         create_project_drawer_page.press_break_button()
+        create_project_drawer_page.press_confirm_button()
         # Превышение длины имени проекта
         create_project_drawer_page.go_to_create_project_drawer_from_menu()
         create_project_drawer_page.create_project(
@@ -335,6 +338,7 @@ class TestCreateProject:
         assert error == 'Максимальное количество символов: 100', \
             'Не появилась ошибка о превышении максимального количества символов'
         create_project_drawer_page.press_break_button()
+        create_project_drawer_page.press_confirm_button()
         # Превышение длины кода проекта
         create_project_drawer_page.go_to_create_project_drawer_from_menu()
         create_project_drawer_page.create_project(
@@ -348,6 +352,7 @@ class TestCreateProject:
         assert error == 'Максимальное количество символов: 10', \
             'Не появилась ошибка о превышении максимального количества символов'
         create_project_drawer_page.press_break_button()
+        create_project_drawer_page.press_confirm_button()
         # Недопустимые символы в имени проекта
         create_project_drawer_page.go_to_create_project_drawer_from_menu()
         create_project_drawer_page.create_project(
@@ -361,6 +366,7 @@ class TestCreateProject:
         assert error == 'Значение в поле содержит недопустимые символы',\
             'Не появилась ошибка о недопустимых символах'
         create_project_drawer_page.press_break_button()
+        create_project_drawer_page.press_confirm_button()
         # "-" в конце коде проекта
         create_project_drawer_page.go_to_create_project_drawer_from_menu()
         create_project_drawer_page.create_project(
@@ -373,6 +379,7 @@ class TestCreateProject:
         error = create_project_drawer_page.get_mui_error_text()
         assert error == 'Значение в поле содержит недопустимые символы', 'Не появилась ошибка о недопустимых символах'
         create_project_drawer_page.press_break_button()
+        create_project_drawer_page.press_confirm_button()
         # Недопустимые символы в коде проекта
         create_project_drawer_page.go_to_create_project_drawer_from_menu()
         create_project_drawer_page.create_project(
@@ -385,3 +392,4 @@ class TestCreateProject:
         error = create_project_drawer_page.get_mui_error_text()
         assert error == 'Значение в поле содержит недопустимые символы', 'Не появилась ошибка о недопустимых символах'
         create_project_drawer_page.press_break_button()
+        create_project_drawer_page.press_confirm_button()
