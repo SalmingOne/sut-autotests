@@ -1376,7 +1376,7 @@ class TestUserProfilePage:
         user_profile_page.press_redact_button()
         time.sleep(1)
         project_names = user_profile_page.get_experience_projects_value()
-        assert sorted(project_names) == sorted(project_names_api)
+        assert sorted(project_names) == sorted(project_names_api), "В дропдауне отображаются не все проекты пользователя"
         user_profile_page.check_change_experience_projects()
         # Сравниваем проектные
         first_project_role = project_with_assignment[0]['slots'][0]['role']['name']
