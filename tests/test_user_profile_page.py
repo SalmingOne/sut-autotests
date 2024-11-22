@@ -1383,7 +1383,7 @@ class TestUserProfilePage:
         first_project_role_ui = user_profile_page.get_project_roles(project_with_assignment[0]['name'])
         assert [first_project_role] == first_project_role_ui, "Проектные роли из API и UI не совпадают"
         # Выбираем проектную роль
-        role_name = user_profile_page.press_li_menu_item_with_return_item_text(0)
+        role_name = user_profile_page.get_role_dropdown_first_item()
         user_profile_page.check_start_and_end_fields(project_with_assignment[0]['name'])
         # Выбираем время начала и окончания работы
         filed_date = user_profile_page.field_start_and_end_date()

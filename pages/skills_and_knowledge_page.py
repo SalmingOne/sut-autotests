@@ -159,3 +159,35 @@ class SkillsAndKnowledgePage(BasePage):
         assert name_error == 'Превышено допустимое количество символов: 1000', \
             "Не соблюдена максимальная длина поля Описание"
 
+    @allure_testit_step('Открытие дровера редактирования знания или навыка')
+    def open_skill_to_redact(self, skill_name):
+        self.element_is_visible(self.locators.kebab_by_skill_name(skill_name)).click()
+        self.element_is_visible(self.locators.KEBABS_REDACT_MENU_ITEM).click()
+
+    @allure_testit_step('Проверка полей дровера редактирования знания или навыка')
+    def check_redact_drawer_fields(self, new_name, new_description):
+        assert self.element_is_displayed(self.locators.text_on_page('Редактирование навыка/знания')), \
+            "Нет заголовка дровера добавления навыка/знания"
+        name_error = self.check_max_field_length(
+            self.locators.NAME_FIELD,
+            64,
+            self.locators.NAME_FIELD_COLOR,
+            self.locators.text_on_page('Редактирование навыка/знания'),
+            new_name
+        )
+        assert name_error == 'Превышено допустимое количество символов: 64', "Не соблюдена максимальная длина поля Имя"
+        self.element_is_visible(self.locators.TYPE_FIELD).click()
+        menu_items = [item.text for item in self.elements_are_visible(self.locators.LI_MENU_ITEM)]
+        assert menu_items == ['Навык', 'Знание'], "В дропдауне Тип доступны не все значения"
+        name_error = self.check_max_field_length(
+            self.locators.DESCRIPTION_FIELD,
+            1000,
+            self.locators.DESCRIPTION_FIELD_COLOR,
+            self.locators.text_on_page('Редактирование навыка/знания'),
+            new_description
+        )
+        assert name_error == 'Превышено допустимое количество символов: 1000', \
+            "Не соблюдена максимальная длина поля Описание"
+        assert self.element_is_displayed(self.locators.SUBMIT_BUTTON), "Отсутствует кнопка Добавить"
+        assert self.element_is_displayed(self.locators.BREAK_BUTTON), "Отсутствует кнопка Отменить"
+
