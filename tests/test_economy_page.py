@@ -183,6 +183,7 @@ class TestEconomyPage:
             all_project_page.go_project_page(project_with_tester_assignment[0]['name'])
             project_card_page.go_to_team_tab()
             project_card_page.go_to_redact_team()
+            time.sleep(2)
             assert 'Ставка' in project_card_page.get_attraction_rates_by_user(
                 project_with_tester_assignment[2]), 'Ставка привлечения не отображается в выпадающем списке таба Команда'
             delete_attraction_rate('Ставка')
@@ -228,3 +229,27 @@ class TestEconomyPage:
         economy_page.check_changes_window(today, today, '', 1000, "действует")
         economy_page.check_changes_window(today, today, today, 100, "архив", 1)
 
+    @testit.workItemIds(3590)
+    @testit.displayName('16.3.1.5.2. Создание новой ставки привлечения с использованием компонентов')
+    @pytest.mark.regress
+    @allure.title('id-3590 16.3.1.5.2. Создание новой ставки привлечения с использованием компонентов')
+    def test_create_new_attraction_rate_with_components(self, login, driver, delete_attraction_rate):
+        try:
+            economy_page = EconomyPage(driver)
+            economy_page.go_to_economy_page()
+            time.sleep(5)
+            economy_page.open_create_drawer()
+            economy_page.fill_fields_in_drawer('Ставка', 'Тестировщик', economy_page.AttractionType.BySlot, '')
+            fot, additional_expense, profitability_ratio, tax = 100, 25, 25, 25
+            economy_page.fill_components_in_drawer(fot, additional_expense, profitability_ratio, tax)
+            result = round(fot * (1 + additional_expense / 100) * (1 + profitability_ratio / 100) * (1 + tax / 100), 2)
+            economy_page.pre_calculate(result)
+            time.sleep(2)
+            economy_page.save_changes()
+            economy_page.check_attraction_rate_row('Ставка', "По слоту", result)
+            economy_page.open_kebab_menu('Ставка', 'История ставки')
+            economy_page.check_changes_window(economy_page.get_day_before(0), economy_page.get_day_before(0), '', result, 'действует')
+            delete_attraction_rate('Ставка')
+        except:
+            delete_attraction_rate('Ставка')
+            raise

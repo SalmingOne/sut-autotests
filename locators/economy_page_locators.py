@@ -44,3 +44,8 @@ class EconomyPageLocators:
     END_DATE = (By.CSS_SELECTOR, "div[col-id='endDate'][role='gridcell']")
     ATTRACTION_RATE_SIZE_MODAL_VIEW = (By.XPATH, "//div[@col-id='updateDate'][@role='gridcell']//following-sibling::div[@col-id='size']")
     ATTRACTION_RATE_STATUS_MODAL_VIEW = (By.XPATH, "//div[@col-id='updateDate'][@role='gridcell']//following-sibling::div[@aria-colindex='5']")
+    FOT_INPUT = (By.CSS_SELECTOR, "input[name='salary']")
+    ADDITIONAL_EXPENSES_INPUT = (By.CSS_SELECTOR, "input[name='additionalExpenses']")
+    PROFITABILITY_RATIO_INPUT = (By.CSS_SELECTOR, "input[name='profitabilityRatio']")
+    TAXES_INPUT = (By.CSS_SELECTOR, "input[name='taxes']")
+    PRE_CALCULATION_BUTTON = (By.XPATH, "//button[text()='Предварительный расчёт']")
