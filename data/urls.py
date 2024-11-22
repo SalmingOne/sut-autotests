@@ -23,6 +23,7 @@ class Urls:
     logs_url = f'{api_url}' + 'logs/'
     logs_settings_url = f'{logs_url}' + 'settings/'
     skills_url = f'{api_url}' + 'skills/'
+    skills_del_url = f'{api_url}' + 'skills?ids%5B0%5D='
     system_settings_url = f'{api_url}' + 'system-settings/'
     advanced_search_url = f'{api_url}' + 'search/'
     create_advanced_search_url = f'{advanced_search_url}' + 'create/'
@@ -40,4 +41,6 @@ class Urls:
     statement_files_url = f'{api_url}' + 'statement-files/'
     files_url = f'{api_url}' + 'files/'
     files_application_template_url = f'{api_url}' + 'files/applicationTemplate/'
+    attraction_rates_url = f'{api_url}' + 'attraction-rates/'
+    slots_url = f'{api_url}' + 'slots/'
 

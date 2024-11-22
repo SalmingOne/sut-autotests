@@ -77,22 +77,21 @@ class TestUserProfilePage:
     def test_blank_entry_on_experience_tab(self, login, driver):
         user_profile_page = UserProfilePage(driver)
         user_profile_page.go_to_user_profile()
-        time.sleep(6)
+        time.sleep(3)
         user_profile_page.go_to_experience_tab()
         user_profile_page.press_redact_button()
         time.sleep(1)
         user_profile_page.press_add_icon_button()
         user_profile_page.press_save_button()
         time.sleep(1)
-        user_profile_page.go_to_experience_tab()
         alert_message = user_profile_page.get_alert_message()
-        tab_color = user_profile_page.get_experience_tab_color()
         errors = user_profile_page.get_mui_errors_text()
-
         assert 'На табе "Опыт работы" не все поля были заполнены корректно' in alert_message, "Не появилось сообщение об ошибке"
-        assert tab_color == 'rgba(211, 47, 47, 1)', "Цвет вкладки не красный"
         assert 'Поле обязательно' in errors, "Нет сообщений об обязательности поля"
-
+        user_profile_page.go_to_education_tab()
+        tab_color = user_profile_page.get_experience_tab_color()
+        assert tab_color == 'rgba(211, 47, 47, 1)', "Цвет вкладки не красный"
+        
     @testit.workItemIds(3196)
     @testit.displayName("10.6.1.4. Содержание страницы Создания резюме")
     @pytest.mark.smoke
@@ -203,7 +202,7 @@ class TestUserProfilePage:
     def test_adding_a_diploma_file_in_the_education_section(self, login, driver):
         user_profile_page = UserProfilePage(driver)
         user_profile_page.go_to_user_profile()
-        time.sleep(6)
+        time.sleep(1)
         user_profile_page.go_to_education_tab()
         time.sleep(1)
         # Создаем диплом если его нет
@@ -739,13 +738,12 @@ class TestUserProfilePage:
     def test_delete_resume(self, create_resume_to_delete, login, driver):
         user_profile_page = UserProfilePage(driver)
         user_profile_page.go_to_user_profile()
-        time.sleep(6)
         user_profile_page.go_to_resume_tab()
-        time.sleep(1)
         user_profile_page.delete_resume(create_resume_to_delete)
-        assert not user_profile_page.check_resume_name(create_resume_to_delete), "Резюме не удалилось"
         time.sleep(1)
-        assert 'Резюме удалено' in user_profile_page.get_alert_message(), "Не отображается сообщение: Резюме удалено"
+        message = user_profile_page.get_alert_message()
+        assert not user_profile_page.check_resume_name(create_resume_to_delete), "Резюме не удалилось"
+        assert 'Резюме удалено' in message, "Не отображается сообщение: Резюме удалено"
 
     @testit.workItemIds(3212)
     @testit.displayName("10.6.1.7. Отмена удаления резюме")
@@ -1133,7 +1131,7 @@ class TestUserProfilePage:
 
     @testit.workItemIds(1168)
     @testit.displayName("10.2.3. Добавление карточки проекта в табе Опыт работы")
-    @pytest.mark.regress
+    @pytest.mark.smoke
     @allure.title("id-1168 10.2.3. Добавление карточки проекта в табе Опыт работы")
     def test_click_adding_project_card_in_work_experience_tab(self, project_with_two_resources, create_filial, login, driver):
         user_profile_page = UserProfilePage(driver)

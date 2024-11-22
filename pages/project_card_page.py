@@ -305,6 +305,7 @@ class ProjectCardPage(BasePage):
     @testit.step("Проверка вкладки Ресурсный план без ресурсов")
     @allure.step("Проверка вкладки Ресурсный план без ресурсов")
     def check_resource_plan_tab_without_resources(self):
+        time.sleep(1)
         self.check_message_without_resources()
         self.check_link_to_add_new_resources()
 
@@ -1069,3 +1070,8 @@ class ProjectCardPage(BasePage):
                 "Нет сообщения о выхождение за границы проекта"
         assert self.element_is_displayed(self.locators.MODAL_SUBMIT_BUTTON), "В модальном окне нет кнопки Подтвердить"
         assert self.element_is_displayed(self.locators.MODAL_ABORT_BUTTON), "В модальном окне нет кнопки Отменить"
+
+    @allure_testit_step("Получить доступные пользователю ставки привлечения")
+    def get_attraction_rates_by_user(self, user_name):
+        self.element_is_visible(self.locators.get_attraction_rate_by_user(user_name)).click()
+        return [element.text for element in self.elements_are_visible(self.locators.ATTRACTION_RATES)]

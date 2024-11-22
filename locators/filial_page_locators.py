@@ -42,4 +42,7 @@ class FilialPageLocators:
         return (By.XPATH, f'//div[text()="{name}"]/..//following-sibling::div[@col-id="address"]/div')
 
     def kebab_by_filial_name(self, name):
-        return (By.XPATH, f'//div[text()="{name}"]/..//following-sibling::div[@col-id="1"]')
+        return (By.XPATH, f'//div[text()="{name}"]/..//following-sibling::div[@aria-colindex="4"]//button')
+
+    OPEN_ICON_ATTRACTION_RATES_FIELD = (By.XPATH, '//div[@name="attractionRate"]//button[@aria-label="Открыть"]')
+    ATTRACTION_RATES = (By.XPATH, "//ul[contains(@class, 'MuiAutocomplete-listbox')]//li")

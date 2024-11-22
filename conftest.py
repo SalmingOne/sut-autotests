@@ -20,10 +20,11 @@ from endpoints.project_endpoint import ProjectEndpoint
 from endpoints.project_roles_endpoint import ProjectRolesEndpoint
 from endpoints.resume_endpoint import ResumeEndpoint
 from endpoints.search_profile_endpoint import SearchProfileEndpoint
-from endpoints.skills_endpoint import SkillsEndpoint
+from endpoints.skills_and_knowledge_endpoint import SkillsAndKnowledgeEndpoint
+from endpoints.slots_endpoint import SlotsEndpoint
 from endpoints.statement_files_endpoint import StatementFilesEndpoint
 from endpoints.system_roles_endpoint import SystemRolesEndpoint
-
+from endpoints.attraction_rates_endpoint import AttractionRatesEndpoint
 from endpoints.users_endpoint import UserEndpoint
 from endpoints.calendar_endpoint import CalendarEndpoint
 from endpoints.variables_endpoint import VariablesEndpoint
@@ -945,45 +946,24 @@ def logging_on():
 
 
 @pytest.fixture()
-def skills():
-    skills_endpoint = SkillsEndpoint()
-    if skills_endpoint.return_len_skills() >= 2:
+def skills_and_knowledge():
+    skills_and_knowledge_endpoint = SkillsAndKnowledgeEndpoint()
+    if skills_and_knowledge_endpoint.return_len_skills_and_knowledge() >= 2:
         pass
     else:
-        payload = dict(name='Selenium', tags=[])
-        skills_endpoint.create_skills_api(json=payload)
-        payload = dict(name='Pytest', tags=[])
-        skills_endpoint.create_skills_api(json=payload)
+        payload = dict(name='Selenium', type='skill')
+        skills_and_knowledge_endpoint.create_skills_and_knowledge_api(json=payload)
+        payload = dict(name='Pytest', type='knowledge')
+        skills_and_knowledge_endpoint.create_skills_and_knowledge_api(json=payload)
 
 
 @pytest.fixture()
 def create_skill():
-    skills_endpoint = SkillsEndpoint()
-    payload = dict(name='ABCD', tags=[])
-    response = skills_endpoint.create_skills_api(json=payload)
-    yield payload['name']
-    skills_endpoint.delete_skill_api(str(response.json()['id']))
-
-
-@pytest.fixture()
-def create_second_skill():
-    skills_endpoint = SkillsEndpoint()
-    payload = dict(name='AABBCCDD', tags=[])
-    response = skills_endpoint.create_skills_api(json=payload)
-    yield payload['name']
-    skills_endpoint.delete_skill_api(str(response.json()['id']))
-
-
-@pytest.fixture()
-def create_skill_to_delete():
-    skills_endpoint = SkillsEndpoint()
-    payload = dict(name='ABCD', tags=[])
-    response = skills_endpoint.create_skills_api(json=payload)
-    yield payload['name']
-    if skills_endpoint.check_skill_by_id(str(response.json()['id'])):
-        skills_endpoint.delete_skill_api(str(response.json()['id']))
-    else:
-        pass
+    skills_and_knowledge_endpoint = SkillsAndKnowledgeEndpoint()
+    payload = dict(name='Ловить мух', type='skill')
+    response = skills_and_knowledge_endpoint.create_skills_and_knowledge_api(json=payload)
+    yield response.json()
+    skills_and_knowledge_endpoint.delete_skills_and_knowledge_api(str(response.json()['id']))
 
 
 @pytest.fixture()
@@ -991,6 +971,7 @@ def project_with_assignment():
     project_endpoint = ProjectEndpoint()
     user_endpoint = UserEndpoint()
     user_id = user_endpoint.get_user_id_by_email('auto_testt@mail.rruu')
+    user_name = user_endpoint.get_user_by_id(str(USER_ID)).json()['fullName']
     project_endpoint.delete_project_if_it_exist(PROJECT_NAME)
     payload = CreateProject(
         resources=[dict(
@@ -1011,9 +992,37 @@ def project_with_assignment():
     assignment_endpoint.create_assignment_api(json=payload)
     number_day = BasePage(driver=None).get_day_after_ymd(0).split('-')[2]
     number_day = number_day if number_day != '1' else BasePage(driver=None).get_day_after(1).split('.')[0]
-    yield response.json(), number_day
+    yield response.json(), number_day, user_name
     project_endpoint.delete_project_api(str(response.json()['id']))
 
+@pytest.fixture()
+def project_with_tester_assignment():
+    project_endpoint = ProjectEndpoint()
+    user_endpoint = UserEndpoint()
+    user_id = user_endpoint.get_user_id_by_email('auto_testt@mail.rruu')
+    user_name = user_endpoint.get_user_by_id(str(USER_ID)).json()['fullName']
+    project_endpoint.delete_project_if_it_exist(PROJECT_NAME)
+    payload = CreateProject(
+        resources=[dict(
+            projectRoleId=1,
+            userId=user_id,
+            isProjectManager=True
+        )
+        ]
+    ).model_dump()
+    response = project_endpoint.create_project_api(json=payload)
+    payload = dict(projectRoleId=6,
+                   projectId=response.json()["id"],
+                   userId=USER_ID,
+                   isProjectManager=True,
+                   startDate=CreateProject().startDate
+                   )
+    assignment_endpoint = AssignmentEndpoint()
+    assignment_endpoint.create_assignment_api(json=payload)
+    number_day = BasePage(driver=None).get_day_after_ymd(0).split('-')[2]
+    number_day = number_day if number_day != '1' else BasePage(driver=None).get_day_after(1).split('.')[0]
+    yield response.json(), number_day, user_name
+    project_endpoint.delete_project_api(str(response.json()['id']))
 
 @pytest.fixture()
 def project_with_assignment_and_no_end_date():
@@ -1624,3 +1633,173 @@ def add_all_statement_files():
         files = {'file': fp}
         add_file = files_endpoint.post_file(files)
         statement_files_endpoint.post_statement_file(add_file.json()['id'], 'VAC')
+
+
+@pytest.fixture()
+def attraction_rate_by_user_to_delete():
+    user_endpoint = UserEndpoint()
+    user_name = user_endpoint.get_user_by_id(str(USER_ID)).json()['fullName']
+    attraction_rate_endpoint = AttractionRatesEndpoint()
+    payload = dict(
+        name='По пользователю',
+        type='ByUser',
+        size='100',
+        dateActionAttractionRateFrom=BasePage(driver=None).get_day_before_y_m_d(0),
+        targetIds=[
+            USER_ID
+        ]
+    )
+    res = attraction_rate_endpoint.create_attraction_rate(payload)
+    yield res.json()['name'], user_name
+    if res.json()['id'] in [item['id'] for item in attraction_rate_endpoint.get_attraction_rates().json()]:
+        attraction_rate_endpoint.delete_attraction_rate(str(res.json()['id']))
+    else:
+        pass
+
+@pytest.fixture()
+def attraction_rate_by_slot_to_delete():
+    user_endpoint = UserEndpoint()
+    user_name = user_endpoint.get_user_by_id(str(USER_ID)).json()['fullName']
+    attraction_rate_endpoint = AttractionRatesEndpoint()
+    payload = dict(
+        name='По cлоту',
+        type='BySlot',
+        size='100',
+        dateActionAttractionRateFrom=BasePage(driver=None).get_day_before_y_m_d(0),
+        targetIds=[
+            6  # ID роли Тестировщик
+        ]
+    )
+    res = attraction_rate_endpoint.create_attraction_rate(payload)
+    yield res.json()['name']
+    if res.json()['id'] in [item['id'] for item in attraction_rate_endpoint.get_attraction_rates().json()]:
+        attraction_rate_endpoint.delete_attraction_rate(str(res.json()['id']))
+    else:
+        pass
+
+@pytest.fixture()
+def attraction_rate_by_affiliate_to_delete():
+    filial_endpoint = AffiliatesEndpoint()
+    payload = dict(name='Авто', address='г. Москва')
+    response = filial_endpoint.create_affiliates_api(json=payload)
+    attraction_rate_endpoint = AttractionRatesEndpoint()
+    payload = dict(
+        name='По ЮЛ',
+        type='ByAffiliate',
+        size='100',
+        dateActionAttractionRateFrom=BasePage(driver=None).get_day_before_y_m_d(0),
+        targetIds=[
+            response.json()['id']
+        ]
+    )
+    res = attraction_rate_endpoint.create_attraction_rate(payload)
+    yield res.json()['name'], response.json()['name']
+    filial_endpoint.delete_affiliates_api(str(response.json()['id']))
+    if res.json()['id'] in [item['id'] for item in attraction_rate_endpoint.get_attraction_rates().json()]:
+        attraction_rate_endpoint.delete_attraction_rate(str(res.json()['id']))
+    else:
+        pass
+
+@pytest.fixture()
+def attraction_rate_with_project():
+    slots_endpoint = SlotsEndpoint()
+    attraction_rate_endpoint = AttractionRatesEndpoint()
+    project_endpoint = ProjectEndpoint()
+    user_endpoint = UserEndpoint()
+    user_id = user_endpoint.get_user_id_by_email('auto_testt@mail.rruu')
+    project_endpoint.delete_project_if_it_exist(PROJECT_NAME)
+    payload = CreateProject(
+        resources=[dict(
+            projectRoleId=1,
+            userId=user_id,
+            isProjectManager=True
+        )
+        ]
+    ).model_dump()
+    response = project_endpoint.create_project_api(json=payload)
+    payload = dict(
+        name='По cлоту',
+        type='BySlot',
+        size='100',
+        dateActionAttractionRateFrom=BasePage(driver=None).get_day_before_y_m_d(0),
+        targetIds=[
+            6  # ID роли Тестировщик
+        ]
+    )
+    res = attraction_rate_endpoint.create_attraction_rate(payload)
+    payload = [
+            dict(
+                projectRoleId=6,
+                attractionRateId=res.json()['id'],
+                disabled=False,
+                assignments=[
+                    dict(
+                        userId=USER_ID
+                    )
+                ]
+        )
+    ]
+    slots_endpoint.create_slot(response.json()['id'], payload)
+    yield res.json()['name']
+    project_endpoint.delete_project_api(str(response.json()['id']))
+    attraction_rate_endpoint.delete_attraction_rate(str(res.json()['id']))
+
+@pytest.fixture()
+def create_filial_with_added_user():
+    filial_endpoint = AffiliatesEndpoint()
+    user_endpoint = UserEndpoint()
+    user = user_endpoint.get_user_by_id(str(USER_ID)).json()
+    payload = dict(name='Крутой филиал', address='г. Москва', employees=[user])
+    response = filial_endpoint.create_affiliates_api(json=payload)
+    yield response.json(), user['fullName']
+
+@pytest.fixture()
+def delete_filial_and_attraction_rate():
+    def _delete_filial_and_attraction_rate(rate_name, filial_name):
+        attraction_rate_endpoint = AttractionRatesEndpoint()
+        filial_endpoint = AffiliatesEndpoint()
+        filial_endpoint.delete_filial_by_name_api(filial_name)
+        for rate in attraction_rate_endpoint.get_attraction_rates().json():
+            if rate['name'] == rate_name:
+                attraction_rate_endpoint.delete_attraction_rate(str(rate['id']))
+    return _delete_filial_and_attraction_rate
+
+@pytest.fixture()
+def delete_attraction_rate():
+
+    def _delete_attraction_rate(rate_name):
+        attraction_rate_endpoint = AttractionRatesEndpoint()
+        filial_endpoint = AffiliatesEndpoint()
+        for rate in attraction_rate_endpoint.get_attraction_rates().json():
+            if rate['name'] == rate_name:
+                attraction_rate_endpoint.delete_attraction_rate(str(rate['id']))
+    return _delete_attraction_rate
+
+
+@pytest.fixture()
+def changed_attraction_rate():
+    user_endpoint = UserEndpoint()
+    user_name = user_endpoint.get_user_by_id(str(USER_ID)).json()['fullName']
+    attraction_rate_endpoint = AttractionRatesEndpoint()
+    payload = dict(
+        name='По пользователю',
+        type='ByUser',
+        size='100',
+        dateActionAttractionRateFrom=BasePage(driver=None).get_day_before_y_m_d(0),
+        targetIds=[
+            USER_ID
+        ]
+    )
+    res = attraction_rate_endpoint.create_attraction_rate(payload)
+    payload = dict(
+        dateActionAttractionRateFrom=BasePage(driver=None).get_day_before_y_m_d(0),
+        size='1000',
+    )
+    response = attraction_rate_endpoint.change_attraction_rate(str(res.json()['id']), payload)
+    yield res.json()['name'], user_name
+    items = [item['id'] for item in attraction_rate_endpoint.get_attraction_rates().json()]
+    if response.json()['id'] in items:
+        attraction_rate_endpoint.delete_attraction_rate(str(response.json()['id']))
+        attraction_rate_endpoint.delete_attraction_rate(str(response.json()['id'] - 1))
+    else:
+        pass

@@ -44,7 +44,6 @@ class SkillsEndpoint:
             if skill['name'] == name:
                 return skill['id']
 
-    @testit.step("Удаление знания по имени")
     @allure.step("Удаление знания по имени")
     def delete_skill_by_name_api(self, name):
         skill_id = self.get_skill_id_by_name_api(name)
@@ -59,5 +58,6 @@ class SkillsEndpoint:
         else:
             return False
 
+    @allure.step("Получение списка всех знаний")
     def get_all_skills_name_api(self):
         return [item['name'] for item in self.get_all_skills_api().json()]

@@ -51,6 +51,7 @@ class UserPageLocators:
     HIRING_DATA_INPUT = (By.XPATH, '//label[text()="Дата принятия на работу"]//..//descendant::input')
     SYSTEM_ROLE_FIELD = (By.CSS_SELECTOR, 'input[placeholder="Начните вводить системную роль"]')
     SELECTED_SYSTEM_ROLE = (By.CSS_SELECTOR, 'li[aria-label][aria-selected="true"]')
+    ALL_SYSTEM_ROLE_IN_DROPDOWN = (By.CSS_SELECTOR, 'li[aria-label]')
     NOT_SELECTED_SYSTEM_ROLE = (By.CSS_SELECTOR, 'li[aria-label][aria-selected="false"]')
     USER_SYSTEM_ROLE_DISABLE_INDICATOR = (By.XPATH, '//div[@name="systemRoleIds"]//span[contains(@class,"MuiChip-label MuiChip-labelMedium")]/..')
     DELETE_PROJECT_ROLE_ICONS = (By.XPATH, '//div[@name="projectRoles"]//*[local-name()="svg"][@data-testid="CancelIcon"]')

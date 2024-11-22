@@ -3,7 +3,6 @@ import time
 import allure
 import testit
 from selenium.common import TimeoutException
-from selenium.webdriver import Keys
 
 from locators.advanced_search_page_locators import AdvancedSearchPageLocators
 from pages.base_page import BasePage
@@ -393,3 +392,39 @@ class AdvancedSearchPage(BasePage):
     @allure_testit_step('Нажатие чекбокса Уволен')
     def press_fired_checkbox(self):
         self.element_is_visible(self.locators.FIRED_CHECKBOX).click()
+
+    @allure_testit_step('Открытие чипсы поиска по имени')
+    def open_saved_search(self, name):
+        self.action_double_click(self.element_is_visible(self.locators.chips_by_name(name)))
+
+    @allure_testit_step('Проверка модального окна сохраненного поиска')
+    def check_search_modal_window_elements(self, title):
+        assert title == self.element_is_visible(self.locators.SAVED_SEARCH_TITLE).text, "Не корректный заголовок поиска"
+        assert self.element_is_displayed(self.locators.DELETE_SEARCH_BUTTON), "Отсутствует кнопка удаления сохраненного поиска"
+        assert self.element_is_displayed(self.locators.CRITERION_FIELD), "Отсутствует поле Критерий"
+        assert self.element_is_displayed(self.locators.RUL_FIELD), "Отсутствует поле Правило"
+        assert self.element_is_displayed(self.locators.STATUS_VALUE_FIELD), "Отсутствует поле Значение"
+        assert self.element_is_displayed(self.locators.SAVE_SEARCH_BUTTON), "Отсутствует кнопка Сохранения"
+        assert self.element_is_displayed(self.locators.ABORT_BUTTON), "Отсутствует кнопка отмены изменений"
+        assert self.get_kebab_menu_item_text(0) == ['Добавить правило', 'Добавить группу'], "Не корректные пункты кебаб меню"
+        self.action_esc()
+
+    @allure_testit_step('Заполнение полей строки поиска')
+    def field_search_string(self, string_index, criterion, rul, status):
+        self.action_select_all_text(self.elements_are_visible(self.locators.CRITERION_FIELD)[string_index])
+        self.elements_are_visible(self.locators.CRITERION_FIELD)[string_index].send_keys(criterion)
+        self.element_is_visible(self.locators.li_by_aria_label(criterion)).click()
+        self.action_select_all_text(self.elements_are_visible(self.locators.RUL_FIELD)[string_index])
+        self.elements_are_visible(self.locators.RUL_FIELD)[string_index].send_keys(rul)
+        self.element_is_visible(self.locators.li_by_aria_label(rul)).click()
+        self.action_select_all_text(self.elements_are_visible(self.locators.STATUS_VALUE_FIELD)[string_index])
+        self.elements_are_visible(self.locators.STATUS_VALUE_FIELD)[string_index].send_keys(status)
+        self.element_is_visible(self.locators.li_by_aria_label(status)).click()
+
+    @allure_testit_step('Нажатие кнопки Найти')
+    def press_search_button(self):
+        self.element_is_visible(self.locators.SEARCH_BUTTON).click()
+
+    @allure_testit_step('Получение всех значений столбца Отдел')
+    def get_all_depart_column_values(self):
+        return [element.text for element in self.elements_are_visible(self.locators.DEPARTMENTS_COLUMN)]

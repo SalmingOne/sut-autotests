@@ -108,6 +108,14 @@ class BasePage:
             return True
         except TimeoutException:
             return False
+        
+    @allure.step("Получение сообщений системы")
+    def get_all_alert_message(self, locator):
+        all_alerts = self.elements_are_visible(locator)
+        data = []
+        for alert in all_alerts:
+            data.append(alert.text)
+        return data
 
     @allure.step("Получение предыдущей даты отличной от текущей на N дней (DD.MM.YYYY)")
     def get_day_before(self, amount_of_days):

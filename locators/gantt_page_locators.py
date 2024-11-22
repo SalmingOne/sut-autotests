@@ -3,7 +3,7 @@ from selenium.webdriver.common.by import By
 
 class GanttPageLocators:
     # Переход на вкладку Диаграмма ганта
-    GANTT_TAB = (By.XPATH, '//button[text()="Диаграмма Ганта"]')
+    GANTT_TAB = (By.XPATH, '//div[text()="Диаграмма Ганта"]')
     # Таблица
     EDIT_GANTT_BUTTON = (By.XPATH, '//button[text()="Редактировать"]')
     CREATE_PHASE_OR_TASK_BUTTON = (By.XPATH, '//button[text()="Создать"]')

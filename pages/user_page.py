@@ -5,6 +5,7 @@ import testit
 from selenium.webdriver import Keys
 
 from locators.user_page_locators import UserPageLocators
+from utils.concat_testit_allure_step import allure_testit_step
 from pages.base_page import BasePage
 
 
@@ -284,3 +285,19 @@ class UserPage(BasePage):
         assert self.element_is_visible(self.locators.DISMISSAL_DATA).get_attribute('value') == self.get_day_before(-1), \
             "Дата увольнения не следующий день"
 
+    @allure_testit_step("Проверяем наличие системной роли в дровере")
+    def check_system_role_in_drover(self, role_name):
+        time.sleep(1)  # Без ожидания не успевает срабатывать анимация
+        self.element_is_visible(self.locators.USER_KEBABS).click()
+        self.element_is_visible(self.locators.REDACT_BUTTON).click()
+        self.element_is_visible(self.locators.SYSTEM_ROLE_FIELD).click()
+        assert role_name in self.get_all_system_role_names(), 'Роли нет в дровере назначения ролей'
+        
+    @allure_testit_step("Получение списка системных ролей в дропдауне")
+    def get_all_system_role_names(self):
+        all_roles_element = self.elements_are_visible(self.locators.ALL_SYSTEM_ROLE_IN_DROPDOWN)
+        data =[]
+        for element in all_roles_element:
+            data.append(element.text)
+        self.action_esc()
+        return data
