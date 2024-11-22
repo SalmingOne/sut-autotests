@@ -92,6 +92,19 @@ class EconomyPage(BasePage):
         self.action_esc()
         self.element_is_visible(self.locators.ATTRACTION_RATE_SIZE_FIELD).send_keys(size)
 
+    @allure_testit_step("Заполнить поля компонентов")
+    def fill_components_in_drawer(self, fot, additional_expense, profitability_ratio, tax):
+        self.element_is_visible(self.locators.FOT_INPUT).send_keys(fot)
+        assert self.element_is_visible(self.locators.ATTRACTION_RATE_SIZE_FIELD).get_attribute('disabled'), "Поле ставка не задизейблено"
+        self.element_is_visible(self.locators.ADDITIONAL_EXPENSES_INPUT).send_keys(additional_expense)
+        self.element_is_visible(self.locators.PROFITABILITY_RATIO_INPUT).send_keys(profitability_ratio)
+        self.element_is_visible(self.locators.TAXES_INPUT).send_keys(tax)
+
+    @allure_testit_step("Провести предварительны расчет")
+    def pre_calculate(self, result):
+        self.element_is_visible(self.locators.PRE_CALCULATION_BUTTON).click()
+        # assert result == self.element_is_visible(self.locators.ATTRACTION_RATE_SIZE_FIELD).get_attribute('value')
+
     @allure_testit_step("Сохранить добавление\изменение ставки привлечения")
     def save_changes(self):
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
@@ -106,7 +119,7 @@ class EconomyPage(BasePage):
         self.element_is_visible(self.locators.APPLY_MODAL_WINDOW_BUTTON).click()
 
     @allure_testit_step("Проверить даты создания и даты изменения")
-    def check_dates(self, update_date, start_date, end_date, row_number = 0):
+    def check_dates(self, update_date, start_date, end_date = '', row_number = 0):
         assert update_date == self.elements_are_visible(self.locators.UPDATE_DATE)[row_number].text, 'Неправильная дата изменения'
         assert start_date == self.elements_are_visible(self.locators.START_DATE)[row_number].text, 'Неправильная дата создания'
         assert end_date == self.elements_are_visible(self.locators.END_DATE)[row_number].text, 'Неправильная дата окончания'
@@ -114,13 +127,13 @@ class EconomyPage(BasePage):
     @allure_testit_step("Проверить строки в истории изменений")
     def check_changes_window(self, update_date, start_date, end_date, size, status, row_number = 0):
         self.check_dates(update_date, start_date, end_date, row_number)
-        assert size == int(float(self.elements_are_visible(self.locators.ATTRACTION_RATE_SIZE_MODAL_VIEW)[row_number].text)), 'Не отображается размер ставки'
+        assert size == float(self.elements_are_visible(self.locators.ATTRACTION_RATE_SIZE_MODAL_VIEW)[row_number].text), 'Не отображается размер ставки'
         assert status == self.elements_are_visible(self.locators.ATTRACTION_RATE_STATUS_MODAL_VIEW)[row_number].text, 'Не отображается статус ставки'
 
     @allure_testit_step("Проверить отображение ставки привлечения в таблице")
     def check_attraction_rate_row(self, attraction_rate_name, type, size):
         assert self.element_is_displayed(self.locators.get_attraction_rate(attraction_rate_name)), 'Не отображается название ставки'
         assert self.element_is_visible(self.locators.get_attraction_rate_type(attraction_rate_name)).text == type, 'Не отображается тип ставки'
-        assert int(float(self.element_is_visible(self.locators.get_attraction_rate_size(attraction_rate_name)).text)) == size, 'Не отображается размер ставки'
+        assert float(self.element_is_visible(self.locators.get_attraction_rate_size(attraction_rate_name)).text) == size, 'Не отображается размер ставки'
 
 
