@@ -164,7 +164,7 @@ class SkillsAndKnowledgePage(BasePage):
         self.element_is_visible(self.locators.kebab_by_skill_name(skill_name)).click()
         self.element_is_visible(self.locators.KEBABS_REDACT_MENU_ITEM).click()
 
-    @allure_testit_step('Проверка полей дровера редактирования знания или навыка')
+    @allure_testit_step('Проверка полей дровера редактирования знания/навыка и изменение значений полей')
     def check_redact_drawer_fields(self, new_name, new_description):
         assert self.element_is_displayed(self.locators.text_on_page('Редактирование навыка/знания')), \
             "Нет заголовка дровера добавления навыка/знания"
