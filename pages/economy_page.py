@@ -106,7 +106,7 @@ class EconomyPage(BasePage):
         self.element_is_visible(self.locators.APPLY_MODAL_WINDOW_BUTTON).click()
 
     @allure_testit_step("Проверить даты создания и даты изменения")
-    def check_dates(self, update_date, start_date, end_date, row_number = 0):
+    def check_dates(self, update_date, start_date, end_date = '', row_number = 0):
         assert update_date == self.elements_are_visible(self.locators.UPDATE_DATE)[row_number].text, 'Неправильная дата изменения'
         assert start_date == self.elements_are_visible(self.locators.START_DATE)[row_number].text, 'Неправильная дата создания'
         assert end_date == self.elements_are_visible(self.locators.END_DATE)[row_number].text, 'Неправильная дата окончания'
