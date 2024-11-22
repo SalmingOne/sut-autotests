@@ -6,6 +6,7 @@ import testit
 
 from data.data import USER_NAME
 from endpoints.project_endpoint import ProjectEndpoint
+from endpoints.skills_endpoint import SkillsEndpoint
 from pages.advanced_search_page import AdvancedSearchPage
 from pages.colleagues_page import ColleaguesPage
 from pages.schedule_page import SchedulePage
@@ -1353,4 +1354,57 @@ class TestUserProfilePage:
         # Проверка даты начала и конца работы проекта с датой окончания
         user_profile_page.check_start_and_end_fields(project_with_assignment[0]['name'])
         # Проверка даты начала и конца работы проекта без даты окончания. Закомментировано до решения бага
-        # user_profile_page.check_start_and_end_fields(project_with_assignment_and_no_end_date['name'])
+        user_profile_page.check_start_and_end_fields(project_with_assignment_and_no_end_date['name'])
+
+    @testit.workItemIds(11923)
+    @testit.displayName("10.2.3. Редактирование полей если выбранный Работодатель существует в системе")
+    @pytest.mark.regress
+    @allure.title("id-11923 10.2.3. Редактирование полей если выбранный Работодатель существует в системе")
+    def test_editing_fields_if_the_selected_employer_exists(self, project_with_assignment, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        time.sleep(6)
+        user_profile_page.go_to_experience_tab()
+        time.sleep(1)
+        # Создаем карточку проекта если нет
+        if user_profile_page.check_experience_title():
+            pass
+        else:
+            user_profile_page.field_experience_form_with_exists_employer()
+        project_endpoint = ProjectEndpoint()
+        project_names_api = project_endpoint.get_project_name_for_current_user()
+        user_profile_page.press_redact_button()
+        time.sleep(1)
+        project_names = user_profile_page.get_experience_projects_value()
+        assert sorted(project_names) == sorted(project_names_api), "В дропдауне отображаются не все проекты пользователя"
+        user_profile_page.check_change_experience_projects()
+        # Сравниваем проектные
+        first_project_role = project_with_assignment[0]['slots'][0]['role']['name']
+        first_project_role_ui = user_profile_page.get_project_roles(project_with_assignment[0]['name'])
+        assert [first_project_role] == first_project_role_ui, "Проектные роли из API и UI не совпадают"
+        # Выбираем проектную роль
+        role_name = user_profile_page.press_li_menu_item_with_return_item_text(0)
+        user_profile_page.check_start_and_end_fields(project_with_assignment[0]['name'])
+        # Выбираем время начала и окончания работы
+        filed_date = user_profile_page.field_start_and_end_date()
+        after_change_project = user_profile_page.get_all_fields()
+        assert project_with_assignment[0]['name'] == after_change_project[2], \
+            "Новое значение проекта не отображается в поле"
+        assert role_name == after_change_project[4], "Новое значение проектной роли не отображается в поле"
+        assert filed_date[0] == after_change_project[5], "Новое значение даты начала не отображается в поле"
+        assert filed_date[1] == after_change_project[6], "Новое значение даты окончания не отображается в поле"
+        # Поле Знания
+        skill_endpoint = SkillsEndpoint()
+        api_skills = skill_endpoint.get_all_skills_name_api()
+        chips_value = user_profile_page.get_chips_values()
+        skills_dropdown_values = user_profile_page.get_skills_dropdown_items()
+        skills_dropdown_values.extend(chips_value)
+        assert sorted(api_skills) == sorted(skills_dropdown_values), \
+            "В выпадающем списке отображаются не все значения из справочника Знания и навыки"
+        new_skill = user_profile_page.press_li_menu_item_with_return_item_text(0)
+        assert new_skill in user_profile_page.get_chips_values(), "В поле Знания и навыки не отображается новое знание"
+        user_profile_page.press_save_button()
+        after = user_profile_page.get_all_fields()
+        user_profile_page.delete_experience()
+        assert project_with_assignment[0]['name'] and role_name and filed_date[0] and filed_date[1] in after, \
+            "В карточке не отображаются изменения"

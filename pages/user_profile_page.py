@@ -653,7 +653,7 @@ class UserProfilePage(BasePage):
         else:
             self.element_is_visible(self.locators.EXPERIENCES_END_DATA_INPUT).send_keys(self.get_day_before(-1))
             self.element_is_visible(self.locators.EXPERIENCES_TITLE).click()
-            assert self.element_is_visible(self.locators.MUI_ERROR).text == 'Дата окончания работы некорректна'\
+            assert self.element_is_visible(self.locators.MUI_ERROR).text == 'Дата окончания работы некорректна', \
                 "Можно ввести завтрашнюю дату"
             self.action_double_click(self.element_is_visible(self.locators.EXPERIENCES_END_DATA_INPUT))
 
@@ -1360,3 +1360,73 @@ class UserProfilePage(BasePage):
         self.element_is_visible(self.locators.EXPERIENCES_BEGIN_DATA_INPUT).send_keys(Keys.BACK_SPACE)
         self.action_select_all_text(self.element_is_visible(self.locators.EXPERIENCES_END_DATA_INPUT))
         self.element_is_visible(self.locators.EXPERIENCES_END_DATA_INPUT).send_keys(Keys.BACK_SPACE)
+
+    @allure_testit_step('Простое заполнение формы опыт работы')
+    def field_experience_form_with_exists_employer(self):
+        self.press_redact_button()
+        time.sleep(1)
+        self.press_add_icon_button()
+        self.element_is_visible(self.locators.EXPERIENCES_EMPLOYER_FIELD).click()
+        self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
+        time.sleep(0.5)
+        self.element_is_visible(self.locators.EXPERIENCES_PROJECT_FIELD).click()
+        self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
+        self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_ACTION).click()
+        self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
+        self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_SLOT).click()
+        time.sleep(1)
+        self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
+        self.element_is_visible(self.locators.EXPERIENCES_BEGIN_DATA_INPUT).send_keys(self.get_day_before(3))
+        self.element_is_visible(self.locators.EXPERIENCES_END_DATA_INPUT).send_keys(self.get_day_before(0))
+        self.element_is_visible(self.locators.EXPERIENCES_KNOWLEDGE_FIELD).click()
+        time.sleep(1)
+        try:
+            self.elements_are_visible(self.locators.LI_MENU_ITEM, 2)[0].click()
+        except TimeoutException:
+            assert self.element_is_displayed(self.locators.check_text('Нет данных')), \
+                "При отсутствии знаний не отображается сообщение нет данных"
+        self.press_save_button()
+
+    @allure_testit_step('Получение значений дропдауна Проекты карточки опыта')
+    def get_experience_projects_value(self):
+        return self.get_dropdown_menu_items(self.locators.EXPERIENCES_PROJECT_FIELD)
+
+    @allure_testit_step('Проверка изменения поля Проект')
+    def check_change_experience_projects(self):
+        self.element_is_visible(self.locators.EXPERIENCES_PROJECT_FIELD).click()
+        self.elements_are_visible(self.locators.LI_MENU_ITEM)[1].click()
+        a = self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_SLOT).get_attribute('value')
+        b = self.element_is_visible(self.locators.EXPERIENCES_BEGIN_DATA_INPUT).get_attribute('value')
+        c = self.element_is_visible(self.locators.EXPERIENCES_END_DATA_INPUT).get_attribute('value')
+        assert [a, b, c] == ['', '', ''], "Поля Проектная роль, Дата начала проекта и Дата окончания проекта не очистились"
+
+    @allure_testit_step('Выбор элемента дропдауна с возвращением текста элемента')
+    def press_li_menu_item_with_return_item_text(self, number_element):
+        item_text = self.elements_are_visible(self.locators.LI_MENU_ITEM)[number_element].text
+        self.element_is_visible(self.locators.LI_MENU_ITEM).click()
+        return item_text
+
+    @allure_testit_step('Получение текста с чипс')
+    def get_chips_values(self):
+        if self.element_is_displayed(self.locators.EXPERIENCES_KNOWLEDGE_CHIPS, 2):
+            return [item.text for item in self.elements_are_visible(self.locators.EXPERIENCES_KNOWLEDGE_CHIPS)]
+        else:
+            return []
+
+    @allure_testit_step('Получение текста элементов дропдауна Знания')
+    def get_skills_dropdown_items(self):
+        self.element_is_visible(self.locators.EXPERIENCES_KNOWLEDGE_WHEN_FIELD).click()
+        return [item.text for item in self.elements_are_present(self.locators.LI_MENU_ITEM)]
+
+    @allure_testit_step('Заполнение полей "Дата начала работы" и "Дата окончания работы"')
+    def field_start_and_end_date(self):
+        self.element_is_visible(self.locators.EXPERIENCES_BEGIN_DATA_INPUT).send_keys(self.get_day_before(7))
+        self.element_is_visible(self.locators.EXPERIENCES_END_DATA_INPUT).send_keys(self.get_day_before(3))
+        return self.get_day_before(7), self.get_day_before(3)
+
+    @allure_testit_step('Удаление карточки опыт работы')
+    def delete_experience(self):
+        self.press_redact_button()
+        time.sleep(2)
+        self.press_delete_icon()
+        self.press_save_button()
