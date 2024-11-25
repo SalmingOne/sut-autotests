@@ -1408,3 +1408,32 @@ class TestUserProfilePage:
         user_profile_page.delete_experience()
         assert project_with_assignment[0]['name'] and role_name and filed_date[0] and filed_date[1] in after, \
             "В карточке не отображаются изменения"
+
+    @testit.workItemIds(67901)
+    @testit.displayName("10.2.3. Выбор знания при редактировании личного профиля")
+    @pytest.mark.regress
+    @allure.title("id-67901 10.2.3. Выбор знания при редактировании личного профиля")
+    def test_selecting_knowledge_when_editing_a_personal_profile(self, project_with_assignment, login, driver):
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_user_profile()
+        time.sleep(6)
+        user_profile_page.go_to_experience_tab()
+        time.sleep(1)
+        # Создаем карточку проекта если нет
+        if user_profile_page.check_experience_title():
+            pass
+        else:
+            user_profile_page.field_experience_form_with_exists_employer()
+        user_profile_page.press_redact_button()
+        skill_endpoint = SkillsEndpoint()
+        api_skills = skill_endpoint.get_all_skills_name_api()
+        chips_value = user_profile_page.get_chips_values()
+        skills_dropdown_values = user_profile_page.get_skills_dropdown_items()
+        skills_dropdown_values.extend(chips_value)
+        assert set(api_skills) == set(skills_dropdown_values), \
+            "В выпадающем списке отображаются не все значения из справочника Знания и навыки"
+        new_skill = user_profile_page.press_li_menu_item_with_return_item_text(0)
+        user_profile_page.press_save_button()
+        assert new_skill in user_profile_page.get_chips_values(), "В поле Знания и навыки не отображается новое знание"
+        assert user_profile_page.get_alert_message() == ['Данные сохранены'], \
+            "Не отображается сообщение Данные сохранены"
