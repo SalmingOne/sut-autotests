@@ -267,3 +267,15 @@ class TestEconomyPage:
         additional_expense, profitability_ratio, tax = 100, 25, 25
         economy_page.fill_components_in_drawer('', additional_expense, profitability_ratio, tax)
         assert economy_page.pre_calculate_button_is_disabled(), 'Кнопка Предварительный расчет активна'
+
+    @testit.workItemIds(3596)
+    @testit.displayName('16.3.1.5.2. Реакция системы на заполнение полей компонентов в конструкторе ставки привлечения')
+    @pytest.mark.regress
+    @allure.title('id-3596 16.3.1.5.2. Реакция системы на заполнение полей компонентов в конструкторе ставки привлечения')
+    def test_system_reaction_to_fields(self, login, driver, delete_attraction_rate):
+        economy_page = EconomyPage(driver)
+        economy_page.go_to_economy_page()
+        time.sleep(5)
+        economy_page.open_create_drawer()
+        economy_page.fill_fields_in_drawer('Ставка', 'Тестировщик', economy_page.AttractionType.BySlot, '')
+        economy_page.fill_components_in_drawer('', '', '', 25)

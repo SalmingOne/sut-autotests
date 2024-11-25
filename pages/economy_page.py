@@ -95,7 +95,7 @@ class EconomyPage(BasePage):
     @allure_testit_step("Заполнить поля компонентов")
     def fill_components_in_drawer(self, fot, additional_expense, profitability_ratio, tax):
         self.element_is_visible(self.locators.FOT_INPUT).send_keys(fot)
-        if fot:
+        if any([fot, additional_expense, profitability_ratio, tax]):
             assert self.element_is_visible(self.locators.ATTRACTION_RATE_SIZE_FIELD).get_attribute('disabled'), "Поле ставка не задизейблено"
         self.element_is_visible(self.locators.ADDITIONAL_EXPENSES_INPUT).send_keys(additional_expense)
         self.element_is_visible(self.locators.PROFITABILITY_RATIO_INPUT).send_keys(profitability_ratio)
