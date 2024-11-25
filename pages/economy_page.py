@@ -95,15 +95,20 @@ class EconomyPage(BasePage):
     @allure_testit_step("Заполнить поля компонентов")
     def fill_components_in_drawer(self, fot, additional_expense, profitability_ratio, tax):
         self.element_is_visible(self.locators.FOT_INPUT).send_keys(fot)
-        assert self.element_is_visible(self.locators.ATTRACTION_RATE_SIZE_FIELD).get_attribute('disabled'), "Поле ставка не задизейблено"
+        if any([fot, additional_expense, profitability_ratio, tax]):
+            assert self.element_is_visible(self.locators.ATTRACTION_RATE_SIZE_FIELD).get_attribute('disabled'), "Поле ставка не задизейблено"
         self.element_is_visible(self.locators.ADDITIONAL_EXPENSES_INPUT).send_keys(additional_expense)
         self.element_is_visible(self.locators.PROFITABILITY_RATIO_INPUT).send_keys(profitability_ratio)
         self.element_is_visible(self.locators.TAXES_INPUT).send_keys(tax)
 
     @allure_testit_step("Провести предварительны расчет")
-    def pre_calculate(self, result):
+    def pre_calculate(self, result = None):
         self.element_is_visible(self.locators.PRE_CALCULATION_BUTTON).click()
         # assert result == self.element_is_visible(self.locators.ATTRACTION_RATE_SIZE_FIELD).get_attribute('value')
+
+    @allure_testit_step("Получить информацию о доступности кнопки Предварительный расчет")
+    def pre_calculate_button_is_disabled(self):
+        return self.element_is_visible(self.locators.PRE_CALCULATION_BUTTON).get_attribute('disabled')
 
     @allure_testit_step("Сохранить добавление\изменение ставки привлечения")
     def save_changes(self):
