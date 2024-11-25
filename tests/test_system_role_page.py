@@ -150,3 +150,21 @@ class TestSystemRolePage:
         all_system_role = user_page.get_all_system_role_names()
         assert create_system_role['name'] not in all_system_role, \
             'Удаленная системная роль есть в дровере назначения ролей'
+
+    @testit.workItemIds(3534)
+    @testit.displayName("7.2.4 Реакция системы на нажатие кнопки замены не выбрав роль на замену")
+    @pytest.mark.regress
+    @allure.title("id-3534 7.2.4 Реакция системы на нажатие кнопки замены не выбрав роль на замену")
+    def test_system_reaction_press_replace_button_without_select_role(self, login, create_system_role, \
+                                                                      create_user_whit_one_system_role, driver):
+        system_role_page = SystemRolePage(driver)
+        system_role_page.go_to_system_roles_page()
+        system_role_page.select_role_name_in_dropdown(create_system_role['name'])
+        system_role_page.press_delete_system_role()
+        system_role_page.check_modal_window_delete_only_one_system_role(create_system_role['name'], \
+                                                                        create_user_whit_one_system_role)
+        system_role_page.press_delete_button_one_system_role()
+        system_role_page.check_modal_window_delete_without_select_role()
+        # Удаляем после теста Системную роль
+        system_role_page.choose_new_system_role_in_dialog()
+        system_role_page.press_delete_button_one_system_role()
