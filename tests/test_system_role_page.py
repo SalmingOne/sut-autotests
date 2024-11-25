@@ -134,7 +134,7 @@ class TestSystemRolePage:
 
     @testit.workItemIds(3523)
     @testit.displayName("7.2.4 Удаление системной роли которая не присвоена ни одному пользователю")
-    @pytest.mark.smoke
+    @pytest.mark.regress
     @allure.title("id-3523 7.2.4 Удаление системной роли которая не присвоена ни одному пользователю")
     def test_deleting_system_role_that_is_not_assigned_to_user(self, login, create_system_role, driver):
         system_role_page = SystemRolePage(driver)
