@@ -272,7 +272,7 @@ class TestEconomyPage:
     @testit.displayName('16.3.1.5.2. Реакция системы на заполнение полей компонентов в конструкторе ставки привлечения')
     @pytest.mark.regress
     @allure.title('id-3596 16.3.1.5.2. Реакция системы на заполнение полей компонентов в конструкторе ставки привлечения')
-    def test_create_attraction_rate_with_missing_size_or_fot(self, login, driver, delete_attraction_rate):
+    def test_system_reaction_to_fields(self, login, driver, delete_attraction_rate):
         economy_page = EconomyPage(driver)
         economy_page.go_to_economy_page()
         time.sleep(5)
