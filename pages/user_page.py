@@ -285,13 +285,12 @@ class UserPage(BasePage):
         assert self.element_is_visible(self.locators.DISMISSAL_DATA).get_attribute('value') == self.get_day_before(-1), \
             "Дата увольнения не следующий день"
 
-    @allure_testit_step("Проверяем наличие системной роли в дровере")
-    def check_system_role_in_drover(self, role_name):
+    @allure_testit_step("Открываем дропдаун системной роли в дровере")
+    def open_system_role_drover(self):
         time.sleep(1)  # Без ожидания не успевает срабатывать анимация
         self.element_is_visible(self.locators.USER_KEBABS).click()
         self.element_is_visible(self.locators.REDACT_BUTTON).click()
         self.element_is_visible(self.locators.SYSTEM_ROLE_FIELD).click()
-        assert role_name in self.get_all_system_role_names(), 'Роли нет в дровере назначения ролей'
         
     @allure_testit_step("Получение списка системных ролей в дропдауне")
     def get_all_system_role_names(self):

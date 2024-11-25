@@ -22,6 +22,9 @@ class SystemRolePageLocators:
     LI_MENU_ITEM = (By.CSS_SELECTOR, 'button[aria-label="Открыть"]')
     DELETE_ROLE_ICON = (By.XPATH, '//*[@data-testid="DeleteIcon"]/..')
     ALERT_DIALOG = (By.CSS_SELECTOR, 'p[id="alert-dialog-description"]')
+    ALERT_DIALOG_ONE_ROLE = (By.XPATH, '//p[contains(@class, "MuiTypography-body2")]')
+    REPLACE_SYSTEM_ROLE = (By.XPATH, '//label[text()="Новая системная роль"]/../div/div')
+    SYSTEM_ROLE_USER = (By.XPATH, '//li[text()="Пользователь"]')
 
     # Тултип
     TOOLTIP_ROLE_ICON = (By.XPATH, '//*[@data-testid="DeleteIcon"]/../..')
@@ -31,3 +34,6 @@ class SystemRolePageLocators:
 
     def get_name_in_dropdown(self, role_name):
         return By.CSS_SELECTOR, f'li[aria-label="{role_name}"]'
+
+    def get_name_in_dialog(self, user_name):
+        return By.XPATH, f'//input[@value="{user_name}"]'

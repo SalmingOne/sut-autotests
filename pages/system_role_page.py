@@ -24,6 +24,10 @@ class SystemRolePage(BasePage):
     def press_add_system_role_button(self):
         self.element_is_visible(self.locators.CREATE_SYSTEM_ROLE_BUTTON).click()
 
+    @allure_testit_step("Нажатие кнопки Удаление системной роли")
+    def press_delete_system_role(self):
+        self.element_is_visible(self.locators.DELETE_ROLE_ICON).click()
+
     @allure_testit_step("Нажатие на кнопку Сохранить")
     def press_submit_button(self):
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
@@ -70,6 +74,7 @@ class SystemRolePage(BasePage):
     
     @allure_testit_step("Удаление системной роли")
     def delete_system_role(self, role_name):
+        self.element_is_visible(self.locators.ROLE_FIELD).click()
         self.element_is_visible(self.locators.get_name_in_dropdown(role_name)).click()
         self.element_is_visible(self.locators.DELETE_ROLE_ICON).click()
         self.element_is_visible(self.locators.SUBMIT_DELETE_ROLE_BUTTON).click()
@@ -133,4 +138,27 @@ class SystemRolePage(BasePage):
         assert self.element_is_displayed(self.locators.ABORT_BUTTON), 'Нет кнопки Отменить'
         assert f'Вы действительно хотите создать копию системной роли "{role_name}"?' \
             == self.element_is_visible(self.locators.ALERT_DIALOG).text, 'Некорректный вопрос подтверждения'
-    
+
+    @allure_testit_step(
+        'Проверка модального окна при удалении системной роли, которая единственная присвоенная у пользователя')
+    def check_modal_window_delete_only_one_system_role(self, role_name, user_name):
+        assert self.element_is_displayed(self.locators.SUBMIT_BUTTON), "Нет кнопки Удалить"
+        assert self.element_is_displayed(self.locators.ABORT_BUTTON), 'Нет кнопки Отменить'
+        all_descriptions = self.elements_are_visible(self.locators.ALERT_DIALOG_ONE_ROLE)
+        data = []
+        for description in all_descriptions:
+            data.append(description.text)
+        assert f'Вы уверены, что хотите удалить системную роль {role_name}?' and \
+               'У 1 пользователей эта роль единственная, необходимо выбрать новую системную роль.'\
+               in data, 'Некорректный вопрос подтверждения'
+        assert self.element_is_displayed(self.locators.get_name_in_dialog(user_name))
+
+    @allure_testit_step('Нажатие на кнопку Удаления в модальном окне единственной системной роли')
+    def press_delete_button_one_system_role(self):
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+
+    @allure_testit_step('Выбрать системную роль "Пользователь" при удалении в диалоговом окне')
+    def choose_new_system_role_in_dialog(self):
+        self.element_is_visible(self.locators.REPLACE_SYSTEM_ROLE).click()
+        self.element_is_visible(self.locators.SYSTEM_ROLE_USER).click()
+        return 'Пользователь'
