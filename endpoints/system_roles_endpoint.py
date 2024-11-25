@@ -38,7 +38,14 @@ class SystemRolesEndpoint:
         all_tags = self.response.json()['authority']
         result = [{'id': d['id'], 'systemTagId': d['systemTagId'], 'action': d['action'], 'ownData': d['ownData']} for d in all_tags]
         return result
-    
+
+    @allure.step("Создание системной роли")
+    def post_system_role(self, json):
+        header = AuthEndpoint().get_header_token_api()
+        self.response = requests.post(url=Urls.system_roles_url, headers=header, json=json, verify=False)
+        self.response_json = self.response.json()
+        return self.response
+
     @allure.step("Удаляем системную роль по id")
     def delete_system_role_id(self, system_role_id):
         header = AuthEndpoint().get_header_token_api()

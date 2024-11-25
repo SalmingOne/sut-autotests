@@ -1,7 +1,7 @@
 import allure
 import pytest
 import testit
-
+import time
 from data.data import PROJECT_NAME
 from endpoints.system_roles_endpoint import SystemRolesEndpoint
 from pages.system_role_page import SystemRolePage
@@ -89,7 +89,9 @@ class TestSystemRolePage:
         system_role_page.check_role_name_in_dropdown(role_name_copy)
         user_page = UserPage(driver)
         user_page.go_to_user_page_simple()
-        user_page.check_system_role_in_drover(role_name_copy)
+        user_page.open_system_role_drover()
+        assert role_name_copy in user_page.get_all_system_role_names(), \
+            'Роли нет в дровере назначения ролей'
         id_role_copy = system_roles_endpoint.get_user_system_role_id(role_name_copy)
         system_roles_endpoint.delete_system_role_id(id_role_copy)
 
@@ -106,4 +108,29 @@ class TestSystemRolePage:
         system_role_page.check_modal_window_creating_copy('Пользователь')
         system_role_page.press_abort_button()
         system_role_page.check_role_name_not_in_dropdown('Пользователь_копия')
-    
+
+    @testit.workItemIds(3524)
+    @testit.displayName("7.2.4 Удаление системной роли которая единственная присвоенная у пользователя")
+    @pytest.mark.smoke
+    @allure.title("id-3524 7.2.4 Удаление системной роли которая единственная присвоенная у пользователя")
+    def test_deleting_system_role_that_only_one_assigned_to_user(self, login, create_system_role, \
+                                                                 create_user_whit_one_system_role, driver):
+        system_role_page = SystemRolePage(driver)
+        system_roles_endpoint = SystemRolesEndpoint()
+        system_role_page.go_to_system_roles_page()
+        system_role_page.select_role_name_in_dropdown(create_system_role['name'])
+        time.sleep(2)
+        system_role_page.press_delete_system_role()
+        system_role_page.check_modal_window_delete_only_one_system_role(create_system_role['name'], \
+                                                                        create_user_whit_one_system_role)
+        new_system_role = system_role_page.choose_new_system_role_in_dialog()
+        system_role_page.press_delete_button_one_system_role()
+        system_role_page.check_role_name_not_in_dropdown(create_system_role['name'])
+        user_page = UserPage(driver)
+        user_page.go_to_user_page_simple()
+        user_page.open_system_role_drover()
+        all_system_role = user_page.get_all_system_role_names()
+        assert create_system_role['name'] not in all_system_role, \
+            'Удаленная системная роль есть в дровере назначения ролей'
+        assert new_system_role in all_system_role, \
+            'Новой назначенной системной роли нет в дровере назначения ролей'
