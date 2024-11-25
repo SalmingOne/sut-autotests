@@ -967,6 +967,15 @@ def create_skill():
 
 
 @pytest.fixture()
+def create_second_skill():
+    skills_and_knowledge_endpoint = SkillsAndKnowledgeEndpoint()
+    payload = dict(name='Музицировать', type='skill')
+    response = skills_and_knowledge_endpoint.create_skills_and_knowledge_api(json=payload)
+    yield response.json()
+    skills_and_knowledge_endpoint.delete_skills_and_knowledge_api(str(response.json()['id']))
+
+
+@pytest.fixture()
 def project_with_assignment():
     project_endpoint = ProjectEndpoint()
     user_endpoint = UserEndpoint()

@@ -71,3 +71,25 @@ class TestSkillsAndKnowledgePage:
         assert skills_and_knowledge_page.check_skill_name_on_page('Новое Имя'), "Новое имя знания не отображается в таблице"
         assert before != after, "Данные не изменились"
         assert 'Новое Имя' and 'Новое Описание' in after, "В полях не отображаются введенные данные"
+
+    @testit.workItemIds(10558)
+    @testit.displayName("10.4.1.3 (Чек-лист) Негативные проверки редактирования данных в справочнике Знания и навыки")
+    @pytest.mark.regress
+    @allure.title("id-10558 10.4.1.3 (Чек-лист) Негативные проверки редактирования данных в справочнике Знания и навыки")
+    def test_negative_checks_when_editing_data_to_skills_and_knowledge_directory(self, create_skill, create_second_skill, login, driver):
+        skills_and_knowledge_page = SkillsAndKnowledgePage(driver)
+        skills_and_knowledge_page.go_to_skills_page()
+        time.sleep(2)
+        # Проверка дровера редактирования
+        skills_and_knowledge_page.open_skill_to_redact(create_skill['name'])
+        skills_and_knowledge_page.check_redact_drawer_fields('Новое Имя', 'Новое Описание')
+        # Не заполнены обязательные поля
+        skills_and_knowledge_page.clear_name_field()
+        skills_and_knowledge_page.check_empty_mandatory_fields()
+        # В поле “Название” введено не уникальное значение
+        skills_and_knowledge_page.open_skill_to_redact(create_skill['name'])
+        skills_and_knowledge_page.clear_name_field()
+        skills_and_knowledge_page.check_skill_same_name(create_second_skill['name'])
+        # Превышено количество допустимых символов
+        skills_and_knowledge_page.open_skill_to_redact(create_skill['name'])
+        skills_and_knowledge_page.check_exceeded_characters_in_fields()

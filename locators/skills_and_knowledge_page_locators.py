@@ -22,6 +22,7 @@ class SkillsAndKnowledgePageLocators:
     TYPE_FIELD_COLOR = (By.XPATH, '//div[@name="type"]//following-sibling::fieldset')
     DESCRIPTION_FIELD = (By.CSS_SELECTOR, 'input[name="description"]')
     DESCRIPTION_FIELD_COLOR = (By.XPATH, '//input[@name="description"]//following-sibling::fieldset')
+    DRAWER_TITLE = (By.XPATH, '//div[contains(@class,"MuiDrawer-paper")]//h6[contains(@class,"MuiTypography-root MuiTypography-subtitle1")]')
 
 
     CANSEL_ICON = (By.CSS_SELECTOR, 'svg[data-testid="CancelIcon"]')
