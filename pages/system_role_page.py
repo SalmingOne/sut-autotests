@@ -153,6 +153,15 @@ class SystemRolePage(BasePage):
                in data, 'Некорректный вопрос подтверждения'
         assert self.element_is_displayed(self.locators.get_name_in_dialog(user_name))
 
+    @allure_testit_step(
+        'Проверка модального окна при удалении системной роли, не назначенной пользователям')
+    def check_modal_window_delete_not_assigned_system_role(self, role_name):
+        assert self.element_is_displayed(self.locators.SUBMIT_BUTTON), "Нет кнопки Удалить"
+        assert self.element_is_displayed(self.locators.ABORT_BUTTON), 'Нет кнопки Отменить'
+        data = self.element_is_visible(self.locators.ALERT_DIALOG_ONE_ROLE).text
+        assert f'Вы уверены, что хотите удалить системную роль "{role_name}"?' == data, \
+            'Некорректный вопрос подтверждения'
+
     @allure_testit_step('Нажатие на кнопку Удаления в модальном окне единственной системной роли')
     def press_delete_button_one_system_role(self):
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
