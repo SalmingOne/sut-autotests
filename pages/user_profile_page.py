@@ -1430,3 +1430,8 @@ class UserProfilePage(BasePage):
         time.sleep(2)
         self.press_delete_icon()
         self.press_save_button()
+
+    @allure_testit_step('Получение роли из дропдауна')
+    def get_role_dropdown_first_item(self):
+        self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_SLOT).click()
+        return self.press_li_menu_item_with_return_item_text(0)

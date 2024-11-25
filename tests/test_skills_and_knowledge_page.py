@@ -46,7 +46,6 @@ class TestSkillsAndKnowledgePage:
     @allure.title("id-10481 10.4.1.2 (Чек-лист) Негативные проверки при добавлении данных в справочник Знания и навыки")
     def test_negative_checks_when_adding_data_to_skills_and_knowledge_directory(self, create_skill, login, driver):
         skills_and_knowledge_page = SkillsAndKnowledgePage(driver)
-        skills_endpoint = SkillsAndKnowledgeEndpoint()
         skills_and_knowledge_page.go_to_skills_page()
         time.sleep(2)
         skills_and_knowledge_page.press_add_skill_button()
@@ -56,3 +55,19 @@ class TestSkillsAndKnowledgePage:
         skills_and_knowledge_page.press_add_skill_button()
         skills_and_knowledge_page.check_exceeded_characters_in_fields()
 
+    @testit.workItemIds(10484)
+    @testit.displayName("10.4.1.3 Редактирование данных в справочнике Знания и навыки")
+    @pytest.mark.smoke
+    @allure.title("id-10484 10.4.1.3 Редактирование данных в справочнике Знания и навыки")
+    def test_editing_data_in_the_skills_and_knowledge_directory(self, create_skill, login, driver):
+        skills_and_knowledge_page = SkillsAndKnowledgePage(driver)
+        skills_and_knowledge_page.go_to_skills_page()
+        time.sleep(2)
+        skills_and_knowledge_page.open_skill_to_redact(create_skill['name'])
+        before = skills_and_knowledge_page.get_name_and_description_values()
+        skills_and_knowledge_page.check_redact_drawer_fields('Новое Имя', 'Новое Описание')
+        after = skills_and_knowledge_page.get_name_and_description_values()
+        skills_and_knowledge_page.press_submit_button()
+        assert skills_and_knowledge_page.check_skill_name_on_page('Новое Имя'), "Новое имя знания не отображается в таблице"
+        assert before != after, "Данные не изменились"
+        assert 'Новое Имя' and 'Новое Описание' in after, "В полях не отображаются введенные данные"
