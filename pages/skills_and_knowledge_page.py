@@ -197,3 +197,7 @@ class SkillsAndKnowledgePage(BasePage):
         self.action_select_all_text(self.element_is_visible(self.locators.NAME_FIELD))
         self.element_is_visible(self.locators.NAME_FIELD).send_keys(Keys.BACK_SPACE)
         self.element_is_visible(self.locators.DRAWER_TITLE).click()
+
+    @allure_testit_step('Нажатие кнопки Отменить')
+    def press_break_button(self):
+        self.element_is_visible(self.locators.BREAK_BUTTON).click()

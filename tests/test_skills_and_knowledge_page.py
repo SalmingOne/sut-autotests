@@ -93,3 +93,21 @@ class TestSkillsAndKnowledgePage:
         # Превышено количество допустимых символов
         skills_and_knowledge_page.open_skill_to_redact(create_skill['name'])
         skills_and_knowledge_page.check_exceeded_characters_in_fields()
+
+    @testit.workItemIds(10597)
+    @testit.displayName("10.4.1.3 Отмена редактирования данных в справочнике Знания и навыки")
+    @pytest.mark.regress
+    @allure.title("id-10597 10.4.1.3 Отмена редактирования данных в справочнике Знания и навыки")
+    def test_cancel_editing_data_to_skills_and_knowledge_directory(self, create_skill, login, driver):
+        skills_and_knowledge_page = SkillsAndKnowledgePage(driver)
+        skills_and_knowledge_page.go_to_skills_page()
+        time.sleep(2)
+        skills_and_knowledge_page.open_skill_to_redact(create_skill['name'])
+        before = skills_and_knowledge_page.get_name_and_description_values()
+        skills_and_knowledge_page.check_redact_drawer_fields('Новое Имя', 'Новое Описание')
+        after = skills_and_knowledge_page.get_name_and_description_values()
+        skills_and_knowledge_page.press_break_button()
+        skills_and_knowledge_page.open_skill_to_redact(create_skill['name'])
+        after_break = skills_and_knowledge_page.get_name_and_description_values()
+        assert before != after, "Новые данные не отображаются в полях"
+        assert before == after_break, "Данные в полях изменились после отмены редактирования"
