@@ -105,20 +105,20 @@ class SkillsAndKnowledgePage(BasePage):
             "Кнопка Добавить активна до заполнения обязательных полей"
         # Поле Название
         self.element_is_visible(self.locators.NAME_FIELD).click()
-        self.element_is_visible(self.locators.text_on_page('Добавление навыка/знания')).click()
+        self.element_is_visible(self.locators.DRAWER_TITLE).click()
         assert self.element_is_visible(self.locators.MUI_ERROR).text == 'Поле обязательно', \
             "Нет сообщения об обязательности поля Название"
         name_field_color = self.element_is_present(self.locators.NAME_FIELD_COLOR).value_of_css_property('border-color')
         assert name_field_color == 'rgb(211, 47, 47)', "Цвет поля Название не красный"
         self.element_is_visible(self.locators.NAME_FIELD).send_keys('Имя')
         # Кнопка добавить после заполнения обязательных полей
-        self.element_is_visible(self.locators.text_on_page('Добавление навыка/знания')).click()
+        self.element_is_visible(self.locators.DRAWER_TITLE).click()
         assert self.element_is_clickable(self.locators.SUBMIT_BUTTON, 2), \
             "Кнопка Добавить не активна после заполнения обязательных полей"
         # Поле Тип
         self.action_select_all_text(self.element_is_visible(self.locators.TYPE_FIELD))
         self.element_is_visible(self.locators.TYPE_FIELD).send_keys(Keys.BACK_SPACE)
-        self.element_is_visible(self.locators.text_on_page('Добавление навыка/знания')).click()
+        self.element_is_visible(self.locators.DRAWER_TITLE).click()
         assert self.element_is_visible(self.locators.MUI_ERROR).text == 'Поле обязательно', \
             "Нет сообщения об обязательности поля Тип"
         type_field_color = self.element_is_present(self.locators.TYPE_FIELD_COLOR).value_of_css_property('border-color')
@@ -128,7 +128,8 @@ class SkillsAndKnowledgePage(BasePage):
     @allure_testit_step('Проверка отклика при совпадении имени навыка/знания')
     def check_skill_same_name(self, name):
         self.element_is_visible(self.locators.NAME_FIELD).send_keys(name)
-        self.element_is_visible(self.locators.text_on_page('Добавление навыка/знания')).click()
+        self.element_is_visible(self.locators.DRAWER_TITLE).click()
+        time.sleep(1)
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
         time.sleep(1)
         assert not self.element_is_clickable(self.locators.SUBMIT_BUTTON, 2), \
@@ -145,7 +146,7 @@ class SkillsAndKnowledgePage(BasePage):
             self.locators.NAME_FIELD,
             64,
             self.locators.NAME_FIELD_COLOR,
-            self.locators.text_on_page('Добавление навыка/знания'),
+            self.locators.DRAWER_TITLE,
             'AAA'
         )
         assert name_error == 'Превышено допустимое количество символов: 64', "Не соблюдена максимальная длина поля Имя"
@@ -153,7 +154,7 @@ class SkillsAndKnowledgePage(BasePage):
             self.locators.DESCRIPTION_FIELD,
             1000,
             self.locators.DESCRIPTION_FIELD_COLOR,
-            self.locators.text_on_page('Добавление навыка/знания'),
+            self.locators.DRAWER_TITLE,
             'AAA'
         )
         assert name_error == 'Превышено допустимое количество символов: 1000', \
@@ -167,7 +168,7 @@ class SkillsAndKnowledgePage(BasePage):
     @allure_testit_step('Проверка полей дровера редактирования знания/навыка и изменение значений полей')
     def check_redact_drawer_fields(self, new_name, new_description):
         assert self.element_is_displayed(self.locators.text_on_page('Редактирование навыка/знания')), \
-            "Нет заголовка дровера добавления навыка/знания"
+            "Нет заголовка дровера редактирования навыка/знания"
         name_error = self.check_max_field_length(
             self.locators.NAME_FIELD,
             64,
@@ -191,3 +192,8 @@ class SkillsAndKnowledgePage(BasePage):
         assert self.element_is_displayed(self.locators.SUBMIT_BUTTON), "Отсутствует кнопка Добавить"
         assert self.element_is_displayed(self.locators.BREAK_BUTTON), "Отсутствует кнопка Отменить"
 
+    @allure_testit_step('Очистка поля имя в дровере')
+    def clear_name_field(self):
+        self.action_select_all_text(self.element_is_visible(self.locators.NAME_FIELD))
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(Keys.BACK_SPACE)
+        self.element_is_visible(self.locators.DRAWER_TITLE).click()
