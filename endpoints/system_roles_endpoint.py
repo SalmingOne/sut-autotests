@@ -46,6 +46,14 @@ class SystemRolesEndpoint:
         self.response_json = self.response.json()
         return self.response
 
+    @allure.step("Удаление системной роли если она существует")
+    def delete_system_role_if_it_exist(self, system_role_name):
+        system_role_id = self.get_user_system_role_id(system_role_name)
+        if system_role_id is None:
+            pass
+        else:
+            self.delete_system_role_id(system_role_id)
+
     @allure.step("Удаляем системную роль по id")
     def delete_system_role_id(self, system_role_id):
         header = AuthEndpoint().get_header_token_api()
