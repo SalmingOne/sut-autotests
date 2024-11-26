@@ -96,10 +96,10 @@ class TestUsersPage:
     @testit.displayName("4.13 Удаление единственной проектной роли у пользователя")
     @pytest.mark.smoke
     @allure.title("id-1376 4.13 Удаление единственной проектной роли у пользователя")
-    def test_removing_a_single_project_role_from_a_user(self, create_user_whit_one_project_role_and_no_assignments, login, driver):
+    def test_removing_a_single_project_role_from_a_user(self, create_user_with_one_project_role_and_no_assignments, login, driver):
         user_page = UserPage(driver)
         user_page.go_to_user_page()
-        user_page.check_user_is_not_in_table(create_user_whit_one_project_role_and_no_assignments)
+        user_page.check_user_is_not_in_table(create_user_with_one_project_role_and_no_assignments)
         user_page.check_removing_a_single_project_role_from_a_user()
 
     @testit.workItemIds(2061)
@@ -154,11 +154,11 @@ class TestUsersPage:
     @pytest.mark.regress
     @allure.title("id-11854 4.6 Запланированное увольнение пользователя / отмена увольнения")
     def test_planned_user_termination_cancellation_of_termination(self, add_all_statement_files,
-                                                                  create_user_whit_one_project_role_and_no_assignments,
+                                                                  create_user_with_one_project_role_and_no_assignments,
                                                                   login, driver):
         user_page = UserPage(driver)
         user_page.go_to_user_page()
-        user_page.check_user_is_not_in_table(create_user_whit_one_project_role_and_no_assignments)
+        user_page.check_user_is_not_in_table(create_user_with_one_project_role_and_no_assignments)
         user_page.open_redact_drawer()
         user_page.check_clickable_previous_day()
         user_page.action_esc()
