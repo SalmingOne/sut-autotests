@@ -1340,6 +1340,7 @@ def create_system_role():
                     )
     response = system_roles_endpoint.post_system_role(json=payload)
     yield response.json()
+    system_roles_endpoint.delete_system_role_if_it_exist("Единственная")
 
 
 @pytest.fixture()
