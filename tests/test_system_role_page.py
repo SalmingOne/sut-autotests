@@ -207,6 +207,9 @@ class TestSystemRolePage:
             system_role_page.check_modal_window_delete_not_assigned_system_role(create_system_role['name'])
             system_role_page.press_abort_button()
             system_role_page.check_role_name_in_dropdown(create_system_role['name'])
+            system_roles_endpoint = SystemRolesEndpoint()
+            id_role = system_roles_endpoint.get_user_system_role_id(create_system_role['name'])
+            system_roles_endpoint.delete_system_role_id(id_role)
         except:
             # Удаляем после теста Системную роль
             system_roles_endpoint = SystemRolesEndpoint()
