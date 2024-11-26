@@ -934,7 +934,7 @@ class TestUserProfilePage:
     @testit.displayName("10.10.1. Сохранение заметки")
     @pytest.mark.regress
     @allure.title("id-1429 10.10.1. Сохранение заметки")
-    def test_saving_note(self, create_work_user, create_user_whit_one_project_role_and_no_assignments, login, driver):
+    def test_saving_note(self, create_work_user, create_user_with_one_project_role_and_no_assignments, login, driver):
         colleagues_page = ColleaguesPage(driver)
         user_profile_page = UserProfilePage(driver)
         colleagues_page.go_colleagues_page()
@@ -952,7 +952,7 @@ class TestUserProfilePage:
         user_profile_page.check_note_not_visible_addressee("Текст заметки")
         colleagues_page.go_back_to_profile()
         colleagues_page.go_colleagues_page()
-        colleagues_page.search_user(create_user_whit_one_project_role_and_no_assignments)
+        colleagues_page.search_user(create_user_with_one_project_role_and_no_assignments)
         time.sleep(2)  # если не успевает прогрузиться переходит по первому пользователю из списка
         colleagues_page.go_to_watch_the_user_eyes()
         user_profile_page.check_note_not_visible_non_author("Текст заметки")

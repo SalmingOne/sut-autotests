@@ -1282,7 +1282,7 @@ def create_next_week_fired_user():
 
 
 @pytest.fixture()
-def create_user_whit_one_project_role_and_no_assignments():
+def create_user_with_one_project_role_and_no_assignments():
     user_endpoint = UserEndpoint()
     department_endpoint = DepartmentsEndpoint()
     post_endpoint = PostsEndpoint()
@@ -1333,7 +1333,7 @@ def create_system_role():
 
 
 @pytest.fixture()
-def create_user_whit_one_system_role():
+def create_user_with_one_system_role():
     user_endpoint = UserEndpoint()
     project_roles_endpoint = ProjectRolesEndpoint()
     department_endpoint = DepartmentsEndpoint()
@@ -1353,6 +1353,38 @@ def create_user_whit_one_system_role():
                    postId=first_post_id,
                    departmentId=first_department_id,
                    systemRoleIds=[system_role_id]
+                   )
+    if user_id is None:
+        response = user_endpoint.create_user_api(json=payload)
+        print(response.status_code)
+    else:
+        response = user_endpoint.change_user(user_id=str(user_id), json=payload)
+        print(response.status_code)
+    return payload["secondName"] + ' ' + payload["name"]
+
+
+@pytest.fixture()
+def create_user_with_two_system_role():
+    user_endpoint = UserEndpoint()
+    project_roles_endpoint = ProjectRolesEndpoint()
+    department_endpoint = DepartmentsEndpoint()
+    post_endpoint = PostsEndpoint()
+    system_roles_endpoint = SystemRolesEndpoint()
+    first_post_id = post_endpoint.get_all_posts_id()[0]
+    first_project_role_id = project_roles_endpoint.get_all_project_roles_id()[1]
+    first_department_id = department_endpoint.get_all_departments_id()[1]
+    first_system_role_id = system_roles_endpoint.get_all_system_roles_id()[-1]
+    second_system_role_id = system_roles_endpoint.get_all_system_roles_id()[0]
+    user_id = user_endpoint.get_user_id_by_email('two_system_role@mail.ruru')
+    payload = dict(username="Two_System_role",
+                   name="Two",
+                   secondName="System_role",
+                   gender="MALE",
+                   email="two_system_role@mail.ruru",
+                   projectRoleIds=[first_project_role_id],
+                   postId=first_post_id,
+                   departmentId=first_department_id,
+                   systemRoleIds=[first_system_role_id, second_system_role_id]
                    )
     if user_id is None:
         response = user_endpoint.create_user_api(json=payload)
