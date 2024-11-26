@@ -48,6 +48,20 @@ class SkillsAndKnowledgeEndpoint:
         skill_id = self.get_skills_and_knowledge_id_by_name_api(name)
         self.delete_skills_and_knowledge_api(str(skill_id))
 
+    @allure_testit_step("Получение знания/навыка по id")
+    def get_skill_by_id(self, skill_id):
+        header = AuthEndpoint().get_header_token_api()
+        self.response = requests.get(url=Urls.skills_url + skill_id, headers=header, verify=False)
+        self.response_json = self.response.json()
+        return self.response
+
+    @allure_testit_step("Удаление знания/навыка по id если он существует")
+    def delete_skill_if_it_exist(self, skill_id):
+        if self.get_skill_by_id(str(skill_id)).status_code == 404:
+            pass
+        else:
+            self.delete_skills_and_knowledge_api(str(skill_id))
+
     @allure_testit_step("Получение списка всех знаний")
     def get_all_skills_name_api(self):
         return [item['name'] for item in self.get_all_skills_and_knowledge_api().json()]

@@ -111,3 +111,35 @@ class TestSkillsAndKnowledgePage:
         after_break = skills_and_knowledge_page.get_name_and_description_values()
         assert before != after, "Новые данные не отображаются в полях"
         assert before == after_break, "Данные в полях изменились после отмены редактирования"
+
+    @testit.workItemIds(10549)
+    @testit.displayName("10.4.1.4 Удаление данных из справочника Знания и навыки")
+    @pytest.mark.regress
+    @allure.title("id-10549 10.4.1.4 Удаление данных из справочника Знания и навыки")
+    def test_removing_data_from_skills_and_knowledge_directory(self, create_skill_to_delete, login, driver):
+        skills_and_knowledge_page = SkillsAndKnowledgePage(driver)
+        skills_and_knowledge_page.go_to_skills_page()
+        time.sleep(2)
+        skills_and_knowledge_page.press_delete_skill_button(create_skill_to_delete['name'])
+        skills_and_knowledge_page.check_delete_modal_window()
+        skills_and_knowledge_page.press_submit_button()
+        assert skills_and_knowledge_page.get_message() == f'Знание или навык {create_skill_to_delete['name']} удален', \
+            "Не появилось сообщение о удалении знания/навыка"
+        time.sleep(1)
+        assert not skills_and_knowledge_page.check_skill_name_on_page(create_skill_to_delete['name']), \
+            "Знание/навык отображается в таблице после удаления"
+
+    @testit.workItemIds(10556)
+    @testit.displayName("10.4.1.4 Отмена удаления знания/навыка ")
+    @pytest.mark.regress
+    @allure.title("id-10556 10.4.1.4 Отмена удаления знания/навыка ")
+    def test_cancel_removal_of_knowledge_skill(self, create_skill, login, driver):
+        skills_and_knowledge_page = SkillsAndKnowledgePage(driver)
+        skills_and_knowledge_page.go_to_skills_page()
+        time.sleep(2)
+        skills_and_knowledge_page.press_delete_skill_button(create_skill['name'])
+        skills_and_knowledge_page.check_delete_modal_window()
+        skills_and_knowledge_page.press_break_button_in_dialog()
+        time.sleep(1)
+        assert skills_and_knowledge_page.check_skill_name_on_page(create_skill['name']), \
+            "Знание/навык не отображается в таблице после отмены удаления"

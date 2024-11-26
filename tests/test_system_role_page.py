@@ -100,6 +100,11 @@ class TestSystemRolePage:
     @allure.title("id-3539 7.2.6 Отмена создания копии системной роли")
     def test_cancel_create_copy_system_role(self, login, driver):
         system_role_page = SystemRolePage(driver)
+        system_roles_endpoint = SystemRolesEndpoint()
+        # Удаляем роль если есть
+        id_role = system_roles_endpoint.get_user_system_role_id('Пользователь_копия')
+        if id_role is not None:
+            system_roles_endpoint.delete_system_role_id(id_role)
         system_role_page.go_to_system_roles_page()
         system_role_page.select_role_name_in_dropdown('Пользователь')
         system_role_page.check_submit_button_is_not_visible()
@@ -113,13 +118,13 @@ class TestSystemRolePage:
     @pytest.mark.smoke
     @allure.title("id-3524 7.2.4 Удаление системной роли которая единственная присвоенная у пользователя")
     def test_deleting_system_role_that_only_one_assigned_to_user(self, login, create_system_role, \
-                                                                 create_user_whit_one_system_role, driver):
+                                                                 create_user_with_one_system_role, driver):
         system_role_page = SystemRolePage(driver)
         system_role_page.go_to_system_roles_page()
         system_role_page.select_role_name_in_dropdown(create_system_role['name'])
         system_role_page.press_delete_system_role()
         system_role_page.check_modal_window_delete_only_one_system_role(create_system_role['name'], \
-                                                                        create_user_whit_one_system_role)
+                                                                        create_user_with_one_system_role)
         new_system_role = system_role_page.choose_new_system_role_in_dialog()
         system_role_page.press_delete_button_one_system_role()
         system_role_page.check_role_name_not_in_dropdown(create_system_role['name'])
@@ -156,15 +161,58 @@ class TestSystemRolePage:
     @pytest.mark.regress
     @allure.title("id-3534 7.2.4 Реакция системы на нажатие кнопки замены не выбрав роль на замену")
     def test_system_reaction_press_replace_button_without_select_role(self, login, create_system_role, \
-                                                                      create_user_whit_one_system_role, driver):
+                                                                      create_user_with_one_system_role, driver):
         system_role_page = SystemRolePage(driver)
         system_role_page.go_to_system_roles_page()
         system_role_page.select_role_name_in_dropdown(create_system_role['name'])
         system_role_page.press_delete_system_role()
         system_role_page.check_modal_window_delete_only_one_system_role(create_system_role['name'], \
-                                                                        create_user_whit_one_system_role)
+                                                                        create_user_with_one_system_role)
         system_role_page.press_delete_button_one_system_role()
         system_role_page.check_modal_window_delete_without_select_role()
         # Удаляем после теста Системную роль
         system_role_page.choose_new_system_role_in_dialog()
         system_role_page.press_delete_button_one_system_role()
+
+    @testit.workItemIds(3526)
+    @testit.displayName("7.2.4 Удаление системной роли которая НЕ единственно присвоенная пользователю")
+    @pytest.mark.regress
+    @allure.title("id-3526 7.2.4 Удаление системной роли которая НЕ единственно присвоенная пользователю")
+    def test_deleting_system_role_that_not_only_one_assigned_to_user(self, login, create_system_role, \
+                                                                 create_user_with_two_system_role, driver):
+        system_role_page = SystemRolePage(driver)
+        system_role_page.go_to_system_roles_page()
+        system_role_page.select_role_name_in_dropdown(create_system_role['name'])
+        system_role_page.press_delete_system_role()
+        system_role_page.check_modal_window_delete_not_assigned_system_role(create_system_role['name'])
+        system_role_page.press_delete_button_one_system_role()
+        system_role_page.check_role_name_not_in_dropdown(create_system_role['name'])
+        user_page = UserPage(driver)
+        user_page.go_to_user_page_simple()
+        user_page.open_system_role_drover()
+        all_system_role = user_page.get_all_system_role_names()
+        assert create_system_role['name'] not in all_system_role, \
+            'Удаленная системная роль есть в дровере назначения ролей'
+
+    @testit.workItemIds(3527)
+    @testit.displayName("7.2.4 Отмена удаления системной роли")
+    @pytest.mark.regress
+    @allure.title("id-3527 7.2.4 Отмена удаления системной роли")
+    def test_cancel_deleting_system_role(self, login, create_system_role, create_user_with_two_system_role, driver):
+        try:
+            system_role_page = SystemRolePage(driver)
+            system_role_page.go_to_system_roles_page()
+            system_role_page.select_role_name_in_dropdown(create_system_role['name'])
+            system_role_page.press_delete_system_role()
+            system_role_page.check_modal_window_delete_not_assigned_system_role(create_system_role['name'])
+            system_role_page.press_abort_button()
+            system_role_page.check_role_name_in_dropdown(create_system_role['name'])
+            system_roles_endpoint = SystemRolesEndpoint()
+            id_role = system_roles_endpoint.get_user_system_role_id(create_system_role['name'])
+            system_roles_endpoint.delete_system_role_id(id_role)
+        except:
+            # Удаляем после теста Системную роль
+            system_roles_endpoint = SystemRolesEndpoint()
+            id_role = system_roles_endpoint.get_user_system_role_id(create_system_role['name'])
+            system_roles_endpoint.delete_system_role_id(id_role)
+            raise
