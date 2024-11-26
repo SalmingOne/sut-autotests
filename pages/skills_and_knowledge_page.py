@@ -39,7 +39,7 @@ class SkillsAndKnowledgePage(BasePage):
 
     @allure_testit_step('Проверка наличия знания или навыка')
     def check_skill_name_on_page(self, name):
-        return self.element_is_displayed(self.locators.skill_name_on_page(name))
+        return self.element_is_displayed(self.locators.skill_name_on_page(name), 3)
 
     @allure_testit_step('Проверка полей дровера добавления знания или навыка')
     def check_drawer_fields(self):
@@ -201,3 +201,19 @@ class SkillsAndKnowledgePage(BasePage):
     @allure_testit_step('Нажатие кнопки Отменить')
     def press_break_button(self):
         self.element_is_visible(self.locators.BREAK_BUTTON).click()
+
+    @allure_testit_step('Нажатие кнопки удаления знания/навыка')
+    def press_delete_skill_button(self, skill_name):
+        self.element_is_visible(self.locators.kebab_by_skill_name(skill_name)).click()
+        self.element_is_visible(self.locators.KEBABS_DELETE_MENU_ITEM).click()
+
+    @allure_testit_step('Проверка модального окна удаления знания/навыка')
+    def check_delete_modal_window(self):
+        assert self.element_is_displayed(self.locators.text_on_page('Вы уверены, что хотите удалить ')), \
+            "Отсутствует текст модального окна"
+        assert self.element_is_displayed(self.locators.SUBMIT_BUTTON), "Отсутствует кнопка Подтвердить"
+        assert self.element_is_displayed(self.locators.DIALOG_BREAK_BUTTON), "Отсутствует кнопка Отменить"
+
+    @allure_testit_step('Получение текста сообщения системы')
+    def get_message(self):
+        return self.element_is_visible(self.locators.ALERT_TEXT).text
