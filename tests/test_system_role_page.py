@@ -100,6 +100,11 @@ class TestSystemRolePage:
     @allure.title("id-3539 7.2.6 Отмена создания копии системной роли")
     def test_cancel_create_copy_system_role(self, login, driver):
         system_role_page = SystemRolePage(driver)
+        system_roles_endpoint = SystemRolesEndpoint()
+        # Удаляем роль если есть
+        id_role = system_roles_endpoint.get_user_system_role_id('Пользователь_копия')
+        if id_role is not None:
+            system_roles_endpoint.delete_system_role_id(id_role)
         system_role_page.go_to_system_roles_page()
         system_role_page.select_role_name_in_dropdown('Пользователь')
         system_role_page.check_submit_button_is_not_visible()
