@@ -24,6 +24,7 @@ class SystemRolePageLocators:
     ALERT_DIALOG = (By.CSS_SELECTOR, 'p[id="alert-dialog-description"]')
     ALERT_DIALOG_ONE_ROLE = (By.XPATH, '//p[contains(@class, "MuiTypography-body2")]')
     REPLACE_SYSTEM_ROLE = (By.XPATH, '//label[text()="Новая системная роль"]/../div/div')
+    BORDER_REPLACE_SYSTEM_ROLE = (By.XPATH, '//label[text()="Новая системная роль"]')
     SYSTEM_ROLE_USER = (By.XPATH, '//li[text()="Пользователь"]')
 
     # Тултип

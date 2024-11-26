@@ -154,6 +154,15 @@ class SystemRolePage(BasePage):
         assert self.element_is_displayed(self.locators.get_name_in_dialog(user_name))
 
     @allure_testit_step(
+        'Проверка модального окна если роль на замену не выбрана')
+    def check_modal_window_delete_without_select_role(self):
+        time.sleep(1)
+        assert self.element_is_visible(self.locators.HELPER_TEXT).text == 'Поле обязательно', \
+            "Под полем не отображается подсказка 'Поле обязательно'"
+        assert self.element_is_visible(self.locators.BORDER_REPLACE_SYSTEM_ROLE).value_of_css_property('color') \
+               == 'rgba(211, 47, 47, 1)', "Поле 'Новая системная роль' не выделятся красным цветом"
+
+    @allure_testit_step(
         'Проверка модального окна при удалении системной роли, не назначенной пользователям')
     def check_modal_window_delete_not_assigned_system_role(self, role_name):
         assert self.element_is_displayed(self.locators.SUBMIT_BUTTON), "Нет кнопки Удалить"
@@ -165,6 +174,8 @@ class SystemRolePage(BasePage):
     @allure_testit_step('Нажатие на кнопку Удаления в модальном окне единственной системной роли')
     def press_delete_button_one_system_role(self):
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+        # Без этого ожидания роль не успевает удалиться если это нужно
+        time.sleep(2)
 
     @allure_testit_step('Выбрать системную роль "Пользователь" при удалении в диалоговом окне')
     def choose_new_system_role_in_dialog(self):
