@@ -28,6 +28,7 @@ class SkillsAndKnowledgePageLocators:
     CANSEL_ICON = (By.CSS_SELECTOR, 'svg[data-testid="CancelIcon"]')
     SUBMIT_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
     BREAK_BUTTON = (By.XPATH, '//div[contains(@class,"MuiDrawer-paper")]//button[text()="Отменить"]')
+    DIALOG_BREAK_BUTTON = (By.XPATH, '//div[@role="dialog"]//button[text()="Отменить"]')
     LI_MENU_ITEM = (By.CSS_SELECTOR, 'li[role="option"]')
     MAX_LENGTH_PRESENTATION = (By.XPATH, '//div[text()="Превышено допустимое количество символов"]')
 
