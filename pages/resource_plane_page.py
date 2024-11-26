@@ -3,6 +3,7 @@ import time
 import allure
 import testit
 
+from data.data import USER_NAME
 from locators.resource_plane_locators import ResourcePlaneLocators
 from pages.base_page import BasePage
 
@@ -20,7 +21,11 @@ class ResourcePlanePage(BasePage):
     @testit.step("Проверка отображения архивного проекта")
     @allure.step("Проверка отображения архивного проекта")
     def check_archive_project(self, project_code):
-        self.action_move_to_element(self.element_is_visible(self.locators.project_color_on_project(project_code), 10))
+        self.element_is_visible(self.locators.FILTER_BUTTON).click()
+        time.sleep(1)
+        self.element_is_visible(self.locators.NOT_ACTIV_PROJECT_CHECKBOX).click()
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+        self.action_move_to_element(self.element_is_visible(self.locators.project_color_on_project(project_code), 30))
         name_color = self.element_is_visible(self.locators.project_color_on_project(project_code)).value_of_css_property('color')
         assert name_color == 'rgba(0, 0, 0, 0.12)', "Цвет проекта не серый"
 
@@ -39,6 +44,5 @@ class ResourcePlanePage(BasePage):
     @testit.step("Открываем список проектов пользователя")
     @allure.step("Открываем список проектов пользователя")
     def open_project_list(self):
-        self.element_is_visible(self.locators.ROLE_FILTER_INPUT).send_keys('Тестировщик')
-        self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
+        self.element_is_visible(self.locators.SEARCH_FIELD).send_keys(USER_NAME)
         self.element_is_visible(self.locators.OPEN_PROJECT_LIST).click()

@@ -977,6 +977,7 @@ class TestLaborCostPage:
         labor_cost_page.redact_labor_cost(hours='24')
         labor_cost_page.save_changes_labor_cost_drawer()
         errors = labor_cost_page.get_alert_message()
+        labor_cost_page.redact_overtime_on_reason_tab(project_with_added_labor_reason['name'])
         labor_cost_page.redact_labor_cost(hours=' ', reason=' ')
         assert not labor_cost_page.save_changes_labor_cost_drawer(), "Кнопка сохранения активна"
         assert 'Сумма часов не может превышать 24 за текущий день' in errors, "Нет сообщения об ошибке"
@@ -1039,7 +1040,7 @@ class TestLaborCostPage:
         number_day = project_with_rejected_labor_cost_without_reason[1]
         user_name = project_with_rejected_labor_cost_without_reason[2]
         labor_cost_page.redact_labor_cost_table_by_project(project_name, number_day, 8)
-        assert labor_cost_page.get_cell_color(project_name, number_day) in ['rgba(255, 251, 233, 1)', 'rgba(255, 236, 229, 1)'], 'Цвет не желтый/красный(выходной)'
+        assert labor_cost_page.get_cell_color(project_name, int(number_day)) in ['rgba(255, 251, 233, 1)', 'rgba(255, 236, 229, 1)'], 'Цвет не желтый/красный(выходной)'
         labor_cost_page.save_labor_reason()
         assert labor_cost_page.get_project_day_cell_contents(project_name, number_day) == '8', 'Значение не изменилось'
         assert not labor_cost_page.field_is_rejected(project_name, number_day), "Поле отображается отклоненным"

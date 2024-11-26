@@ -71,7 +71,7 @@ class ProjectEndpoint:
         adding_himself = []
         no_adding_himself = []
         for project in all_projects_json:
-            if project['selfAdding'] is True:
+            if project['selfAdding'] is True and project['status'] == 'ACTIVE':
                 adding_himself.append(project["name"])
             else:
                 no_adding_himself.append(project["name"])

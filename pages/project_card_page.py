@@ -946,7 +946,7 @@ class ProjectCardPage(BasePage):
     @allure_testit_step("Получение данных таблицы 'Ресурсный план'")
     def displaying_table_resource_plan(self):
         list_cells = []
-        cells = self.elements_are_visible(self.locators.CELLS)
+        cells = self.elements_are_visible(self.locators.CELLS, 30)
         for cell in cells:
             list_cells.append(cell.text)
         return list_cells

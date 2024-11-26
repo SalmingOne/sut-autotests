@@ -664,7 +664,7 @@ class LaborCostPage(BasePage):
     @testit.step("Открываем дровер добавления переработки")
     @allure.step("Открываем дровер добавления переработки")
     def open_overtime_drover(self):
-        self.action_move_to_element(self.element_is_visible(self.locators.ADD_OVERTIME_WORK_BUTTON))
+        time.sleep(3)
         self.element_is_visible(self.locators.ADD_OVERTIME_WORK_BUTTON).click()
 
     @testit.step("Проверяем наличие полей на дровере переработки")
@@ -1050,7 +1050,7 @@ class LaborCostPage(BasePage):
         self.element_is_visible(self.locators.OVERTIME_WORK_INPUT).send_keys(number)
         time.sleep(1)
         self.element_is_visible(self.locators.DELETE_ICON).click()
-        self.element_is_visible(self.locators.SUBMIT_DELETE_BUTTON).click()
+        self.element_is_visible(self.locators.DRAWER_SUBMIT_BUTTON).click()
         time.sleep(1)
         self.add_file('переработка2.docx', 'Переработка2')
         self.element_is_present(self.locators.FILE_INPUT, 2).send_keys(os.path.abspath(r'../переработка2.docx'))
@@ -1179,7 +1179,7 @@ class LaborCostPage(BasePage):
         self.element_is_visible(self.locators.OVERTIME_WORK_INPUT).send_keys(number)
         time.sleep(1)
         self.element_is_visible(self.locators.DELETE_ICON).click()
-        self.element_is_visible(self.locators.SUBMIT_DELETE_BUTTON).click()
+        self.element_is_visible(self.locators.DRAWER_SUBMIT_BUTTON).click()
         time.sleep(1)
         self.add_file('переработка2.docx', 'Переработка2')
         self.element_is_present(self.locators.FILE_INPUT).send_keys(os.path.abspath(r'../переработка2.docx'))
@@ -1202,6 +1202,7 @@ class LaborCostPage(BasePage):
         fields_locators = [self.locators.OVERTIME_WORK_DATA_INPUT, self.locators.OVERTIME_WORK_INPUT, self.locators.PROJECT_NAME_DRAWER_INPUT_FIELD]
         random_field = fields_locators[random.randint(0, 2)]
         self.action_select_all_text(self.element_is_visible(random_field))
+        time.sleep(1)
         self.element_is_visible(random_field).send_keys(Keys.BACKSPACE)
         time.sleep(0.5)
         self.element_is_visible(self.locators.check_text('Редактирование переработки')).click()
@@ -1209,6 +1210,7 @@ class LaborCostPage(BasePage):
             "Не появилось сообщение об обязательности поля"
         assert not self.element_is_clickable(self.locators.SUBMIT_BUTTON, 2), "Кнопка сохранить кликабельна"
         self.element_is_visible(self.locators.CLEAR_ICON).click()
+        self.element_is_visible(self.locators.DRAWER_SUBMIT_BUTTON).click()
 
     @testit.step("Изменение даты в датапикере")
     @allure.step("Изменение даты в датапикере")
@@ -1221,7 +1223,7 @@ class LaborCostPage(BasePage):
     @allure.step("Проверка изменения файла на превышающий 5 мб")
     def check_change_file_to_not_valid(self):
         self.element_is_visible(self.locators.DELETE_ICON).click()
-        self.element_is_visible(self.locators.SUBMIT_DELETE_BUTTON).click()
+        self.element_is_visible(self.locators.DRAWER_SUBMIT_BUTTON).click()
         time.sleep(1)
         self.add_file_5_mb('переработка 5мб.docx')
         self.element_is_present(self.locators.FILE_INPUT, 2).send_keys(os.path.abspath(r'../переработка 5мб.docx'))
@@ -1230,6 +1232,7 @@ class LaborCostPage(BasePage):
             'Суммарный размер файлов не должен превышать 5МБ')), 'Нет сообщения о превышении размера файла'
         self.delete_file('переработка 5мб.docx')
         self.element_is_visible(self.locators.CLEAR_ICON).click()
+        self.element_is_visible(self.locators.DRAWER_SUBMIT_BUTTON).click()
 
     @testit.step("Проверка изменения файла на превышающий 5 мб")
     @allure.step("Проверка изменения файла на превышающий 5 мб")
@@ -1323,8 +1326,8 @@ class LaborCostPage(BasePage):
 
     @allure_testit_step("Получить цвет ячейки")
     def get_cell_color(self, project_name, number_day):
-        return (self.element_is_visible(self.locators.check_day_color_by_project(project_name, number_day)).
-                value_of_css_property('background-color'))
+        elements = [element.value_of_css_property('background-color') for element in self.elements_are_visible(self.locators.check_day_color_by_project(project_name))]
+        return elements[number_day-2]
 
     @allure_testit_step("Отмена редактирования таблицы трудозатрат")
     def cancel_editing_labor_cost(self):
