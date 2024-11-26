@@ -217,3 +217,7 @@ class SkillsAndKnowledgePage(BasePage):
     @allure_testit_step('Получение текста сообщения системы')
     def get_message(self):
         return self.element_is_visible(self.locators.ALERT_TEXT).text
+
+    @allure_testit_step('Нажатие кнопки Отменить модальном окне')
+    def press_break_button_in_dialog(self):
+        self.element_is_visible(self.locators.DIALOG_BREAK_BUTTON).click()
