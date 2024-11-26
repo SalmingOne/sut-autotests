@@ -2,6 +2,9 @@ import time
 
 import allure
 import testit
+from selenium.common import TimeoutException
+from selenium.webdriver.common.by import By
+from utils.concat_testit_allure_step import allure_testit_step
 
 from locators.gantt_page_locators import GanttPageLocators
 from pages.base_page import BasePage
@@ -134,3 +137,40 @@ class GanttPage(BasePage):
         for checkbox in all_checkboxes:
             checkboxes_text.append(checkbox.text)
         return checkboxes_text
+
+    @allure_testit_step('Включить/выключить чекбокс')
+    def toggle_checkbox(self, checkbox_name):
+        match checkbox_name:
+            case 'Таблица':
+                self.elements_are_visible(self.locators.CHECKBOXES)[0].click()
+            case 'Диаграмма':
+                self.elements_are_visible(self.locators.CHECKBOXES)[1].click()
+
+    @allure_testit_step('Получить текст тултипа')
+    def get_tooltip_text(self, task):
+        self.action_move_to_element(self.element_is_visible(self.locators.get_task(task)))
+        return self.element_is_visible(self.locators.GANTT_TOOLTIP).text
+
+    @allure_testit_step('Получить статус отображения диаграммы Ганта')
+    def get_status_of_gantt_task(self):
+        return self.element_is_displayed(self.locators.GANT_TASK)
+
+    @allure_testit_step('Получить типы столбцов таблицы')
+    def get_columns_types(self):
+        return set(div.get_attribute('data-column-name') for element in self.elements_are_visible(self.locators.TABLE_ROWS) for div in element.find_elements(By.XPATH, './div'))
+
+    @allure_testit_step('Получить статус чекбокса')
+    def get_status_of_checkbox(self, checkbox_name, status):
+        icon_testid = "CheckBoxIcon" if status == "Активно" else "CheckBoxOutlineBlankIcon"
+        try:
+            match checkbox_name:
+                case 'Таблица':
+                    self.elements_are_visible(self.locators.CHECKBOXES)[0].find_element(By.XPATH, f'./*[@data-testid="{icon_testid}"]')
+                case 'Диаграмма':
+                    self.elements_are_visible(self.locators.CHECKBOXES)[1].find_element(By.XPATH, f'./*[@data-testid="{icon_testid}"]')
+                case _:
+                    return None
+            return True
+        except TimeoutException:
+            return False
+

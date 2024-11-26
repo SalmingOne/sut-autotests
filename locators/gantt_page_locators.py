@@ -28,14 +28,20 @@ class GanttPageLocators:
     TODAY_BUTTON = (By.XPATH, '//button[text()="Сегодня"]')
 
     GANTT_GRID = (By.CSS_SELECTOR, 'div[class="gantt_grid"]')
+    GANT_TASK = (By.CSS_SELECTOR, 'div[class="gantt_task"]')
     TUNE_ICON = (By.CSS_SELECTOR, 'svg[data-testid="TuneIcon"]')
     CHOSE_PERIOD_BUTTON = (By.CSS_SELECTOR, 'div[aria-haspopup="listbox"]')
     BASE_PLAN_BUTTON = (By.CSS_SELECTOR, 'svg[data-testid="StraightenIcon"]')
     FIELDS_FILTER = (By.XPATH, '//*[@data-testid="TuneIcon"]//following::*[@data-testid="SettingsIcon"]')
     COLUMN_HEADER = (By.CSS_SELECTOR, 'div[role="columnheader"]')
     CHECKBOXES_TEXT = (By.XPATH, '//span[contains(@class,"MuiCheckbox-root")]//following-sibling::span[contains(@class,"MuiTypography-body1")]')
-
+    CHECKBOXES = (By.XPATH, "//input[@type='checkbox']/..")
 
     LI_MENU_ITEM = (By.CSS_SELECTOR, 'li[role="option"]')
+    TABLE_ROWS = (By.XPATH, "//div[contains(@class, 'gantt_row')]")
+    GANTT_TOOLTIP = (By.CSS_SELECTOR, 'div[class="gantt_tooltip"]')
+
+    def get_task(self, task_name):
+        return By.XPATH, f"//div[contains(@class, 'gantt_row') and contains(@aria-label, 'Задача: {task_name} ')]"
 
 

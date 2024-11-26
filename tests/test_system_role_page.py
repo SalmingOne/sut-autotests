@@ -1,5 +1,3 @@
-import time
-
 import allure
 import pytest
 import testit
@@ -224,7 +222,6 @@ class TestSystemRolePage:
         tags_role_before = system_roles_endpoint.get_tags_system_role_id(id_role_user)
         system_role_page.press_redact_system_role()
         system_role_page.editing_system_role()
-        time.sleep(2)
         system_role_page.press_submit_button()
         # Получаем полномочия системной роли после редактирования
         tags_role_after = system_roles_endpoint.get_tags_system_role_id(id_role_user)
