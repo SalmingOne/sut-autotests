@@ -1329,6 +1329,7 @@ def create_user_with_one_project_role_and_no_assignments():
 @pytest.fixture()
 def create_system_role():
     system_roles_endpoint = SystemRolesEndpoint()
+    system_roles_endpoint.delete_system_role_if_it_exist("Единственная")
     payload = dict(name="Единственная",
                    authority=[dict(
                        systemTagId=373,
@@ -1339,6 +1340,7 @@ def create_system_role():
                     )
     response = system_roles_endpoint.post_system_role(json=payload)
     yield response.json()
+    system_roles_endpoint.delete_system_role_if_it_exist("Единственная")
 
 
 @pytest.fixture()

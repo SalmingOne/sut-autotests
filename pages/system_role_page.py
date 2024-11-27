@@ -131,6 +131,14 @@ class SystemRolePage(BasePage):
     @allure_testit_step("Нажатие на кнопку Копия")
     def press_copy(self):
         self.element_is_visible(self.locators.COPY_SYSTEM_ROLE).click()
+
+    @allure_testit_step("Нажатие на кнопку Редактировать")
+    def press_redact_system_role(self):
+        self.element_is_visible(self.locators.REDACT_SYSTEM_ROLE).click()
+
+    @allure_testit_step("Внести изменения в тэги системной роли")
+    def editing_system_role(self):
+        self.elements_are_visible(self.locators.ALL_TAG_CHECKBOXES)[1].click()
     
     @allure_testit_step('Проверка модального окна создания копии')
     def check_modal_window_creating_copy(self, role_name):

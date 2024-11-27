@@ -12,6 +12,7 @@ class SystemRolePageLocators:
     INPUT_ROLE_FIELD = (By.CSS_SELECTOR, 'input[name="roleName"]')
     BORDER_COLOR = (By.XPATH, '//input[@name="roleName"]//following-sibling::fieldset')
     COPY_SYSTEM_ROLE = (By.XPATH, '//button[@aria-label="Копировать системную роль"]')
+    REDACT_SYSTEM_ROLE = (By.XPATH, '//button[@aria-label="Редактировать системную роль"]')
     ALL_TAG_CHECKBOXES = (By.CSS_SELECTOR, 'span[class="ag-checkbox-wrapper "]')
     SUBMIT_DELETE_ROLE_BUTTON = (By.XPATH, '//button[text()="Удалить"]')
 
