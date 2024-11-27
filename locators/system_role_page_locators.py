@@ -28,6 +28,10 @@ class SystemRolePageLocators:
     BORDER_REPLACE_SYSTEM_ROLE = (By.XPATH, '//label[text()="Новая системная роль"]')
     SYSTEM_ROLE_USER = (By.XPATH, '//li[text()="Пользователь"]')
 
+    REVEAL_PROJECTS = (By.XPATH, '//p[@aria-label="Проекты"]/../button')
+    REVEAL_SEE_ALL_PROJECTS = (By.XPATH, '//p[@aria-label="Посмотреть все проекты"]/../button')
+    ALL_TAG_CHECKBOXES_ALL_PROJECTS = (By.XPATH, '//p[@aria-label="Посмотреть все проекты"]/../..//following-sibling::div/button/span')
+
     # Тултип
     TOOLTIP_ROLE_ICON = (By.XPATH, '//*[@data-testid="DeleteIcon"]/../..')
     # Ошибки

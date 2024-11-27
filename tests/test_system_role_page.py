@@ -255,3 +255,15 @@ class TestSystemRolePage:
         system_role_page.check_role_name_in_dropdown(create_system_role['name'])
         assert tags_role_before == tags_role_after, \
             'Изменения внесенные до отмены сохранения, сохранились в системе'
+
+    @testit.workItemIds(3502)
+    @testit.displayName("7.2.2 Реакция системы при выборе чекбоксов C/R/U/D")
+    @pytest.mark.regress
+    @allure.title("id-3502 7.2.2 Реакция системы при выборе чекбоксов C/R/U/D")
+    def test_system_reaction_when_selecting_checkboxes(self, login, create_system_role, driver):
+        system_role_page = SystemRolePage(driver)
+        system_role_page.go_to_system_roles_page()
+        system_role_page.select_role_name_in_dropdown(create_system_role['name'])
+        system_role_page.press_redact_system_role()
+        system_role_page.check_system_reaction_when_selecting_checkboxes()
+        system_role_page.press_abort_button()
