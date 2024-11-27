@@ -202,52 +202,52 @@ class SystemRolePage(BasePage):
         self.elements_are_visible(self.locators.ALL_TAG_CHECKBOXES_ALL_PROJECTS)[0].click()
         # Проверяем включены ли C и R
         indexes_checked = self.get_index_checked_checkboxes()
-        assert indexes_checked == [0, 6]
+        assert indexes_checked == [0, 6], 'Включены не C и R тэги'
         self.clear_checkboxes_all_projects()
         # Выбираем чекбокс C только свои данные
         self.elements_are_visible(self.locators.ALL_TAG_CHECKBOXES_ALL_PROJECTS)[1].click()
         # Проверяем включены ли C и R только свои данные
         indexes_checked = self.get_index_checked_checkboxes()
-        assert indexes_checked == [1, 7]
+        assert indexes_checked == [1, 7], 'Включены не C и R только свои данные тэги'
         self.clear_checkboxes_all_projects()
 
         # Выбираем чекбокс U
         self.elements_are_visible(self.locators.ALL_TAG_CHECKBOXES_ALL_PROJECTS)[3].click()
         # Проверяем включены ли U и R
         indexes_checked = self.get_index_checked_checkboxes()
-        assert indexes_checked == [3, 6]
+        assert indexes_checked == [3, 6], 'Включены не U и R тэги'
         self.clear_checkboxes_all_projects()
         # Выбираем чекбокс U только свои данные
         self.elements_are_visible(self.locators.ALL_TAG_CHECKBOXES_ALL_PROJECTS)[4].click()
         # Проверяем включены ли U и R только свои данные
         indexes_checked = self.get_index_checked_checkboxes()
-        assert indexes_checked == [4, 7]
+        assert indexes_checked == [4, 7], 'Включены не U и R только свои данные тэги'
         self.clear_checkboxes_all_projects()
 
         # Выбираем чекбокс D
         self.elements_are_visible(self.locators.ALL_TAG_CHECKBOXES_ALL_PROJECTS)[9].click()
         # Проверяем включены ли D и R
         indexes_checked = self.get_index_checked_checkboxes()
-        assert indexes_checked == [6, 9]
+        assert indexes_checked == [6, 9], 'Включены не D и R тэги'
         self.clear_checkboxes_all_projects()
         # Выбираем чекбокс D только свои данные
         self.elements_are_visible(self.locators.ALL_TAG_CHECKBOXES_ALL_PROJECTS)[10].click()
         # Проверяем включены ли D и R только свои данные
         indexes_checked = self.get_index_checked_checkboxes()
-        assert indexes_checked == [7, 10]
+        assert indexes_checked == [7, 10], 'Включены не D и R только свои данные тэги'
         self.clear_checkboxes_all_projects()
 
         # Выбираем чекбокс R
         self.elements_are_visible(self.locators.ALL_TAG_CHECKBOXES_ALL_PROJECTS)[6].click()
         # Проверяем включен ли только R
         indexes_checked = self.get_index_checked_checkboxes()
-        assert indexes_checked == [6]
+        assert indexes_checked == [6], 'Включен не R тэг'
         self.clear_checkboxes_all_projects()
         # Выбираем чекбокс R только свои данные
         self.elements_are_visible(self.locators.ALL_TAG_CHECKBOXES_ALL_PROJECTS)[7].click()
         # Проверяем включены ли только R только свои данные
         indexes_checked = self.get_index_checked_checkboxes()
-        assert indexes_checked == [7]
+        assert indexes_checked == [7], 'Включен не R только свои данные тэг'
         self.clear_checkboxes_all_projects()
 
     @allure_testit_step("Очищаем все чекбоксы если есть выбранные")
