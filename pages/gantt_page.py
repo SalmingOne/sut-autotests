@@ -174,3 +174,11 @@ class GanttPage(BasePage):
         except TimeoutException:
             return False
 
+    @allure_testit_step('Перейти в режим редактирования диаграммы')
+    def edit_diagram(self):
+        self.element_is_visible(self.locators.EDIT_GANTT_BUTTON).click()
+
+    @allure_testit_step('Получить все сообщения системы')
+    def get_errors_on_page(self):
+        return self.get_all_alert_message(self.locators.ALERT_MESSAGE)
+

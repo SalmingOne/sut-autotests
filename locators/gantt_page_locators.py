@@ -13,6 +13,7 @@ class GanttPageLocators:
     # Дровер добавления фазы
     PHASE_NAME_FIELD = (By.CSS_SELECTOR, 'input[name="name"]')
     DRAWER_SUBMIT_BUTTON = (By.XPATH, '//div[@name="parent"]//following::button[@type="submit"]')
+    ALERT_MESSAGE = (By.XPATH, '//div[contains(@class, "MuiAlert-message")]')
 
     def start_date(self, phase_or_task_name):
         return (By.XPATH, f'//div[@aria-label="{phase_or_task_name}"]//following-sibling::*[@data-column-name="start_date"]')
