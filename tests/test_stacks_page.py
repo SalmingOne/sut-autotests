@@ -10,10 +10,10 @@ from pages.stacks_page import StacksPage
 @allure.suite("Справочник Стеки")
 class TestStacksPage:
 
-    @testit.workItemIds(10562)
+    @testit.workItemIds(64970)
     @testit.displayName("10.4.2.3. (Чек-лист) Негативные проверки при добавлении нового стека")
     @pytest.mark.regress
-    @allure.title("id-10562 10.4.2.3. (Чек-лист) Негативные проверки при добавлении нового стека")
+    @allure.title("id-64970 10.4.2.3. (Чек-лист) Негативные проверки при добавлении нового стека")
     def test_negative_checks_when_adding_a_new_stack(self, create_stack, login, driver):
         stacks_page = StacksPage(driver)
         stacks_page.go_to_stacks_page()
