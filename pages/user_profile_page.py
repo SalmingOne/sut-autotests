@@ -38,6 +38,11 @@ class UserProfilePage(BasePage):
     def go_to_resume_tab(self):
         self.element_is_visible(self.locators.RESUME_TAB_BUTTON).click()
 
+    @testit.step("Проверка недоступности вкладки резюме без прав")
+    @allure.step("Проверка недоступности вкладки резюме без прав")
+    def check_resume_tab_unavailable_without_rights(self):
+        assert self.element_is_displayed(self.locators.NOT_FORBIDDEN), 'Вкладка Резюме доступна для просмотра'
+
     @testit.step("Переходим на вкладку Сертификаты")
     @allure.step("Переходим на вкладку Сертификаты")
     def go_to_certificate_tab(self):

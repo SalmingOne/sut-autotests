@@ -60,3 +60,6 @@ class UserPageLocators:
 
     def delete_system_role_button(self, system_role_name):
         return By.XPATH, f'//div[@name="systemRoleIds"]//span[text()="{system_role_name}"]//..//*[local-name()="svg"]'
+
+    def kebab_user_name(self, user_name):
+        return By.XPATH, f'//div[@aria-label="{user_name}"]/../../div[@col-id="actions"]/div/button'

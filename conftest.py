@@ -1328,6 +1328,7 @@ def create_user_with_one_project_role_and_no_assignments():
 
 @pytest.fixture()
 def create_system_role():
+    # Системная роль с правами на просмотр всех резюме
     system_roles_endpoint = SystemRolesEndpoint()
     system_roles_endpoint.delete_system_role_if_it_exist("Единственная")
     payload = dict(name="Единственная",
@@ -1389,9 +1390,10 @@ def create_user_with_two_system_role():
     user_id = user_endpoint.get_user_id_by_email('two_system_role@mail.ruru')
     payload = dict(username="Two_System_role",
                    name="Two",
-                   secondName="System_role",
+                   secondName="Systemrole",
                    gender="MALE",
                    email="two_system_role@mail.ruru",
+                   startWorkDate="2024-01-11",
                    projectRoleIds=[first_project_role_id],
                    postId=first_post_id,
                    departmentId=first_department_id,
