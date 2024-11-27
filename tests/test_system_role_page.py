@@ -234,3 +234,24 @@ class TestSystemRolePage:
             'Изменения внесенные в права не сохранились в системе'
         assert create_system_role['name'] in all_system_role, \
             'Измененной системной роли нет в дровере назначения ролей'
+
+    @testit.workItemIds(3522)
+    @testit.displayName("7.2.3 Отмена редактирования системной роли")
+    @pytest.mark.regress
+    @allure.title("id-3522 7.2.3 Отмена редактирования системной роли")
+    def test_redact_system_role(self, login, create_system_role, driver):
+        system_role_page = SystemRolePage(driver)
+        system_roles_endpoint = SystemRolesEndpoint()
+        system_role_page.go_to_system_roles_page()
+        system_role_page.select_role_name_in_dropdown(create_system_role['name'])
+        # Получаем полномочия системной роли до редактирования
+        id_role_user = system_roles_endpoint.get_user_system_role_id(create_system_role['name'])
+        tags_role_before = system_roles_endpoint.get_tags_system_role_id(id_role_user)
+        system_role_page.press_redact_system_role()
+        system_role_page.editing_system_role()
+        system_role_page.press_abort_button()
+        # Получаем полномочия системной роли после редактирования
+        tags_role_after = system_roles_endpoint.get_tags_system_role_id(id_role_user)
+        system_role_page.check_role_name_in_dropdown(create_system_role['name'])
+        assert tags_role_before == tags_role_after, \
+            'Изменения внесенные до отмены сохранения, сохранились в системе'
