@@ -1,3 +1,5 @@
+import random
+
 import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
@@ -22,6 +24,7 @@ from endpoints.resume_endpoint import ResumeEndpoint
 from endpoints.search_profile_endpoint import SearchProfileEndpoint
 from endpoints.skills_and_knowledge_endpoint import SkillsAndKnowledgeEndpoint
 from endpoints.slots_endpoint import SlotsEndpoint
+from endpoints.stacks_endpoint import StacksEndpoint
 from endpoints.statement_files_endpoint import StatementFilesEndpoint
 from endpoints.system_roles_endpoint import SystemRolesEndpoint
 from endpoints.attraction_rates_endpoint import AttractionRatesEndpoint
@@ -1901,3 +1904,19 @@ def changed_attraction_rate():
         attraction_rate_endpoint.delete_attraction_rate(str(response.json()['id'] - 1))
     else:
         pass
+
+
+@pytest.fixture()
+def create_stack(create_skill):
+    department_endpoint = DepartmentsEndpoint()
+    stacks_endpoint = StacksEndpoint()
+    random_department_id = random.choice(department_endpoint.get_all_departments_id())
+    payload = dict(
+        name="BASIC",
+        departmentId=random_department_id,
+        skillIds=[create_skill['id']]
+    )
+    response = stacks_endpoint.create_stacks_api(json=payload)
+    yield response.json()
+    stacks_endpoint.delete_stacks_api(str(response.json()['id']))
+

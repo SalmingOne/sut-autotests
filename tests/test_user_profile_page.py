@@ -6,7 +6,7 @@ import testit
 
 from data.data import USER_NAME
 from endpoints.project_endpoint import ProjectEndpoint
-from endpoints.skills_endpoint import SkillsEndpoint
+from endpoints.skills_and_knowledge_endpoint import SkillsAndKnowledgeEndpoint
 from pages.advanced_search_page import AdvancedSearchPage
 from pages.colleagues_page import ColleaguesPage
 from pages.schedule_page import SchedulePage
@@ -1394,7 +1394,7 @@ class TestUserProfilePage:
         assert filed_date[0] == after_change_project[5], "Новое значение даты начала не отображается в поле"
         assert filed_date[1] == after_change_project[6], "Новое значение даты окончания не отображается в поле"
         # Поле Знания
-        skill_endpoint = SkillsEndpoint()
+        skill_endpoint = SkillsAndKnowledgeEndpoint()
         api_skills = skill_endpoint.get_all_skills_name_api()
         chips_value = user_profile_page.get_chips_values()
         skills_dropdown_values = user_profile_page.get_skills_dropdown_items()
@@ -1425,7 +1425,7 @@ class TestUserProfilePage:
         else:
             user_profile_page.field_experience_form_with_exists_employer()
         user_profile_page.press_redact_button()
-        skill_endpoint = SkillsEndpoint()
+        skill_endpoint = SkillsAndKnowledgeEndpoint()
         api_skills = skill_endpoint.get_all_skills_name_api()
         chips_value = user_profile_page.get_chips_values()
         skills_dropdown_values = user_profile_page.get_skills_dropdown_items()

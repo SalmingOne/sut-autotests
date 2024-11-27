@@ -61,3 +61,7 @@ class SkillsAndKnowledgeEndpoint:
             pass
         else:
             self.delete_skills_and_knowledge_api(str(skill_id))
+
+    @allure_testit_step("Получение списка всех знаний")
+    def get_all_skills_name_api(self):
+        return [item['name'] for item in self.get_all_skills_and_knowledge_api().json()]
