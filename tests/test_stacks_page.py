@@ -52,3 +52,22 @@ class TestStacksPage:
         stacks_page.press_add_skill_button()
         time.sleep(1)
         stacks_page.check_selected_skill_not_in_drawer(create_skill)
+
+    @testit.workItemIds(64974)
+    @testit.displayName("10.4.2.3.2 Удаление/отмена удаления навыка или знания из стека")
+    @pytest.mark.regress
+    @allure.title("id-64974 10.4.2.3.2 Удаление/отмена удаления навыка или знания из стека")
+    def test_removing_unremoving_a_skill_or_knowledge_from_the_stack(self, login, driver):
+        stacks_page = StacksPage(driver)
+        stacks_page.go_to_stacks_page()
+        stacks_page.press_add_stack_button()
+        stacks_page.add_skill_to_stack()
+        before = stacks_page.get_all_skills_name_in_tab()
+        stacks_page.press_delete_skill_button()
+        stacks_page.check_delete_skill_modal_window()
+        stacks_page.press_modal_break_button()
+        after_break = stacks_page.get_all_skills_name_in_tab()
+        assert before == after_break, "После отмены удаления навыка таблица изменилась"
+        stacks_page.delete_one_skill_from_stack()
+        after_delete = stacks_page.get_all_skills_name_in_tab()
+        assert before != after_delete, "Навык не удалился"
