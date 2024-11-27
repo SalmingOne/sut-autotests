@@ -65,3 +65,15 @@ class SkillsAndKnowledgeEndpoint:
     @allure_testit_step("Получение списка всех знаний")
     def get_all_skills_name_api(self):
         return [item['name'] for item in self.get_all_skills_and_knowledge_api().json()]
+
+    @allure_testit_step("Получение двух списков знаний и навыков")
+    def get_skills_and_knowledge_lists_api(self):
+        all_items = self.get_all_skills_and_knowledge_api().json()
+        skills = []
+        knowledge = []
+        for item in all_items:
+            if item['type'] == 'skill':
+                skills.append(item['name'])
+            else:
+                knowledge.append(item['name'])
+        return skills, knowledge

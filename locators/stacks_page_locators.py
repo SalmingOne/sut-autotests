@@ -15,9 +15,13 @@ class StacksPageLocators:
     DEPARTMENT_FIELD_COLOR = (By.XPATH, '//div[@name="departmentId"]//input//following-sibling::fieldset')
     CLEAR_DEPARTMENT_FIELD = (By.CSS_SELECTOR, 'svg[data-testid="CloseIcon"]')
     ADD_SKILL_BUTTON = (By.XPATH, '//button[text()="Добавить знание/навык"]')
+    SKILLS_NAMES = (By.XPATH, '//div[@col-id="name"]//p')
     DELETE_SKILL_BUTTON = (By.CSS_SELECTOR, 'button[title="Удалить"]')
     # Дровер добавления навыка/знания в стек
     SKILL_NAME_INPUT = (By.XPATH, '//div[@name="name"]//input')
+    SKILL_TYPE_INPUT = (By.XPATH, '//div[@name="type"]//input')
+    DESCRIPTION_FIELD = (By.CSS_SELECTOR, 'input[name="description"]')
+    BREAK_BUTTON = (By.XPATH, '//div[@name="name"]//following::button[text()="Отменить"]')
     CONFIRM_BUTTON = (By.XPATH, '//button[text()="Подтвердить"]')
 
     SUBMIT_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
@@ -27,3 +31,6 @@ class StacksPageLocators:
 
     def text_on_page(self, name):
         return (By.XPATH, f'//*[text()="{name}"]')
+
+    def li_by_text(self, name):
+        return (By.XPATH, f'//li[text()="{name}"]')

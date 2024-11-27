@@ -110,3 +110,89 @@ class StacksPage(BasePage):
         self.action_move_to_element(self.element_is_visible(self.locators.SUBMIT_BUTTON))
         assert self.element_is_visible(self.locators.TOOLTIP).text == 'Необходимо добавить хотя бы один навык или знание', \
             "Не появился тултип или текст тултипа не корректен"
+
+    @allure_testit_step('Нажатие кнопки добавить знание/навык')
+    def press_add_skill_button(self):
+        self.element_is_visible(self.locators.ADD_SKILL_BUTTON).click()
+
+    @allure_testit_step('Проверка дровера добавления знания/навыка')
+    def check_add_skill_drawer(self):
+        self.check_skill_type_field()
+        # Навыки
+        self.element_is_visible(self.locators.text_on_page('Знание')).click()
+        self.element_is_visible(self.locators.SKILL_NAME_INPUT).click()
+        knowledge = [element.text for element in self.elements_are_visible(self.locators.LI_MENU_ITEM)]
+        self.action_esc()
+        # Знания
+        self.element_is_visible(self.locators.SKILL_TYPE_INPUT).click()
+        self.element_is_visible(self.locators.text_on_page('Навык')).click()
+        self.element_is_visible(self.locators.SKILL_NAME_INPUT).click()
+        skills = [element.text for element in self.elements_are_visible(self.locators.LI_MENU_ITEM)]
+        self.action_esc()
+        assert not self.element_is_clickable(self.locators.DESCRIPTION_FIELD), "Поле описание кликабельно"
+        assert self.element_is_displayed(self.locators.ADD_STACK_BUTTON), "Отсутствует кнопка Добавить"
+        assert self.element_is_displayed(self.locators.BREAK_BUTTON), "Отсутствует кнопка Отменить"
+        return skills, knowledge
+
+    @allure_testit_step('Проверка поля тип')
+    def check_skill_type_field(self):
+        default_value = self.element_is_visible(self.locators.SKILL_TYPE_INPUT).get_attribute('value')
+        self.element_is_visible(self.locators.SKILL_TYPE_INPUT).click()
+        types = [element.text for element in self.elements_are_visible(self.locators.LI_MENU_ITEM)]
+        assert default_value == 'Навык', "По умолчанию в поле тип выбрано не значение Навык"
+        assert types == ['Навык', 'Знание'], "В дропдауне есть не все доступные значения"
+
+    @allure_testit_step('Проверка выбора типа')
+    def check_choose_type(self):
+        self.element_is_visible(self.locators.SKILL_TYPE_INPUT).click()
+        item_in_drawer = self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].text
+        self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
+        item_in_field = self.element_is_visible(self.locators.SKILL_TYPE_INPUT).get_attribute('value')
+        assert item_in_drawer == item_in_field, "Выбранный тип не отображается в поле"
+
+    @allure_testit_step('Проверка выбора названия')
+    def check_choose_name(self):
+        self.element_is_visible(self.locators.SKILL_NAME_INPUT).click()
+        item_in_drawer = self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].text
+        self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
+        item_in_field = self.element_is_visible(self.locators.SKILL_NAME_INPUT).get_attribute('value')
+        self.element_is_visible(self.locators.text_on_page('Добавление навыка/знания в стек')).click()
+        assert item_in_drawer == item_in_field, "Выбранное название не отображается в поле"
+        return item_in_field
+
+    @allure_testit_step('Получение имен всех добавленных в стек знаний/навыков')
+    def get_all_skills_name_in_tab(self):
+        if self.element_is_displayed(self.locators.SKILLS_NAMES):
+            return [element.get_attribute('aria-label') for element in self.elements_are_visible(self.locators.SKILLS_NAMES)]
+        else:
+            return []
+
+    @allure_testit_step('Нажатие кнопки отменить')
+    def press_break_button(self):
+        self.element_is_visible(self.locators.BREAK_BUTTON).click()
+
+    @allure_testit_step('Проверка отображения описания знания/навыка')
+    def check_description(self, skill_json):
+        self.element_is_visible(self.locators.SKILL_TYPE_INPUT).click()
+        if skill_json['type'] == 'skill':
+            self.element_is_visible(self.locators.li_by_text('Навык')).click()
+        else:
+            self.element_is_visible(self.locators.li_by_text('Знание')).click()
+        self.element_is_visible(self.locators.SKILL_NAME_INPUT).click()
+        self.element_is_visible(self.locators.li_by_text(skill_json['name'])).click()
+        in_field = self.element_is_visible(self.locators.DESCRIPTION_FIELD).get_attribute('value')
+        self.element_is_visible(self.locators.text_on_page('Добавление навыка/знания в стек')).click()
+        assert in_field == skill_json['description'], "В поле описание не подтянулось соответствующее значение"
+
+    @allure_testit_step('Проверка отсутствия уже добавленного знания/навыка в дровере Название')
+    def check_selected_skill_not_in_drawer(self, skill_json):
+        self.element_is_visible(self.locators.SKILL_TYPE_INPUT).click()
+        time.sleep(1)
+        if skill_json['type'] == 'skill':
+            self.element_is_visible(self.locators.li_by_text('Навык')).click()
+        else:
+            self.element_is_visible(self.locators.li_by_text('Знание')).click()
+        self.element_is_visible(self.locators.SKILL_NAME_INPUT).click()
+        skills = [element.text for element in self.elements_are_visible(self.locators.LI_MENU_ITEM)]
+        assert skill_json['name'] not in skills, "Добавленный навык доступен для выбора в дровере"
+
