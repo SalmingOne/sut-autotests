@@ -435,7 +435,7 @@ class UserProfilePage(BasePage):
         menu_item_text = []
         for item in all_items:
             menu_item_text.append(item.text)
-        self.action_esc()
+        self.element_is_visible(locator).send_keys(Keys.RETURN)
         return menu_item_text
 
     @testit.step("Проверка ограничения в 128 символов для поля")

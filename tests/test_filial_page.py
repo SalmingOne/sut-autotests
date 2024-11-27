@@ -210,6 +210,6 @@ class TestFilialPage:
     def test_removing_a_user_from_the_filial(self, create_filial, login, driver):
         filial_page = FilialPage(driver)
         filial_page.go_to_filial_page()
-        time.sleep(1)
+        time.sleep(2)
         filial_page.add_first_user_to_filial(create_filial)
         filial_page.check_removing_user_from_filial(create_filial)

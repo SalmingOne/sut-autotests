@@ -23,6 +23,7 @@ class LaborCostPage(BasePage):
     @testit.step("Переход на таблицу трудозатрат через меню")
     @allure.step("Переход на таблицу трудозатрат через меню")
     def go_to_labor_cost_page(self):
+        time.sleep(1)
         self.action_move_to_element(self.element_is_visible(self.locators.TAB_ACTIVITY))
         self.element_is_visible(self.locators.TAB_LABOR_COST_TABLE).click()
 
@@ -149,6 +150,7 @@ class LaborCostPage(BasePage):
         self.element_is_visible(self.locators.MONTH_DATEPICKER).click()
         month = month_name
         month_locator = (By.XPATH, f'//button[text()="{month}"]')
+        time.sleep(2)
         self.element_is_visible(month_locator).click()
 
     @testit.step("Списываем трудозатраты за первый и последний день года")
@@ -274,6 +276,7 @@ class LaborCostPage(BasePage):
     @testit.step("Возвращаем шапку таблицы трудозатрат и номер последнего дня")
     @allure.step("Возвращаем шапку таблицы трудозатрат и номер последнего дня")
     def check_tab_head(self):
+        time.sleep(2)
         all_day_list = self.elements_are_present(self.locators.ALL_DAY_NUMBER)
         numbers = []
         for day in all_day_list:
@@ -805,6 +808,7 @@ class LaborCostPage(BasePage):
     @testit.step("Удаление файла")
     @allure.step("Удаление файла")
     def delete_file(self, name):
+        time.sleep(1)
         os.remove(rf'../{name}')
 
     @testit.step("Нажатие кнопки добавления себя на проект")

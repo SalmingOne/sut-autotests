@@ -52,7 +52,7 @@ class SystemRolePage(BasePage):
     def get_all_role_names(self):
         self.element_is_visible(self.locators.ROLE_FIELD).click()
         all_roles_element = self.elements_are_visible(self.locators.ALL_NAMES_IN_DROPDOWN)
-        data =[]
+        data = []
         for element in all_roles_element:
             data.append(element.text)
         self.action_esc()

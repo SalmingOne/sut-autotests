@@ -7,7 +7,7 @@ class FilialPageLocators:
     REFERENCE_BOOKS = (By.CSS_SELECTOR, 'a[href="/admin/references/personal-qualities"]')
     FILIAL_TAB = (By.XPATH, '//div[text()="Филиалы"]')
     # Таблица филиалы
-    ADD_FILIAL_BUTTON = (By.XPATH, '//button[contains(@class,"MuiButton-root MuiButton-text MuiButton-textPrimary")]')
+    ADD_FILIAL_BUTTON = (By.XPATH, '//button[text()="Создать филиал"]')
     REDACT_BUTTON = (By.XPATH, '//span[text()="Редактировать"]')
     KEBAB_VIEW_FULL_INFO_BUTTON = (By.XPATH, '//span[text()="Просмотр полной информации"]')
     KEBAB_DELETE_BUTTON = (By.XPATH, '//span[text()="Удалить"]')

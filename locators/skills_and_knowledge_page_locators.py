@@ -9,7 +9,7 @@ class SkillsAndKnowledgePageLocators:
     # Таблица
     COLUMN_TITLES = (By.XPATH, '//div[@role="presentation"]//h6')
     COLUMN_ACTION_TITLE = (By.XPATH, '//span[@class="ag-header-cell-text"]')
-    ADD_SKILLS_BUTTON = (By.XPATH, '//button[contains(@class,"MuiButton-root MuiButton-text MuiButton-textPrimary")]')
+    ADD_SKILLS_BUTTON = (By.XPATH, '//button[text()="Добавить"]')
     SORT_SKILLS_BUTTON = (By.XPATH, '//div[@col-id="name"]//*[text()="Название"]')
     KEBAB_MENU = (By.CSS_SELECTOR, 'svg[data-testid="MoreHorizIcon"]')
     KEBAB_MENU_ITEM = (By.CSS_SELECTOR, 'span[class^="MuiTypography-root MuiTypography-caption"]')
