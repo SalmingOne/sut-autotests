@@ -202,3 +202,14 @@ class TestUsersPage:
         user_profile_page = UserProfilePage(driver)
         user_profile_page.go_to_resume_tab()
         user_profile_page.check_resume_tab_unavailable_without_rights()
+
+    @testit.workItemIds(484)
+    @testit.displayName("7.1.1 Снятие всех системных ролей с пользователя")
+    @pytest.mark.regress
+    @allure.title("id-484 7.1.1 Снятие всех системных ролей с пользователя")
+    def test_removing_all_system_roles_from_user(self, create_user_with_many_system_role,
+                                                 login, driver):
+        user_page = UserPage(driver)
+        user_page.go_to_user_page()
+        user_page.check_delete_all_system_roles_from_user(
+            create_user_with_many_system_role)
