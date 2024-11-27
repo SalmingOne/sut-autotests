@@ -190,3 +190,78 @@ class SystemRolePage(BasePage):
         self.element_is_visible(self.locators.REPLACE_SYSTEM_ROLE).click()
         self.element_is_visible(self.locators.SYSTEM_ROLE_USER).click()
         return 'Пользователь'
+
+    @allure_testit_step("Проверка реакции системы при выборе чекбоксов C/R/U/D")
+    def check_system_reaction_when_selecting_checkboxes(self):
+        self.element_is_visible(self.locators.REVEAL_PROJECTS).click()
+        self.element_is_visible(self.locators.REVEAL_SEE_ALL_PROJECTS).click()
+        # Очищаем все чекбоксы если есть выбранные
+        self.clear_checkboxes_all_projects()
+
+        # Выбираем чекбокс C
+        self.elements_are_visible(self.locators.ALL_TAG_CHECKBOXES_ALL_PROJECTS)[0].click()
+        # Проверяем включены ли C и R
+        indexes_checked = self.get_index_checked_checkboxes()
+        assert indexes_checked == [0, 6]
+        self.clear_checkboxes_all_projects()
+        # Выбираем чекбокс C только свои данные
+        self.elements_are_visible(self.locators.ALL_TAG_CHECKBOXES_ALL_PROJECTS)[1].click()
+        # Проверяем включены ли C и R только свои данные
+        indexes_checked = self.get_index_checked_checkboxes()
+        assert indexes_checked == [1, 7]
+        self.clear_checkboxes_all_projects()
+
+        # Выбираем чекбокс U
+        self.elements_are_visible(self.locators.ALL_TAG_CHECKBOXES_ALL_PROJECTS)[3].click()
+        # Проверяем включены ли U и R
+        indexes_checked = self.get_index_checked_checkboxes()
+        assert indexes_checked == [3, 6]
+        self.clear_checkboxes_all_projects()
+        # Выбираем чекбокс U только свои данные
+        self.elements_are_visible(self.locators.ALL_TAG_CHECKBOXES_ALL_PROJECTS)[4].click()
+        # Проверяем включены ли U и R только свои данные
+        indexes_checked = self.get_index_checked_checkboxes()
+        assert indexes_checked == [4, 7]
+        self.clear_checkboxes_all_projects()
+
+        # Выбираем чекбокс D
+        self.elements_are_visible(self.locators.ALL_TAG_CHECKBOXES_ALL_PROJECTS)[9].click()
+        # Проверяем включены ли D и R
+        indexes_checked = self.get_index_checked_checkboxes()
+        assert indexes_checked == [6, 9]
+        self.clear_checkboxes_all_projects()
+        # Выбираем чекбокс D только свои данные
+        self.elements_are_visible(self.locators.ALL_TAG_CHECKBOXES_ALL_PROJECTS)[10].click()
+        # Проверяем включены ли D и R только свои данные
+        indexes_checked = self.get_index_checked_checkboxes()
+        assert indexes_checked == [7, 10]
+        self.clear_checkboxes_all_projects()
+
+        # Выбираем чекбокс R
+        self.elements_are_visible(self.locators.ALL_TAG_CHECKBOXES_ALL_PROJECTS)[6].click()
+        # Проверяем включен ли только R
+        indexes_checked = self.get_index_checked_checkboxes()
+        assert indexes_checked == [6]
+        self.clear_checkboxes_all_projects()
+        # Выбираем чекбокс R только свои данные
+        self.elements_are_visible(self.locators.ALL_TAG_CHECKBOXES_ALL_PROJECTS)[7].click()
+        # Проверяем включены ли только R только свои данные
+        indexes_checked = self.get_index_checked_checkboxes()
+        assert indexes_checked == [7]
+        self.clear_checkboxes_all_projects()
+
+    @allure_testit_step("Очищаем все чекбоксы если есть выбранные")
+    def clear_checkboxes_all_projects(self):
+        all_checkbox = self.elements_are_visible(self.locators.ALL_TAG_CHECKBOXES_ALL_PROJECTS)
+        for element in all_checkbox:
+            if 'ag-checked' in element.get_attribute("class"):
+                element.click()
+
+    @allure_testit_step("Получение индексов всех включенных чекбоксов в разделе Посмотреть все проекты")
+    def get_index_checked_checkboxes(self):
+        all_checkbox = self.elements_are_visible(self.locators.ALL_TAG_CHECKBOXES_ALL_PROJECTS)
+        data = []
+        for index, item in enumerate(all_checkbox):
+            if 'ag-checked' in item.get_attribute("class"):
+                data.append(index)
+        return data
