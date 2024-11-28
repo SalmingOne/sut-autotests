@@ -71,3 +71,18 @@ class TestStacksPage:
         stacks_page.delete_one_skill_from_stack()
         after_delete = stacks_page.get_all_skills_name_in_tab()
         assert before != after_delete, "Навык не удалился"
+
+    @testit.workItemIds(12933)
+    @testit.displayName("10.4.2.2. Просмотр стека")
+    @pytest.mark.regress
+    @allure.title("id-12933 10.4.2.2. Просмотр стека")
+    def test_stack_view(self, create_stack, login, driver):
+        stacks_page = StacksPage(driver)
+        stacks_page.go_to_stacks_page()
+        stacks_page.press_view_stack_button(create_stack['name'])
+        time.sleep(1)
+        titles = stacks_page.get_h6_titles()
+        assert create_stack['name'] in titles, "Нет поля Название"
+        assert create_stack['department']['name'] in titles, "Нет поля Отдел"
+        assert 'Название' and 'Тип' and 'Описание' in titles, "Есть не все заголовки таблицы"
+        stacks_page.check_view_tab_buttons()
