@@ -211,3 +211,16 @@ class StacksPage(BasePage):
     def press_modal_break_button(self):
         self.element_is_visible(self.locators.MODAL_BREAK_BUTTON).click()
 
+    @allure_testit_step('Нажатие кнопки Просмотр стека')
+    def press_view_stack_button(self, stack_name):
+        self.element_is_visible(self.locators.kebab_by_stack_name(stack_name)).click()
+        self.element_is_visible(self.locators.KEBABS_VIEW_MENU_ITEM).click()
+
+    @allure_testit_step('Получение заголовков страницы просмотра стека')
+    def get_h6_titles(self):
+        return [element.text for element in self.elements_are_present(self.locators.TITLES)]
+
+    @allure_testit_step('Проверка наличия кнопок Редактировать и Закрыть')
+    def check_view_tab_buttons(self):
+        assert self.element_is_displayed(self.locators.REDACT_BUTTON), "Нет кнопки Редактировать"
+        assert self.element_is_displayed(self.locators.CLOSE_BUTTON), "Нет кнопки Закрыть"

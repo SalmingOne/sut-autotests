@@ -8,6 +8,12 @@ class StacksPageLocators:
     STACKS_TAB = (By.XPATH, '//div[text()="Стеки"]')
     # Таблица Стеки
     ADD_STACK_BUTTON = (By.XPATH, '//button[text()="Добавить"]')
+    KEBABS_REDACT_MENU_ITEM = (By.XPATH, '//span[text()="Редактировать"]')
+    KEBABS_VIEW_MENU_ITEM = (By.XPATH, '//span[text()="Просмотр"]')
+    # Стек в режиме просмотра
+    TITLES = (By.XPATH, '//div[contains(@class,"MuiPaper-elevation0")]//h6')
+    REDACT_BUTTON = (By.XPATH, '//button[text()="Редактировать"]')
+    CLOSE_BUTTON = (By.XPATH, '//button[text()="Закрыть"]')
     # Страница добавления стека
     NAME_FIELD = (By.CSS_SELECTOR, 'input[name="name"]')
     NAME_FIELD_COLOR = (By.XPATH, '//input[@name="name"]//following-sibling::fieldset')
@@ -35,3 +41,6 @@ class StacksPageLocators:
 
     def li_by_text(self, name):
         return (By.XPATH, f'//li[text()="{name}"]')
+
+    def kebab_by_stack_name(self, name):
+        return (By.XPATH, f'//p[text()="{name}"]/..//following-sibling::div[@aria-colindex="3"]//button')
