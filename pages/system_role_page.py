@@ -265,3 +265,38 @@ class SystemRolePage(BasePage):
             if 'ag-checked' in item.get_attribute("class"):
                 data.append(index)
         return data
+
+    @allure_testit_step("Получаем текст всех элементов таблицы")
+    def get_table_elements_text(self):
+        elements = self.elements_are_visible(self.locators.LOC)
+        return [element.text for element in elements]
+
+    @allure_testit_step("Кликаем по кнопке для элементов, которые не содержат тег")
+    def filter_and_click(self, tag, elements):
+        for name in elements:
+            if tag.lower() not in name.lower():
+                button = self.element_is_visible(self.locators.get_functionality_name_in_table(name))
+                button.click()
+
+    @allure_testit_step("Проверка поиска по тэгам в таблице")
+    def check_search_by_tags(self, tag_name):
+        search_input = self.element_is_visible(self.locators.INPUT_SEARCH_TAGS)
+        search_input.send_keys(tag_name)
+        # Поиск тэгов на первой вложенности
+        time.sleep(1)
+        initial_names = self.get_table_elements_text()
+        self.filter_and_click(tag_name, initial_names)
+
+        # Поиск тэгов на второй вложенности
+        time.sleep(1)
+        updated_names = self.get_table_elements_text()
+        new_elements = [name for name in updated_names if name not in initial_names]
+        self.filter_and_click(tag_name, new_elements)
+
+        # Поиск тэгов на последней вложенности
+        time.sleep(1)
+        final_names = self.get_table_elements_text()
+        final_new_elements = [name for name in final_names if name not in initial_names + new_elements]
+
+        for name in final_new_elements:
+            assert tag_name.lower() in name.lower(), 'Таблица содержит теги, не соответствующие поиску'
