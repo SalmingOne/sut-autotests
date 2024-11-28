@@ -187,5 +187,6 @@ class GanttPage(BasePage):
     def get_phases_name(self):
         return [element.text.split('\n')[1] for element in self.elements_are_visible(self.locators.PHASES_NAME)]
 
+    @allure_testit_step('Сохранить изменения в таблице')
     def save_changes(self):
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
