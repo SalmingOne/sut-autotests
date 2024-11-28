@@ -268,7 +268,7 @@ class SystemRolePage(BasePage):
 
     @allure_testit_step("Получаем текст всех элементов таблицы")
     def get_table_elements_text(self):
-        elements = self.elements_are_visible(self.locators.LOC)
+        elements = self.elements_are_visible(self.locators.TAG_TEXT)
         return [element.text for element in elements]
 
     @allure_testit_step("Кликаем по кнопке для элементов, которые не содержат тег")

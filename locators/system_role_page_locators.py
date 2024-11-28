@@ -28,8 +28,8 @@ class SystemRolePageLocators:
     REPLACE_SYSTEM_ROLE = (By.XPATH, '//label[text()="Новая системная роль"]/../div/div')
     BORDER_REPLACE_SYSTEM_ROLE = (By.XPATH, '//label[text()="Новая системная роль"]')
     SYSTEM_ROLE_USER = (By.XPATH, '//li[text()="Пользователь"]')
-    LOC = (By.CSS_SELECTOR, 'div > p')
-    P = (By.CSS_SELECTOR, 'p')
+
+    TAG_TEXT = (By.CSS_SELECTOR, 'div > p')
     REVEAL_BUTTON = (By.XPATH, '//div[@class="ag-center-cols-container"]//button[contains(@class, "MuiIconButton")]')
     REVEAL_PROJECTS = (By.XPATH, '//p[@aria-label="Проекты"]/../button')
     REVEAL_SEE_ALL_PROJECTS = (By.XPATH, '//p[@aria-label="Посмотреть все проекты"]/../button')
