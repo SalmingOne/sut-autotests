@@ -275,8 +275,7 @@ class SystemRolePage(BasePage):
     def filter_and_click(self, tag, elements):
         for name in elements:
             if tag.lower() not in name.lower():
-                button = self.element_is_visible(self.locators.get_functionality_name_in_table(name))
-                button.click()
+                self.element_is_visible(self.locators.get_functionality_name_in_table(name)).click()
 
     @allure_testit_step("Проверка поиска по тэгам в таблице")
     def check_search_by_tags(self, tag_name):
