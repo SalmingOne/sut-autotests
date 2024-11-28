@@ -149,3 +149,22 @@ class TestGanttPage:
         time.sleep(5)
         assert 'Полнолуние' not in gantt_page.get_phases_name(), "Изменения сохранены"
         assert gantt_page.get_status_of_gantt_task(), "Диаграмма Ганта не отображается"
+
+    @testit.workItemIds(4303)
+    @testit.displayName('14.1.2 Выбор кнопки "Отмена" в модальном окне отмены изменений')
+    @pytest.mark.regress
+    @allure.title('id-4303 14.1.2 Выбор кнопки "Отмена" в модальном окне отмены изменений')
+    def test_discard_diagram_changes(self, project_with_assignment, login, driver):
+        gantt_page = GanttPage(driver)
+        all_project_page = AllProjectPage(driver)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(project_with_assignment[0]['name'])
+        gantt_page.go_to_gantt_tab()
+        time.sleep(2)
+        gantt_page.edit_diagram()
+        gantt_page.add_phase('Полнолуние')
+        gantt_page.discard_changes(confirm=False)
+        time.sleep(5)
+        gantt_page.buttons_are_displayed()
+        assert 'Полнолуние' in gantt_page.get_phases_name(), "Внесенные ранее изменения не отображаются"
+        assert gantt_page.get_status_of_gantt_task(), "Диаграмма Ганта не отображается"
