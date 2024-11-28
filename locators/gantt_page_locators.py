@@ -13,6 +13,7 @@ class GanttPageLocators:
     # Дровер добавления фазы
     PHASE_NAME_FIELD = (By.CSS_SELECTOR, 'input[name="name"]')
     DRAWER_SUBMIT_BUTTON = (By.XPATH, '//div[@name="parent"]//following::button[@type="submit"]')
+    ALERT_MESSAGE = (By.XPATH, '//div[contains(@class, "MuiAlert-message")]')
 
     def start_date(self, phase_or_task_name):
         return (By.XPATH, f'//div[@aria-label="{phase_or_task_name}"]//following-sibling::*[@data-column-name="start_date"]')
@@ -36,11 +37,12 @@ class GanttPageLocators:
     COLUMN_HEADER = (By.CSS_SELECTOR, 'div[role="columnheader"]')
     CHECKBOXES_TEXT = (By.XPATH, '//span[contains(@class,"MuiCheckbox-root")]//following-sibling::span[contains(@class,"MuiTypography-body1")]')
     CHECKBOXES = (By.XPATH, "//input[@type='checkbox']/..")
+    PHASES_NAME = (By.XPATH, "//div[contains(@class, 'gantt_grid')]//div[contains(@class, 'odd')]")
 
     LI_MENU_ITEM = (By.CSS_SELECTOR, 'li[role="option"]')
     TABLE_ROWS = (By.XPATH, "//div[contains(@class, 'gantt_row')]")
     GANTT_TOOLTIP = (By.CSS_SELECTOR, 'div[class="gantt_tooltip"]')
-
+    SUBMIT_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
     def get_task(self, task_name):
         return By.XPATH, f"//div[contains(@class, 'gantt_row') and contains(@aria-label, 'Задача: {task_name} ')]"
 

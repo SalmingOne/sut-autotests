@@ -20,3 +20,9 @@ class AuthEndpoint:
         self.response = requests.post(url=Urls.auth_url, json=payload, verify=False)
         self.response_json = self.response.json()
         return {"Access": "Bearer " + self.response_json['accessToken']}
+
+    @allure.step("Получаем токен другого пользователя")
+    def get_header_token_by_other_user(self, payload):
+        self.response = requests.post(url=Urls.auth_url, json=payload, verify=False)
+        self.response_json = self.response.json()
+        return {"Access": "Bearer " + self.response_json['accessToken']}

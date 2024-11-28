@@ -16,9 +16,21 @@ class GanttEndpoint:
         return self.response
 
     @allure.step('Переход в режим редактирования')
-    def start_editing(self,project_id):
+    def start_editing(self, project_id):
         header = AuthEndpoint().get_header_token_api()
         self.response = requests.post(url=Urls().gantt_start_editing_url + f'?projectId={project_id}', headers=header, verify=False)
+        return self.response
+
+    @allure.step('Переход в режим редактирования под другим пользователем')
+    def start_editing_by_other_user(self, project_id):
+        payload = dict(
+            login='superadmin',
+            password='password',
+        )
+        AuthEndpoint().auth_api(payload)
+        header = AuthEndpoint().get_header_token_by_other_user(payload)
+        self.response = requests.post(url=Urls().gantt_start_editing_url + f'?projectId={project_id}', headers=header,
+                                      verify=False)
         return self.response
 
     @allure.step('Изменение статуса фазы')
