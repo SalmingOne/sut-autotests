@@ -37,6 +37,7 @@ class GanttPageLocators:
     COLUMN_HEADER = (By.CSS_SELECTOR, 'div[role="columnheader"]')
     CHECKBOXES_TEXT = (By.XPATH, '//span[contains(@class,"MuiCheckbox-root")]//following-sibling::span[contains(@class,"MuiTypography-body1")]')
     CHECKBOXES = (By.XPATH, "//input[@type='checkbox']/..")
+    PHASES_NAME = (By.XPATH, "//div[contains(@class, 'gantt_grid')]//div[contains(@class, 'odd')]")
 
     LI_MENU_ITEM = (By.CSS_SELECTOR, 'li[role="option"]')
     TABLE_ROWS = (By.XPATH, "//div[contains(@class, 'gantt_row')]")

@@ -26,6 +26,7 @@ class GanttPage(BasePage):
         self.element_is_visible(self.locators.CREATE_PHASE_OR_TASK_BUTTON).click()
         self.element_is_visible(self.locators.CREATE_PHASE_BUTTON).click()
         self.element_is_visible(self.locators.PHASE_NAME_FIELD).send_keys(phase_name)
+        time.sleep(0.5)
         self.element_is_visible(self.locators.DRAWER_SUBMIT_BUTTON).click()
 
     @testit.step("Проверка даты начала и окончания")
@@ -181,4 +182,8 @@ class GanttPage(BasePage):
     @allure_testit_step('Получить все сообщения системы')
     def get_errors_on_page(self):
         return self.get_all_alert_message(self.locators.ALERT_MESSAGE)
+
+    @allure_testit_step('Получить названия фаз')
+    def get_phases_name(self):
+        return [element.text.split('\n')[1] for element in self.elements_are_visible(self.locators.PHASES_NAME)]
 

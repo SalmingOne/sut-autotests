@@ -115,7 +115,18 @@ class TestGanttPage:
         gantt_page.edit_diagram()
         assert 'Проект уже редактируется другим пользователем' in gantt_page.get_errors_on_page(), 'Нет сообщения системы о редактировании диаграммы другим пользователем'
 
-
-
-
-
+    @testit.workItemIds(3027)
+    @testit.displayName('14.1.2 Сохранение редактирования диаграммы Ганта')
+    @pytest.mark.regress
+    @allure.title('id-3027 14.1.2 Сохранение редактирования диаграммы Ганта')
+    def test_save_diagram_changes(self, project_with_assignment, login, driver):
+        gantt_page = GanttPage(driver)
+        all_project_page = AllProjectPage(driver)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(project_with_assignment[0]['name'])
+        gantt_page.go_to_gantt_tab()
+        time.sleep(2)
+        gantt_page.edit_diagram()
+        gantt_page.add_phase('Новолуние')
+        assert 'Новолуние' in gantt_page.get_phases_name(), 'Изменения не сохранены'
+        assert gantt_page.get_status_of_gantt_task(), "Диаграмма Ганта не отображается"
