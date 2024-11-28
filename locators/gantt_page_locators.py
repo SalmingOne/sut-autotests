@@ -42,7 +42,7 @@ class GanttPageLocators:
     LI_MENU_ITEM = (By.CSS_SELECTOR, 'li[role="option"]')
     TABLE_ROWS = (By.XPATH, "//div[contains(@class, 'gantt_row')]")
     GANTT_TOOLTIP = (By.CSS_SELECTOR, 'div[class="gantt_tooltip"]')
-
+    SUBMIT_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
     def get_task(self, task_name):
         return By.XPATH, f"//div[contains(@class, 'gantt_row') and contains(@aria-label, 'Задача: {task_name} ')]"
 

@@ -128,5 +128,6 @@ class TestGanttPage:
         time.sleep(2)
         gantt_page.edit_diagram()
         gantt_page.add_phase('Новолуние')
+        gantt_page.save_changes()
         assert 'Новолуние' in gantt_page.get_phases_name(), 'Изменения не сохранены'
         assert gantt_page.get_status_of_gantt_task(), "Диаграмма Ганта не отображается"
