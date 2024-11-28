@@ -162,7 +162,7 @@ class StacksPage(BasePage):
 
     @allure_testit_step('Получение имен всех добавленных в стек знаний/навыков')
     def get_all_skills_name_in_tab(self):
-        if self.element_is_displayed(self.locators.SKILLS_NAMES):
+        if self.element_is_displayed(self.locators.SKILLS_NAMES, 2):
             return [element.get_attribute('aria-label') for element in self.elements_are_visible(self.locators.SKILLS_NAMES)]
         else:
             return []
@@ -195,4 +195,19 @@ class StacksPage(BasePage):
         self.element_is_visible(self.locators.SKILL_NAME_INPUT).click()
         skills = [element.text for element in self.elements_are_visible(self.locators.LI_MENU_ITEM)]
         assert skill_json['name'] not in skills, "Добавленный навык доступен для выбора в дровере"
+
+    @allure_testit_step('Нажатие кнопки удаления первого навыка в таблице')
+    def press_delete_skill_button(self):
+        self.elements_are_visible(self.locators.DELETE_SKILL_BUTTON)[0].click()
+
+    @allure_testit_step('Проверка элементов модального окна')
+    def check_delete_skill_modal_window(self):
+        assert self.element_is_displayed(self.locators.text_on_page('Вы уверены, что хотите удалить')), \
+            "Нет текста сообщения в модальном окне"
+        assert self.element_is_displayed(self.locators.CONFIRM_BUTTON), "Нет кнопки Подтвердить"
+        assert self.element_is_displayed(self.locators.MODAL_BREAK_BUTTON), "Нет кнопки Отменить"
+
+    @allure_testit_step('Нажатие кнопки отмены удаления в модальном окне')
+    def press_modal_break_button(self):
+        self.element_is_visible(self.locators.MODAL_BREAK_BUTTON).click()
 

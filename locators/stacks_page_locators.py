@@ -22,8 +22,9 @@ class StacksPageLocators:
     SKILL_TYPE_INPUT = (By.XPATH, '//div[@name="type"]//input')
     DESCRIPTION_FIELD = (By.CSS_SELECTOR, 'input[name="description"]')
     BREAK_BUTTON = (By.XPATH, '//div[@name="name"]//following::button[text()="Отменить"]')
-    CONFIRM_BUTTON = (By.XPATH, '//button[text()="Подтвердить"]')
 
+    CONFIRM_BUTTON = (By.XPATH, '//button[text()="Подтвердить"]')
+    MODAL_BREAK_BUTTON = (By.XPATH, '//div[@role="dialog"]//following::button[text()="Отменить"]')
     SUBMIT_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
     LI_MENU_ITEM = (By.CSS_SELECTOR, 'li[role="option"]')
     MUI_ERROR = (By.XPATH, '//p[contains(@class, "MuiFormHelperText-root Mui-error")]')
