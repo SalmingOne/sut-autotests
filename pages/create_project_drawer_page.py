@@ -5,6 +5,7 @@ import testit
 from selenium.webdriver import Keys
 from locators.create_project_drawer_locators import CreateProjectDrawerLocators
 from pages.base_page import BasePage
+from utils.concat_testit_allure_step import allure_testit_step
 
 
 class CreateProjectDrawerPage(BasePage):
@@ -64,3 +65,6 @@ class CreateProjectDrawerPage(BasePage):
     def press_break_button(self):
         self.element_is_visible(self.locators.BREAK_BUTTON).click()
 
+    @allure_testit_step("Нажатие кнопки подтвердить")
+    def press_confirm_button(self):
+        self.element_is_visible(self.locators.CONFIRM_BUTTON).click()

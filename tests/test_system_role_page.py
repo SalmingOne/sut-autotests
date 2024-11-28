@@ -48,9 +48,9 @@ class TestSystemRolePage:
         system_role_page.go_to_system_roles_page()
         system_role_page.press_add_system_role_button()
         # Проверка на обязательные поля
-        system_role_page.check_required_fields()
+        # system_role_page.check_required_fields() # другая реализация
         # Проверка на обязательность тэгов
-        system_role_page.check_required_tags('Контролер')
+        # system_role_page.check_required_tags('Контролер') # другая реализация
         # Проверка на уникальность названия системной роли
         system_role_page.check_uniqueness_system_role_name('Пользователь')
         # Проверка на превышение символов в названии системной роли

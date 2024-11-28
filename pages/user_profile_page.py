@@ -435,7 +435,7 @@ class UserProfilePage(BasePage):
         menu_item_text = []
         for item in all_items:
             menu_item_text.append(item.text)
-        self.action_esc()
+        self.element_is_visible(locator).send_keys(Keys.RETURN)
         return menu_item_text
 
     @testit.step("Проверка ограничения в 128 символов для поля")
@@ -678,6 +678,7 @@ class UserProfilePage(BasePage):
         assert specializations == ['Инжиниринг', 'Административно-управленческий персонал',
                                    'Блок ИТ'], "Не все значения в дропдауне Вид деятельности"
         time.sleep(1)
+        self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_ACTION).click()
         self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
         self.element_is_visible(self.locators.EXPERIENCES_SPECIALIZATION_SLOT).click()
         time.sleep(1)
@@ -1198,7 +1199,9 @@ class UserProfilePage(BasePage):
 
     @allure_testit_step('Проверка заголовков таблицы вкладки Резюме')
     def check_resume_tab_column(self):
+        time.sleep(2)
         column_text = [element.text for element in self.elements_are_visible(self.locators.RESUME_TAB_COLUMN)]
+        print(column_text)
         assert column_text == ['Название', 'Дата создания', 'Дата редактирования', 'Действия'], \
             "В таблице есть не все заголовки"
 

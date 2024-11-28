@@ -7,7 +7,7 @@ class IndividualsPageLocators:
     REFERENCE_BOOKS = (By.CSS_SELECTOR, 'a[href="/admin/references/personal-qualities"]')
     INDIVIDUALS_TAB = (By.XPATH, '//div[text()="Физические лица"]')
 
-    ADD_INDIVIDUALS_BUTTON = (By.CSS_SELECTOR, 'button[class^="MuiButton-root MuiButton-text"]')
+    ADD_INDIVIDUALS_BUTTON = (By.XPATH, '//button[text()="Добавить физическое лицо"]')
     # Дровер добавления физического лица
     NAME_FIELD = (By.CSS_SELECTOR, 'input[name="name"]')
     SECOND_NAME_FIELD = (By.CSS_SELECTOR, 'input[name="secondname"]')

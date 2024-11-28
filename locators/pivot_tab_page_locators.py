@@ -31,8 +31,7 @@ class PivotTabPageLocators:
         return (By.XPATH, f'//p[text()="{project_name}"]')
 
     # Кнопка фильтрации
-    FILTER_BUTTON = (By.XPATH,
-                     '//button[contains(@class, "MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-disableElevation")]')
+    FILTER_BUTTON = (By.XPATH, '//h6[text()="Отображение"]')
     HEADER_TODAY = (By.XPATH, '//div[contains(@class,"header-today")]')
     NOT_ACTIV_PROJECT_CHECKBOX = (By.XPATH, '//p[text()="Неактивные проекты"]')
     SUBMIT_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')

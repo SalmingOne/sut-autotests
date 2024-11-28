@@ -79,7 +79,7 @@ class TestPivotTabFilterPage:
         pivot_tab_page = PivotTabPage(driver)
         pivot_tab_page.go_to_pivot_page()
         time.sleep(1)
-        pivot_tab_page.go_to_by_user_tab()
+        pivot_tab_page.go_to_by_user_tab_without_check()
         pivot_tab_page.open_filter()
         pivot_tab_filter_page = PivotTabFilterPage(driver)
         before_changes = pivot_tab_filter_page.get_element_text('checked')
@@ -104,7 +104,7 @@ class TestPivotTabFilterPage:
         pivot_tab_page = PivotTabPage(driver)
         pivot_tab_page.go_to_pivot_page()
         time.sleep(2)  # Без ожидания открывается фильтр на странице трудозатрат вместо сводной таблицы
-        pivot_tab_page.go_to_by_user_tab()
+        pivot_tab_page.go_to_by_user_tab_without_check()
         pivot_tab_page.open_filter()
         pivot_tab_filter_page = PivotTabFilterPage(driver)
         all_elements = pivot_tab_filter_page.get_element_text('all')

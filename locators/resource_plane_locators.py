@@ -20,3 +20,8 @@ class ResourcePlaneLocators:
     ROLE_FILTER_INPUT = (By.CSS_SELECTOR, 'input[placeholder="Начните вводить роль"]')
 
     LI_MENU_ITEM = (By.CSS_SELECTOR, 'li[role="option"]')
+    FILTER_BUTTON = (By.XPATH,
+                     '//button[contains(@class, "MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-disableElevation")]')
+    NOT_ACTIV_PROJECT_CHECKBOX = (By.XPATH, '//p[text()="Неактивные проекты"]')
+    SUBMIT_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
+    SEARCH_FIELD = (By.XPATH, "//div[@class='ag-header-row ag-header-row-column-filter']//input[@placeholder='Поиск']")

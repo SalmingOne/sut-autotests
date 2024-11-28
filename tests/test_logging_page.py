@@ -40,6 +40,7 @@ class TestLoggingPage:
         dialog_text = logging_page.get_modal_window()
         logging_page.submit_modal_dialog()
         alert_text = logging_page.get_alert_text()
+        time.sleep(1)
         audit_on_menu = logging_page.check_audit_menu_item()
         assert dialog_text == 'Вы уверены, что хотите отключить аудит?', 'Не корректный текст в модальном окне'
         assert alert_text == 'Аудит отключен', 'Не появилось сообщение об отключении аудита'

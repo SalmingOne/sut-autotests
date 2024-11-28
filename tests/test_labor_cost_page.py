@@ -910,24 +910,29 @@ class TestLaborCostPage:
         try:
             number_day = int(labor_cost_page.get_day_before_ymd(1).split('-')[2]) + 1
             labor_cost_page.input_labor_reason_by_project(first_project_name, number_day, 12)
+            time.sleep(2)
             assert labor_cost_page.get_cell_color(first_project_name,
                                                   number_day) == 'rgba(255, 251, 233, 1)', 'Цвет ячейки не желтый'
         except AssertionError as e:
             number_day = int(labor_cost_page.get_day_after_ymd(1).split('-')[2]) + 1
             labor_cost_page.input_labor_reason_by_project(first_project_name, number_day, 12)
+            time.sleep(2)
             assert labor_cost_page.get_cell_color(first_project_name,
                                                   number_day) == 'rgba(255, 251, 233, 1)', 'Цвет ячейки не желтый'
         labor_cost_page.choose_period('week')
         try:
             number_day = labor_cost_page.get_number_day_week()
             labor_cost_page.input_labor_reason_by_project(second_project_name, number_day, 13)
+            time.sleep(2)
             assert labor_cost_page.get_cell_color(second_project_name,
                                                   number_day) == 'rgba(255, 251, 233, 1)', 'Цвет ячейки не желтый'
         except AssertionError as e:
             number_day = labor_cost_page.get_number_day_week() + 2
             labor_cost_page.input_labor_reason_by_project(second_project_name, number_day, 13)
+            time.sleep(2)
             assert labor_cost_page.get_cell_color(second_project_name,
                                                   number_day) == 'rgba(255, 251, 233, 1)', 'Цвет ячейки не желтый'
+        time.sleep(2)
         assert (labor_cost_page.get_color_day_total_raw(number_day-1)
                 == 'rgba(211, 47, 47, 1)'), 'Цвет текста не красный'
         labor_cost_page.save_labor_reason()
@@ -977,6 +982,7 @@ class TestLaborCostPage:
         labor_cost_page.redact_labor_cost(hours='24')
         labor_cost_page.save_changes_labor_cost_drawer()
         errors = labor_cost_page.get_alert_message()
+        labor_cost_page.redact_overtime_on_reason_tab(project_with_added_labor_reason['name'])
         labor_cost_page.redact_labor_cost(hours=' ', reason=' ')
         assert not labor_cost_page.save_changes_labor_cost_drawer(), "Кнопка сохранения активна"
         assert 'Сумма часов не может превышать 24 за текущий день' in errors, "Нет сообщения об ошибке"
@@ -1039,7 +1045,7 @@ class TestLaborCostPage:
         number_day = project_with_rejected_labor_cost_without_reason[1]
         user_name = project_with_rejected_labor_cost_without_reason[2]
         labor_cost_page.redact_labor_cost_table_by_project(project_name, number_day, 8)
-        assert labor_cost_page.get_cell_color(project_name, number_day) in ['rgba(255, 251, 233, 1)', 'rgba(255, 236, 229, 1)'], 'Цвет не желтый/красный(выходной)'
+        assert labor_cost_page.get_cell_color(project_name, int(number_day)) in ['rgba(255, 251, 233, 1)', 'rgba(255, 236, 229, 1)'], 'Цвет не желтый/красный(выходной)'
         labor_cost_page.save_labor_reason()
         assert labor_cost_page.get_project_day_cell_contents(project_name, number_day) == '8', 'Значение не изменилось'
         assert not labor_cost_page.field_is_rejected(project_name, number_day), "Поле отображается отклоненным"

@@ -21,6 +21,7 @@ class CreateProjectDrawerLocators:
     LI_MENU_ITEM = (By.CSS_SELECTOR, 'li[role="option"]')
     SUBMIT_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
     BREAK_BUTTON = (By.XPATH, '//button[text()="Отменить"]')
+    CONFIRM_BUTTON = (By.XPATH, '//button[text()="Подтвердить"]')
     # Локатор проверки, что мы оказались на вкладке команда после создания проекта
     CHECK_CREATE_PROJECT = (By.XPATH, '//h6[text()="Команда"]')
 

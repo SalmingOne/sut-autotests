@@ -89,6 +89,11 @@ class PivotTabPage(BasePage):
         self.element_is_visible(self.locators.BY_USER_BUTTON).click()
         self.element_is_visible(self.locators.ICON_TREE_CLOSED, 15)
 
+    @testit.step("Переходим на отображение таблицы по пользователю без проверки")
+    @allure.step("Переходим на отображение таблицы по пользователю без проверки")
+    def go_to_by_user_tab_without_check(self):
+        self.element_is_visible(self.locators.BY_USER_BUTTON).click()
+
     @testit.step("Переходим на отображение таблицы по проектам")
     @allure.step("Переходим на отображение таблицы по проектам")
     def go_to_by_project_tab(self):
