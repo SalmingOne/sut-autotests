@@ -131,3 +131,21 @@ class TestGanttPage:
         gantt_page.save_changes()
         assert 'Новолуние' in gantt_page.get_phases_name(), 'Изменения не сохранены'
         assert gantt_page.get_status_of_gantt_task(), "Диаграмма Ганта не отображается"
+
+    @testit.workItemIds(3028)
+    @testit.displayName('14.1.2 Отмена редактирования диаграммы Ганта')
+    @pytest.mark.regress
+    @allure.title('id-3028 14.1.2 Отмена редактирования диаграммы Ганта')
+    def test_discard_diagram_changes(self, project_with_assignment, login, driver):
+        gantt_page = GanttPage(driver)
+        all_project_page = AllProjectPage(driver)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(project_with_assignment[0]['name'])
+        gantt_page.go_to_gantt_tab()
+        time.sleep(2)
+        gantt_page.edit_diagram()
+        gantt_page.add_phase('Полнолуние')
+        gantt_page.discard_changes(confirm=True)
+        time.sleep(5)
+        assert 'Полнолуние' not in gantt_page.get_phases_name(), "Изменения сохранены"
+        assert gantt_page.get_status_of_gantt_task(), "Диаграмма Ганта не отображается"

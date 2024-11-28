@@ -185,8 +185,20 @@ class GanttPage(BasePage):
 
     @allure_testit_step('Получить названия фаз')
     def get_phases_name(self):
-        return [element.text.split('\n')[1] for element in self.elements_are_visible(self.locators.PHASES_NAME)]
+        try:
+            return [element.text.split('\n')[1] for element in self.elements_are_visible(self.locators.PHASES_NAME)]
+        except TimeoutException:
+            return []
 
     @allure_testit_step('Сохранить изменения в таблице')
     def save_changes(self):
         self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+
+    @allure_testit_step('Отменить изменения в таблице')
+    def discard_changes(self, confirm):
+        self.element_is_visible(self.locators.DISCARD_BUTTON).click()
+        time.sleep(1)
+        if confirm:
+            self.element_is_visible(self.locators.MODAL_SUBMIT_BUTTON).click()
+        else:
+            self.element_is_visible(self.locators.MODAL_ABORT_BUTTON).click()
