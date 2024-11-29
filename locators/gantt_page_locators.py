@@ -43,6 +43,9 @@ class GanttPageLocators:
     TABLE_ROWS = (By.XPATH, "//div[contains(@class, 'gantt_row')]")
     GANTT_TOOLTIP = (By.CSS_SELECTOR, 'div[class="gantt_tooltip"]')
     SUBMIT_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
+    DISCARD_BUTTON = (By.XPATH, '//button[text()="Отменить"]')
+    MODAL_SUBMIT_BUTTON = (By.XPATH, '//p[@id="alert-dialog-description"]//following::button[text()="Подтвердить"]')
+    MODAL_ABORT_BUTTON = (By.XPATH, '//p[@id="alert-dialog-description"]//following::button[text()="Отменить"]')
     def get_task(self, task_name):
         return By.XPATH, f"//div[contains(@class, 'gantt_row') and contains(@aria-label, 'Задача: {task_name} ')]"
 
