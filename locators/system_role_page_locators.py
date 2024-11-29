@@ -40,6 +40,8 @@ class SystemRolePageLocators:
     # Ошибки
     HELPER_TEXT = (By.XPATH, '//p[contains(@class, "Mui-error")]')
     ALERT_MESSAGE = (By.XPATH, '//div[contains(@class, "MuiAlert-message")]')
+    NO_DATA_IMG = (By.XPATH, '//div/img[@alt="Нет данных"]')
+    NO_DATA_TEXT = (By.XPATH, '//div/img[@alt="Нет данных"]/../div/h6')
 
     def get_name_in_dropdown(self, role_name):
         return By.CSS_SELECTOR, f'li[aria-label="{role_name}"]'

@@ -278,3 +278,12 @@ class TestSystemRolePage:
         system_role_page.check_search_by_tags('проект')
         # Можно менять иногда
         # system_role_page.check_search_by_tags('таблица')
+
+    @testit.workItemIds(3536)
+    @testit.displayName("7.2.2 Реакция системы если тегов соответствующих вводимым значениям не найдено")
+    @pytest.mark.regress
+    @allure.title("id-3536 7.2.2 Реакция системы если тегов соответствующих вводимым значениям не найдено")
+    def test_system_reaction_if_tags_not_found(self, login, driver):
+        system_role_page = SystemRolePage(driver)
+        system_role_page.go_to_system_roles_page()
+        system_role_page.check_system_reaction_if_tags_not_found('блаблабла')

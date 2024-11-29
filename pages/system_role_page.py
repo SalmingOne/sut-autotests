@@ -299,3 +299,10 @@ class SystemRolePage(BasePage):
 
         for name in final_new_elements:
             assert tag_name.lower() in name.lower(), 'Таблица содержит теги, не соответствующие поиску'
+
+    @allure_testit_step("Проверка реакции системы поиска по тэгам, которых нет в таблице")
+    def check_system_reaction_if_tags_not_found(self, tag_name):
+        self.element_is_visible(self.locators.INPUT_SEARCH_TAGS).send_keys(tag_name)
+        all_text = self.get_all_alert_message(self.locators.NO_DATA_TEXT)
+        assert self.element_is_visible(self.locators.NO_DATA_IMG), 'Нет изображения о неудачном поиске'
+        assert ['Нет данных', 'для отображения'] == all_text, 'Нет текста о неудачном поиске'
