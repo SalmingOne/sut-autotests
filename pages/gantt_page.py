@@ -202,3 +202,8 @@ class GanttPage(BasePage):
             self.element_is_visible(self.locators.MODAL_SUBMIT_BUTTON).click()
         else:
             self.element_is_visible(self.locators.MODAL_ABORT_BUTTON).click()
+
+    @allure_testit_step('Проверить отображение кнопок в режиме редактирования диаграммы Ганта')
+    def buttons_are_displayed(self):
+        assert self.element_is_displayed(self.locators.SUBMIT_BUTTON), "Кнопка Сохранить не отображается в режиме редактирования диаграммы Ганта"
+        assert self.element_is_displayed(self.locators.DISCARD_BUTTON), "Кнопка Отменить не отображается в режиме редактирования диаграммы Ганта"
