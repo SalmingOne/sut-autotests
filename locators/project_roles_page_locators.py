@@ -12,6 +12,7 @@ class ProjectRolesPageLocators:
 
     INPUT_ROLE_NAME_FIELD = (By.CSS_SELECTOR, 'input[name="name"]')
     MUI_ERROR = (By.XPATH, '//p[contains(@class, "MuiFormHelperText-root Mui-error")]')
+    BORDER_COLOR = (By.XPATH, '//input[@name="name"]/../fieldset')
     SUBMIT_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
     ABORT_BUTTON = (By.XPATH, '//button[text()="Отменить"]')
     DRAWER_CLEAR_BUTTON = (By.CSS_SELECTOR, 'svg[data-testid="ClearIcon"]')

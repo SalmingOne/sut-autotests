@@ -58,3 +58,16 @@ class TestProjectsRolesPage:
         project_roles_page.check_search_fields()
         project_roles_page.check_filter_icons()
         project_roles_page.check_kebab_menu_items()
+
+    @testit.workItemIds(1445)
+    @testit.displayName("6.1.1.1 Дублирование уникальных полей")
+    @pytest.mark.regress
+    @allure.title("id-1445 6.1.1.1 Дублирование уникальных полей")
+    def test_duplicate_unique_fields(self, login, driver):
+        project_roles_page = ProjectRolesPage(driver)
+        project_roles_page.go_to_project_roles_page()
+        project_roles_page.open_create_role_drawer()
+        project_roles_page.field_first_attraction_rate()
+        project_roles_page.field_role_name('Аналитик')
+        project_roles_page.submit_create_role()
+        project_roles_page.check_uniqueness_project_role_name()
