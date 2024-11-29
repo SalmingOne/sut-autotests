@@ -8,6 +8,8 @@ from endpoints.users_endpoint import UserEndpoint
 from pages.labor_cost_page import LaborCostPage
 from pages.user_page import UserPage
 from pages.user_profile_page import UserProfilePage
+from pages.all_project_page import AllProjectPage
+from pages.project_card_page import ProjectCardPage
 from pages.colleagues_page import ColleaguesPage
 
 
@@ -213,3 +215,24 @@ class TestUsersPage:
         user_page.go_to_user_page()
         user_page.check_delete_all_system_roles_from_user(
             create_user_with_many_system_role)
+
+    @testit.workItemIds(1371)
+    @testit.displayName("4.4. Добавление проектной роли пользователю")
+    @pytest.mark.regress
+    @allure.title("id-1371 4.4. Добавление проектной роли пользователю")
+    def test_adding_project_role_to_user(self, project_with_two_resources, login, driver):
+        user_page = UserPage(driver)
+        user_page.go_to_user_page()
+        add_role = user_page.add_project_role('АвтоСПроектом Автомат')
+        message = user_page.get_alert_message()
+        assert message == ['Пользователь изменен'], "Нет сообщения об изменении пользователя"
+        all_project_page = AllProjectPage(driver)
+        time.sleep(1)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(project_with_two_resources['name'])
+        project_card_page = ProjectCardPage(driver)
+        project_card_page.go_to_team_tab()
+        project_card_page.go_to_redact_team()
+        time.sleep(1)
+        roles = project_card_page.get_list_project_roles_for_user('АвтоСПроектом Автомат')
+        assert add_role in roles

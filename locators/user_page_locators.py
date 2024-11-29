@@ -49,6 +49,7 @@ class UserPageLocators:
     DISMISSAL_DATA_DATA_PICKER = (By.XPATH, '//input[@name="dismissalDate"]/..//*[@data-testid="CalendarTodayOutlinedIcon"]')
     DISMISSAL_DATA = (By.XPATH, '//input[@name="dismissalDate"]')
     HIRING_DATA_INPUT = (By.XPATH, '//label[text()="Дата принятия на работу"]//..//descendant::input')
+    PROJECT_ROLE_FIELD = (By.XPATH, '//div[@name="projectRoles"]//button[@title="Открыть"]')
     SYSTEM_ROLE_FIELD = (By.CSS_SELECTOR, 'input[placeholder="Начните вводить системную роль"]')
     SELECTED_SYSTEM_ROLE = (By.CSS_SELECTOR, 'li[aria-label][aria-selected="true"]')
     ALL_SYSTEM_ROLE_IN_DROPDOWN = (By.CSS_SELECTOR, 'li[aria-label]')
