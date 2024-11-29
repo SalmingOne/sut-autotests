@@ -492,7 +492,7 @@ def project_with_stopped_task():
         ],
         links=[]
     )
-    gantt_endpoint.create_task(project_id, json=payload)
+    gantt_endpoint.create_task_or_stage(project_id, json=payload)
 
     tasks = gantt_endpoint.get_all_tasks(project_id).json()
     parentId = tasks[0]['parentId']
@@ -562,7 +562,7 @@ def project_with_completed_task():
         ],
         links=[]
     )
-    gantt_endpoint.create_task(project_id, json=payload)
+    gantt_endpoint.create_task_or_stage(project_id, json=payload)
 
     tasks = gantt_endpoint.get_all_tasks(project_id).json()
     parentId = tasks[0]['parentId']
@@ -636,7 +636,7 @@ def project_with_rejected_task_labor_cost():
         ],
         links=[]
     )
-    gantt_endpoint.create_task(project_id, json=payload)
+    gantt_endpoint.create_task_or_stage(project_id, json=payload)
 
     tasks = gantt_endpoint.get_all_tasks(project_id).json()
     parentId = tasks[0]['parentId']
@@ -1953,3 +1953,54 @@ def create_stack(create_skill):
     yield response.json()
     stacks_endpoint.delete_stacks_api(str(response.json()['id']))
 
+
+@pytest.fixture()
+def project_with_task():
+    project_endpoint = ProjectEndpoint()
+    project_endpoint.delete_project_if_it_exist(PROJECT_NAME)
+    payload = CreateProject(
+        resources=[dict(
+            projectRoleId=1,
+            userId=USER_ID,
+            isProjectManager=True
+        )]
+    ).model_dump()
+    res = project_endpoint.create_project_api(json=payload)
+    project_id = res.json()['id']
+    gantt_endpoint = GanttEndpoint()
+    gantt_endpoint.start_editing(project_id)
+    phase_name = 'Растущий серп'
+    task_name = 'Убывающий серп'
+    start_date, end_date = [day.strftime("%m.%d.%Y") for day in BasePage(driver=None).get_current_week_start_end()]
+    start_date = start_date if start_date != BasePage(driver=None).get_day_before_m_d_y(0) else BasePage(
+        driver=None).get_day_before_m_d_y(1)
+    payload = dict(
+        stages=[
+            dict(
+                name=phase_name,
+                id=1
+            )
+        ],
+        tasks=[
+            dict(
+                name=task_name,
+                id=1,
+                parentId=1,
+                slotsTasks=[
+                    dict(
+                        employmentPercentage=12.5,
+                        endDate=end_date,
+                        id=1,
+                        slotId=res.json()['slots'][0]['id'],
+                        startDate=start_date
+                    )
+                ],
+                startDate=start_date,
+                endDate=end_date
+            )
+        ],
+        links=[]
+    )
+    gantt_endpoint.create_task_or_stage(project_id, json=payload)
+    yield res.json(), phase_name, task_name
+    project_endpoint.delete_project_api(str(project_id))

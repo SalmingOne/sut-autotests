@@ -10,7 +10,7 @@ class GanttEndpoint:
     response_json = None
 
     @allure.step("Создание задачи")
-    def create_task(self, project_id,json):
+    def create_task_or_stage(self, project_id, json):
         header = AuthEndpoint().get_header_token_api()
         self.response = requests.post(url=Urls().gantt_url + f'?projectId={project_id}', headers=header, json=json, verify=False)
         return self.response
