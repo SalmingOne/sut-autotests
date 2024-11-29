@@ -235,4 +235,4 @@ class TestUsersPage:
         project_card_page.go_to_redact_team()
         time.sleep(1)
         roles = project_card_page.get_list_project_roles_for_user('АвтоСПроектом Автомат')
-        assert add_role in roles
+        assert add_role in roles, 'Добавленная проектная роль не доступна в карточке проекта'
