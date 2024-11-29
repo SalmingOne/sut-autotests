@@ -1411,6 +1411,38 @@ def create_user_with_two_system_role():
 
 
 @pytest.fixture()
+def create_user_with_many_system_role():
+    user_endpoint = UserEndpoint()
+    project_roles_endpoint = ProjectRolesEndpoint()
+    department_endpoint = DepartmentsEndpoint()
+    post_endpoint = PostsEndpoint()
+    system_roles_endpoint = SystemRolesEndpoint()
+    first_post_id = post_endpoint.get_all_posts_id()[0]
+    first_project_role_id = project_roles_endpoint.get_all_project_roles_id()[1]
+    first_department_id = department_endpoint.get_all_departments_id()[1]
+    system_role_id = system_roles_endpoint.get_all_system_roles_id()
+    user_id = user_endpoint.get_user_id_by_email('many_system_role@mail.ruru')
+    payload = dict(username="Many_System_role",
+                   name="Many",
+                   secondName="Systemrole",
+                   gender="MALE",
+                   email="many_system_role@mail.ruru",
+                   startWorkDate="2024-01-11",
+                   projectRoleIds=[first_project_role_id],
+                   postId=first_post_id,
+                   departmentId=first_department_id,
+                   systemRoleIds=system_role_id
+                   )
+    if user_id is None:
+        response = user_endpoint.create_user_api(json=payload)
+        print(response.status_code)
+    else:
+        response = user_endpoint.change_user(user_id=str(user_id), json=payload)
+        print(response.status_code)
+    return payload["secondName"] + ' ' + payload["name"]
+
+
+@pytest.fixture()
 def create_hourly_wage_user():
     user_endpoint = UserEndpoint()
     project_endpoint = ProjectEndpoint()

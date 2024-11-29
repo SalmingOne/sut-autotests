@@ -308,6 +308,22 @@ class UserPage(BasePage):
         assert role_name in user_role_before, 'Роли для удаления нет в списке'
         assert role_name not in user_role_after, 'Роль не снялась с пользователя'
 
+    @allure_testit_step("Проверяем снятие всех системных ролей с пользователя")
+    def check_delete_all_system_roles_from_user(self, user_name):
+        time.sleep(1)  # Без ожидания не успевает срабатывать анимация
+        self.element_is_visible(self.locators.kebab_user_name(user_name)).click()
+        self.element_is_visible(self.locators.REDACT_BUTTON).click()
+        time.sleep(1)
+        user_role_before = self.element_is_visible(self.locators.USER_SYSTEM_ROLE_DISABLE_INDICATOR).get_attribute(
+            'class')
+        elem = self.element_is_present(self.locators.DELETE_ALL_SYSTEM_ROLE_ICONS)
+        self.go_to_element(elem)
+        elem.click()
+        user_role_after = self.element_is_visible(self.locators.USER_SYSTEM_ROLE_DISABLE_INDICATOR).get_attribute(
+            'class')
+        assert 'Mui-disabled' not in user_role_before, 'Роль Пользователь задизейблена'
+        assert 'Mui-disabled' in user_role_after, 'Роль Пользователь не задизейблена после удаления всех системных ролей'
+
     @allure_testit_step("Получение списка назначенных системных ролей")
     def get_assigned_role_names(self):
         assigned_roles = self.elements_are_visible(self.locators.USER_SYSTEM_ROLE_DISABLE_INDICATOR)
