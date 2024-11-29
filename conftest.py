@@ -963,7 +963,7 @@ def skills_and_knowledge():
 @pytest.fixture()
 def create_skill():
     skills_and_knowledge_endpoint = SkillsAndKnowledgeEndpoint()
-    payload = dict(name='Ловить мух', type='skill')
+    payload = dict(name='Ловить мух', type='skill', description='Тут может быть ваше описание')
     response = skills_and_knowledge_endpoint.create_skills_and_knowledge_api(json=payload)
     yield response.json()
     skills_and_knowledge_endpoint.delete_skills_and_knowledge_api(str(response.json()['id']))
