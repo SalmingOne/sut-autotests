@@ -9,6 +9,7 @@ class SystemRolePageLocators:
     USERS_SYSTEM_ROLE_TAB = (By.XPATH, '//button[text()="Пользователи"]')
 
     CREATE_SYSTEM_ROLE_BUTTON = (By.XPATH, '//button[text()="Создать роль"]')
+    INPUT_SEARCH_TAGS = (By.XPATH, '//label[text()="Поиск по тегам"]/../div/input')
     INPUT_ROLE_FIELD = (By.CSS_SELECTOR, 'input[name="roleName"]')
     BORDER_COLOR = (By.XPATH, '//input[@name="roleName"]//following-sibling::fieldset')
     COPY_SYSTEM_ROLE = (By.XPATH, '//button[@aria-label="Копировать системную роль"]')
@@ -28,6 +29,8 @@ class SystemRolePageLocators:
     BORDER_REPLACE_SYSTEM_ROLE = (By.XPATH, '//label[text()="Новая системная роль"]')
     SYSTEM_ROLE_USER = (By.XPATH, '//li[text()="Пользователь"]')
 
+    TAG_TEXT = (By.CSS_SELECTOR, 'div > p')
+    REVEAL_BUTTON = (By.XPATH, '//div[@class="ag-center-cols-container"]//button[contains(@class, "MuiIconButton")]')
     REVEAL_PROJECTS = (By.XPATH, '//p[@aria-label="Проекты"]/../button')
     REVEAL_SEE_ALL_PROJECTS = (By.XPATH, '//p[@aria-label="Посмотреть все проекты"]/../button')
     ALL_TAG_CHECKBOXES_ALL_PROJECTS = (By.XPATH, '//p[@aria-label="Посмотреть все проекты"]/../..//following-sibling::div/button/span')
@@ -40,6 +43,9 @@ class SystemRolePageLocators:
 
     def get_name_in_dropdown(self, role_name):
         return By.CSS_SELECTOR, f'li[aria-label="{role_name}"]'
+
+    def get_functionality_name_in_table(self, functionality_name):
+        return By.XPATH, f'//p[@aria-label="{functionality_name}"]/../button'
 
     def get_name_in_dialog(self, user_name):
         return By.XPATH, f'//input[@value="{user_name}"]'
