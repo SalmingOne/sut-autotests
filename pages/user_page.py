@@ -232,13 +232,6 @@ class UserPage(BasePage):
             data.append(element.text)
         return data
 
-    @testit.step("Открытие дровера редактирования пользователя")
-    @allure.step("Открытие дровера редактирования пользователя")
-    def open_redact_drawer(self):
-        time.sleep(1)  # Без ожидания не успевает срабатывать анимация
-        self.element_is_visible(self.locators.USER_KEBABS).click()
-        self.element_is_visible(self.locators.REDACT_BUTTON).click()
-
     @testit.step("Проверка кликабельности предыдущего дня в датапикере")
     @allure.step("Проверка кликабельности предыдущего дня в датапикере")
     def check_clickable_previous_day(self):
@@ -299,4 +292,26 @@ class UserPage(BasePage):
         for element in all_roles_element:
             data.append(element.text)
         self.action_esc()
+        return data
+
+    @allure_testit_step("Проверяем снятие системной роли с пользователя")
+    def check_delete_system_role_from_user(self, user_name, role_name):
+        time.sleep(1)  # Без ожидания не успевает срабатывать анимация
+        self.element_is_visible(self.locators.kebab_user_name(user_name)).click()
+        self.element_is_visible(self.locators.REDACT_BUTTON).click()
+        time.sleep(1)
+        user_role_before = self.get_assigned_role_names()
+        self.element_is_visible(self.locators.delete_system_role_button(role_name)).click()
+        user_role_after = self.get_assigned_role_names()
+        self.press_submit_button()
+        time.sleep(1)
+        assert role_name in user_role_before, 'Роли для удаления нет в списке'
+        assert role_name not in user_role_after, 'Роль не снялась с пользователя'
+
+    @allure_testit_step("Получение списка назначенных системных ролей")
+    def get_assigned_role_names(self):
+        assigned_roles = self.elements_are_visible(self.locators.USER_SYSTEM_ROLE_DISABLE_INDICATOR)
+        data = []
+        for element in assigned_roles:
+            data.append(element.text)
         return data

@@ -7,6 +7,8 @@ import testit
 from endpoints.users_endpoint import UserEndpoint
 from pages.labor_cost_page import LaborCostPage
 from pages.user_page import UserPage
+from pages.user_profile_page import UserProfilePage
+from pages.colleagues_page import ColleaguesPage
 
 
 @allure.suite("Пользователи")
@@ -159,11 +161,11 @@ class TestUsersPage:
         user_page = UserPage(driver)
         user_page.go_to_user_page()
         user_page.check_user_is_not_in_table(create_user_with_one_project_role_and_no_assignments)
-        user_page.open_redact_drawer()
+        user_page.go_to_redact_user()
         user_page.check_clickable_previous_day()
         user_page.action_esc()
         user_page.press_cancel_button()
-        user_page.open_redact_drawer()
+        user_page.go_to_redact_user()
         user_page.check_clickable_previous_day()
         user_page.press_next_day_button_in_data_picker()
         user_page.press_submit_button()
@@ -177,3 +179,26 @@ class TestUsersPage:
         user_page.restore_user()
         assert message == ['Пользователь изменен'], "Нет сообщения об изменении пользователя"
 
+    @testit.workItemIds(483)
+    @testit.displayName("7.1.1 Снятие системной роли с пользователя")
+    @pytest.mark.regress
+    @allure.title("id-483 7.1.1 Снятие системной роли с пользователя")
+    def test_removing_system_role_from_user(self, create_system_role,
+                                            create_user_with_two_system_role, login, driver):
+        user_page = UserPage(driver)
+        user_page.go_to_user_page()
+        user_page.check_delete_system_role_from_user(create_user_with_two_system_role,
+                                                     create_system_role['name'])
+        # Удаленная роль была с правами просмотра чужих резюме
+        # Проверяем, может ли пользователь посмотреть чужое резюме
+        colleagues_page = ColleaguesPage(driver)
+        time.sleep(1)
+        colleagues_page.go_colleagues_page()
+        colleagues_page.search_user(create_user_with_two_system_role)
+        time.sleep(1)
+        colleagues_page.go_to_watch_the_user_eyes()
+        colleagues_page.go_colleagues_page()
+        colleagues_page.check_user_name_link()
+        user_profile_page = UserProfilePage(driver)
+        user_profile_page.go_to_resume_tab()
+        user_profile_page.check_resume_tab_unavailable_without_rights()

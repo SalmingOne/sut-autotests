@@ -124,6 +124,7 @@ class UserProfilePageLocators:
     CURRENT_EMPLOYER_CHECKBOX = (By.XPATH, '//span[text()="Текущий работодатель"]')
     SAVE_AS_NEW_BUTTON = (By.XPATH, '//button[text()="Сохранить как новое"]')
     SAVE_AS_NEW_NAME_FIELD = (By.CSS_SELECTOR, 'input[name="textValue"]')
+    NOT_FORBIDDEN = (By.XPATH, '//h6[text()="Недостаточно прав доступа для просмотра (403)"]')
 
     RESUME_TITLES_ON_TAB = (By.CSS_SELECTOR, 'div[col-id="title"][role="gridcell"]')
     SEARCH_FIELDS = (By.CSS_SELECTOR, 'input[placeholder="Поиск"]')
