@@ -143,3 +143,14 @@ class ProjectRolesPage(BasePage):
     def get_attraction_rates_by_role(self):
         self.element_is_visible(self.locators.OPEN_ICON_ATTRACTION_RATES_FIELD).click()
         return [element.text for element in self.elements_are_visible(self.locators.ATTRACTION_RATES)]
+
+    @allure_testit_step("Получение цвета выделения поля")
+    def get_color_field(self):
+        return self.element_is_present(self.locators.BORDER_COLOR).value_of_css_property('border-color')
+
+    @allure_testit_step("Проверка на уникальность поля Проектная роли")
+    def check_uniqueness_project_role_name(self):
+        assert self.element_is_visible(
+            self.locators.MUI_ERROR).text == 'Проектная роль уже создана в системе', \
+            "Под полем не отображается подсказка что проектная роль с таким названием уже существует"
+        assert self.get_color_field() == 'rgb(211, 47, 47)', "Поле 'Проектная роль' не выделятся красным цветом"
