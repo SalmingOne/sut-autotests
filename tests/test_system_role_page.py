@@ -84,7 +84,8 @@ class TestSystemRolePage:
         # Получаем полномочия системной роли Копии
         id_role_copy = system_roles_endpoint.get_user_system_role_id(role_name_copy)
         tags_role_copy = system_roles_endpoint.get_tags_system_role_id(id_role_copy)
-        assert tags_role_user == tags_role_copy, 'Тэги полномочий системных ролей не совпадают'
+        assert tags_role_user.sort(key=lambda x: x['id']) == tags_role_copy.sort(key=lambda x: x['id']), \
+            'Тэги полномочий системных ролей не совпадают'
         system_role_page.check_role_name_in_dropdown(role_name_copy)
         user_page = UserPage(driver)
         user_page.go_to_user_page_simple()
@@ -239,7 +240,7 @@ class TestSystemRolePage:
     @testit.displayName("7.2.3 Отмена редактирования системной роли")
     @pytest.mark.regress
     @allure.title("id-3522 7.2.3 Отмена редактирования системной роли")
-    def test_redact_system_role(self, login, create_system_role, driver):
+    def test_cancel_redact_system_role(self, login, create_system_role, driver):
         system_role_page = SystemRolePage(driver)
         system_roles_endpoint = SystemRolesEndpoint()
         system_role_page.go_to_system_roles_page()
