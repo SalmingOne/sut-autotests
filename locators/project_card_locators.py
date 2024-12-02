@@ -57,6 +57,9 @@ class ProjectCardLocators:
     def get_attraction_rate_by_user(self, user_name):
         return By.XPATH, f"//input[@value='{user_name}']/ancestor::div/following-sibling::div[@col-id='attractionRateId']//button[@aria-label='Открыть']"
 
+    def get_project_roles_by_user(self, user_name):
+        return By.XPATH, f"//input[@value='{user_name}']/ancestor::div/div[@col-id='projectRole']//button[@aria-label='Открыть']"
+
     ATTRACTION_RATES = (By.XPATH, "//ul[contains(@class, 'MuiAutocomplete-listbox')]//li")
     # Локаторы вкладки Ресурсный план
     RESOURCE_PLAN_TAB = (By.XPATH, '//div[text()="Ресурсный план"]')

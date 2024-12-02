@@ -1075,3 +1075,8 @@ class ProjectCardPage(BasePage):
     def get_attraction_rates_by_user(self, user_name):
         self.element_is_visible(self.locators.get_attraction_rate_by_user(user_name)).click()
         return [element.text for element in self.elements_are_visible(self.locators.ATTRACTION_RATES)]
+
+    @allure_testit_step("Получение списка Проектных ролей пользователя на табе 'Команда'")
+    def get_list_project_roles_for_user(self, user_name):
+        self.element_is_visible(self.locators.get_project_roles_by_user(user_name)).click()
+        return [element.text for element in self.elements_are_visible(self.locators.LI_MENU_ITEM_TEXT)]

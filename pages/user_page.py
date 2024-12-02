@@ -150,8 +150,7 @@ class UserPage(BasePage):
     @allure.step("Получаем дату принятия на работу пользователя")
     def get_the_hiring_date(self):
         time.sleep(1)  # Без ожидания не успевает срабатывать анимация
-        self.element_is_visible(self.locators.USER_KEBABS).click()
-        self.element_is_visible(self.locators.REDACT_BUTTON).click()
+        self.go_to_redact_user()
         hiring_date = self.element_is_visible(self.locators.HIRING_DATA_INPUT).get_attribute('value')
         self.action_esc()
         return hiring_date
@@ -172,8 +171,7 @@ class UserPage(BasePage):
     @allure.step("Проверяем назначение системной роли на пользователя")
     def check_assigning_system_role_to_user(self):
         time.sleep(1)  # Без ожидания не успевает срабатывать анимация
-        self.element_is_visible(self.locators.USER_KEBABS).click()
-        self.element_is_visible(self.locators.REDACT_BUTTON).click()
+        self.go_to_redact_user()
         time.sleep(4)
         user_before_add_role = self.element_is_visible(self.locators.USER_SYSTEM_ROLE_DISABLE_INDICATOR).get_attribute(
             'class')
@@ -189,8 +187,7 @@ class UserPage(BasePage):
     @testit.step("Проверяем удаление единственной проектной роли")
     @allure.step("Проверяем удаление единственной проектной роли")
     def check_removing_a_single_project_role_from_a_user(self):
-        self.element_is_visible(self.locators.USER_KEBABS).click()
-        self.element_is_visible(self.locators.REDACT_BUTTON).click()
+        self.go_to_redact_user()
         time.sleep(2)  # Без ожидания не успевает срабатывать анимация
         self.element_is_visible(self.locators.DELETE_PROJECT_ROLE_ICONS).click()
         assert not self.element_is_clickable(self.locators.SAVE_BUTTON, 1), 'Кнопка Сохранить не задизейбленна'
@@ -281,8 +278,7 @@ class UserPage(BasePage):
     @allure_testit_step("Открываем дропдаун системной роли в дровере")
     def open_system_role_drover(self):
         time.sleep(1)  # Без ожидания не успевает срабатывать анимация
-        self.element_is_visible(self.locators.USER_KEBABS).click()
-        self.element_is_visible(self.locators.REDACT_BUTTON).click()
+        self.go_to_redact_user()
         self.element_is_visible(self.locators.SYSTEM_ROLE_FIELD).click()
         
     @allure_testit_step("Получение списка системных ролей в дропдауне")
@@ -331,3 +327,14 @@ class UserPage(BasePage):
         for element in assigned_roles:
             data.append(element.text)
         return data
+
+    @allure_testit_step("Добавление Проектной роли")
+    def add_project_role(self, user_name):
+        self.element_is_visible(self.locators.kebab_user_name(user_name)).click()
+        self.element_is_visible(self.locators.REDACT_BUTTON).click()
+        self.element_is_visible(self.locators.PROJECT_ROLE_FIELD).click()
+        add_role = self.elements_are_visible(self.locators.NOT_SELECTED_SYSTEM_ROLE)[0].get_attribute('aria-label')
+        self.elements_are_visible(self.locators.NOT_SELECTED_SYSTEM_ROLE)[0].click()
+        self.action_esc()
+        self.press_submit_button()
+        return add_role

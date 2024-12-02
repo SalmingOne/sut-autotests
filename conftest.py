@@ -2004,3 +2004,17 @@ def project_with_task():
     gantt_endpoint.create_task_or_stage(project_id, json=payload)
     yield res.json(), phase_name, task_name
     project_endpoint.delete_project_api(str(project_id))
+
+@pytest.fixture()
+def create_second_stack(create_second_skill):
+    department_endpoint = DepartmentsEndpoint()
+    stacks_endpoint = StacksEndpoint()
+    random_department_id = random.choice(department_endpoint.get_all_departments_id())
+    payload = dict(
+        name="TestNG/Junit 5",
+        departmentId=random_department_id,
+        skillIds=[create_second_skill['id']]
+    )
+    response = stacks_endpoint.create_stacks_api(json=payload)
+    yield response.json()
+    stacks_endpoint.delete_stacks_api(str(response.json()['id']))

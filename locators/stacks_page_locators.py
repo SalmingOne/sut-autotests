@@ -44,3 +44,6 @@ class StacksPageLocators:
 
     def kebab_by_stack_name(self, name):
         return (By.XPATH, f'//p[text()="{name}"]/..//following-sibling::div[@aria-colindex="3"]//button')
+
+    def stack_name_on_page(self, name):
+        return (By.XPATH, f'//p[text()="{name}"]')
