@@ -111,3 +111,18 @@ class TestStacksPage:
         assert department == after_redact[1], "Новый отдел не отобразился в поле"
         assert [skill] == after_redact[2], "Новый навык/знание не отобразилось в поле"
         assert after_redact == after_save, "Внесенные изменения не сохранились"
+
+    @testit.workItemIds(64978)
+    @testit.displayName("10.4.2.4. (Чек-лист) Негативные проверки при редактировании стека")
+    @pytest.mark.regress
+    @allure.title("id-64978 10.4.2.4. (Чек-лист) Негативные проверки при редактировании стека")
+    def test_checklist_negative_checks_when_editing_a_stack(self, create_stack, create_second_stack, login, driver):
+        stacks_page = StacksPage(driver)
+        stacks_page.go_to_stacks_page()
+        stacks_page.press_edit_stack_button(create_stack['name'])
+        time.sleep(2)
+        stacks_page.check_name_field_when_redact()
+        stacks_page.check_department_field()
+        stacks_page.check_not_unique_name(create_second_stack['name'])
+        stacks_page.delete_one_skill_from_stack()
+        stacks_page.check_no_skill()
