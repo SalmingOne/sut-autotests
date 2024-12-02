@@ -20,11 +20,16 @@ class GanttPage(BasePage):
 
     @testit.step("Добавление фазы")
     @allure.step("Добавление фазы")
-    def add_phase(self, phase_name):
+    def add_phase(self, phase_name, parent_name = ''):
         self.element_is_visible(self.locators.EDIT_GANTT_BUTTON).click()
         time.sleep(0.5)
         self.element_is_visible(self.locators.CREATE_PHASE_OR_TASK_BUTTON).click()
         self.element_is_visible(self.locators.CREATE_PHASE_BUTTON).click()
+        if parent_name:
+            parent_name_field = self.element_is_visible(self.locators.PARENT_PHASE_NAME)
+            self.action_select_all_text(parent_name_field)
+            parent_name_field.send_keys(parent_name)
+            self.element_is_visible(self.locators.DROPDOWN_ITEMS).click()
         self.element_is_visible(self.locators.PHASE_NAME_FIELD).send_keys(phase_name)
         time.sleep(0.5)
         self.element_is_visible(self.locators.DRAWER_SUBMIT_BUTTON).click()
@@ -189,6 +194,17 @@ class GanttPage(BasePage):
             return [element.text.split('\n')[1] for element in self.elements_are_visible(self.locators.PHASES_NAME)]
         except TimeoutException:
             return []
+
+    @allure_testit_step('Получить названия задач')
+    def get_task_name(self):
+        try:
+            return [element.text.split('\n')[1] for element in self.elements_are_visible(self.locators.TASKS_NAME)]
+        except TimeoutException:
+            return []
+
+    @allure_testit_step('Получить номер задачи/фазы')
+    def get_number_of_task_or_phase(self, name):
+        return [element.text for element in self.elements_are_visible(self.locators.get_number_of_task_or_phase_by_name(name))]
 
     @allure_testit_step('Сохранить изменения в таблице')
     def save_changes(self):

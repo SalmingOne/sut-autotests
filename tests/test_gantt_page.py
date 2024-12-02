@@ -126,7 +126,6 @@ class TestGanttPage:
         all_project_page.go_project_page(project_with_assignment[0]['name'])
         gantt_page.go_to_gantt_tab()
         time.sleep(2)
-        gantt_page.edit_diagram()
         gantt_page.add_phase('Новолуние')
         gantt_page.save_changes()
         assert 'Новолуние' in gantt_page.get_phases_name(), 'Изменения не сохранены'
@@ -143,7 +142,6 @@ class TestGanttPage:
         all_project_page.go_project_page(project_with_assignment[0]['name'])
         gantt_page.go_to_gantt_tab()
         time.sleep(2)
-        gantt_page.edit_diagram()
         gantt_page.add_phase('Полнолуние')
         gantt_page.discard_changes(confirm=True)
         time.sleep(5)
@@ -161,10 +159,24 @@ class TestGanttPage:
         all_project_page.go_project_page(project_with_assignment[0]['name'])
         gantt_page.go_to_gantt_tab()
         time.sleep(2)
-        gantt_page.edit_diagram()
         gantt_page.add_phase('Полнолуние')
         gantt_page.discard_changes(confirm=False)
         time.sleep(5)
         gantt_page.buttons_are_displayed()
         assert 'Полнолуние' in gantt_page.get_phases_name(), "Внесенные ранее изменения не отображаются"
         assert gantt_page.get_status_of_gantt_task(), "Диаграмма Ганта не отображается"
+
+    @testit.workItemIds(1298)
+    @testit.displayName('14.2.1 Создание фазы с назначением родительской задачи')
+    @pytest.mark.regress
+    @allure.title('id-1298 14.2.1 Создание фазы с назначением родительской задачи')
+    def test_add_phase_with_parent_task_assignment(self, project_with_task, login, driver):
+        gantt_page = GanttPage(driver)
+        all_project_page = AllProjectPage(driver)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(project_with_task[0]['name'])
+        gantt_page.go_to_gantt_tab()
+        time.sleep(2)
+        gantt_page.add_phase('Растущая Луна', project_with_task[2])
+        assert ['1.1', '1.1.1'] == gantt_page.get_number_of_task_or_phase(project_with_task[2]), "Фаза с названием задачи не создалась"
+        assert ['1.1.2'] == gantt_page.get_number_of_task_or_phase('Растущая Луна'), "Задача не стала родительской для фазы"
