@@ -86,3 +86,28 @@ class TestStacksPage:
         assert create_stack['department']['name'] in titles, "Нет поля Отдел"
         assert 'Название' and 'Тип' and 'Описание' in titles, "Есть не все заголовки таблицы"
         stacks_page.check_view_tab_buttons()
+
+    @testit.workItemIds(64977)
+    @testit.displayName("10.4.2.4. Редактирование стека")
+    @pytest.mark.regress
+    @allure.title("id-64977 10.4.2.4. Редактирование стека")
+    def test_editing_a_stack(self, create_stack, login, driver):
+        stacks_page = StacksPage(driver)
+        stacks_page.go_to_stacks_page()
+        stacks_page.press_edit_stack_button(create_stack['name'])
+        time.sleep(2)
+        before = stacks_page.get_stack_field_values()
+        stack_name, department = stacks_page.change_stack_name_and_department()
+        stacks_page.delete_one_skill_from_stack()
+        skill = stacks_page.add_skill_to_stack()
+        after_redact = stacks_page.get_stack_field_values()
+        stacks_page.press_submit_button()
+        stacks_page.press_close_button()
+        assert stacks_page.check_stack_name_on_page(stack_name), "Новое имя стека не отображается в таблице"
+        stacks_page.press_edit_stack_button(stack_name)
+        after_save = stacks_page.get_stack_field_values()
+        assert before != after_save, "Стек не изменился"
+        assert stack_name == after_redact[0], "Новое имя стека не отобразилось в поле"
+        assert department == after_redact[1], "Новый отдел не отобразился в поле"
+        assert [skill] == after_redact[2], "Новый навык/знание не отобразилось в поле"
+        assert after_redact == after_save, "Внесенные изменения не сохранились"

@@ -94,9 +94,11 @@ class StacksPage(BasePage):
     def add_skill_to_stack(self):
         self.element_is_visible(self.locators.ADD_SKILL_BUTTON).click()
         self.element_is_visible(self.locators.SKILL_NAME_INPUT).click()
+        item_in_drawer = self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].text
         self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
         self.element_is_visible(self.locators.text_on_page('Добавление навыка/знания в стек')).click()
         self.element_is_visible(self.locators.ADD_STACK_BUTTON).click()
+        return item_in_drawer
 
     @allure_testit_step('Удаление одного знания из стека')
     def delete_one_skill_from_stack(self):
@@ -224,3 +226,38 @@ class StacksPage(BasePage):
     def check_view_tab_buttons(self):
         assert self.element_is_displayed(self.locators.REDACT_BUTTON), "Нет кнопки Редактировать"
         assert self.element_is_displayed(self.locators.CLOSE_BUTTON), "Нет кнопки Закрыть"
+
+    @allure_testit_step('Нажатие кнопки Редактировать стек')
+    def press_edit_stack_button(self, stack_name):
+        self.element_is_visible(self.locators.kebab_by_stack_name(stack_name)).click()
+        self.element_is_visible(self.locators.KEBABS_REDACT_MENU_ITEM).click()
+
+    @allure_testit_step('Изменение название стека и отдела')
+    def change_stack_name_and_department(self):
+        self.action_select_all_text(self.element_is_visible(self.locators.NAME_FIELD))
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys('Новое имя')
+        self.action_move_to_element(self.element_is_visible(self.locators.DEPARTMENT_FIELD))
+        self.element_is_visible(self.locators.CLEAR_DEPARTMENT_FIELD).click()
+        self.element_is_visible(self.locators.DEPARTMENT_FIELD).click()
+        item_in_drawer = self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].text
+        self.elements_are_visible(self.locators.LI_MENU_ITEM)[0].click()
+        return 'Новое имя', item_in_drawer
+
+    @allure_testit_step('Получение значений полей стека')
+    def get_stack_field_values(self):
+        stack_name = self.element_is_visible(self.locators.NAME_FIELD).get_attribute('value')
+        department = self.element_is_visible(self.locators.DEPARTMENT_FIELD).get_attribute('value')
+        skills = self.get_all_skills_name_in_tab()
+        return stack_name, department, skills
+
+    @allure_testit_step('Нажатие кнопки сохранить')
+    def press_submit_button(self):
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+
+    @allure_testit_step('Нажатие кнопки закрыть')
+    def press_close_button(self):
+        self.element_is_visible(self.locators.CLOSE_BUTTON).click()
+
+    @allure_testit_step('Проверка наличия стека на странице')
+    def check_stack_name_on_page(self, name):
+        return self.element_is_displayed(self.locators.stack_name_on_page(name))
