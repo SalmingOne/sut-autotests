@@ -31,7 +31,5 @@ class StacksEndpoint:
 
     @allure_testit_step("Удаление стека по id если он существует")
     def delete_stack_if_it_exist(self, stack_id):
-        if self.get_stack_by_id(str(stack_id)).status_code == 404:
-            pass
-        else:
+        if self.get_stack_by_id(str(stack_id)).status_code != 404:
             self.delete_stacks_api(str(stack_id))
