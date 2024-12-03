@@ -2018,3 +2018,18 @@ def create_second_stack(create_second_skill):
     response = stacks_endpoint.create_stacks_api(json=payload)
     yield response.json()
     stacks_endpoint.delete_stacks_api(str(response.json()['id']))
+
+
+@pytest.fixture()
+def create_stack_to_delete(create_skill):
+    department_endpoint = DepartmentsEndpoint()
+    stacks_endpoint = StacksEndpoint()
+    random_department_id = random.choice(department_endpoint.get_all_departments_id())
+    payload = dict(
+        name="TO_DELETE",
+        departmentId=random_department_id,
+        skillIds=[create_skill['id']]
+    )
+    response = stacks_endpoint.create_stacks_api(json=payload)
+    yield response.json()
+    stacks_endpoint.delete_stack_if_it_exist(str(response.json()['id']))

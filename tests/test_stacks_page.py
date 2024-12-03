@@ -126,3 +126,20 @@ class TestStacksPage:
         stacks_page.check_not_unique_name(create_second_stack['name'])
         stacks_page.delete_one_skill_from_stack()
         stacks_page.check_no_skill()
+
+    @testit.workItemIds(64979)
+    @testit.displayName("10.4.2.5. Удаление/отмена удаления стека")
+    @pytest.mark.regress
+    @allure.title("id-64979 10.4.2.5. Удаление/отмена удаления стека")
+    def test_removing_undoin_stack_deletion(self, create_stack_to_delete, login, driver):
+        stacks_page = StacksPage(driver)
+        stacks_page.go_to_stacks_page()
+        stacks_page.press_delete_stack_button(create_stack_to_delete['name'])
+        stacks_page.check_delete_steck_modal_window()
+        stacks_page.press_modal_break_button()
+        assert stacks_page.check_stack_name_on_page(create_stack_to_delete['name']), \
+            "Стек удалился после отмены удаления"
+        stacks_page.press_delete_stack_button(create_stack_to_delete['name'])
+        stacks_page.press_submit_button()
+        time.sleep(1)
+        assert not stacks_page.check_stack_name_on_page(create_stack_to_delete['name']), "Стек не удалился"

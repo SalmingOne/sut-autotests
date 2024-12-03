@@ -10,6 +10,7 @@ class StacksPageLocators:
     ADD_STACK_BUTTON = (By.XPATH, '//button[text()="Добавить"]')
     KEBABS_REDACT_MENU_ITEM = (By.XPATH, '//span[text()="Редактировать"]')
     KEBABS_VIEW_MENU_ITEM = (By.XPATH, '//span[text()="Просмотр"]')
+    KEBABS_DELETE_MENU_ITEM = (By.XPATH, '//span[text()="Удалить"]')
     # Стек в режиме просмотра
     TITLES = (By.XPATH, '//div[contains(@class,"MuiPaper-elevation0")]//h6')
     REDACT_BUTTON = (By.XPATH, '//button[text()="Редактировать"]')
