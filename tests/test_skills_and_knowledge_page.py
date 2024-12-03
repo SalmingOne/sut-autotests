@@ -143,3 +143,16 @@ class TestSkillsAndKnowledgePage:
         time.sleep(1)
         assert skills_and_knowledge_page.check_skill_name_on_page(create_skill['name']), \
             "Знание/навык не отображается в таблице после отмены удаления"
+
+    @testit.workItemIds(10467)
+    @testit.displayName("10.4.1.2 Отмена добавления знания в справочник Навыки и знания")
+    @pytest.mark.regress
+    @allure.title("id-10467 10.4.1.2 Отмена добавления знания в справочник Навыки и знания")
+    def test_cancel_addition_knowledge_to_skills_and_knowledge_directory(self, login, driver):
+        skills_and_knowledge_page = SkillsAndKnowledgePage(driver)
+        skills_and_knowledge_page.go_to_skills_page()
+        skills_and_knowledge_page.press_add_skill_button()
+        skills_and_knowledge_page.field_name_field('Для отмены')
+        skills_and_knowledge_page.press_break_button()
+        assert not skills_and_knowledge_page.check_skill_name_on_page('Для отмены'), \
+            "Знание/навык отображается в таблице после отмены добавления"
