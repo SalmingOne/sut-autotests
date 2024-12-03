@@ -3,6 +3,7 @@ import time
 import allure
 import testit
 from selenium.common import TimeoutException
+from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 from utils.concat_testit_allure_step import allure_testit_step
 
@@ -20,11 +21,12 @@ class GanttPage(BasePage):
 
     @testit.step("Добавление фазы")
     @allure.step("Добавление фазы")
-    def add_phase(self, phase_name, parent_name = ''):
-        self.element_is_visible(self.locators.EDIT_GANTT_BUTTON).click()
-        time.sleep(0.5)
-        self.element_is_visible(self.locators.CREATE_PHASE_OR_TASK_BUTTON).click()
-        self.element_is_visible(self.locators.CREATE_PHASE_BUTTON).click()
+    def add_phase(self, phase_name, parent_name='', drawer_is_opened=False):
+        if not drawer_is_opened:
+            self.element_is_visible(self.locators.EDIT_GANTT_BUTTON).click()
+            time.sleep(0.5)
+            self.element_is_visible(self.locators.CREATE_PHASE_OR_TASK_BUTTON).click()
+            self.element_is_visible(self.locators.CREATE_PHASE_BUTTON).click()
         if parent_name:
             parent_name_field = self.element_is_visible(self.locators.PARENT_PHASE_NAME)
             self.action_select_all_text(parent_name_field)
@@ -32,7 +34,8 @@ class GanttPage(BasePage):
             self.element_is_visible(self.locators.DROPDOWN_ITEMS).click()
         self.element_is_visible(self.locators.PHASE_NAME_FIELD).send_keys(phase_name)
         time.sleep(0.5)
-        self.element_is_visible(self.locators.DRAWER_SUBMIT_BUTTON).click()
+        if self.element_is_clickable(self.locators.DRAWER_SUBMIT_BUTTON):
+            self.element_is_visible(self.locators.DRAWER_SUBMIT_BUTTON).click()
 
     @testit.step("Проверка даты начала и окончания")
     @allure.step("Проверка даты начала и окончания")
@@ -223,3 +226,18 @@ class GanttPage(BasePage):
     def buttons_are_displayed(self):
         assert self.element_is_displayed(self.locators.SUBMIT_BUTTON), "Кнопка Сохранить не отображается в режиме редактирования диаграммы Ганта"
         assert self.element_is_displayed(self.locators.DISCARD_BUTTON), "Кнопка Отменить не отображается в режиме редактирования диаграммы Ганта"
+
+    @allure_testit_step('Получить сообщения ошибок валидации полей')
+    def get_mui_error_messages(self):
+        return [element.text for element in self.elements_are_visible(self.locators.MUI_ERROR)]
+
+    # Потом возможно добавятся еще поля
+    @allure_testit_step('Очистить обязательные поля')
+    def clear_required_fields(self):
+        element = self.element_is_visible(self.locators.PHASE_NAME_FIELD)
+        self.action_select_all_text(element)
+        element.send_keys(Keys.BACKSPACE)
+
+    @allure_testit_step('Получить цвет рамки поля название')
+    def get_field_border_color(self):
+        return self.element_is_visible(self.locators.FIELD_BORDER).value_of_css_property('border-color')

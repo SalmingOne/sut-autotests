@@ -180,3 +180,26 @@ class TestGanttPage:
         gantt_page.add_phase('Растущая Луна', project_with_task[2])
         assert ['1.1', '1.1.1'] == gantt_page.get_number_of_task_or_phase(project_with_task[2]), "Фаза с названием задачи не создалась"
         assert ['1.1.2'] == gantt_page.get_number_of_task_or_phase('Растущая Луна'), "Задача не стала родительской для фазы"
+
+    @testit.workItemIds(11852)
+    @testit.displayName('14.2.1 (чек-лист) Негативные проверки названия фазы')
+    @pytest.mark.regress
+    @allure.title('id-11852 14.2.1 (чек-лист) Негативные проверки названия фазы')
+    def test_negative_phase_name_checks(self, project_with_task, login, driver):
+        gantt_page = GanttPage(driver)
+        all_project_page = AllProjectPage(driver)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(project_with_task[0]['name'])
+        gantt_page.go_to_gantt_tab()
+        time.sleep(2)
+        gantt_page.add_phase(project_with_task[1])
+        assert 'Такое название фазы уже существует' in gantt_page.get_mui_error_messages(), "Нет ошибки валидации"
+        assert 'rgb(211, 47, 47)' == gantt_page.get_field_border_color(), "Цвет ячейки не красный"
+        gantt_page.clear_required_fields()
+        gantt_page.add_phase('', drawer_is_opened=True)
+        gantt_page.remove_focus_from_element()
+        assert 'Поле обязательно' in gantt_page.get_mui_error_messages(), "Нет ошибки валидации"
+        assert 'rgb(211, 47, 47)' == gantt_page.get_field_border_color(), "Цвет ячейки не красный"
+        gantt_page.add_phase('Фаза исследования лунной поверхности, включающая анализ грунта, картографирование и сбор данных о ресурсах', drawer_is_opened=True)
+        assert 'Максимальное количество символов: 100' in gantt_page.get_mui_error_messages(), "Нет ошибки валидации"
+        assert 'rgb(211, 47, 47)' == gantt_page.get_field_border_color(), "Цвет ячейки не красный"
