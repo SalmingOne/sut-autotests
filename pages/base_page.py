@@ -206,3 +206,7 @@ class BasePage:
         while self.is_week_shortened(start_date, end_date):
             start_date, end_date = self.get_next_week(start_date)
         return start_date, end_date
+
+    @allure.step("Убираем фокус с элемента")
+    def remove_focus_from_element(self):
+        self.driver.execute_script("document.activeElement.blur();")

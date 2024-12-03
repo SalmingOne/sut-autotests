@@ -55,4 +55,7 @@ class GanttPageLocators:
     def get_task(self, task_name):
         return By.XPATH, f"//div[contains(@class, 'gantt_row') and contains(@aria-label, 'Задача: {task_name} ')]"
 
+    MUI_ERROR = (By.XPATH, '//p[contains(@class, "Mui-error")]')
+    FIELD_BORDER = (By.XPATH, '//input[@name="name"]//following-sibling::fieldset')
+
 
