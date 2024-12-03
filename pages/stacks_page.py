@@ -285,3 +285,16 @@ class StacksPage(BasePage):
         )
         assert error == 'Превышено допустимое количество символов: 255', \
             "Не появилось сообщение о превышении допустимого количества символов в поле Стек"
+
+    @allure_testit_step('Нажатие кнопки Удалить стек')
+    def press_delete_stack_button(self, stack_name):
+        self.element_is_visible(self.locators.kebab_by_stack_name(stack_name)).click()
+        self.element_is_visible(self.locators.KEBABS_DELETE_MENU_ITEM).click()
+
+    @allure_testit_step('Проверка модального окна удаления стека')
+    def check_delete_steck_modal_window(self):
+        assert self.element_is_displayed(self.locators.text_on_page('Вы уверены, что хотите удалить ')), \
+            "Нет текста сообщения в модальном окне"
+        assert self.element_is_displayed(self.locators.CONFIRM_BUTTON), "Нет кнопки Подтвердить"
+        assert self.element_is_displayed(self.locators.MODAL_BREAK_BUTTON), "Нет кнопки Отменить"
+
