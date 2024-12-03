@@ -221,3 +221,7 @@ class SkillsAndKnowledgePage(BasePage):
     @allure_testit_step('Нажатие кнопки Отменить модальном окне')
     def press_break_button_in_dialog(self):
         self.element_is_visible(self.locators.DIALOG_BREAK_BUTTON).click()
+
+    @allure_testit_step('Заполнение поля Название')
+    def field_name_field(self, name):
+        self.element_is_visible(self.locators.NAME_FIELD).send_keys(name)
