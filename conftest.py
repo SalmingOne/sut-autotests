@@ -793,6 +793,13 @@ def delete_created_reason_project():
 
 
 @pytest.fixture()
+def delete_created_priority_project():
+    yield
+    project_endpoint = ProjectEndpoint()
+    project_endpoint.delete_project_by_name_api("AutoTestPriority")
+
+
+@pytest.fixture()
 def project_with_work_and_overtime_work():
     labor_report_endpoint = LaborReportEndpoint()
     project_endpoint = ProjectEndpoint()

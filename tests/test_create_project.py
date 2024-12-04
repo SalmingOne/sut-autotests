@@ -393,3 +393,31 @@ class TestCreateProject:
         assert error == 'Значение в поле содержит недопустимые символы', 'Не появилась ошибка о недопустимых символах'
         create_project_drawer_page.press_break_button()
         create_project_drawer_page.press_confirm_button()
+
+    @testit.workItemIds(66684)
+    @testit.displayName("1.3.2.5. Назначение приоритета при создании проекта")
+    @pytest.mark.regress
+    @allure.title("id-66684 1.3.2.5. Назначение приоритета при создании проекта")
+    def test_assigning_priority_when_creating_project(self, delete_created_priority_project, login, driver):
+        create_project_drawer_page = CreateProjectDrawerPage(driver)
+        create_project_drawer_page.go_to_create_project_drawer_from_menu()
+        create_project_drawer_page.enter_data_in_fields("AutoTestPriority",
+                                                        'ATPrior', '01.10.2024')
+        create_project_drawer_page.check_priority_field_in_drover()
+        create_project_drawer_page.select_priority_in_drover()
+        create_project_drawer_page.press_break_button()
+        create_project_drawer_page.press_confirm_button()
+        all_project_page = AllProjectPage(driver)
+        all_project_page.go_to_all_project_page()
+        assert not all_project_page.get_project_on_tab('AutoTestPriority'), \
+            "Проект отображается в таблице Все проекты после отмены создания"
+
+        create_project_drawer_page.go_to_create_project_drawer_from_menu()
+        create_project_drawer_page.enter_data_in_fields("AutoTestPriority",
+                                                        'ATPrior','01.10.2024')
+        create_project_drawer_page.select_priority_in_drover()
+        create_project_drawer_page.press_submit_button()
+        create_project_drawer_page.check_created_project()
+        messages = create_project_drawer_page.get_all_messages()
+        assert 'Проект успешно создан' in messages, \
+            "Нет сообщения об успешном создании проекта"
