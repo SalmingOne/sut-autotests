@@ -1043,3 +1043,36 @@ class TestProjectCard:
             "Поле с приоритетом не поменялось после сохранения"
         assert message == 'Свойства проекта успешно изменены', \
             "Не появилось сообщение об изменении проекта"
+
+    @testit.workItemIds(74)
+    @testit.displayName("1.3.2.1 Подтверждение изменения даты окончания проекта с выхождением "
+                        "запланированных периодов привлечения за дату окончания проекта.")
+    @pytest.mark.regress
+    @allure.title("id-74 1.3.2.1 Подтверждение изменения даты окончания проекта с выхождением "
+                  "запланированных периодов привлечения за дату окончания проекта.")
+    def test_confirmation_change_end_date_project_with_out_boundary_planned_resources \
+                    (self, project_with_planned_resources, login, driver):
+        all_project_page = AllProjectPage(driver)
+        time.sleep(0.5)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(project_with_planned_resources[2]['name'])
+        project_card_page = ProjectCardPage(driver)
+        before_start_date = project_card_page.get_project_start_date()
+        before_end_date = project_card_page.get_project_end_date()
+        new_end_date = (datetime.strptime(before_end_date,
+                                          "%d.%m.%Y").date() + timedelta(-1)).strftime("%d.%m.%Y")
+        project_card_page.change_end_date(new_end_date)
+        project_card_page.press_submit_button()
+        project_card_page.check_project_boundaries_modal_window()
+        project_card_page.press_modal_submit_button()
+        message = project_card_page.get_alert_message()
+        after_end_date = project_card_page.get_project_end_date()
+        project_card_page.check_project_end_date_in_title(new_end_date)
+        project_card_page.go_to_resource_plan_tab()
+        project_card_page.press_add_employment_button()
+        project_card_page.press_end_date_in_drover()
+        time.sleep(2) # без этого ожидания не успевает поменяться дата в датапикере
+        project_card_page.check_dates_outside_project_boundaries(before_start_date, new_end_date)
+        assert message == 'Свойства проекта успешно изменены', "Не появилось сообщение об изменении проекта"
+        assert before_end_date != after_end_date, "Дата начала проекта не изменилась"
+        assert after_end_date == new_end_date, "Дата начала проекта не изменилась на указанную"

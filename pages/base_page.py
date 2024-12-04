@@ -167,7 +167,7 @@ class BasePage:
     @allure.step("Получение первого и последнего дней текущей недели")
     def get_current_week_start_end(self):
         first_day_of_week = datetime.now() - timedelta(days=datetime.now().weekday())
-        last_day_of_week = first_day_of_week + timedelta(days=6)
+        last_day_of_week = first_day_of_week + timedelta(days=4)
         return first_day_of_week, last_day_of_week
     
     @allure.step("Получение первого и последнего дней текущего месяца")
@@ -182,7 +182,7 @@ class BasePage:
     @allure.step("Получение следующей недели от заданной начальной даты")
     def get_next_week(self, start_date):
         first_day_of_week = start_date + timedelta(days=7 - start_date.weekday())
-        last_day_of_week = first_day_of_week + timedelta(days=6)
+        last_day_of_week = first_day_of_week + timedelta(days=4)
         return first_day_of_week, last_day_of_week
 
     @allure.step("Проверяем, есть ли в неделе праздничные или укороченные рабочие дни")
@@ -194,7 +194,7 @@ class BasePage:
         preholidays = set(holidays_data.get("preholidays", []))
 
         # Проверяем каждый день недели
-        for day in (start_date + timedelta(days=i) for i in range(0, 7)):
+        for day in (start_date + timedelta(days=i) for i in range(0, 5)):
             # Если день есть в праздничных или предпраздничных, неделя сокращена
             if day.strftime("%Y-%m-%d") in holidays or day.strftime("%Y-%m-%d") in preholidays:
                 return True

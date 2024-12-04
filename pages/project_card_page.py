@@ -634,11 +634,22 @@ class ProjectCardPage(BasePage):
     def get_project_end_date(self):
         return self.element_is_visible(self.locators.END_DATA_FIELD).get_attribute("value")
 
+    @allure_testit_step("Проверка даты окончания проекта в заголовке")
+    def check_project_end_date_in_title(self, end_date):
+        assert self.element_is_visible(self.locators.text_on_page(end_date)), \
+            f"В заголовке не новая дата окончания проекта"
+
     @testit.step("Изменение даты начала проекта")
     @allure.step("Изменение даты начала проекта")
     def change_start_date(self, date):
         self.action_select_all_text(self.element_is_visible(self.locators.BEGIN_DATA_FIELD))
         self.element_is_visible(self.locators.BEGIN_DATA_FIELD).send_keys(date)
+
+    @testit.step("Изменение даты окончания проекта")
+    @allure.step("Изменение даты окончания проекта")
+    def change_end_date(self, date):
+        self.action_select_all_text(self.element_is_visible(self.locators.END_DATA_FIELD))
+        self.element_is_visible(self.locators.END_DATA_FIELD).send_keys(date)
 
     @testit.step("Нажатие кнопки Сохранить")
     @allure.step("Нажатие кнопки Сохранить")
@@ -953,6 +964,11 @@ class ProjectCardPage(BasePage):
     def press_start_date_in_drover(self):
         self.element_is_visible(self.locators.DROVER_START_DATE).click()
 
+    @testit.step("Нажатие на поле 'Дата окончания' в дровере")
+    @allure.step("Нажатие на поле 'Дата окончания' в дровере")
+    def press_end_date_in_drover(self):
+        self.element_is_visible(self.locators.DROVER_END_DATE).click()
+
     @testit.step("Проверка отображения выпадающего календаря")
     @allure.step("Проверка отображения выпадающего календаря")
     def check_dropdown_calendar(self):
@@ -965,6 +981,7 @@ class ProjectCardPage(BasePage):
         day_end = int(end_date.split('.')[0])
         day_before_start = day_start - 1
         day_after_end = day_end + 1
+        time.sleep(1)
         assert not self.element_is_clickable(self.locators.buttons_day_calendar(str(day_before_start)), 0.5), \
             "Дата до начала проекта доступна для выбора"
         assert not self.element_is_clickable(self.locators.buttons_day_calendar(str(day_after_end)), 0.5), \
