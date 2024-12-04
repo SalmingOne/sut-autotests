@@ -203,3 +203,16 @@ class TestGanttPage:
         gantt_page.add_phase('Фаза исследования лунной поверхности, включающая анализ грунта, картографирование и сбор данных о ресурсах', drawer_is_opened=True)
         assert 'Максимальное количество символов: 100' in gantt_page.get_mui_error_messages(), "Нет ошибки валидации"
         assert 'rgb(211, 47, 47)' == gantt_page.get_field_border_color(), "Цвет ячейки не красный"
+
+    @testit.workItemIds(1325)
+    @testit.displayName('14.2.4 Удаление фазы с задачами по которым списаны трудозатраты')
+    @pytest.mark.regress
+    @allure.title('id-1325 14.2.4 Удаление фазы с задачами по которым списаны трудозатраты')
+    def test_delete_phase_with_labor_costs(self, project_with_task, labor_cost_to_task, login, driver):
+        gantt_page = GanttPage(driver)
+        all_project_page = AllProjectPage(driver)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(project_with_task[0]['name'])
+        gantt_page.go_to_gantt_tab()
+        time.sleep(2)
+        gantt_page.modify_phase_or_task(project_with_task[1], 'Удалить')

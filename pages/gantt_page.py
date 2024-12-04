@@ -241,3 +241,34 @@ class GanttPage(BasePage):
     @allure_testit_step('Получить цвет рамки поля название')
     def get_field_border_color(self):
         return self.element_is_visible(self.locators.FIELD_BORDER).value_of_css_property('border-color')
+
+    @allure_testit_step('Проверить отображение модального окна')
+    def check_modal_window(self, message: str):
+        assert message == self.element_is_visible(self.locators.MODAL_MESSAGE).text, "Неправильный текст сообщения"
+        assert self.element_is_displayed(self.locators.MODAL_SUBMIT_BUTTON), "Нет кнопки подтверждения"
+        assert self.element_is_displayed(self.locators.MODAL_ABORT_BUTTON), "Нет кнопки отмены"
+
+    @allure_testit_step('Удаление или редактирование фазы/задачи')
+    def modify_phase_or_task(self, phase_or_task_name, action, confirm=True):
+        self.element_is_visible(self.locators.EDIT_GANTT_BUTTON).click()
+        time.sleep(5)
+        self.element_is_visible(self.locators.get_kebab_menu_by_name(phase_or_task_name)).click()
+        is_changed = True
+        match action:
+            case 'Удалить':
+                if self.element_is_visible(self.locators.LI_KEBAB_DELETE_BUTTON).get_attribute('aria-label'):
+                    self.action_move_to_element(self.element_is_visible(self.locators.KEBAB_DELETE_BUTTON))
+                    is_changed = False
+                    assert 'Нельзя удалить фазу/задачу, на задачи которой списаны часы' == self.element_is_visible(self.locators.TOOLTIP).text, "Неверный текст тултипа"
+                else:
+                    self.element_is_visible(self.locators.KEBAB_DELETE_BUTTON).click()
+                    try:
+                        self.check_modal_window(f'Вы действительно хотите удалить фазу "{phase_or_task_name}"?')
+                    except AssertionError:
+                        self.check_modal_window(f'Вы действительно хотите удалить задачу "{phase_or_task_name}"?')
+            case "Редактировать":
+                pass
+                # реализую в следующий ТК
+        if is_changed:
+            button = self.element_is_visible(self.locators.MODAL_SUBMIT_BUTTON) if confirm else self.element_is_visible(self.locators.MODAL_ABORT_BUTTON)
+            button.click()
