@@ -13,6 +13,9 @@ class CreateProjectDrawerLocators:
     PROJECT_CODE_FIELD = (By.CSS_SELECTOR, 'input[name="code"]')
     PROJECT_BEGIN_DATA_FIELD = (By.XPATH, '//label[text()="Дата начала"]//following::input[1]')
     PROJECT_END_DATA_FIELD = (By.XPATH, '//label[text()="Дата начала"]//following::input[2]')
+    PRIORITY_FIELD = (By.XPATH, '//label[text()="Приоритет"]/../div/span')
+    FIRST_NOT_CHOOSE = (By.XPATH, '//li[@aria-selected="false"][1]')
+    COLOR_MENU_ITEM = (By.CSS_SELECTOR, 'svg[data-testid="CircleIcon"]')
     PROJECT_RECOURSE_FIELD = (By.XPATH, '//div[@name="resources"]//following::input[1]')
     PROJECT_MANAGER_FIELD = (By.XPATH, '//div[@name="projectManagers"]//child::input[1]')
     REASON_CHECKBOX = (By.XPATH, '//span[text()="Обязательно указание причины списания трудозатрат"]')
@@ -27,3 +30,4 @@ class CreateProjectDrawerLocators:
 
     # Ошибки
     MUI_ERROR = (By.XPATH, '//p[contains(@class, "Mui-error")]')
+    ALERT_MESSAGE = (By.XPATH, '//div[contains(@class, "MuiAlert-message")]')

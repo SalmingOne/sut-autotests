@@ -68,3 +68,55 @@ class CreateProjectDrawerPage(BasePage):
     @allure_testit_step("Нажатие кнопки подтвердить")
     def press_confirm_button(self):
         self.element_is_visible(self.locators.CONFIRM_BUTTON).click()
+
+    @allure_testit_step("Нажатие кнопки сохранить")
+    def press_submit_button(self):
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+
+    @allure_testit_step("Ввод данных в обязательные поля в дровере создания проекта")
+    def enter_data_in_fields(self, project_name, project_code, start_date):
+        self.element_is_visible(self.locators.PROJECT_NAME_FIELD).send_keys(project_name)
+        self.element_is_visible(self.locators.PROJECT_CODE_FIELD).send_keys(project_code)
+        self.element_is_visible(self.locators.PROJECT_BEGIN_DATA_FIELD).click()
+        self.action_select_all_text(self.element_is_visible(self.locators.PROJECT_BEGIN_DATA_FIELD))
+        self.element_is_visible(self.locators.PROJECT_BEGIN_DATA_FIELD).send_keys(Keys.BACK_SPACE)
+        self.element_is_visible(self.locators.PROJECT_BEGIN_DATA_FIELD).send_keys(start_date)
+
+    @allure_testit_step("Выбираем приоритет в дровере создания проекта")
+    def select_priority_in_drover(self):
+        self.element_is_visible(self.locators.PRIORITY_FIELD).click()
+        self.element_is_visible(self.locators.FIRST_NOT_CHOOSE).click()
+
+    @allure_testit_step("Проверка поля приоритет вкладки описание проекта")
+    def check_priority_field_in_drover(self):
+        assert self.get_all_priority_in_drover() == {'Низкий (1)': 'rgba(76, 175, 80, 1)',
+                                                              'Низкий (2)': 'rgba(76, 175, 80, 1)',
+                                                              'Низкий (3)': 'rgba(76, 175, 80, 1)',
+                                                              'Средний (4)': 'rgba(255, 193, 7, 1)',
+                                                              'Средний (5)': 'rgba(255, 193, 7, 1)',
+                                                              'Средний (6)': 'rgba(255, 193, 7, 1)',
+                                                              'Средний (7)': 'rgba(255, 193, 7, 1)',
+                                                              'Высокий (8)': 'rgba(255, 87, 34, 1)',
+                                                              'Высокий (9)': 'rgba(255, 87, 34, 1)',
+                                                              'Высокий (10)': 'rgba(255, 87, 34, 1)'}, \
+            'В выпадающем списке не все значения приоритетов'
+
+    @allure_testit_step("Получаем все приоритеты вкладки описание проекта")
+    def get_all_priority_in_drover(self):
+        elem = self.element_is_present(self.locators.PRIORITY_FIELD)
+        self.go_to_element(elem)
+        elem.click()
+        time.sleep(1)
+        all_priority = self.elements_are_present(self.locators.LI_MENU_ITEM)
+        all_colors = self.elements_are_present(self.locators.COLOR_MENU_ITEM)
+        if len(all_priority) != len(all_colors):
+            raise ValueError('Количество приоритетов и цветов не совпадает!')
+        data = {}
+        for priority, color in zip(all_priority, all_colors):
+            data[priority.text] = color.value_of_css_property('color')
+        self.action_esc()
+        return data
+
+    @allure_testit_step('Получить все сообщения системы')
+    def get_all_messages(self):
+        return self.get_all_alert_message(self.locators.ALERT_MESSAGE)
