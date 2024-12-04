@@ -2002,7 +2002,11 @@ def project_with_task():
         links=[]
     )
     gantt_endpoint.create_task_or_stage(project_id, json=payload)
-    yield res.json(), phase_name, task_name
+    tasks = gantt_endpoint.get_all_tasks(project_id).json()
+    parentId = tasks[0]['parentId']
+    taskId = tasks[0]['id']
+
+    yield res.json(), phase_name, task_name, (project_id, parentId, taskId)
     project_endpoint.delete_project_api(str(project_id))
 
 @pytest.fixture()
@@ -2033,3 +2037,29 @@ def create_stack_to_delete(create_skill):
     response = stacks_endpoint.create_stacks_api(json=payload)
     yield response.json()
     stacks_endpoint.delete_stack_if_it_exist(str(response.json()['id']))
+
+@pytest.fixture()
+def labor_cost_to_task(project_with_task):
+    gantt_endpoint = GanttEndpoint()
+    payload = dict(
+        status="IN_PROGRESS",
+        changeDate=BasePage(driver=None).get_day_before_m_d_y(0)
+    )
+    projectId, parentId, taskId = project_with_task[3]
+
+    gantt_endpoint.change_stage_status(parentId, payload)
+    gantt_endpoint.change_task_status(taskId, payload)
+
+    payload = [
+        dict(
+            hours=3,
+            date=BasePage(driver=None).get_day_after_ymd(0),
+            reason="Причина",
+            userId=USER_ID,
+            type='DEFAULT',
+            projectId=projectId,
+            taskId=taskId,
+        )
+    ]
+    labor_report_endpoint = LaborReportEndpoint()
+    labor_report_endpoint.post_labor_report_api(json=payload)

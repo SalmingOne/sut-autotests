@@ -43,13 +43,17 @@ class GanttPageLocators:
     TASKS_NAME = (By.XPATH, "//div[contains(@class, 'gantt_grid')]//div[contains(@aria-label, 'Задача')]")
 
     def get_number_of_task_or_phase_by_name(self, phase_or_task_name):
-        return By.XPATH, f"//div[contains(@class, 'gantt_grid')]//div[contains(@aria-label, '{phase_or_task_name}')]//div[@data-column-name='number']"
+        return By.XPATH, f"//div[contains(@class, 'gantt_grid')]//div[contains(@aria-label, '{phase_or_task_name} ')]//div[@data-column-name='number']"
+
+    def get_kebab_menu_by_name(self, phase_or_task_name):
+        return By.XPATH, f"//div[contains(@class, 'gantt_grid')]//div[contains(@aria-label, '{phase_or_task_name} ')]//div[@data-column-name='actions']//button"
 
     LI_MENU_ITEM = (By.CSS_SELECTOR, 'li[role="option"]')
     TABLE_ROWS = (By.XPATH, "//div[contains(@class, 'gantt_row')]")
     GANTT_TOOLTIP = (By.CSS_SELECTOR, 'div[class="gantt_tooltip"]')
     SUBMIT_BUTTON = (By.CSS_SELECTOR, 'button[type="submit"]')
     DISCARD_BUTTON = (By.XPATH, '//button[text()="Отменить"]')
+    MODAL_MESSAGE = (By.CSS_SELECTOR, 'p[id="alert-dialog-description"]')
     MODAL_SUBMIT_BUTTON = (By.XPATH, '//p[@id="alert-dialog-description"]//following::button[text()="Подтвердить"]')
     MODAL_ABORT_BUTTON = (By.XPATH, '//p[@id="alert-dialog-description"]//following::button[text()="Отменить"]')
     def get_task(self, task_name):
@@ -57,5 +61,8 @@ class GanttPageLocators:
 
     MUI_ERROR = (By.XPATH, '//p[contains(@class, "Mui-error")]')
     FIELD_BORDER = (By.XPATH, '//input[@name="name"]//following-sibling::fieldset')
+    KEBAB_DELETE_BUTTON = (By.XPATH, "//span[text()='Удалить']")
+    LI_KEBAB_DELETE_BUTTON = (By.XPATH, "//span[text()='Удалить']/..")
+    TOOLTIP = (By.CSS_SELECTOR, 'div[role="tooltip"]')
 
 
