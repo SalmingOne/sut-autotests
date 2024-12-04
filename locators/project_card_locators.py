@@ -16,6 +16,7 @@ class ProjectCardLocators:
     END_DATA_FIELD = (By.XPATH, '//label[text()="Дата окончания"]//following::input[1]')
     MANAGER_LABEL = (By.XPATH, '//span[contains(@class, "MuiChip-label MuiChip-labelMedium")]')
     STATUS_FIELD = (By.XPATH, '//div[@name="status"]//input')
+    PRIORITY_FIELD = (By.XPATH, '//label[text()="Приоритет"]/../div/span')
     DESCRIPTION_FIELD = (By.XPATH, '//p[text()="Описание"]/..//div[@class="editor-content rdw-editor-main"]')
     FILE_DESCRIPTION_FIELD = (By.XPATH, '//p[text()="Описание для прилагаемых файлов"]/..//div[@class="editor-content rdw-editor-main"]')
     CHECKBOXES_TEXT = (By.XPATH, '//span[contains(@class,"MuiCheckbox-root")]//following-sibling::span[contains(@class,"MuiTypography-body1")]')
@@ -105,6 +106,7 @@ class ProjectCardLocators:
     TOOLTIP = (By.XPATH, '//div[contains(@class, "MuiTooltip-tooltipPlacementTop")]')
 
     LI_MENU_ITEM = (By.CSS_SELECTOR, 'li[role="option"]')
+    COLOR_MENU_ITEM = (By.CSS_SELECTOR, 'svg[data-testid="CircleIcon"]')
     LI_MENU_ITEM_TEXT = (By.XPATH, '//li[@role="option"]/p')
     def li_by_text(self, text):
         return (By.XPATH, f'//li[text()="{text}"]')

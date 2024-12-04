@@ -1017,3 +1017,29 @@ class TestProjectCard:
         assert not save_button, "Кнопка Сохранить кликабельна"
         assert after_break_start_date == before_start_date, \
             'Дата начала проекта не вернулась к исходной после отмены'
+
+    @testit.workItemIds(66683)
+    @testit.displayName("1.3.2.5. Назначение приоритета проекта на табе 'Описание'")
+    @pytest.mark.regress
+    @allure.title("id-66683 1.3.2.5. Назначение приоритета проекта на табе 'Описание'")
+    def test_assigning_project_priority_on_description_tab(self, simple_project, login, driver):
+        all_project_page = AllProjectPage(driver)
+        time.sleep(0.5)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(f"{PROJECT_NAME}")
+        project_card_page = ProjectCardPage(driver)
+        priority_before = project_card_page.get_priority_on_description_tab()
+        project_card_page.check_description_tab_priority_field()
+        project_card_page.select_priority()
+        project_card_page.press_break_button()
+        priority_after_break = project_card_page.get_priority_on_description_tab()
+        project_card_page.select_priority()
+        project_card_page.press_submit_button()
+        priority_after_submit = project_card_page.get_priority_on_description_tab()
+        message = project_card_page.get_alert_message()
+        assert priority_before == priority_after_break == '', \
+            "Поле с приоритетом не очистилось после отмены"
+        assert priority_before != priority_after_submit, \
+            "Поле с приоритетом не поменялось после сохранения"
+        assert message == 'Свойства проекта успешно изменены', \
+            "Не появилось сообщение об изменении проекта"
