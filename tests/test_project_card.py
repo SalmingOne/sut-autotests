@@ -1071,9 +1071,8 @@ class TestProjectCard:
         project_card_page.go_to_resource_plan_tab()
         project_card_page.press_add_employment_button()
         project_card_page.press_end_date_in_drover()
-        # Сейчас баг, Дата окончания в календаре доступна прежняя
-        # После починки строку ниже раскомментировать
-        # project_card_page.check_dates_outside_project_boundaries(before_start_date, new_end_date)
+        time.sleep(2) # без этого ожидания не успевает поменяться дата в датапикере
+        project_card_page.check_dates_outside_project_boundaries(before_start_date, new_end_date)
         assert message == 'Свойства проекта успешно изменены', "Не появилось сообщение об изменении проекта"
         assert before_end_date != after_end_date, "Дата начала проекта не изменилась"
         assert after_end_date == new_end_date, "Дата начала проекта не изменилась на указанную"
