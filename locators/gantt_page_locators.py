@@ -62,6 +62,7 @@ class GanttPageLocators:
     MUI_ERROR = (By.XPATH, '//p[contains(@class, "Mui-error")]')
     FIELD_BORDER = (By.XPATH, '//input[@name="name"]//following-sibling::fieldset')
     KEBAB_DELETE_BUTTON = (By.XPATH, "//span[text()='Удалить']")
+    KEBAB_EDIT_BUTTON = (By.XPATH, "//span[text()='Редактировать']")
     LI_KEBAB_DELETE_BUTTON = (By.XPATH, "//span[text()='Удалить']/..")
     TOOLTIP = (By.CSS_SELECTOR, 'div[role="tooltip"]')
 

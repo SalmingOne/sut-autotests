@@ -216,3 +216,17 @@ class TestGanttPage:
         gantt_page.go_to_gantt_tab()
         time.sleep(2)
         gantt_page.modify_phase_or_task(project_with_task[1], 'Удалить')
+
+    @testit.workItemIds(1320)
+    @testit.displayName('14.2.2 Редактирование фазы')
+    @pytest.mark.regress
+    @allure.title('id-1320 14.2.2 Редактирование фазы')
+    def test_edit_phase(self, project_with_task, login, driver):
+        gantt_page = GanttPage(driver)
+        all_project_page = AllProjectPage(driver)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(project_with_task[0]['name'])
+        gantt_page.go_to_gantt_tab()
+        time.sleep(2)
+        gantt_page.modify_phase_or_task(project_with_task[1], 'Редактировать')
+        assert 'Фаза изменена' in gantt_page.get_errors_on_page(), "Нет сообщения об изменении"
