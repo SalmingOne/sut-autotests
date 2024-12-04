@@ -230,3 +230,17 @@ class TestGanttPage:
         time.sleep(2)
         gantt_page.modify_phase_or_task(project_with_task[1], 'Редактировать')
         assert 'Фаза изменена' in gantt_page.get_errors_on_page(), "Нет сообщения об изменении"
+
+    @testit.workItemIds(1756)
+    @testit.displayName('14.2.5 Содержание дровера изменения статуса фазы')
+    @pytest.mark.regress
+    @allure.title('id-1756 14.2.5 Содержание дровера изменения статуса фазы')
+    def test_phase_status_change_drawer_content(self, project_with_task, login, driver):
+        gantt_page = GanttPage(driver)
+        all_project_page = AllProjectPage(driver)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(project_with_task[0]['name'])
+        gantt_page.go_to_gantt_tab()
+        time.sleep(2)
+        gantt_page.change_status(project_with_task[1])
+        gantt_page.check_drawer_items()

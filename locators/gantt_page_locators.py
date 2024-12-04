@@ -65,5 +65,9 @@ class GanttPageLocators:
     KEBAB_EDIT_BUTTON = (By.XPATH, "//span[text()='Редактировать']")
     LI_KEBAB_DELETE_BUTTON = (By.XPATH, "//span[text()='Удалить']/..")
     TOOLTIP = (By.CSS_SELECTOR, 'div[role="tooltip"]')
+    KEBAB_CHANGE_STATUS_BUTTON = (By.XPATH, "//span[text()='Изменить статус']")
 
-
+    STATUS_FIELD = (By.XPATH, "//div[@name='status']//input")
+    DATE_FIELD = (By.CSS_SELECTOR, 'input[placeholder="ДД.MM.ГГГГ"]')
+    CHANGE_STATUS_DRAWER_SUBMIT_BUTTON = (By.XPATH, '//button[@type="submit"]')
+    CHANGE_STATUS_DRAWER_DISCARD_BUTTON = (By.XPATH, '//button[text()="Отменить"]')
