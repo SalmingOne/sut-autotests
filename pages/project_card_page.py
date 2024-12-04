@@ -39,6 +39,43 @@ class ProjectCardPage(BasePage):
         output_project_manager = self.element_is_visible(self.locators.MANAGER_LABEL).text
         return output_project_name, output_project_code, output_project_status, output_project_begin_data, output_project_manager
 
+    @allure_testit_step("Получаем значение поля приоритет вкладки описание проекта")
+    def get_priority_on_description_tab(self):
+        return self.element_is_visible(self.locators.PRIORITY_FIELD).text
+
+    @allure_testit_step("Получаем все приоритеты вкладки описание проекта")
+    def get_all_priority_on_description_tab(self):
+        self.element_is_visible(self.locators.PRIORITY_FIELD).click()
+        all_priority = self.elements_are_visible(self.locators.LI_MENU_ITEM)
+        all_colors = self.elements_are_visible(self.locators.COLOR_MENU_ITEM)
+
+        if len(all_priority) != len(all_colors):
+            raise ValueError('Количество приоритетов и цветов не совпадает!')
+        data = {}
+        for priority, color in zip(all_priority, all_colors):
+            data[priority.text] = color.value_of_css_property('color')
+        self.action_esc()
+        return data
+
+    @allure_testit_step("Выбираем приоритет вкладки описание проекта")
+    def select_priority(self):
+        self.element_is_visible(self.locators.PRIORITY_FIELD).click()
+        self.element_is_visible(self.locators.FIRST_NOT_CHOOSE).click()
+
+    @allure_testit_step("Проверка поля приоритет вкладки описание проекта")
+    def check_description_tab_priority_field(self):
+        assert self.get_all_priority_on_description_tab() == {'Низкий (1)': 'rgba(76, 175, 80, 1)',
+                                                              'Низкий (2)': 'rgba(76, 175, 80, 1)',
+                                                              'Низкий (3)': 'rgba(76, 175, 80, 1)',
+                                                              'Средний (4)': 'rgba(255, 193, 7, 1)',
+                                                              'Средний (5)': 'rgba(255, 193, 7, 1)',
+                                                              'Средний (6)': 'rgba(255, 193, 7, 1)',
+                                                              'Средний (7)': 'rgba(255, 193, 7, 1)',
+                                                              'Высокий (8)': 'rgba(255, 87, 34, 1)',
+                                                              'Высокий (9)': 'rgba(255, 87, 34, 1)',
+                                                              'Высокий (10)': 'rgba(255, 87, 34, 1)'},\
+            'В выпадающем списке не все значения приоритетов'
+
     @testit.step("Получаем роли, ресурсы и ставки команды до редактирования")
     @allure.step("Получаем роли, ресурсы и ставки команды до редактирования")
     def get_all_team_members(self):
