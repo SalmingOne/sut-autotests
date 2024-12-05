@@ -31,6 +31,7 @@ class AllProjectPageLocators:
     # Локаторы фильтрации проектов по статусам
     STATUS_FILTER_BUTTON = (By.XPATH, '//div[@aria-colindex="7"]//button')
     MARK_ALL_STATUS = (By.XPATH, '//div[text()="Выделить всё"]')
+    HORIZONTAL_SCROLL = (By.CSS_SELECTOR, 'div[class="ag-body-horizontal-scroll-viewport"]')
     #
     TAB_TITLE = (By.XPATH, '//h6[text()="Проекты"]')
     ONLY_MY_PROJECTS_CHECKBOX = (By.XPATH, '//p[text()="Отображать только мои проекты"]')
@@ -44,6 +45,9 @@ class AllProjectPageLocators:
     ALERT_MESSAGE = (By.XPATH, '//div[contains(@class, "MuiAlert-message")]')
 
     TOOLTIP = (By.XPATH, '//div[contains(@class,"MuiTooltip")]//p')
+
+    # Локатор таба описание в карточке проекта, проверяем переход в карточку
+    DESCRIPTION_TAB = (By.XPATH, '//div[text()="Описание"]')
 
 
 

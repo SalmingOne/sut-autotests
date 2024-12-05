@@ -1076,3 +1076,27 @@ class TestProjectCard:
         assert message == 'Свойства проекта успешно изменены', "Не появилось сообщение об изменении проекта"
         assert before_end_date != after_end_date, "Дата начала проекта не изменилась"
         assert after_end_date == new_end_date, "Дата начала проекта не изменилась на указанную"
+
+    @testit.workItemIds(67938)
+    @testit.displayName("1.3.2.6 (Чек-лист) Возможные переходы из одного статуса в другой в карточке проекта")
+    @pytest.mark.regress
+    @allure.title("id-67938 1.3.2.6 (Чек-лист) Возможные переходы из одного статуса в другой в карточке проекта")
+    def test_possible_transition_from_one_status_to_another_in_project_card(self, simple_project, login, driver):
+        all_project_page = AllProjectPage(driver)
+        time.sleep(0.5)
+        all_project_page.go_to_all_project_page()
+        all_project_page.go_project_page(f"{PROJECT_NAME}")
+        project_card_page = ProjectCardPage(driver)
+        assert project_card_page.get_available_status_on_description_tab() == ['В архиве', 'Черновик'], \
+            'Дровер содержит статусы, не соответствующие проекту со статусом "Активен"'
+        project_card_page.change_status_project('Черновик')
+        all_project_page.go_to_all_project_page()
+        all_project_page.see_all_status_project()
+        all_project_page.go_project_page(f"{PROJECT_NAME}")
+        assert project_card_page.get_available_status_on_description_tab() == ['Активный'], \
+            'Дровер содержит статусы, не соответствующие проекту со статусом "Черновик"'
+        project_card_page.change_status_project('Активный')
+        project_card_page.change_status_project('В архиве')
+        all_project_page.go_to_all_project_page()
+        all_project_page.see_all_status_project()
+        all_project_page.check_archive_project_is_not_clickable(f"{PROJECT_NAME}")
