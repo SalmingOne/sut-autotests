@@ -60,7 +60,8 @@ class AllProjectPage(BasePage):
     @allure_testit_step("Проверяем что нельзя перейти в карточку архивного проекта")
     def check_archive_project_is_not_clickable(self, name):
         self.element_is_visible(self.locators.check_project_name_on_tab(name)).click()
-        assert not self.element_is_displayed(self.locators.DESCRIPTION_TAB)
+        assert not self.element_is_displayed(self.locators.DESCRIPTION_TAB), \
+            'Происходит переход в карточку архивного проекта'
 
     @testit.step("Проверяем меню Проекты в шапке сайта")
     @allure.step("Проверяем меню Проекты в шапке сайта")
