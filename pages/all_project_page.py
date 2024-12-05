@@ -43,6 +43,8 @@ class AllProjectPage(BasePage):
     @testit.step("Включаем фильтр проект во всех статусах")
     @allure.step("Включаем фильтр проект во всех статусах")
     def see_all_status_project(self):
+        self.action_drag_and_drop_by_offset(self.element_is_visible(self.locators.HORIZONTAL_SCROLL),
+                                            500, 0)
         time.sleep(1)
         self.element_is_visible(self.locators.STATUS_FILTER_BUTTON).click()
         self.element_is_visible(self.locators.MARK_ALL_STATUS).click()
@@ -53,8 +55,13 @@ class AllProjectPage(BasePage):
     @testit.step("Переходим на страницу проекта по имени")
     @allure.step("Переходим на страницу проекта по имени")
     def go_project_page(self, name):
-        project_title = (By.XPATH, f'//div[@col-id="name"]//div[text()="{name}"]')
-        self.element_is_visible(project_title).click()
+        self.element_is_visible(self.locators.check_project_name_on_tab(name)).click()
+
+    @allure_testit_step("Проверяем что нельзя перейти в карточку архивного проекта")
+    def check_archive_project_is_not_clickable(self, name):
+        self.element_is_visible(self.locators.check_project_name_on_tab(name)).click()
+        assert not self.element_is_displayed(self.locators.DESCRIPTION_TAB), \
+            'Происходит переход в карточку архивного проекта'
 
     @testit.step("Проверяем меню Проекты в шапке сайта")
     @allure.step("Проверяем меню Проекты в шапке сайта")

@@ -39,6 +39,17 @@ class ProjectCardPage(BasePage):
         output_project_manager = self.element_is_visible(self.locators.MANAGER_LABEL).text
         return output_project_name, output_project_code, output_project_status, output_project_begin_data, output_project_manager
 
+    @allure_testit_step("Получаем значения выпадающего списка поля статус вкладки описание проекта")
+    def get_available_status_on_description_tab(self):
+        self.element_is_visible(self.locators.STATUS_FIELD).click()
+        return self.get_text_menu_items()
+
+    @allure_testit_step("Изменяем статус проекта")
+    def change_status_project(self, status):
+        self.element_is_visible(self.locators.STATUS_FIELD).click()
+        self.element_is_visible(self.locators.li_by_text(status)).click()
+        self.press_submit_button()
+
     @allure_testit_step("Получаем значение поля приоритет вкладки описание проекта")
     def get_priority_on_description_tab(self):
         return self.element_is_visible(self.locators.PRIORITY_FIELD).text
