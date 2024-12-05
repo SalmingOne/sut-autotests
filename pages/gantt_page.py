@@ -5,10 +5,10 @@ import testit
 from selenium.common import TimeoutException
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
-from utils.concat_testit_allure_step import allure_testit_step
 
 from locators.gantt_page_locators import GanttPageLocators
 from pages.base_page import BasePage
+from utils.concat_testit_allure_step import allure_testit_step
 
 
 class GanttPage(BasePage):
@@ -166,7 +166,9 @@ class GanttPage(BasePage):
 
     @allure_testit_step('Получить типы столбцов таблицы')
     def get_columns_types(self):
-        return set(div.get_attribute('data-column-name') for element in self.elements_are_visible(self.locators.TABLE_ROWS) for div in element.find_elements(By.XPATH, './div'))
+        return set(
+            div.get_attribute('data-column-name') for element in self.elements_are_visible(self.locators.TABLE_ROWS) for
+            div in element.find_elements(By.XPATH, './div'))
 
     @allure_testit_step('Получить статус чекбокса')
     def get_status_of_checkbox(self, checkbox_name, status):
@@ -174,9 +176,11 @@ class GanttPage(BasePage):
         try:
             match checkbox_name:
                 case 'Таблица':
-                    self.elements_are_visible(self.locators.CHECKBOXES)[0].find_element(By.XPATH, f'./*[@data-testid="{icon_testid}"]')
+                    self.elements_are_visible(self.locators.CHECKBOXES)[0].find_element(By.XPATH,
+                                                                                        f'./*[@data-testid="{icon_testid}"]')
                 case 'Диаграмма':
-                    self.elements_are_visible(self.locators.CHECKBOXES)[1].find_element(By.XPATH, f'./*[@data-testid="{icon_testid}"]')
+                    self.elements_are_visible(self.locators.CHECKBOXES)[1].find_element(By.XPATH,
+                                                                                        f'./*[@data-testid="{icon_testid}"]')
                 case _:
                     return None
             return True
@@ -207,7 +211,8 @@ class GanttPage(BasePage):
 
     @allure_testit_step('Получить номер задачи/фазы')
     def get_number_of_task_or_phase(self, name):
-        return [element.text for element in self.elements_are_visible(self.locators.get_number_of_task_or_phase_by_name(name))]
+        return [element.text for element in
+                self.elements_are_visible(self.locators.get_number_of_task_or_phase_by_name(name))]
 
     @allure_testit_step('Сохранить изменения в таблице')
     def save_changes(self):
@@ -224,8 +229,10 @@ class GanttPage(BasePage):
 
     @allure_testit_step('Проверить отображение кнопок в режиме редактирования диаграммы Ганта')
     def buttons_are_displayed(self):
-        assert self.element_is_displayed(self.locators.SUBMIT_BUTTON), "Кнопка Сохранить не отображается в режиме редактирования диаграммы Ганта"
-        assert self.element_is_displayed(self.locators.DISCARD_BUTTON), "Кнопка Отменить не отображается в режиме редактирования диаграммы Ганта"
+        assert self.element_is_displayed(
+            self.locators.SUBMIT_BUTTON), "Кнопка Сохранить не отображается в режиме редактирования диаграммы Ганта"
+        assert self.element_is_displayed(
+            self.locators.DISCARD_BUTTON), "Кнопка Отменить не отображается в режиме редактирования диаграммы Ганта"
 
     @allure_testit_step('Получить сообщения ошибок валидации полей')
     def get_mui_error_messages(self):
@@ -258,7 +265,8 @@ class GanttPage(BasePage):
                 if self.element_is_visible(self.locators.LI_KEBAB_DELETE_BUTTON).get_attribute('aria-label'):
                     self.action_move_to_element(self.element_is_visible(self.locators.KEBAB_DELETE_BUTTON))
                     is_deleted = False
-                    assert 'Нельзя удалить фазу/задачу, на задачи которой списаны часы' == self.element_is_visible(self.locators.TOOLTIP).text, "Неверный текст тултипа"
+                    assert 'Нельзя удалить фазу/задачу, на задачи которой списаны часы' == self.element_is_visible(
+                        self.locators.TOOLTIP).text, "Неверный текст тултипа"
                 else:
                     self.element_is_visible(self.locators.KEBAB_DELETE_BUTTON).click()
                     is_deleted = True
@@ -278,3 +286,20 @@ class GanttPage(BasePage):
                 self.element_is_visible(self.locators.DRAWER_SUBMIT_BUTTON).click()
                 assert 'Новое имя' in self.get_phases_name(), "Изменения не сохранены"
 
+    @allure_testit_step('Сменить статус фазы/задачи')
+    def change_status(self, phase_or_task_name):
+        self.element_is_visible(self.locators.get_kebab_menu_by_name(phase_or_task_name)).click()
+        self.element_is_visible(self.locators.KEBAB_CHANGE_STATUS_BUTTON).click()
+
+    #   Пока только открытие дровера
+
+    @allure_testit_step('Проверить отображение элементов дровера изменения статуса')
+    def check_drawer_items(self):
+        assert self.element_is_displayed(self.locators.STATUS_FIELD), "Не отображается поле Статус"
+        assert self.element_is_displayed(self.locators.DATE_FIELD), "Не отображается поле Дата изменения"
+        assert self.get_day_before(0) == self.element_is_visible(self.locators.DATE_FIELD).get_attribute('value'), \
+            "Дата изменения по умолчанию не сегодняшняя"
+        assert self.element_is_displayed(self.locators.CHANGE_STATUS_DRAWER_SUBMIT_BUTTON), ("Не отображается кнопка "
+                                                                                             "сохранения")
+        assert self.element_is_displayed(self.locators.CHANGE_STATUS_DRAWER_DISCARD_BUTTON), ("Не отображается "
+                                                                                              "кнопка отмены")
